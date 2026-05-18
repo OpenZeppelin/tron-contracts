@@ -1,7 +1,7 @@
 {
-  "name": "openzeppelin-solidity",
-  "description": "Secure Smart Contract library for Solidity",
-  "version": "5.6.1",
+  "name": "openzeppelin-tron-solidity",
+  "description": "Secure Smart Contract library for Solidity for Tron",
+  "version": "0.0.1",
   "private": true,
   "files": [
     "/contracts/**/*.sol",
@@ -35,7 +35,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/OpenZeppelin/openzeppelin-contracts.git"
+    "url": "https://github.com/OpenZeppelin/tron-contracts.git"
   },
   "keywords": [
     "solidity",
@@ -48,9 +48,8 @@
   "author": "OpenZeppelin Community <maintainers@openzeppelin.org>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/OpenZeppelin/openzeppelin-contracts/issues"
+    "url": "https://github.com/OpenZeppelin/tron-contracts/issues"
   },
-  "homepage": "https://openzeppelin.com/contracts/",
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.26.0",
