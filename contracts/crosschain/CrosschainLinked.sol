@@ -27,7 +27,7 @@ abstract contract CrosschainLinked is ERC7786Recipient {
         address gateway;
         bytes counterpart; // Full InteroperableAddress (chain ref + address)
     }
-    mapping(bytes chain => Link) private _links;
+    mapping(bytes chainAddr => Link) private _links;
 
     /**
      * @dev Emitted when a new link is registered.
@@ -39,9 +39,9 @@ abstract contract CrosschainLinked is ERC7786Recipient {
     /**
      * @dev Reverted when trying to register a link for a chain that is already registered.
      *
-     * Note: the `chain` argument is a "chain-only" InteroperableAddress (empty address).
+     * Note: the `chainAddr` argument is a "chain-only" InteroperableAddress (empty address).
      */
-    error LinkAlreadyRegistered(bytes chain);
+    error LinkAlreadyRegistered(bytes chainAddr);
 
     constructor(Link[] memory links) {
         for (uint256 i = 0; i < links.length; ++i) {
@@ -52,11 +52,11 @@ abstract contract CrosschainLinked is ERC7786Recipient {
     /**
      * @dev Returns the ERC-7786 gateway used for sending and receiving cross-chain messages to a given chain.
      *
-     * Note: The `chain` parameter is a "chain-only" InteroperableAddress (empty address) and the `counterpart` returns
-     * the full InteroperableAddress (chain ref + address) that is on `chain`.
+     * Note: The `chainAddr` parameter is a "chain-only" InteroperableAddress (empty address) and the `counterpart`
+     * returns the full InteroperableAddress (chain ref + address) that is on `chainAddr`.
      */
-    function getLink(bytes memory chain) public view virtual returns (address gateway, bytes memory counterpart) {
-        Link storage self = _links[chain];
+    function getLink(bytes memory chainAddr) public view virtual returns (address gateway, bytes memory counterpart) {
+        Link storage self = _links[chainAddr];
         return (self.gateway, self.counterpart);
     }
 
@@ -70,26 +70,26 @@ abstract contract CrosschainLinked is ERC7786Recipient {
         // supportsAttribute returns data, an EOA would fail that test (nothing returned).
         IERC7786GatewaySource(gateway).supportsAttribute(bytes4(0));
 
-        bytes memory chain = _extractChain(counterpart);
-        if (allowOverride || _links[chain].gateway == address(0)) {
-            _links[chain] = Link(gateway, counterpart);
+        bytes memory chainAddr = _extractChain(counterpart);
+        if (allowOverride || _links[chainAddr].gateway == address(0)) {
+            _links[chainAddr] = Link(gateway, counterpart);
             emit LinkRegistered(gateway, counterpart);
         } else {
-            revert LinkAlreadyRegistered(chain);
+            revert LinkAlreadyRegistered(chainAddr);
         }
     }
 
     /**
      * @dev Internal messaging function
      *
-     * Note: The `chain` parameter is a "chain-only" InteroperableAddress (empty address).
+     * Note: The `chainAddr` parameter is a "chain-only" InteroperableAddress (empty address).
      */
     function _sendMessageToCounterpart(
-        bytes memory chain,
+        bytes memory chainAddr,
         bytes memory payload,
         bytes[] memory attributes
     ) internal virtual returns (bytes32) {
-        (address gateway, bytes memory counterpart) = getLink(chain);
+        (address gateway, bytes memory counterpart) = getLink(chainAddr);
         return IERC7786GatewaySource(gateway).sendMessage(counterpart, payload, attributes);
     }
 
