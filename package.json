@@ -8,8 +8,9 @@
     "!/contracts/mocks/**/*"
   ],
   "scripts": {
-    "compile": "hardhat compile",
-    "compile:harnesses": "env SRC=./fv/harnesses hardhat compile",
+    "compile": "SKIP_EXPOSED=1 hardhat tron:compile-batches --network tre",
+    "compile:single": "SKIP_EXPOSED=1 hardhat compile --network tre",
+    "compile:harnesses": "env SRC=./fv/harnesses SKIP_EXPOSED=1 hardhat tron:compile-batches --network tre",
     "coverage": "scripts/checks/coverage.sh",
     "docs": "npm run prepare-docs && oz-docs",
     "docs:watch": "oz-docs watch contracts docs/templates docs/config.js",
@@ -21,17 +22,16 @@
     "lint:js:fix": "prettier --log-level warn --ignore-path .gitignore '**/*.{js,ts}' --write && eslint . --fix",
     "lint:sol": "prettier --log-level warn --ignore-path .gitignore '{contracts,test}/**/*.sol' --check && solhint --config solhint.config.js --noPoster '{contracts,test}/**/*.sol'",
     "lint:sol:fix": "prettier --log-level warn --ignore-path .gitignore '{contracts,test}/**/*.sol' --write",
-    "clean": "hardhat clean && rimraf build contracts/build",
     "prepack": "scripts/prepack.sh",
     "generate": "scripts/generate/run.js",
     "pragma": "npm run compile && scripts/minimize-pragma.js artifacts/build-info/*",
     "version": "scripts/release/version.sh",
-    "test": ". scripts/set-max-old-space-size.sh && hardhat test",
+    "test": "scripts/run-tests-parallel.sh",
+    "test:keep": "SKIP_TEARDOWN=1 scripts/run-tests-parallel.sh",
     "test:generation": "scripts/checks/generation.sh",
-    "test:inheritance": "npm run compile && scripts/checks/inheritance-ordering.js artifacts/build-info/*",
+    "test:inheritance": "node scripts/checks/inheritance-ordering.js artifacts/build-info/*.json",
     "test:pragma": "npm run compile && scripts/checks/pragma-validity.js artifacts/build-info/*",
-    "gas-report": "env ENABLE_GAS_REPORT=true npm run test",
-    "slither": "npm run clean && slither ."
+    "gas-report": "env ENABLE_GAS_REPORT=true npm run test"
   },
   "repository": {
     "type": "git",
@@ -75,7 +75,7 @@
     "hardhat-exposed": "^0.3.15",
     "hardhat-gas-reporter": "^2.1.0",
     "hardhat-ignore-warnings": "^0.2.11",
-    "hardhat-predeploy": "^0.4.1",
+    "@openzeppelin/hardhat-tron": "file:../hardhat-tron",
     "husky": "^9.1.7",
     "interoperable-addresses": "^0.1.3",
     "lint-staged": "^16.0.0",
