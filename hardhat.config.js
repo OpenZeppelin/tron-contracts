@@ -161,7 +161,9 @@ module.exports = {
   },
   networks: {
     tre: {
-      url: 'http://127.0.0.1:9090/jsonrpc',
+      // TRE_URL lets parallel-test workers each point at their own TRE
+      // container on a different host port. Serial runs default to 9090.
+      url: process.env.TRE_URL || 'http://127.0.0.1:9090/jsonrpc',
       tron: true,
       accounts: [TRE_PRIVATE_KEY],
     },
