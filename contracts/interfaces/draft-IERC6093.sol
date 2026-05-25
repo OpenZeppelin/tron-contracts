@@ -50,22 +50,22 @@ interface IERC20Errors {
 }
 
 /**
- * @dev Standard ERC-721 Errors
- * Interface of the https://eips.ethereum.org/EIPS/eip-6093[ERC-6093] custom errors for ERC-721 tokens.
+ * @dev Standard TRC-721 Errors
+ * Interface of the https://eips.ethereum.org/EIPS/eip-6093[ERC-6093] custom errors for TRC-721 tokens.
  */
-interface IERC721Errors {
+interface ITRC721Errors {
     /**
-     * @dev Indicates that an address can't be an owner. For example, `address(0)` is a forbidden owner in ERC-721.
+     * @dev Indicates that an address can't be an owner. For example, `address(0)` is a forbidden owner in TRC-721.
      * Used in balance queries.
      * @param owner Address of the current owner of a token.
      */
-    error ERC721InvalidOwner(address owner);
+    error TRC721InvalidOwner(address owner);
 
     /**
      * @dev Indicates a `tokenId` whose `owner` is the zero address.
      * @param tokenId Identifier number of a token.
      */
-    error ERC721NonexistentToken(uint256 tokenId);
+    error TRC721NonexistentToken(uint256 tokenId);
 
     /**
      * @dev Indicates an error related to the ownership over a particular token. Used in transfers.
@@ -73,38 +73,38 @@ interface IERC721Errors {
      * @param tokenId Identifier number of a token.
      * @param owner Address of the current owner of a token.
      */
-    error ERC721IncorrectOwner(address sender, uint256 tokenId, address owner);
+    error TRC721IncorrectOwner(address sender, uint256 tokenId, address owner);
 
     /**
      * @dev Indicates a failure with the token `sender`. Used in transfers.
      * @param sender Address whose tokens are being transferred.
      */
-    error ERC721InvalidSender(address sender);
+    error TRC721InvalidSender(address sender);
 
     /**
      * @dev Indicates a failure with the token `receiver`. Used in transfers.
      * @param receiver Address to which tokens are being transferred.
      */
-    error ERC721InvalidReceiver(address receiver);
+    error TRC721InvalidReceiver(address receiver);
 
     /**
      * @dev Indicates a failure with the `operator`’s approval. Used in transfers.
      * @param operator Address that may be allowed to operate on tokens without being their owner.
      * @param tokenId Identifier number of a token.
      */
-    error ERC721InsufficientApproval(address operator, uint256 tokenId);
+    error TRC721InsufficientApproval(address operator, uint256 tokenId);
 
     /**
      * @dev Indicates a failure with the `approver` of a token to be approved. Used in approvals.
      * @param approver Address initiating an approval operation.
      */
-    error ERC721InvalidApprover(address approver);
+    error TRC721InvalidApprover(address approver);
 
     /**
      * @dev Indicates a failure with the `operator` to be approved. Used in approvals.
      * @param operator Address that may be allowed to operate on tokens without being their owner.
      */
-    error ERC721InvalidOperator(address operator);
+    error TRC721InvalidOperator(address operator);
 }
 
 /**

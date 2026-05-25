@@ -7,7 +7,7 @@ import {ERC1155} from "../ERC1155.sol";
 
 /**
  * @dev ERC-1155 token with storage based token URI management.
- * Inspired by the {ERC721URIStorage} extension
+ * Inspired by the {TRC721URIStorage} extension
  */
 abstract contract ERC1155URIStorage is ERC1155 {
     // Optional base URI

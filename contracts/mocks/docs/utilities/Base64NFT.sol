@@ -2,14 +2,14 @@
 
 pragma solidity ^0.8.24;
 
-import {ERC721} from "../../../token/ERC721/ERC721.sol";
+import {TRC721} from "../../../token/TRC721/TRC721.sol";
 import {Strings} from "../../../utils/Strings.sol";
 import {Base64} from "../../../utils/Base64.sol";
 
-contract Base64NFT is ERC721 {
+contract Base64NFT is TRC721 {
     using Strings for uint256;
 
-    constructor() ERC721("Base64NFT", "MTK") {}
+    constructor() TRC721("Base64NFT", "MTK") {}
 
     // ...
 
@@ -17,7 +17,7 @@ contract Base64NFT is ERC721 {
         // Equivalent to:
         // {
         //   "name": "Base64NFT #1",
-        //   // Replace with extra ERC-721 Metadata properties
+        //   // Replace with extra TRC-721 Metadata properties
         // }
         // prettier-ignore
         string memory dataURI = string.concat("{\"name\": \"Base64NFT #", tokenId.toString(), "\"}");

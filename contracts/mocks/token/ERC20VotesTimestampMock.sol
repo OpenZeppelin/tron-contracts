@@ -3,7 +3,7 @@
 pragma solidity ^0.8.24;
 
 import {ERC20Votes} from "../../token/ERC20/extensions/ERC20Votes.sol";
-import {ERC721Votes} from "../../token/ERC721/extensions/ERC721Votes.sol";
+import {TRC721Votes} from "../../token/TRC721/extensions/TRC721Votes.sol";
 import {SafeCast} from "../../utils/math/SafeCast.sol";
 
 abstract contract ERC20VotesTimestampMock is ERC20Votes {
@@ -17,7 +17,7 @@ abstract contract ERC20VotesTimestampMock is ERC20Votes {
     }
 }
 
-abstract contract ERC721VotesTimestampMock is ERC721Votes {
+abstract contract TRC721VotesTimestampMock is TRC721Votes {
     function clock() public view virtual override returns (uint48) {
         return SafeCast.toUint48(block.timestamp);
     }

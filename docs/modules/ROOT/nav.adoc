@@ -10,7 +10,7 @@
 * xref:tokens.adoc[Tokens]
 ** xref:erc20.adoc[ERC-20]
 *** xref:erc20-supply.adoc[Creating Supply]
-** xref:erc721.adoc[ERC-721]
+** xref:trc721.adoc[TRC-721]
 ** xref:erc1155.adoc[ERC-1155]
 ** xref:erc4626.adoc[ERC-4626]
 ** xref:erc6909.adoc[ERC-6909]

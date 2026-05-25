@@ -11,11 +11,11 @@ are useful to interact with third party contracts that implement them.
 - {IERC20Errors}
 - {IERC20Metadata}
 - {IERC165}
-- {IERC721}
-- {IERC721Receiver}
-- {IERC721Enumerable}
-- {IERC721Metadata}
-- {IERC721Errors}
+- {ITRC721}
+- {ITRC721Receiver}
+- {ITRC721Enumerable}
+- {ITRC721Metadata}
+- {ITRC721Errors}
 - {IERC777}
 - {IERC777Recipient}
 - {IERC777Sender}
@@ -63,7 +63,7 @@ are useful to interact with third party contracts that implement them.
 
 {{IERC20Errors}}
 
-{{IERC721Errors}}
+{{ITRC721Errors}}
 
 {{IERC1155Errors}}
 

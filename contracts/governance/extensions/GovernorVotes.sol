@@ -9,7 +9,7 @@ import {IERC5805} from "../../interfaces/IERC5805.sol";
 import {Time} from "../../utils/types/Time.sol";
 
 /**
- * @dev Extension of {Governor} for voting weight extraction from an {ERC20Votes} token, or since v4.5 an {ERC721Votes}
+ * @dev Extension of {Governor} for voting weight extraction from an {ERC20Votes} token, or since v4.5 an {TRC721Votes}
  * token.
  */
 abstract contract GovernorVotes is Governor {
