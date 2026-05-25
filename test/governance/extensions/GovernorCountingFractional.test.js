@@ -8,8 +8,8 @@ const { zip } = require('../../helpers/iterate');
 const { sum } = require('../../helpers/math');
 
 const TOKENS = [
-  { Token: '$ERC20Votes', mode: 'blocknumber' },
-  { Token: '$ERC20VotesTimestampMock', mode: 'timestamp' },
+  { Token: '$TRC20Votes', mode: 'blocknumber' },
+  { Token: '$TRC20VotesTimestampMock', mode: 'timestamp' },
 ];
 
 const name = 'OZ-Governor';

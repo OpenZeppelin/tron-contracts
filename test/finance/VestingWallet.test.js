@@ -15,7 +15,7 @@ async function fixture() {
   const [sender, beneficiary] = await ethers.getSigners();
   const mock = await ethers.deployContract('VestingWallet', [beneficiary, start, duration]);
 
-  const token = await ethers.deployContract('$ERC20', ['Name', 'Symbol']);
+  const token = await ethers.deployContract('$TRC20', ['Name', 'Symbol']);
   await token.$_mint(mock, amount);
   await sender.sendTransaction({ to: mock, value: amount });
 
@@ -54,7 +54,7 @@ describe('VestingWallet', function () {
       shouldBehaveLikeVesting();
     });
 
-    describe('ERC20 vesting', function () {
+    describe('TRC20 vesting', function () {
       beforeEach(async function () {
         Object.assign(this, this.env.token);
       });

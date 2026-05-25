@@ -1,0 +1,81 @@
+= TRC-20
+
+[.readme-notice]
+NOTE: This document is better viewed at https://docs.openzeppelin.com/contracts/api/token/erc20
+
+This set of interfaces, contracts, and utilities are all related to the https://github.com/tronprotocol/tips/blob/master/tip-20.md[TRC-20 Token Standard] (TIP-20, the TRON-side analogue of EIP-20).
+
+TIP: For an overview of TRC-20 tokens and a walk through on how to create a token contract read our xref:ROOT:trc20.adoc[TRC-20 guide].
+
+There are a few core contracts that implement the behavior specified in the TRC-20 standard:
+
+* {ITRC20}: the interface all TRC-20 implementations should conform to.
+* {ITRC20Metadata}: the extended TRC-20 interface including the <<TRC20-name--,`name`>>, <<TRC20-symbol--,`symbol`>> and <<TRC20-decimals--,`decimals`>> functions.
+* {TRC20}: the implementation of the TRC-20 interface, including the <<TRC20-name--,`name`>>, <<TRC20-symbol--,`symbol`>> and <<TRC20-decimals--,`decimals`>> optional extensions to the standard interface.
+
+Additionally there are multiple custom extensions, including:
+
+* {TRC20Permit}: gasless approval of tokens (standardized as TIP-2612 / EIP-2612).
+* {TRC20Bridgeable}: compatibility with crosschain bridges through ERC-7802.
+* {TRC20Burnable}: destruction of own tokens.
+* {TRC20Capped}: enforcement of a cap to the total supply when minting tokens.
+* {TRC20Crosschain}: embedded {BridgeFungible} bridge, making the token crosschain through the use of ERC-7786 gateways.
+* {TRC20Pausable}: ability to pause token transfers.
+* {TRC20FlashMint}: token level support for flash loans through the minting and burning of ephemeral tokens (standardized as ERC-3156).
+* {TRC20Votes}: support for voting and vote delegation. xref:governance.adoc#token[See the governance guide for a minimal example (with the required overrides when combining TRC20 + TRC20Permit + TRC20Votes)].
+* {TRC20Wrapper}: wrapper to create a TRC-20 backed by another TRC-20, with deposit and withdraw methods. Useful in conjunction with {TRC20Votes}.
+* {TRC20TemporaryApproval}: support for approvals lasting for only one transaction, as defined in ERC-7674.
+* {ERC1363}: support for calling the target of a transfer or approval, enabling code execution on the receiver within a single transaction.
+* {TRC4626}: tokenized vault that manages shares (represented as TRC-20) that are backed by assets (another TRC-20).
+
+Finally, there are some utilities to interact with TRC-20 contracts in various ways:
+
+* {SafeTRC20}: a wrapper around the interface that eliminates the need to handle boolean return values.
+
+Other utilities that support TRC-20 assets can be found in the codebase:
+
+* TRC-20 tokens can be timelocked (held for a beneficiary until a specified time) or vested (released following a given schedule) using a {VestingWallet}.
+
+NOTE: This core set of contracts is designed to be unopinionated, allowing developers to access the internal functions in TRC-20 (such as <<TRC20-_mint-address-uint256-,`_mint`>>) and expose them as external functions in the way they prefer.
+
+== Core
+
+{{ITRC20}}
+
+{{ITRC20Metadata}}
+
+{{TRC20}}
+
+== Extensions
+
+{{ITRC20Permit}}
+
+{{TRC20Permit}}
+
+{{TRC20Bridgeable}}
+
+{{TRC20Burnable}}
+
+{{TRC20Capped}}
+
+{{TRC20Crosschain}}
+
+{{TRC20Pausable}}
+
+{{TRC20Votes}}
+
+{{TRC20Wrapper}}
+
+{{TRC20FlashMint}}
+
+{{TRC20TemporaryApproval}}
+
+{{ERC1363}}
+
+{{TRC4626}}
+
+== Utilities
+
+{{SafeTRC20}}
+
+{{ERC1363Utils}}

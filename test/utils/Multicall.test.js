@@ -7,7 +7,7 @@ async function fixture() {
 
   const amount = 12_000n;
   const helper = await ethers.deployContract('MulticallHelper');
-  const mock = await ethers.deployContract('$ERC20MulticallMock', ['name', 'symbol']);
+  const mock = await ethers.deployContract('$TRC20MulticallMock', ['name', 'symbol']);
   await mock.$_mint(holder, amount);
 
   return { holder, alice, bruce, amount, mock, helper };
@@ -53,7 +53,7 @@ describe('Multicall', function () {
         this.mock.interface.encodeFunctionData('transfer', [this.bruce.address, this.amount]),
       ]),
     )
-      .to.be.revertedWithCustomError(this.mock, 'ERC20InsufficientBalance')
+      .to.be.revertedWithCustomError(this.mock, 'TRC20InsufficientBalance')
       .withArgs(this.holder, 0, this.amount);
 
     expect(await this.mock.balanceOf(this.alice)).to.equal(0n);
@@ -66,7 +66,7 @@ describe('Multicall', function () {
         this.mock.interface.encodeFunctionData('transfer', [this.bruce.address, this.amount]),
       ]),
     )
-      .to.be.revertedWithCustomError(this.mock, 'ERC20InsufficientBalance')
+      .to.be.revertedWithCustomError(this.mock, 'TRC20InsufficientBalance')
       .withArgs(this.holder, 0, this.amount);
   });
 });

@@ -26,7 +26,7 @@ describe('GovernorNoncesKeyed', function () {
     const [owner, proposer, voter1, voter2, voter3, voter4, userEOA] = await ethers.getSigners();
     const receiver = await ethers.deployContract('CallReceiverMock');
 
-    const token = await ethers.deployContract('$ERC20Votes', [tokenName, tokenSymbol, tokenName, version]);
+    const token = await ethers.deployContract('$TRC20Votes', [tokenName, tokenSymbol, tokenName, version]);
     const mock = await ethers.deployContract('$GovernorNoncesKeyedMock', [
       name, // name
       votingDelay, // initialVotingDelay

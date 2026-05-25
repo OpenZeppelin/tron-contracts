@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.20;
 
-import {ERC1363} from "../../token/ERC20/extensions/ERC1363.sol";
+import {ERC1363} from "../../token/TRC20/extensions/ERC1363.sol";
 
 abstract contract ERC1363NoReturnMock is ERC1363 {
     function transferAndCall(address to, uint256 value, bytes memory data) public override returns (bool) {

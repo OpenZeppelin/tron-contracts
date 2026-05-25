@@ -15,12 +15,12 @@ async function fixture() {
   const gateway = await ethers.deployContract('$ERC7786GatewayMock');
   const gatewayAsEOA = await impersonate(gateway);
 
-  // Chain A: legacy ERC20 with bridge
-  const tokenA = await ethers.deployContract('$ERC20', ['Token1', 'T1']);
+  // Chain A: legacy TRC20 with bridge
+  const tokenA = await ethers.deployContract('$TRC20', ['Token1', 'T1']);
   const bridgeA = await ethers.deployContract('$BridgeERC20', [[], tokenA]);
 
   // Chain B: ERC7802 with bridge (preconfigured link to bridgeA)
-  const tokenB = await ethers.deployContract('$ERC20BridgeableMock', ['Token2', 'T2', ethers.ZeroAddress]);
+  const tokenB = await ethers.deployContract('$TRC20BridgeableMock', ['Token2', 'T2', ethers.ZeroAddress]);
   const bridgeB = await ethers.deployContract('$BridgeERC7802', [[[gateway, chain.toErc7930(bridgeA)]], tokenB]);
 
   // deployment check + counterpart setup
