@@ -8,8 +8,8 @@ const { ProposalState, VoteType } = require('../../helpers/enums');
 const time = require('../../helpers/time');
 
 const TOKENS = [
-  { Token: '$ERC20Votes', mode: 'blocknumber' },
-  { Token: '$ERC20VotesTimestampMock', mode: 'timestamp' },
+  { Token: '$TRC20Votes', mode: 'blocknumber' },
+  { Token: '$TRC20VotesTimestampMock', mode: 'timestamp' },
 ];
 
 const name = 'OZ-Governor';
@@ -228,15 +228,15 @@ describe('GovernorTimelockCompound', function () {
         });
 
         describe('on safe receive', function () {
-          describe('ERC721', function () {
+          describe('TRC721', function () {
             const tokenId = 1n;
 
             beforeEach(async function () {
-              this.token = await ethers.deployContract('$ERC721', ['Non Fungible Token', 'NFT']);
+              this.token = await ethers.deployContract('$TRC721', ['Non Fungible Token', 'NFT']);
               await this.token.$_mint(this.owner, tokenId);
             });
 
-            it("can't receive an ERC721 safeTransfer", async function () {
+            it("can't receive an TRC721 safeTransfer", async function () {
               await expect(
                 this.token.connect(this.owner).safeTransferFrom(this.owner, this.mock, tokenId),
               ).to.be.revertedWithCustomError(this.mock, 'GovernorDisabledDeposit');

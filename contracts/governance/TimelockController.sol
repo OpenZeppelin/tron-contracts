@@ -4,8 +4,8 @@
 pragma solidity ^0.8.20;
 
 import {AccessControl} from "../access/AccessControl.sol";
-import {ERC721Holder} from "../token/ERC721/utils/ERC721Holder.sol";
 import {TRC1155Holder} from "../token/TRC1155/utils/TRC1155Holder.sol";
+import {TRC721Holder} from "../token/TRC721/utils/TRC721Holder.sol";
 import {Address} from "../utils/Address.sol";
 
 /**
@@ -21,7 +21,7 @@ import {Address} from "../utils/Address.sol";
  * to position this {TimelockController} as the owner of a smart contract, with
  * a multisig or a DAO as the sole proposer.
  */
-contract TimelockController is AccessControl, ERC721Holder, TRC1155Holder {
+contract TimelockController is AccessControl, TRC721Holder, TRC1155Holder {
     bytes32 public constant PROPOSER_ROLE = keccak256("PROPOSER_ROLE");
     bytes32 public constant EXECUTOR_ROLE = keccak256("EXECUTOR_ROLE");
     bytes32 public constant CANCELLER_ROLE = keccak256("CANCELLER_ROLE");

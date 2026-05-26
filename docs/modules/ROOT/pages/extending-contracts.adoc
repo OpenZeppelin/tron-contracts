@@ -2,7 +2,7 @@
 
 Most of the OpenZeppelin Contracts are expected to be used via https://solidity.readthedocs.io/en/latest/contracts.html#inheritance[inheritance]: you will _inherit_ from them when writing your own contracts.
 
-This is the commonly found `is` syntax, like in `contract MyToken is ERC20`.
+This is the commonly found `is` syntax, like in `contract MyToken is TRC20`.
 
 [NOTE]
 ====

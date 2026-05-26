@@ -1235,15 +1235,15 @@ describe('TimelockController', function () {
   });
 
   describe('safe receive', function () {
-    describe('ERC721', function () {
+    describe('TRC721', function () {
       const tokenId = 1n;
 
       beforeEach(async function () {
-        this.token = await ethers.deployContract('$ERC721', ['Non Fungible Token', 'NFT']);
+        this.token = await ethers.deployContract('$TRC721', ['Non Fungible Token', 'NFT']);
         await this.token.$_mint(this.other, tokenId);
       });
 
-      it('can receive an ERC721 safeTransfer', async function () {
+      it('can receive an TRC721 safeTransfer', async function () {
         await this.token.connect(this.other).safeTransferFrom(this.other, this.mock, tokenId);
       });
     });

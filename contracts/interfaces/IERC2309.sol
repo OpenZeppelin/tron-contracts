@@ -4,7 +4,7 @@
 pragma solidity >=0.4.11;
 
 /**
- * @dev ERC-2309: ERC-721 Consecutive Transfer Extension.
+ * @dev ERC-2309: TRC-721 Consecutive Transfer Extension.
  */
 interface IERC2309 {
     /**

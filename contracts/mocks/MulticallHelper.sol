@@ -2,11 +2,11 @@
 
 pragma solidity ^0.8.20;
 
-import {ERC20MulticallMock} from "./token/ERC20MulticallMock.sol";
+import {TRC20MulticallMock} from "./token/TRC20MulticallMock.sol";
 
 contract MulticallHelper {
     function checkReturnValues(
-        ERC20MulticallMock multicallToken,
+        TRC20MulticallMock multicallToken,
         address[] calldata recipients,
         uint256[] calldata amounts
     ) external {

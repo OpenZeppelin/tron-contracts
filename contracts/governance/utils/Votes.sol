@@ -20,15 +20,15 @@ import {Time} from "../../utils/types/Time.sol";
  * delegate those votes to itself if it wishes to participate in decisions and does not have a trusted representative.
  *
  * This contract is often combined with a token contract such that voting units correspond to token units. For an
- * example, see {ERC721Votes}.
+ * example, see {TRC721Votes}.
  *
  * The full history of delegate votes is tracked on-chain so that governance protocols can consider votes as distributed
  * at a particular block number to protect against flash loans and double voting. The opt-in delegate system makes the
  * cost of this history tracking optional.
  *
  * When using this module the derived contract must implement {_getVotingUnits} (for example, make it return
- * {ERC721-balanceOf}), and can use {_transferVotingUnits} to track a change in the distribution of those units (in the
- * previous example, it would be included in {ERC721-_update}).
+ * {TRC721-balanceOf}), and can use {_transferVotingUnits} to track a change in the distribution of those units (in the
+ * previous example, it would be included in {TRC721-_update}).
  */
 abstract contract Votes is Context, EIP712, Nonces, IERC5805 {
     using Checkpoints for Checkpoints.Trace208;

@@ -3,8 +3,8 @@
 
 pragma solidity ^0.8.24;
 
-import {IERC721Receiver} from "../token/ERC721/IERC721Receiver.sol";
 import {ITRC1155Receiver} from "../token/TRC1155/ITRC1155Receiver.sol";
+import {ITRC721Receiver} from "../token/TRC721/ITRC721Receiver.sol";
 import {EIP712} from "../utils/cryptography/EIP712.sol";
 import {SignatureChecker} from "../utils/cryptography/SignatureChecker.sol";
 import {IERC165, ERC165} from "../utils/introspection/ERC165.sol";
@@ -25,7 +25,7 @@ import {IGovernor, IERC6372} from "./IGovernor.sol";
  * - A voting module must implement {_getVotes}
  * - Additionally, {votingPeriod}, {votingDelay}, and {quorum} must also be implemented
  */
-abstract contract Governor is Context, ERC165, EIP712, Nonces, IGovernor, IERC721Receiver, ITRC1155Receiver {
+abstract contract Governor is Context, ERC165, EIP712, Nonces, IGovernor, ITRC721Receiver, ITRC1155Receiver {
     using DoubleEndedQueue for DoubleEndedQueue.Bytes32Deque;
 
     bytes32 public constant BALLOT_TYPEHASH =
@@ -667,14 +667,14 @@ abstract contract Governor is Context, ERC165, EIP712, Nonces, IGovernor, IERC72
     }
 
     /**
-     * @dev See {IERC721Receiver-onERC721Received}.
+     * @dev See {ITRC721Receiver-onTRC721Received}.
      * Receiving tokens is disabled if the governance executor is other than the governor itself (eg. when using with a timelock).
      */
-    function onERC721Received(address, address, uint256, bytes memory) public virtual returns (bytes4) {
+    function onTRC721Received(address, address, uint256, bytes memory) public virtual returns (bytes4) {
         if (_executor() != address(this)) {
             revert GovernorDisabledDeposit();
         }
-        return this.onERC721Received.selector;
+        return this.onTRC721Received.selector;
     }
 
     /**

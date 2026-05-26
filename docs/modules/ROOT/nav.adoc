@@ -8,11 +8,11 @@
 * xref:access-control.adoc[Access Control]
 
 * xref:tokens.adoc[Tokens]
-** xref:erc20.adoc[ERC-20]
-*** xref:erc20-supply.adoc[Creating Supply]
-** xref:erc721.adoc[ERC-721]
+** xref:trc20.adoc[TRC-20]
+*** xref:trc20-supply.adoc[Creating Supply]
+** xref:trc721.adoc[TRC-721]
 ** xref:trc1155.adoc[TRC-1155]
-** xref:erc4626.adoc[ERC-4626]
+** xref:trc4626.adoc[TRC-4626]
 ** xref:erc6909.adoc[ERC-6909]
 
 * xref:governance.adoc[Governance]

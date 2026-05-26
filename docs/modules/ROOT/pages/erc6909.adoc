@@ -10,7 +10,7 @@ There are three main changes from TRC-1155 which are as follows:
 
 . The removal of batch operations.
 . The removal of transfer callbacks.
-. Granularization in approvals--approvals can be set globally (as operators) or as amounts per token (inspired by ERC20).
+. Granularization in approvals--approvals can be set globally (as operators) or as amounts per token (inspired by TRC20).
 
 == Constructing an ERC-6909 Token Contract
 
@@ -18,7 +18,7 @@ We'll use ERC-6909 to track multiple items in a game, each having their own uniq
 
 For simplicity, we will mint all items in the constructor--however, minting functionality could be added to the contract to mint on demand to players.
 
-TIP: For an overview of minting mechanisms, check out xref:erc20-supply.adoc[Creating ERC-20 Supply].
+TIP: For an overview of minting mechanisms, check out xref:trc20-supply.adoc[Creating TRC-20 Supply].
 
 Here's what a contract for tokenized items might look like:
 

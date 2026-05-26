@@ -23,14 +23,14 @@ async function envSetup(mock, beneficiary, token) {
         await expect(tx).to.changeTokenBalances(token, [mock, beneficiary], [-amount, amount]);
       },
       setupFailure: async () => {
-        const pausableToken = await ethers.deployContract('$ERC20Pausable', ['Name', 'Symbol']);
+        const pausableToken = await ethers.deployContract('$TRC20Pausable', ['Name', 'Symbol']);
         await pausableToken.$_pause();
         return {
           args: [ethers.Typed.address(pausableToken)],
           error: [pausableToken, 'EnforcedPause'],
         };
       },
-      releasedEvent: 'ERC20Released',
+      releasedEvent: 'TRC20Released',
       args: [ethers.Typed.address(token)],
     },
   };

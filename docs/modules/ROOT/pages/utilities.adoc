@@ -191,7 +191,7 @@ For an on-chain Merkle Tree, see the xref:api:utils.adoc#MerkleTree[`MerkleTree`
 In Solidity, it's frequently helpful to know whether or not a contract supports an interface you'd like to use. ERC-165 is a standard that enables runtime interface detection. Contracts provide helpers both for implementing ERC-165 in your contracts and querying other contracts:
 
 * xref:api:utils.adoc#IERC165[`IERC165`] — this is the ERC-165 interface that defines xref:api:utils.adoc#IERC165-supportsInterface-bytes4-[`supportsInterface`]. When implementing ERC-165, you'll conform to this interface.
-* xref:api:utils.adoc#ERC165[`ERC165`] — inherit this contract if you'd like to support interface detection using a lookup table in contract storage. You can register interfaces using xref:api:utils.adoc#ERC165-_registerInterface-bytes4-[`_registerInterface(bytes4)`]: check out example usage as part of the ERC-721 implementation.
+* xref:api:utils.adoc#ERC165[`ERC165`] — inherit this contract if you'd like to support interface detection using a lookup table in contract storage. You can register interfaces using xref:api:utils.adoc#ERC165-_registerInterface-bytes4-[`_registerInterface(bytes4)`]: check out example usage as part of the TRC-721 implementation.
 * xref:api:utils.adoc#ERC165Checker[`ERC165Checker`] — ERC165Checker simplifies the process of checking whether or not a contract supports an interface you care about.
 * include with `using ERC165Checker for address;`
 * xref:api:utils.adoc#ERC165Checker-_supportsInterface-address-bytes4-[`myAddress._supportsInterface(bytes4)`]
@@ -202,20 +202,20 @@ In Solidity, it's frequently helpful to know whether or not a contract supports 
 contract MyContract {
     using ERC165Checker for address;
 
-    bytes4 private InterfaceId_ERC721 = 0x80ac58cd;
+    bytes4 private InterfaceId_TRC721 = 0x80ac58cd;
 
     /**
-     * @dev transfer an ERC-721 token from this contract to someone else
+     * @dev transfer a TRC-721 token from this contract to someone else
      */
-    function transferERC721(
+    function transferTRC721(
         address token,
         address to,
         uint256 tokenId
     )
         public
     {
-        require(token.supportsInterface(InterfaceId_ERC721), "IS_NOT_721_TOKEN");
-        IERC721(token).transferFrom(address(this), to, tokenId);
+        require(token.supportsInterface(InterfaceId_TRC721), "IS_NOT_721_TOKEN");
+        ITRC721(token).transferFrom(address(this), to, tokenId);
     }
 }
 ----
@@ -428,9 +428,9 @@ function erc7201Pointer() internal view returns (bytes32) {
 
 xref:api:utils.adoc#Base64[`Base64`] util allows you to transform `bytes32` data into its Base64 `string` representation.
 
-This is especially useful for building URL-safe tokenURIs for both xref:api:token/ERC721.adoc#IERC721Metadata-tokenURI-uint256-[`ERC-721`] or xref:api:token/TRC1155.adoc#ITRC1155MetadataURI-uri-uint256-[`TRC-1155`]. This library provides a clever way to serve URL-safe https://developer.mozilla.org/docs/Web/HTTP/Basics_of_HTTP/Data_URIs/[Data URI] compliant strings to serve on-chain data structures.
+This is especially useful for building URL-safe tokenURIs for both xref:api:token/TRC721.adoc#ITRC721Metadata-tokenURI-uint256-[`TRC-721`] or xref:api:token/TRC1155.adoc#ITRC1155MetadataURI-uri-uint256-[`TRC-1155`]. This library provides a clever way to serve URL-safe https://developer.mozilla.org/docs/Web/HTTP/Basics_of_HTTP/Data_URIs/[Data URI] compliant strings to serve on-chain data structures.
 
-Here is an example to send JSON Metadata through a Base64 Data URI using an ERC-721:
+Here is an example to send JSON Metadata through a Base64 Data URI using a TRC-721:
 
 [source,solidity]
 ----

@@ -33,7 +33,7 @@ const GOVERNOR_INTERFACE = [
 ];
 const SIGNATURES = {
   ERC165: ['supportsInterface(bytes4)'],
-  ERC721: [
+  TRC721: [
     'balanceOf(address)',
     'ownerOf(uint256)',
     'approve(address,uint256)',
@@ -44,8 +44,8 @@ const SIGNATURES = {
     'safeTransferFrom(address,address,uint256)',
     'safeTransferFrom(address,address,uint256,bytes)',
   ],
-  ERC721Enumerable: ['totalSupply()', 'tokenOfOwnerByIndex(address,uint256)', 'tokenByIndex(uint256)'],
-  ERC721Metadata: ['name()', 'symbol()', 'tokenURI(uint256)'],
+  TRC721Enumerable: ['totalSupply()', 'tokenOfOwnerByIndex(address,uint256)', 'tokenByIndex(uint256)'],
+  TRC721Metadata: ['name()', 'symbol()', 'tokenURI(uint256)'],
   TRC1155: [
     'balanceOf(address,uint256)',
     'balanceOfBatch(address[],uint256[])',

@@ -21,11 +21,11 @@ $ npm install @openzeppelin/contracts-upgradeable @openzeppelin/contracts
 The Upgradeable package replicates the structure of the main OpenZeppelin Contracts package, but every file and contract has the suffix `Upgradeable`.
 
 ```diff
--import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-+import {ERC721Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
+-import {TRC721} from "@openzeppelin/contracts/token/TRC721/TRC721.sol";
++import {TRC721Upgradeable} from "@openzeppelin/contracts-upgradeable/token/TRC721/TRC721Upgradeable.sol";
  
--contract MyCollectible is ERC721 {
-+contract MyCollectible is ERC721Upgradeable {
+-contract MyCollectible is TRC721 {
++contract MyCollectible is TRC721Upgradeable {
 ```
 
 NOTE: Interfaces and libraries are not included in the Upgradeable package, but are instead imported from the main OpenZeppelin Contracts package.
@@ -33,9 +33,9 @@ NOTE: Interfaces and libraries are not included in the Upgradeable package, but 
 Constructors are replaced by internal initializer functions following the naming convention `+__{ContractName}_init+`. Since these are internal, you must always define your own public initializer function and call the parent initializer of the contract you extend.
 
 ```diff
--    constructor() ERC721("MyCollectible", "MCO") public {
+-    constructor() TRC721("MyCollectible", "MCO") public {
 +    function initialize() initializer public {
-+        __ERC721_init("MyCollectible", "MCO");
++        __TRC721_init("MyCollectible", "MCO");
      }
 ```
 

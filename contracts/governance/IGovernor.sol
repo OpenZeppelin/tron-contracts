@@ -192,7 +192,7 @@ interface IGovernor is IERC165, IERC6372 {
      * name that describes the behavior. For example:
      *
      * - `params=fractional` might refer to a scheme where votes are divided fractionally between for/against/abstain.
-     * - `params=erc721` might refer to a scheme where specific NFTs are delegated to vote.
+     * - `params=trc721` might refer to a scheme where specific NFTs are delegated to vote.
      *
      * NOTE: The string can be decoded by the standard
      * https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams[`URLSearchParams`]
@@ -304,7 +304,7 @@ interface IGovernor is IERC165, IERC6372 {
      * @dev Minimum number of cast voted required for a proposal to be successful.
      *
      * NOTE: The `timepoint` parameter corresponds to the snapshot used for counting vote. This allows to scale the
-     * quorum depending on values such as the totalSupply of a token at this timepoint (see {ERC20Votes}).
+     * quorum depending on values such as the totalSupply of a token at this timepoint (see {TRC20Votes}).
      */
     function quorum(uint256 timepoint) external view returns (uint256);
 
@@ -313,7 +313,7 @@ interface IGovernor is IERC165, IERC6372 {
      * @dev Voting power of an `account` at a specific `timepoint`.
      *
      * Note: this can be implemented in a number of ways, for example by reading the delegated balance from one (or
-     * multiple), {ERC20Votes} tokens.
+     * multiple), {TRC20Votes} tokens.
      */
     function getVotes(address account, uint256 timepoint) external view returns (uint256);
 

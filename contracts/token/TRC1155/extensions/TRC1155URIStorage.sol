@@ -7,7 +7,7 @@ import {TRC1155} from "../TRC1155.sol";
 
 /**
  * @dev TRC-1155 token with storage based token URI management.
- * Inspired by the {ERC721URIStorage} extension
+ * Inspired by the {TRC721URIStorage} extension
  */
 abstract contract TRC1155URIStorage is TRC1155 {
     // Optional base URI

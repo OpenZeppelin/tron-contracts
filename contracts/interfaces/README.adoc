@@ -7,15 +7,15 @@ NOTE: This document is better viewed at https://docs.openzeppelin.com/contracts/
 These interfaces are available as `.sol` files, and also as compiler `.json` ABI files (through the npm package). These
 are useful to interact with third party contracts that implement them.
 
-- {IERC20}
-- {IERC20Errors}
-- {IERC20Metadata}
+- {ITRC20}
+- {ITRC20Errors}
+- {ITRC20Metadata}
 - {IERC165}
-- {IERC721}
-- {IERC721Receiver}
-- {IERC721Enumerable}
-- {IERC721Metadata}
-- {IERC721Errors}
+- {ITRC721}
+- {ITRC721Receiver}
+- {ITRC721Enumerable}
+- {ITRC721Metadata}
+- {ITRC721Errors}
 - {IERC777}
 - {IERC777Recipient}
 - {IERC777Sender}
@@ -36,7 +36,7 @@ are useful to interact with third party contracts that implement them.
 - {IERC2981}
 - {IERC3156FlashLender}
 - {IERC3156FlashBorrower}
-- {IERC4626}
+- {ITRC4626}
 - {IERC4906}
 - {IERC5267}
 - {IERC5313}
@@ -61,9 +61,9 @@ are useful to interact with third party contracts that implement them.
 
 == Detailed ABI
 
-{{IERC20Errors}}
+{{ITRC20Errors}}
 
-{{IERC721Errors}}
+{{ITRC721Errors}}
 
 {{ITRC1155Errors}}
 
@@ -93,7 +93,7 @@ are useful to interact with third party contracts that implement them.
 
 {{IERC3156FlashBorrower}}
 
-{{IERC4626}}
+{{ITRC4626}}
 
 {{IERC4906}}
 
