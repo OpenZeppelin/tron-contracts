@@ -17,7 +17,7 @@ contract ERC6909ContentURI is ERC6909, IERC6909ContentURI {
     /// @dev Event emitted when the contract URI is changed. See https://eips.ethereum.org/EIPS/eip-7572[ERC-7572] for details.
     event ContractURIUpdated();
 
-    /// @dev See {IERC1155-URI}
+    /// @dev See {ITRC1155-URI}
     event URI(string value, uint256 indexed id);
 
     /// @inheritdoc IERC165

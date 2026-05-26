@@ -46,7 +46,7 @@ const SIGNATURES = {
   ],
   TRC721Enumerable: ['totalSupply()', 'tokenOfOwnerByIndex(address,uint256)', 'tokenByIndex(uint256)'],
   TRC721Metadata: ['name()', 'symbol()', 'tokenURI(uint256)'],
-  ERC1155: [
+  TRC1155: [
     'balanceOf(address,uint256)',
     'balanceOfBatch(address[],uint256[])',
     'setApprovalForAll(address,bool)',
@@ -54,8 +54,8 @@ const SIGNATURES = {
     'safeTransferFrom(address,address,uint256,uint256,bytes)',
     'safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)',
   ],
-  ERC1155MetadataURI: ['uri(uint256)'],
-  ERC1155Receiver: [
+  TRC1155MetadataURI: ['uri(uint256)'],
+  TRC1155Receiver: [
     'onERC1155Received(address,address,uint256,uint256,bytes)',
     'onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)',
   ],
