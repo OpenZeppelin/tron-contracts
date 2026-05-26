@@ -3,25 +3,25 @@
 
 pragma solidity ^0.8.26;
 
-import {IERC20, SafeERC20} from "../../token/ERC20/utils/SafeERC20.sol";
+import {ITRC20, SafeTRC20} from "../../token/TRC20/utils/SafeTRC20.sol";
 import {BridgeFungible} from "./abstract/BridgeFungible.sol";
 
 /**
- * @dev This is a variant of {BridgeFungible} that implements the bridge logic for ERC-20 tokens that do not expose a
+ * @dev This is a variant of {BridgeFungible} that implements the bridge logic for TRC-20 tokens that do not expose a
  * crosschain mint and burn mechanism. Instead, it takes custody of bridged assets.
  */
 // slither-disable-next-line locked-ether
 abstract contract BridgeERC20 is BridgeFungible {
-    using SafeERC20 for IERC20;
+    using SafeTRC20 for ITRC20;
 
-    IERC20 private immutable _token;
+    ITRC20 private immutable _token;
 
-    constructor(IERC20 token_) {
+    constructor(ITRC20 token_) {
         _token = token_;
     }
 
-    /// @dev Return the address of the ERC20 token this bridge operates on.
-    function token() public view virtual returns (IERC20) {
+    /// @dev Return the address of the TRC20 token this bridge operates on.
+    function token() public view virtual returns (ITRC20) {
         return _token;
     }
 

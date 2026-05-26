@@ -17,7 +17,7 @@ abstract contract BridgeERC7802 is BridgeFungible {
         _token = token_;
     }
 
-    /// @dev Return the address of the ERC20 token this bridge operates on.
+    /// @dev Return the address of the TRC20 token this bridge operates on.
     function token() public view virtual returns (IERC7802) {
         return _token;
     }

@@ -6,7 +6,7 @@ pragma solidity >=0.6.2;
 import {IERC165} from "./IERC165.sol";
 
 /// @title IERC7802
-/// @notice Defines the interface for crosschain ERC20 transfers.
+/// @notice Defines the interface for crosschain TRC20 transfers.
 interface IERC7802 is IERC165 {
     /// @notice Emitted when a crosschain transfer mints tokens.
     /// @param to       Address of the account tokens are being minted for.

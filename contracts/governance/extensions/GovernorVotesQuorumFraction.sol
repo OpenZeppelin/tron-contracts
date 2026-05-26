@@ -9,7 +9,7 @@ import {SafeCast} from "../../utils/math/SafeCast.sol";
 import {Checkpoints} from "../../utils/structs/Checkpoints.sol";
 
 /**
- * @dev Extension of {Governor} for voting weight extraction from an {ERC20Votes} token and a quorum expressed as a
+ * @dev Extension of {Governor} for voting weight extraction from an {TRC20Votes} token and a quorum expressed as a
  * fraction of the total supply.
  */
 abstract contract GovernorVotesQuorumFraction is GovernorVotes {

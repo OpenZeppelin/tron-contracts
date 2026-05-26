@@ -3,6 +3,6 @@
 
 pragma solidity >=0.6.2;
 
-import {IERC20Permit} from "../token/ERC20/extensions/IERC20Permit.sol";
+import {ITRC20Permit} from "../token/TRC20/extensions/ITRC20Permit.sol";
 
-interface IERC2612 is IERC20Permit {}
+interface IERC2612 is ITRC20Permit {}

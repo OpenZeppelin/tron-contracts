@@ -3,17 +3,17 @@
 
 pragma solidity >=0.6.2;
 
-import {IERC20} from "./IERC20.sol";
+import {ITRC20} from "./ITRC20.sol";
 import {IERC165} from "./IERC165.sol";
 
 /**
  * @title IERC1363
  * @dev Interface of the ERC-1363 standard as defined in the https://eips.ethereum.org/EIPS/eip-1363[ERC-1363].
  *
- * Defines an extension interface for ERC-20 tokens that supports executing code on a recipient contract
+ * Defines an extension interface for TRC-20 tokens that supports executing code on a recipient contract
  * after `transfer` or `transferFrom`, or code on a spender contract after `approve`, in a single transaction.
  */
-interface IERC1363 is IERC20, IERC165 {
+interface IERC1363 is ITRC20, IERC165 {
     /*
      * Note: the ERC-165 identifier for this interface is 0xb0202a11.
      * 0xb0202a11 ===
