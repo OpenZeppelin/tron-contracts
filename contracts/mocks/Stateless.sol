@@ -47,7 +47,7 @@ import {RelayedCall} from "../utils/RelayedCall.sol";
 import {RLP} from "../utils/RLP.sol";
 import {RSA} from "../utils/cryptography/RSA.sol";
 import {SafeCast} from "../utils/math/SafeCast.sol";
-import {SafeERC20} from "../token/ERC20/utils/SafeERC20.sol";
+import {SafeTRC20} from "../token/TRC20/utils/SafeTRC20.sol";
 import {ShortStrings} from "../utils/ShortStrings.sol";
 import {SignatureChecker} from "../utils/cryptography/SignatureChecker.sol";
 import {SignedMath} from "../utils/math/SignedMath.sol";

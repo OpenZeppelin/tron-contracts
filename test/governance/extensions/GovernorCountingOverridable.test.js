@@ -7,8 +7,8 @@ const { getDomain, OverrideBallot } = require('../../helpers/eip712');
 const { VoteType } = require('../../helpers/enums');
 
 const TOKENS = [
-  { Token: '$ERC20VotesExtendedMock', mode: 'blocknumber' },
-  { Token: '$ERC20VotesExtendedTimestampMock', mode: 'timestamp' },
+  { Token: '$TRC20VotesExtendedMock', mode: 'blocknumber' },
+  { Token: '$TRC20VotesExtendedTimestampMock', mode: 'timestamp' },
 ];
 
 const name = 'Override Governor';

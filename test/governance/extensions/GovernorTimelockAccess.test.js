@@ -19,8 +19,8 @@ function prepareOperation({ sender, target, value = 0n, data = '0x' }) {
 }
 
 const TOKENS = [
-  { Token: '$ERC20Votes', mode: 'blocknumber' },
-  { Token: '$ERC20VotesTimestampMock', mode: 'timestamp' },
+  { Token: '$TRC20Votes', mode: 'blocknumber' },
+  { Token: '$TRC20VotesTimestampMock', mode: 'timestamp' },
 ];
 
 const name = 'OZ-Governor';
@@ -791,7 +791,7 @@ describe('GovernorTimelockAccess', function () {
           await this.helper.waitForDeadline();
 
           await expect(this.helper.execute())
-            .to.be.revertedWithCustomError(this.token, 'ERC20InsufficientBalance')
+            .to.be.revertedWithCustomError(this.token, 'TRC20InsufficientBalance')
             .withArgs(this.manager, 0n, amount);
 
           await this.mock.$_setAccessManagerIgnored(target, selector, true);

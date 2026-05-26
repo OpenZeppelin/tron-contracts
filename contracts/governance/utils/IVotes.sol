@@ -4,7 +4,7 @@
 pragma solidity >=0.8.4;
 
 /**
- * @dev Common interface for {ERC20Votes}, {TRC721Votes}, and other {Votes}-enabled contracts.
+ * @dev Common interface for {TRC20Votes}, {TRC721Votes}, and other {Votes}-enabled contracts.
  */
 interface IVotes {
     /**

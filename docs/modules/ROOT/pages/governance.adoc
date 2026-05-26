@@ -14,9 +14,9 @@ This governance protocol is generally implemented in a special-purpose contract 
 
 OpenZeppelin’s Governor system was designed with a concern for compatibility with existing systems that were based on Compound’s GovernorAlpha and GovernorBravo. Because of this, you will find that many modules are presented in two variants, one of which is built for compatibility with those systems.
 
-=== ERC20Votes & ERC20VotesComp
+=== TRC20Votes & TRC20VotesComp
 
-The ERC-20 extension to keep track of votes and vote delegation is one such case. The shorter one is the more generic version because it can support token supplies greater than 2^96, while the “Comp” variant is limited in that regard, but exactly fits the interface of the COMP token that is used by GovernorAlpha and Bravo. Both contract variants share the same events, so they are fully compatible when looking at events only.
+The TRC-20 extension to keep track of votes and vote delegation is one such case. The shorter one is the more generic version because it can support token supplies greater than 2^96, while the “Comp” variant is limited in that regard, but exactly fits the interface of the COMP token that is used by GovernorAlpha and Bravo. Both contract variants share the same events, so they are fully compatible when looking at events only.
 
 === Governor & GovernorStorage
 
@@ -40,13 +40,13 @@ In the rest of this guide, we will focus on a fresh deploy of the vanilla OpenZe
 
 === Token
 
-The voting power of each account in our governance setup will be determined by an ERC-20 token. The token has to implement the ERC20Votes extension. This extension will keep track of historical balances so that voting power is retrieved from past snapshots rather than current balance, which is an important protection that prevents double voting.
+The voting power of each account in our governance setup will be determined by a TRC-20 token. The token has to implement the TRC20Votes extension. This extension will keep track of historical balances so that voting power is retrieved from past snapshots rather than current balance, which is an important protection that prevents double voting.
 
 ```solidity
 include::api:example$governance/MyToken.sol[]
 ```
 
-If your project already has a live token that does not include ERC20Votes and is not upgradeable, you can wrap it in a governance token by using ERC20Wrapper. This will allow token holders to participate in governance by wrapping their tokens 1-to-1.
+If your project already has a live token that does not include TRC20Votes and is not upgradeable, you can wrap it in a governance token by using TRC20Wrapper. This will allow token holders to participate in governance by wrapping their tokens 1-to-1.
 
 ```solidity
 include::api:example$governance/MyTokenWrapped.sol[]
@@ -62,7 +62,7 @@ Initially, we will build a Governor without a timelock. The core logic is given 
 
 For 1) we will use the GovernorVotes module, which hooks to an IVotes instance to determine the voting power of an account based on the token balance they hold when a proposal becomes active. This module requires as a constructor parameter the address of the token. This module also discovers the clock mode (ERC-6372) used by the token and applies it to the Governor.
 
-For 2) we will use GovernorVotesQuorumFraction which works together with ERC20Votes to define quorum as a percentage of the total supply at the block a proposal’s voting power is retrieved. This requires a constructor parameter to set the percentage. Most Governors nowadays use 4%, so we will initialize the module with parameter 4 (this indicates the percentage, resulting in 4%).
+For 2) we will use GovernorVotesQuorumFraction which works together with TRC20Votes to define quorum as a percentage of the total supply at the block a proposal’s voting power is retrieved. This requires a constructor parameter to set the percentage. Most Governors nowadays use 4%, so we will initialize the module with parameter 4 (this indicates the percentage, resulting in 4%).
 
 For 3) we will use GovernorCountingSimple, a module that offers 3 options to voters: For, Against, and Abstain, and where only For and Abstain votes are counted towards quorum.
 
@@ -103,7 +103,7 @@ A proposal is a sequence of actions that the Governor contract will perform if i
 
 === Create a Proposal
 
-Let’s say we want to create a proposal to give a team a grant, in the form of ERC-20 tokens from the governance treasury. This proposal will consist of a single action where the target is the ERC-20 token, calldata is the encoded function call `transfer(<team wallet>, <grant amount>)`, and with 0 ETH attached.
+Let’s say we want to create a proposal to give a team a grant, in the form of TRC-20 tokens from the governance treasury. This proposal will consist of a single action where the target is the TRC-20 token, calldata is the encoded function call `transfer(<team wallet>, <grant amount>)`, and with 0 ETH attached.
 
 Generally a proposal will be created with the help of an interface such as Tally or https://docs.openzeppelin.com/defender/module/actions#transaction-proposals-reference[Defender Proposals]. Here we will show how to create the proposal using Ethers.js.
 
@@ -111,7 +111,7 @@ First we get all the parameters necessary for the proposal action.
 
 ```javascript
 const tokenAddress = ...;
-const token = await ethers.getContractAt(‘ERC20’, tokenAddress);
+const token = await ethers.getContractAt(‘TRC20’, tokenAddress);
 
 const teamAddress = ...;
 const grantAmount = ...;
@@ -175,7 +175,7 @@ await governor.execute(
 );
 ```
 
-Executing the proposal will transfer the ERC-20 tokens to the chosen recipient. To wrap up: we set up a system where a treasury is controlled by the collective decision of the token holders of a project, and all actions are executed via proposals enforced by on-chain votes.
+Executing the proposal will transfer the TRC-20 tokens to the chosen recipient. To wrap up: we set up a system where a treasury is controlled by the collective decision of the token holders of a project, and all actions are executed via proposals enforced by on-chain votes.
 
 == Timestamp based governance
 
@@ -189,7 +189,7 @@ Therefore, designing a timestamp based voting system starts with the token.
 
 === Token
 
-Since v4.9, all voting contracts (including xref:api:token/ERC20.adoc#ERC20Votes[`ERC20Votes`] and xref:api:token/TRC721.adoc#TRC721Votes[`TRC721Votes`]) rely on xref:api:interfaces.adoc#IERC6372[IERC6372] for clock management. In order to change from operating with block numbers to operating with timestamps, all that is required is to override the `clock()` and `CLOCK_MODE()` functions.
+Since v4.9, all voting contracts (including xref:api:token/TRC20.adoc#TRC20Votes[`TRC20Votes`] and xref:api:token/TRC721.adoc#TRC721Votes[`TRC721Votes`]) rely on xref:api:interfaces.adoc#IERC6372[IERC6372] for clock management. In order to change from operating with block numbers to operating with timestamps, all that is required is to override the `clock()` and `CLOCK_MODE()` functions.
 
 ```solidity
 include::api:example$governance/MyTokenTimestampBased.sol[]

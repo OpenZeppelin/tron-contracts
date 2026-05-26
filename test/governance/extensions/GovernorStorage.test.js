@@ -8,8 +8,8 @@ const { GovernorHelper, timelockSalt } = require('../../helpers/governance');
 const { VoteType } = require('../../helpers/enums');
 
 const TOKENS = [
-  { Token: '$ERC20Votes', mode: 'blocknumber' },
-  { Token: '$ERC20VotesTimestampMock', mode: 'timestamp' },
+  { Token: '$TRC20Votes', mode: 'blocknumber' },
+  { Token: '$TRC20VotesTimestampMock', mode: 'timestamp' },
 ];
 
 const DEFAULT_ADMIN_ROLE = ethers.ZeroHash;

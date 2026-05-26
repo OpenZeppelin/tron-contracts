@@ -11,9 +11,9 @@ const { shouldSupportInterfaces } = require('../utils/introspection/SupportsInte
 const { shouldBehaveLikeERC6372 } = require('./utils/ERC6372.behavior');
 
 const TOKENS = [
-  { Token: '$ERC20Votes', mode: 'blocknumber' },
-  { Token: '$ERC20VotesTimestampMock', mode: 'timestamp' },
-  { Token: '$ERC20VotesLegacyMock', mode: 'blocknumber' },
+  { Token: '$TRC20Votes', mode: 'blocknumber' },
+  { Token: '$TRC20VotesTimestampMock', mode: 'timestamp' },
+  { Token: '$TRC20VotesLegacyMock', mode: 'blocknumber' },
 ];
 
 const name = 'OZ-Governor';
@@ -33,7 +33,7 @@ async function deployToken(contractName) {
     return await ethers.deployContract(contractName, [tokenName, tokenSymbol, tokenName, version]);
   } catch (error) {
     if (error.message == 'incorrect number of arguments to constructor') {
-      // ERC20VotesLegacyMock has a different construction that uses version='1' by default.
+      // TRC20VotesLegacyMock has a different construction that uses version='1' by default.
       return ethers.deployContract(contractName, [tokenName, tokenSymbol, tokenName]);
     }
     throw error;

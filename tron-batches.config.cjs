@@ -32,8 +32,8 @@ module.exports = [
   { name: '02-interfaces', dirs: ['contracts/interfaces'] },
   { name: '03-access', dirs: ['contracts/access'] },
   {
-    name: '04-token-erc20',
-    dirs: ['contracts/token/ERC20', 'contracts/token/common'],
+    name: '04-token-trc20',
+    dirs: ['contracts/token/TRC20', 'contracts/token/common'],
   },
   {
     name: '05-token-nft-erc6909',

@@ -7,8 +7,8 @@ const { GovernorHelper } = require('../../helpers/governance');
 const { ProposalState } = require('../../helpers/enums');
 
 const TOKENS = [
-  { Token: '$ERC20Votes', mode: 'blocknumber' },
-  { Token: '$ERC20VotesTimestampMock', mode: 'timestamp' },
+  { Token: '$TRC20Votes', mode: 'blocknumber' },
+  { Token: '$TRC20VotesTimestampMock', mode: 'timestamp' },
 ];
 const name = 'Proposal Guardian Governor';
 const version = '1';

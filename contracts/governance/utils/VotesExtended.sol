@@ -30,7 +30,7 @@ import {SafeCast} from "../../utils/math/SafeCast.sol";
  * }
  * ```
  *
- * {ERC20Votes} and {TRC721Votes} follow this pattern and are thus safe to use with {VotesExtended}.
+ * {TRC20Votes} and {TRC721Votes} follow this pattern and are thus safe to use with {VotesExtended}.
  */
 abstract contract VotesExtended is Votes {
     using Checkpoints for Checkpoints.Trace160;
