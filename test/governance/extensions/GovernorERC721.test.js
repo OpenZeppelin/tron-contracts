@@ -6,8 +6,8 @@ const { GovernorHelper } = require('../../helpers/governance');
 const { VoteType } = require('../../helpers/enums');
 
 const TOKENS = [
-  { Token: '$ERC721Votes', mode: 'blocknumber' },
-  { Token: '$ERC721VotesTimestampMock', mode: 'timestamp' },
+  { Token: '$TRC721Votes', mode: 'blocknumber' },
+  { Token: '$TRC721VotesTimestampMock', mode: 'timestamp' },
 ];
 
 const name = 'OZ-Governor';
@@ -23,7 +23,7 @@ const votingDelay = 4n;
 const votingPeriod = 16n;
 const value = ethers.parseEther('1');
 
-describe('GovernorERC721', function () {
+describe('GovernorTRC721', function () {
   for (const { Token, mode } of TOKENS) {
     const fixture = async () => {
       const [owner, voter1, voter2, voter3, voter4] = await ethers.getSigners();
@@ -91,7 +91,7 @@ describe('GovernorERC721', function () {
         expect(await this.token.getVotes(this.voter4)).to.equal(1n); // NFT4
       });
 
-      it('voting with ERC721 token', async function () {
+      it('voting with TRC721 token', async function () {
         await this.helper.propose();
         await this.helper.waitForSnapshot();
 

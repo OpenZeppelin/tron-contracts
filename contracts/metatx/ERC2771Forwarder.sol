@@ -44,7 +44,7 @@ import {Errors} from "../utils/Errors.sol";
  *
  * By offering to pay for gas, relayers are at risk of having that gas used by an attacker toward
  * some other purpose that is not aligned with the expected out of band incentives. If you operate a
- * relayer, consider whitelisting target contracts and function selectors. When relaying ERC-721 or
+ * relayer, consider whitelisting target contracts and function selectors. When relaying TRC-721 or
  * ERC-1155 transfers specifically, consider rejecting the use of the `data` field, since it can be
  * used to execute arbitrary code.
  */

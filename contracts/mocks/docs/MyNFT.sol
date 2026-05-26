@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import {ERC721} from "../../token/ERC721/ERC721.sol";
+import {TRC721} from "../../token/TRC721/TRC721.sol";
 
-contract MyNFT is ERC721 {
-    constructor() ERC721("MyNFT", "MNFT") {}
+contract MyNFT is TRC721 {
+    constructor() TRC721("MyNFT", "MNFT") {}
 }

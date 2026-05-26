@@ -111,7 +111,7 @@ library SafeTRC20 {
 
     /**
      * @dev Performs an {ERC1363} transferAndCall, with a fallback to the simple {TRC20} transfer if the target has no
-     * code. This can be used to implement an {ERC721}-like safe transfer that relies on {ERC1363} checks when
+     * code. This can be used to implement a {TRC721}-like safe transfer that relies on {ERC1363} checks when
      * targeting contracts.
      *
      * Reverts if the returned value is other than `true`.
@@ -126,7 +126,7 @@ library SafeTRC20 {
 
     /**
      * @dev Performs an {ERC1363} transferFromAndCall, with a fallback to the simple {TRC20} transferFrom if the target
-     * has no code. This can be used to implement an {ERC721}-like safe transfer that relies on {ERC1363} checks when
+     * has no code. This can be used to implement a {TRC721}-like safe transfer that relies on {ERC1363} checks when
      * targeting contracts.
      *
      * Reverts if the returned value is other than `true`.
@@ -147,7 +147,7 @@ library SafeTRC20 {
 
     /**
      * @dev Performs an {ERC1363} approveAndCall, with a fallback to the simple {TRC20} approve if the target has no
-     * code. This can be used to implement an {ERC721}-like safe transfer that rely on {ERC1363} checks when
+     * code. This can be used to implement a {TRC721}-like safe transfer that rely on {ERC1363} checks when
      * targeting contracts.
      *
      * NOTE: When the recipient address (`to`) has no code (i.e. is an EOA), this function behaves as {forceApprove}.
