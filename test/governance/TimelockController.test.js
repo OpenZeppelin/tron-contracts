@@ -67,7 +67,7 @@ describe('TimelockController', function () {
     Object.assign(this, await loadFixture(fixture));
   });
 
-  shouldSupportInterfaces(['ERC1155Receiver']);
+  shouldSupportInterfaces(['TRC1155Receiver']);
 
   it('initial state', async function () {
     expect(await this.mock.getMinDelay()).to.equal(MINDELAY);
@@ -1248,7 +1248,7 @@ describe('TimelockController', function () {
       });
     });
 
-    describe('ERC1155', function () {
+    describe('TRC1155', function () {
       const tokenIds = {
         1: 1000n,
         2: 2000n,
@@ -1256,11 +1256,11 @@ describe('TimelockController', function () {
       };
 
       beforeEach(async function () {
-        this.token = await ethers.deployContract('$ERC1155', ['https://token-cdn-domain/{id}.json']);
+        this.token = await ethers.deployContract('$TRC1155', ['https://token-cdn-domain/{id}.json']);
         await this.token.$_mintBatch(this.other, Object.keys(tokenIds), Object.values(tokenIds), '0x');
       });
 
-      it('can receive ERC1155 safeTransfer', async function () {
+      it('can receive TRC1155 safeTransfer', async function () {
         await this.token.connect(this.other).safeTransferFrom(
           this.other,
           this.mock,
@@ -1269,7 +1269,7 @@ describe('TimelockController', function () {
         );
       });
 
-      it('can receive ERC1155 safeBatchTransfer', async function () {
+      it('can receive TRC1155 safeBatchTransfer', async function () {
         await this.token
           .connect(this.other)
           .safeBatchTransferFrom(this.other, this.mock, Object.keys(tokenIds), Object.values(tokenIds), '0x');

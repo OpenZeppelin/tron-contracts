@@ -96,7 +96,7 @@ describe('Governor', function () {
         );
       });
 
-      shouldSupportInterfaces(['ERC1155Receiver', 'Governor', 'Governor_5_3']);
+      shouldSupportInterfaces(['TRC1155Receiver', 'Governor', 'Governor_5_3']);
       shouldBehaveLikeERC6372(mode);
 
       it('deployment check', async function () {
@@ -947,7 +947,7 @@ describe('Governor', function () {
           });
         });
 
-        describe('ERC1155', function () {
+        describe('TRC1155', function () {
           const tokenIds = {
             1: 1000n,
             2: 2000n,
@@ -955,11 +955,11 @@ describe('Governor', function () {
           };
 
           beforeEach(async function () {
-            this.token = await ethers.deployContract('$ERC1155', ['https://token-cdn-domain/{id}.json']);
+            this.token = await ethers.deployContract('$TRC1155', ['https://token-cdn-domain/{id}.json']);
             await this.token.$_mintBatch(this.owner, Object.keys(tokenIds), Object.values(tokenIds), '0x');
           });
 
-          it('can receive ERC1155 safeTransfer', async function () {
+          it('can receive TRC1155 safeTransfer', async function () {
             await this.token.connect(this.owner).safeTransferFrom(
               this.owner,
               this.mock,
@@ -968,7 +968,7 @@ describe('Governor', function () {
             );
           });
 
-          it('can receive ERC1155 safeBatchTransfer', async function () {
+          it('can receive TRC1155 safeBatchTransfer', async function () {
             await this.token
               .connect(this.owner)
               .safeBatchTransferFrom(this.owner, this.mock, Object.keys(tokenIds), Object.values(tokenIds), '0x');
