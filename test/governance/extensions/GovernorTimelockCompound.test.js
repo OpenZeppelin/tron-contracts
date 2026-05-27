@@ -29,10 +29,27 @@ describe('GovernorTimelockCompound', function () {
       const receiver = await ethers.deployContract('CallReceiverMock');
 
       const token = await ethers.deployContract(Token, [tokenName, tokenSymbol, tokenName, version]);
-      const predictGovernor = await deployer
-        .getNonce()
-        .then(nonce => ethers.getCreateAddress({ from: deployer.address, nonce: nonce + 1 }));
-      const timelock = await ethers.deployContract('CompTimelock', [predictGovernor, defaultDelay]);
+      // CompTimelock and the governor form a cyclic dependency: the
+      // timelock constructor takes the governor address as its
+      // `admin`, and the governor constructor takes the timelock
+      // address. On EVM the cycle is broken by predicting the
+      // governor's CREATE address from the deployer's next nonce. On
+      // TVM CREATE addresses derive from `keccak256(txID ||
+      // ownerAddress)[12:]`, so the governor's address depends on the
+      // governor-deploy tx's own raw_data — which already includes
+      // the timelock argument. There is no nonce-only formula to
+      // predict ahead of broadcast.
+      //
+      // Break the cycle in three steps that preserve the upstream
+      // constructor signatures:
+      //   1. deploy CompTimelock with admin = deployer (placeholder);
+      //   2. deploy the governor with the real timelock address;
+      //   3. rewrite CompTimelock.admin (state slot 0 — the first
+      //      storage variable in CompTimelock.sol) to the governor's
+      //      real address.
+      // After step 3 a `timelock.admin()` read returns the governor,
+      // identical to the EVM nonce-prediction end-state.
+      const timelock = await ethers.deployContract('CompTimelock', [deployer.address, defaultDelay]);
       const mock = await ethers.deployContract('$GovernorTimelockCompoundMock', [
         name,
         votingDelay,
@@ -42,8 +59,10 @@ describe('GovernorTimelockCompound', function () {
         token,
         0n,
       ]);
+      const { setStorageAt } = require('@nomicfoundation/hardhat-network-helpers');
+      await setStorageAt(timelock.target, 0n, ethers.zeroPadValue(mock.target, 32));
 
-      await owner.sendTransaction({ to: timelock, value });
+      await owner.sendTransaction({ to: timelock, value, data: '0x' });
       await token.$_mint(owner, tokenSupply);
 
       const helper = new GovernorHelper(mock, mode);
@@ -73,7 +92,7 @@ describe('GovernorTimelockCompound', function () {
       });
 
       it("doesn't accept ether transfers", async function () {
-        await expect(this.owner.sendTransaction({ to: this.mock, value: 1n })).to.be.revertedWithCustomError(
+        await expect(this.owner.sendTransaction({ to: this.mock, value: 1n, data: '0x' })).to.be.revertedWithCustomError(
           this.mock,
           'GovernorDisabledDeposit',
         );
