@@ -40,7 +40,7 @@ describe('GovernorVotesSuperQuorumFraction', function () {
         superQuorumRatio,
       ]);
 
-      await owner.sendTransaction({ to: mock, value });
+      await owner.sendTransaction({ to: mock, value, data: '0x' });
       await token.$_mint(owner, tokenSupply);
 
       const helper = new GovernorHelper(mock, mode);

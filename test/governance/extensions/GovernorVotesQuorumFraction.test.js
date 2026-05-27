@@ -32,7 +32,7 @@ describe('GovernorVotesQuorumFraction', function () {
       const token = await ethers.deployContract(Token, [tokenName, tokenSymbol, tokenName, version]);
       const mock = await ethers.deployContract('$GovernorMock', [name, votingDelay, votingPeriod, 0n, token, ratio]);
 
-      await owner.sendTransaction({ to: mock, value });
+      await owner.sendTransaction({ to: mock, value, data: '0x' });
       await token.$_mint(owner, tokenSupply);
 
       const helper = new GovernorHelper(mock, mode);
