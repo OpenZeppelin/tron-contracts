@@ -31,11 +31,21 @@ async function fixture() {
   const newClone =
     args =>
     async (opts = {}) => {
-      const clone = await (
-        args
-          ? factory.$cloneWithImmutableArgs.staticCall(implementation, args)
-          : factory.$clone.staticCall(implementation)
-      ).then(address => implementation.attach(address));
+      // EVM derives CREATE addresses from `(sender, nonce)`, so a
+      //   `factory.$clone.staticCall(impl).then(addr => impl.attach(addr))`
+      // pattern works there — staticCall and the real deploy see the
+      // same nonce and return the same address. TVM derives CREATE
+      // addresses from `sha3(txHash || sender)` (see
+      // WalletUtil.generateContractAddress), so each transaction
+      // produces a unique address; staticCall cannot predict the
+      // real-deploy address because the tx hashes differ.
+      //
+      // Deploy first, then attach to the address recorded in the
+      // receipt's `internal_transactions` (TVM's per-tx CREATE trace).
+      // `cloneDeterministic` (CREATE2) is unaffected — see
+      // `newCloneDeterministic` below, which keeps the staticCall
+      // pattern because CREATE2's address is `sha3(0x41, sender, salt,
+      // codeHash)`, identical across simulations and real txs.
       const tx = await (args
         ? opts.deployValue
           ? factory.$cloneWithImmutableArgs(implementation, args, ethers.Typed.uint256(opts.deployValue))
@@ -43,6 +53,14 @@ async function fixture() {
         : opts.deployValue
           ? factory.$clone(implementation, ethers.Typed.uint256(opts.deployValue))
           : factory.$clone(implementation));
+      const receipt = await tx.wait();
+      const internalTx = receipt.internalTransactions && receipt.internalTransactions[0];
+      if (!internalTx || !internalTx.transferTo_address) {
+        throw new Error('newClone: clone address not found in receipt.internalTransactions');
+      }
+      // transferTo_address is TVM hex (`41...` prefix + 20-byte body);
+      // strip the prefix and re-prefix with `0x` for ethers-compatible attach.
+      const clone = implementation.attach('0x' + internalTx.transferTo_address.slice(2));
       if (opts.initData || opts.initValue) {
         await deployer.sendTransaction({ to: clone, value: opts.initValue ?? 0n, data: opts.initData ?? '0x' });
       }
@@ -122,8 +140,15 @@ describe('Clones', function () {
           // deploy once
           await expect(deployClone()).to.not.be.reverted;
 
-          // deploy twice
-          await expect(deployClone()).to.be.revertedWithCustomError(this.factory, 'FailedDeployment');
+          // deploy twice — TVM's CREATE2 on a colliding address burns
+          // through the full 10M energy budget before the Solidity-side
+          // `if (instance == address(0)) revert FailedDeployment()` can
+          // emit its custom-error data. The receipt comes back with
+          // `result=REVERT, data=0x` even though semantically the
+          // FailedDeployment path was hit. Assert the looser `.to.be.
+          // reverted` here — we still get a hard failure if the second
+          // deploy SUCCEEDS, which is the bug this test guards against.
+          await expect(deployClone()).to.be.reverted;
         });
 
         it('address prediction', async function () {

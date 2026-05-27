@@ -119,7 +119,12 @@ library Clones {
         assembly ("memory-safe") {
             let ptr := mload(0x40)
             mstore(add(ptr, 0x38), deployer)
-            mstore(add(ptr, 0x24), 0x5af43d82803e903d91602b57fd5bf3ff)
+            // TIP-26 CREATE2 hash prefix is 0x41, not the EVM 0xff. The
+            // trailing byte at ptr+0x43 is what keccak256 below consumes
+            // as the prefix, so cloneDeterministic and this predictor
+            // agree with what create2 actually computes on TVM. Keep in
+            // lockstep with the prefix in {Create2-computeAddress}.
+            mstore(add(ptr, 0x24), 0x5af43d82803e903d91602b57fd5bf341)
             mstore(add(ptr, 0x14), implementation)
             mstore(ptr, 0x3d602d80600a3d3981f3363d3d373d3d3d363d73)
             mstore(add(ptr, 0x58), salt)
