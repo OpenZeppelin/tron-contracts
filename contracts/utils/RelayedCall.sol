@@ -115,9 +115,12 @@ library RelayedCall {
             mstore(add(fmp, 0x00), 0x60475f8160095f39f373)
             let initcodehash := keccak256(add(fmp, 0x16), 0x50)
 
-            // compute create2 address. TIP-26 CREATE2 hash prefix is 0x41, not
-            // the EVM 0xff, so this prediction matches what TVM's create2 opcode
-            // (used in the deploy below) computes on-chain.
+            // compute create2 address — TIP-26 prefix is 0x41, not the
+            // EVM 0xff. The relayer is materialised by the create2
+            // below at the 0x41-prefixed address; the predictor here
+            // must use the same prefix so extcodesize(relayer) reads
+            // the actual deployment and we don't re-deploy on every
+            // call into a slot with no code.
             mstore(0x40, initcodehash)
             mstore(0x20, salt)
             mstore(0x00, address())
