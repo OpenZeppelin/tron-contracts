@@ -45,7 +45,7 @@ describe('GovernorStorage', function () {
         0n,
       ]);
 
-      await owner.sendTransaction({ to: timelock, value });
+      await owner.sendTransaction({ to: timelock, value, data: '0x' });
       await token.$_mint(owner, tokenSupply);
       await timelock.grantRole(PROPOSER_ROLE, mock);
       await timelock.grantRole(PROPOSER_ROLE, owner);
