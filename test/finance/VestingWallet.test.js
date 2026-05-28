@@ -1,14 +1,38 @@
 const { ethers } = require('hardhat');
 const { expect } = require('chai');
-const { loadFixture } = require('@nomicfoundation/hardhat-network-helpers');
 
 const { min } = require('../helpers/math');
 const time = require('../helpers/time');
 
 const { envSetup, shouldBehaveLikeVesting } = require('./VestingWallet.behavior');
 
+// TRE's `tre_revert` intentionally does not roll back the chain clock
+// (block history / LBHT are skipped — see TreJsonRpcImpl.java's
+// snapshot/revert section). hardhat-network-helpers' `loadFixture`
+// caches the fixture result after the first call and replays it from
+// a snapshot on subsequent ones, but here the fixture computes
+// `start = block.timestamp + 1h` and a schedule keyed off that
+// timestamp. On the second call the cached `start` is already in the
+// past, and `time.increaseTo(schedule[0])` throws
+// "target X must be > current Y". Re-run the fixture each time so
+// `start` is recomputed against the live chain clock, and refund
+// signers via `tre_setAccountBalance` so `sender.sendTransaction({to,
+// value})` does not run dry after the first handful of cases.
+const { refundSigners } = require('@openzeppelin/hardhat-tron/signers');
+const hre = require('hardhat');
+const loadFixture = async fn => {
+  await refundSigners(hre);
+  return fn();
+};
+
 async function fixture() {
-  const amount = ethers.parseEther('100');
+  // `parseEther('100')` would be 1e20 sun under the bridge's 1-wei
+  // == 1-sun pass-through, which exceeds TVM's account-balance
+  // Long.MAX_VALUE (~9.22e18 sun). VestingWallet's schedule/release
+  // assertions are amount-relative, so 1 ETH-equivalent preserves
+  // every semantic check (linear vesting, release at start /
+  // mid-stream / end, TRC20 token vesting).
+  const amount = ethers.parseEther('1');
   const duration = time.duration.years(4);
   const start = (await time.clock.timestamp()) + time.duration.hours(1);
 
@@ -17,7 +41,7 @@ async function fixture() {
 
   const token = await ethers.deployContract('$TRC20', ['Name', 'Symbol']);
   await token.$_mint(mock, amount);
-  await sender.sendTransaction({ to: mock, value: amount });
+  await sender.sendTransaction({ to: mock, value: amount, data: '0x' });
 
   const env = await envSetup(mock, beneficiary, token);
 

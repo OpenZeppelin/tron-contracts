@@ -1,14 +1,28 @@
 const { ethers } = require('hardhat');
 const { expect } = require('chai');
-const { loadFixture } = require('@nomicfoundation/hardhat-network-helpers');
 
 const { min } = require('../helpers/math');
 const time = require('../helpers/time');
 
 const { envSetup, shouldBehaveLikeVesting } = require('./VestingWallet.behavior');
 
+// See test/finance/VestingWallet.test.js for the rationale —
+// TRE's `tre_revert` does not roll back the chain clock, so the
+// fixture's `start = block.timestamp + 1h` goes stale across
+// snapshot restores. Re-run the fixture each call and refund
+// signers between cases.
+const { refundSigners } = require('@openzeppelin/hardhat-tron/signers');
+const hre = require('hardhat');
+const loadFixture = async fn => {
+  await refundSigners(hre);
+  return fn();
+};
+
 async function fixture() {
-  const amount = ethers.parseEther('100');
+  // `parseEther('100')` = 1e20 sun would exceed Long.MAX_VALUE under
+  // the bridge's 1-wei == 1-sun pass-through. Vesting math is
+  // amount-relative, so 1 ETH-equivalent preserves every assertion.
+  const amount = ethers.parseEther('1');
   const duration = time.duration.years(4);
   const start = (await time.clock.timestamp()) + time.duration.hours(1);
   const cliffDuration = time.duration.years(1);
@@ -19,7 +33,7 @@ async function fixture() {
 
   const token = await ethers.deployContract('$TRC20', ['Name', 'Symbol']);
   await token.$_mint(mock, amount);
-  await sender.sendTransaction({ to: mock, value: amount });
+  await sender.sendTransaction({ to: mock, value: amount, data: '0x' });
 
   const env = await envSetup(mock, beneficiary, token);
 
