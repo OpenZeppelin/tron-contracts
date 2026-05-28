@@ -17,7 +17,7 @@ module.exports = function shouldBehaveLikeClone() {
     const value = 10n;
 
     it('factory has enough balance', async function () {
-      await this.deployer.sendTransaction({ to: this.factory, value });
+      await this.deployer.sendTransaction({ to: this.factory, value, data: '0x' });
 
       const instance = await this.createClone({ deployValue: value });
       await expect(instance.deploymentTransaction()).to.changeEtherBalances([this.factory, instance], [-value, value]);

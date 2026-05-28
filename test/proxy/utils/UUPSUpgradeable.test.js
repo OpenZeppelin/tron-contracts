@@ -76,10 +76,20 @@ describe('UUPSUpgradeable', function () {
   });
 
   it('calling upgradeToAndCall from a contract that is not an ERC1967 proxy (with the right implementation) reverts', async function () {
-    const instance = await this.cloneFactory.$clone
-      .staticCall(this.implUpgradeOk)
-      .then(address => this.implInitial.attach(address));
-    await this.cloneFactory.$clone(this.implUpgradeOk);
+    // TVM CREATE addresses derive from `sha3(txHash || sender)`, not
+    // `(sender, nonce)` like EVM — so `cloneFactory.$clone.staticCall(impl)`
+    // returns a different address than the subsequent real
+    // `$clone(impl)` deploy. Deploy first, then extract the clone's
+    // address from the receipt's `internal_transactions` (the
+    // TVM-recorded CREATE result). See test/proxy/Clones.test.js
+    // newClone for the same pattern with rationale.
+    const tx = await this.cloneFactory.$clone(this.implUpgradeOk);
+    const receipt = await tx.wait();
+    const internalTx = receipt.internalTransactions && receipt.internalTransactions[0];
+    if (!internalTx || !internalTx.transferTo_address) {
+      throw new Error('clone address not found in receipt.internalTransactions');
+    }
+    const instance = this.implInitial.attach('0x' + internalTx.transferTo_address.slice(2));
 
     await expect(instance.upgradeToAndCall(this.implUpgradeUnsafe, '0x')).to.be.revertedWithCustomError(
       instance,

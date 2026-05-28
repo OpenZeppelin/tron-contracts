@@ -10,13 +10,38 @@ async function fixture() {
   const v1 = await ethers.deployContract('DummyImplementation');
   const v2 = await ethers.deployContract('DummyImplementationV2');
 
-  const proxy = await ethers
-    .deployContract('TransparentUpgradeableProxy', [v1, admin, v1.interface.encodeFunctionData('initializeNonPayable')])
-    .then(instance => ethers.getContractAt('ITransparentUpgradeableProxy', instance));
+  // Capture the deployment tx so we can extract the inner ProxyAdmin's
+  // address from its internal_transactions below. On EVM,
+  // `ethers.getCreateAddress({from: proxy.target, nonce: 1n})` works
+  // because EVM derives CREATE addresses from `(sender, nonce)`. TVM
+  // uses `sha3(txHash || sender)` instead, so the inner ProxyAdmin
+  // address can't be predicted from the proxy's address + nonce — it
+  // depends on the TVM tx hash of the TransparentUpgradeableProxy
+  // deploy. The deploy itself records the inner CREATE in the
+  // receipt's internal_transactions; that's the source of truth.
+  const proxyDeployTx = ethers.deployContract('TransparentUpgradeableProxy', [
+    v1,
+    admin,
+    v1.interface.encodeFunctionData('initializeNonPayable'),
+  ]);
+  const proxyContract = await proxyDeployTx;
+  const proxy = await ethers.getContractAt('ITransparentUpgradeableProxy', proxyContract);
 
+  // Pull the inner ProxyAdmin address from the deployment receipt. The
+  // TransparentUpgradeableProxy constructor synchronously deploys a
+  // ProxyAdmin via CREATE; that inner CREATE is the first (and only)
+  // entry in internal_transactions. transferTo_address is TVM-format
+  // hex (21 bytes, `41` prefix + 20-byte body).
+  const deployReceipt = await proxyContract.deploymentTransaction().wait();
+  const innerCreate = (deployReceipt.internalTransactions || []).find(
+    itx => !itx.rejected && /63726561/.test(itx.note || ''), // "crea" in hex
+  );
+  if (!innerCreate || !innerCreate.transferTo_address) {
+    throw new Error('ProxyAdmin fixture: inner CREATE for ProxyAdmin not found in proxy deploy receipt');
+  }
   const proxyAdmin = await ethers.getContractAt(
     'ProxyAdmin',
-    ethers.getCreateAddress({ from: proxy.target, nonce: 1n }),
+    '0x' + innerCreate.transferTo_address.slice(2),
   );
 
   return { admin, other, v1, v2, proxy, proxyAdmin };

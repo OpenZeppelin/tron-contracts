@@ -15,10 +15,13 @@ module.exports = function shouldBehaveLikeTransparentUpgradeableProxy() {
         Promise.all([ethers.getContractAt('ITransparentUpgradeableProxy', instance), instance.deploymentTransaction()]),
       );
 
-      const proxyAdmin = await ethers.getContractAt(
-        'ProxyAdmin',
-        ethers.getCreateAddress({ from: proxy.target, nonce: 1n }),
-      );
+      // TVM's CREATE formula uses tx hash + caller, not RLP(caller,
+      // nonce), so `getCreateAddress({from: proxy.target, nonce: 1n})`
+      // diverges from the actual on-chain address. Read the AdminSlot
+      // (set by the proxy constructor) for the ground-truth ProxyAdmin
+      // address instead.
+      const proxyAdminAddress = await getAddressInSlot(proxy, AdminSlot);
+      const proxyAdmin = await ethers.getContractAt('ProxyAdmin', proxyAdminAddress);
       const proxyAdminAsSigner = await proxyAdmin.getAddress().then(impersonate);
 
       return {
@@ -344,7 +347,7 @@ module.exports = function shouldBehaveLikeTransparentUpgradeableProxy() {
 
       await proxy.connect(proxyAdminAsSigner).upgradeToAndCall(impl4, '0x');
 
-      await this.other.sendTransaction({ to: proxy });
+      await this.other.sendTransaction({ to: proxy, data: '0x' });
 
       expect(await impl4.attach(instance).getValue()).to.equal(1n);
     });
@@ -359,7 +362,7 @@ module.exports = function shouldBehaveLikeTransparentUpgradeableProxy() {
 
       await proxy.connect(proxyAdminAsSigner).upgradeToAndCall(impl2, '0x');
 
-      await expect(this.other.sendTransaction({ to: proxy })).to.be.reverted;
+      await expect(this.other.sendTransaction({ to: proxy, data: '0x' })).to.be.reverted;
 
       expect(await impl2.attach(instance).getValue()).to.equal(0n);
     });
