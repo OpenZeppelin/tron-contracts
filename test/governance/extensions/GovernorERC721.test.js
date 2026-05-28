@@ -39,7 +39,7 @@ describe('GovernorTRC721', function () {
         10n, // quorumNumeratorValue
       ]);
 
-      await owner.sendTransaction({ to: mock, value });
+      await owner.sendTransaction({ to: mock, value, data: '0x' });
       await Promise.all([NFT0, NFT1, NFT2, NFT3, NFT4].map(tokenId => token.$_mint(owner, tokenId)));
 
       const helper = new GovernorHelper(mock, mode);

@@ -34,7 +34,7 @@ describe('GovernorWithParams', function () {
       const token = await ethers.deployContract(Token, [tokenName, tokenSymbol, tokenName, version]);
       const mock = await ethers.deployContract('$GovernorWithParamsMock', [name, token]);
 
-      await owner.sendTransaction({ to: mock, value });
+      await owner.sendTransaction({ to: mock, value, data: '0x' });
       await token.$_mint(owner, tokenSupply);
 
       const helper = new GovernorHelper(mock, mode);

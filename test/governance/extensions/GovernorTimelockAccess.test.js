@@ -52,7 +52,7 @@ describe('GovernorTimelockAccess', function () {
         0n,
       ]);
 
-      await admin.sendTransaction({ to: mock, value });
+      await admin.sendTransaction({ to: mock, value, data: '0x' });
       await token.$_mint(admin, tokenSupply);
 
       const helper = new GovernorHelper(mock, mode);

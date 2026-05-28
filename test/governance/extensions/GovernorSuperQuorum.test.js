@@ -47,7 +47,7 @@ describe('GovernorSuperQuorum', function () {
         superQuorum,
       ]);
 
-      await proposer.sendTransaction({ to: timelock, value });
+      await proposer.sendTransaction({ to: timelock, value, data: '0x' });
       await token.$_mint(proposer, tokenSupply);
       await timelock.grantRole(PROPOSER_ROLE, mock);
       await timelock.grantRole(PROPOSER_ROLE, proposer);

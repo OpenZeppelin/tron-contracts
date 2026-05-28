@@ -46,7 +46,7 @@ describe('GovernorTimelockControl', function () {
         0n,
       ]);
 
-      await owner.sendTransaction({ to: timelock, value });
+      await owner.sendTransaction({ to: timelock, value, data: '0x' });
       await token.$_mint(owner, tokenSupply);
       await timelock.grantRole(PROPOSER_ROLE, mock);
       await timelock.grantRole(PROPOSER_ROLE, owner);
@@ -88,7 +88,7 @@ describe('GovernorTimelockControl', function () {
       });
 
       it("doesn't accept ether transfers", async function () {
-        await expect(this.owner.sendTransaction({ to: this.mock, value: 1n })).to.be.revertedWithCustomError(
+        await expect(this.owner.sendTransaction({ to: this.mock, value: 1n, data: '0x' })).to.be.revertedWithCustomError(
           this.mock,
           'GovernorDisabledDeposit',
         );
