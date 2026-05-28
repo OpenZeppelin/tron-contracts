@@ -7,13 +7,15 @@ import {Errors} from "./Errors.sol";
 import {LowLevelCall} from "./LowLevelCall.sol";
 
 /**
- * @dev Helper to make usage of the `CREATE2` EVM opcode easier and safer.
+ * @dev Helper to make usage of the `CREATE2` opcode easier and safer.
  * `CREATE2` can be used to compute in advance the address where a smart
  * contract will be deployed, which allows for interesting new mechanisms known
  * as 'counterfactual interactions'.
  *
- * See the https://eips.ethereum.org/EIPS/eip-1014#motivation[EIP] for more
- * information.
+ * On TVM the deterministic address derivation uses the `0x41` hash prefix
+ * defined by https://github.com/tronprotocol/tips/blob/master/tip-26.md[TIP-26]
+ * (the TRON-side analogue of https://eips.ethereum.org/EIPS/eip-1014#motivation[EIP-1014],
+ * which uses `0xff`). {computeAddress} mirrors what TVM's `create2` opcode computes on-chain.
  */
 library Create2 {
     /**
@@ -75,16 +77,19 @@ library Create2 {
             // | bytecodeHash        |                                                        CCCCCCCCCCCCC...CC |
             // | salt                |                                      BBBBBBBBBBBBB...BB                   |
             // | deployer            | 000000...0000AAAAAAAAAAAAAAAAAAA...AA                                     |
-            // | 0xFF                |            FF                                                             |
+            // | 0x41                |            41                                                             |
             // |---------------------|---------------------------------------------------------------------------|
-            // | memory              | 000000...00FFAAAAAAAAAAAAAAAAAAA...AABBBBBBBBBBBBB...BBCCCCCCCCCCCCC...CC |
+            // | memory              | 000000...0041AAAAAAAAAAAAAAAAAAA...AABBBBBBBBBBBBB...BBCCCCCCCCCCCCC...CC |
             // | keccak(start, 0x55) |            ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ |
 
             mstore(add(ptr, 0x40), bytecodeHash)
             mstore(add(ptr, 0x20), salt)
             mstore(ptr, deployer) // Right-aligned with 12 preceding garbage bytes
-            let start := add(ptr, 0x0b) // The hashed data starts at the final garbage byte which we will set to 0xff
-            mstore8(start, 0xff)
+            // TIP-26 CREATE2 hash prefix is 0x41, not the EVM 0xff. The hashed data
+            // starts at the final garbage byte, which we set to 0x41 so this matches
+            // what TVM's create2 opcode computes on-chain.
+            let start := add(ptr, 0x0b)
+            mstore8(start, 0x41)
             addr := and(keccak256(start, 0x55), 0xffffffffffffffffffffffffffffffffffffffff)
         }
     }

@@ -95,7 +95,7 @@ describe('Create2', function () {
     it('deploys a contract with funds deposited in the factory', async function () {
       const value = 10n;
 
-      await this.deployer.sendTransaction({ to: this.factory, value });
+      await this.deployer.sendTransaction({ to: this.factory, value, data: '0x' });
 
       const offChainComputed = ethers.getCreate2Address(
         this.factory.target,
