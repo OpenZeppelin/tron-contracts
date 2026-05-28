@@ -214,9 +214,21 @@ describe('RLP', function () {
       ],
       [0n, 1n, 42n, 65535n, MAX_UINT64],
     )) {
+      // TVM-tuned: upstream OZ relies on ethers' `Contract` proxy
+      // implicitly awaiting nested promise args — i.e., passing
+      // `[contract.$encode_address(from), contract.$encode_uint256(nonce)]`
+      // (an array of Promises) through `$encode_list(bytes[])` and
+      // having ethers resolve each promise before ABI-encoding. The
+      // bridge's plain JS Proxy doesn't auto-await; without explicit
+      // resolution, TronWeb's ethers AbiCoder sees `{}` as a BytesLike
+      // and throws "invalid BytesLike value". Resolve up front.
+      const [encodedAddr, encodedNonce] = await Promise.all([
+        this.mock.$encode_address(from),
+        this.mock.$encode_uint256(nonce),
+      ]);
       await expect(
         this.mock
-          .$encode_list([this.mock.$encode_address(from), this.mock.$encode_uint256(nonce)])
+          .$encode_list([encodedAddr, encodedNonce])
           .then(encoded => ethers.getAddress(ethers.dataSlice(ethers.keccak256(encoded), 12))), // hash the encoded content, take the last 20 bytes and format as (checksummed) address
       ).to.eventually.equal(ethers.getCreateAddress({ from, nonce }));
     }
