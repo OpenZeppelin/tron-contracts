@@ -7,13 +7,16 @@ const BLOCKHASH_SERVE_WINDOW = 256;
 async function fixture() {
   return {
     mock: await ethers.deployContract('$Blockhash'),
-    latestBlock: await ethers.provider.getBlock('latest'),
   };
 }
 
 describe('Blockhash', function () {
   beforeEach(async function () {
     Object.assign(this, await loadFixture(fixture));
+    // Capture fresh per test: on TVM, `tre_revert` keeps the block
+    // number monotonic, so a fixture-cached `latestBlock` would go
+    // stale across tests and `latest + N` would no longer be future.
+    this.latestBlock = await ethers.provider.getBlock('latest');
   });
 
   it('recent block', async function () {
