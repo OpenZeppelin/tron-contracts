@@ -49,16 +49,24 @@ allFiredEvents
 .coverage_cache
 .coverage_contracts
 
-# hardat-exposed
-contracts-exposed
+# hardhat-exposed output (default outDir is /contracts-exposed; we override
+# to /contracts/exposed in hardhat.config.js `exposed.outDir`).
+/contracts-exposed
+/contracts/exposed
 
 # Hardhat
 /cache
 /artifacts
 
+# TRE patched FullNode.jar (built locally via hardhat-tron/docker/build-jar.sh)
+/tre/FullNode.jar
+
 # Foundry
 /out
 /cache_forge
+
+# parallel test cache
+/.parallel-cache
 
 # Certora
 .certora*
