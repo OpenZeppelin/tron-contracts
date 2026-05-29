@@ -75,7 +75,7 @@
     "hardhat-exposed": "^0.3.15",
     "hardhat-gas-reporter": "^2.1.0",
     "hardhat-ignore-warnings": "^0.2.11",
-    "@openzeppelin/hardhat-tron": "file:../hardhat-tron",
+    "@openzeppelin/hardhat-tron": "github:openzeppelin/hardhat-tron#1d10ed5728fe5bd13000d6c7f03e5f15b0736b81",
     "husky": "^9.1.7",
     "interoperable-addresses": "^0.1.3",
     "lint-staged": "^16.0.0",
