@@ -70,18 +70,24 @@ class GovernorHelper {
   }
 
   /// Proposal lifecycle
-  delegate(delegation) {
-    return Promise.all([
-      delegation.token.connect(delegation.to).delegate(delegation.to),
-      delegation.value === undefined ||
-        delegation.token.connect(this.governor.runner).transfer(delegation.to, delegation.value),
-      delegation.tokenId === undefined ||
-        delegation.token
-          .ownerOf(delegation.tokenId)
-          .then(owner =>
-            delegation.token.connect(this.governor.runner).transferFrom(owner, delegation.to, delegation.tokenId),
-          ),
-    ]);
+  // TVM-tuned: upstream OZ runs the three sub-calls in parallel via
+  // `Promise.all`. TVM's instamine + single-witness setup serializes
+  // tx execution per block anyway; running them in parallel on the
+  // client just queues N parallel HTTP requests on a single-witness
+  // FullNode and triggers per-tx receipt-poll deadlines to stack up
+  // (each one waits 240s for its block, and by the time later ones
+  // get processed the first has already expired). Awaiting in
+  // sequence still completes within the suite's time budget but
+  // doesn't pathologically backpressure the witness.
+  async delegate(delegation) {
+    await delegation.token.connect(delegation.to).delegate(delegation.to);
+    if (delegation.value !== undefined) {
+      await delegation.token.connect(this.governor.runner).transfer(delegation.to, delegation.value);
+    }
+    if (delegation.tokenId !== undefined) {
+      const owner = await delegation.token.ownerOf(delegation.tokenId);
+      await delegation.token.connect(this.governor.runner).transferFrom(owner, delegation.to, delegation.tokenId);
+    }
   }
 
   propose() {

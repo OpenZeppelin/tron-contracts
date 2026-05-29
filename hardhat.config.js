@@ -26,6 +26,10 @@
 const fs = require('fs');
 const path = require('path');
 
+// Load .env into process.env before yargs reads it via `.env('')`, so
+// the ENVVAR knobs above can be set from a local .env file.
+require('dotenv').config();
+
 const { argv } = require('yargs/yargs')()
   .env('')
   .options({
@@ -77,7 +81,19 @@ const TRE_PRIVATE_KEY = '0xdd23ca549a97cb330b011aebb674730df8b14acaee42d211ab456
 
 require('@nomicfoundation/hardhat-chai-matchers');
 require('@nomicfoundation/hardhat-ethers');
-require('hardhat-exposed');
+// hardhat-exposed generates `$<ContractName>` external wrappers under
+// `contracts/exposed/` (configured below) that expose every internal
+// function as external. Tests use these to probe internal state
+// (e.g. `token.$_mint(...)`).
+//
+// Wrapper `$<X>.sol` files are committed to git so the default tron
+// pipeline never invokes stock solc. The opt-in `npm run exposed:regen`
+// script (the only place stock solc runs) regenerates the wrappers
+// when an underlying contract changes — its `artifacts/`+`cache/`
+// output is wiped immediately so no stock-solc bytecode survives.
+if (!process.env.SKIP_EXPOSED) {
+  require('hardhat-exposed');
+}
 require('hardhat-gas-reporter');
 require('hardhat-ignore-warnings');
 require('solidity-coverage');
@@ -113,6 +129,14 @@ module.exports = {
       evmVersion: argv.evm,
       viaIR: argv.ir,
       outputSelection: { '*': { '*': ['storageLayout'] } },
+      // `useLiteralContent: true` embeds source code as literal text
+      // into each contract's metadata JSON (instead of just URL refs),
+      // making metadata self-contained for verification (Sourcify,
+      // Etherscan). Made explicit so bytecode stays reproducible.
+      // Removing this flag shifts the metadata IPFS hash baked into the
+      // tail of every contract's bytecode, so existing deployments would
+      // mismatch on verification.
+      metadata: { bytecodeHash: 'ipfs', useLiteralContent: true },
     },
   },
   // @openzeppelin/hardhat-tron config block. See the package README
@@ -132,14 +156,19 @@ module.exports = {
     jarPath: './tre/FullNode.jar',
 
     compiler: {
-      target: 'tron',
+      // `tron-when-network-tron` activates the tron-solc pipeline
+      // ONLY when the active network has `tron: true` (i.e. `tre`).
+      // Under `--network hardhat`, the compile falls through to
+      // stock solc, which is what `npm run exposed:regen` needs to
+      // generate `$<X>` wrappers via hardhat-exposed.
+      target: 'tron-when-network-tron',
 
-      // Glob allowlist for plain `hardhat compile`. The full OZ
-      // corpus is too large for a single tron-solc 0.8.26 wasm pass,
-      // so we default to just the Counter contract here and let
+      // Glob allowlist for plain `hardhat compile --network tre`.
+      // The full OZ corpus is too large for a single tron-solc 0.8.26
+      // wasm pass, so we default to an empty set here and let
       // `npm run compile` dispatch through `tron:compile-batches`,
       // which mutates this array between passes.
-      include: ['contracts/Counter.sol'],
+      include: [],
 
       // Batch defs for `tron:compile-batches`. Pulled in via
       // batchesPath so the file stays editable without restarting
@@ -148,17 +177,44 @@ module.exports = {
       batchesPath: './tron-batches.config.cjs',
     },
   },
+
+  // hardhat-exposed: same as upstream OZ except `outDir` is moved
+  // INSIDE `contracts/`. The generated `$<X>` wrappers sit under
+  // hardhat's source root and are merged into each batch's compile
+  // job by hardhat-exposed's hook, so wrapper bytecode lands in
+  // `artifacts/` (tron-solc-validated) alongside the originals.
+  exposed: {
+    imports: true,
+    initializers: true,
+    exclude: ['vendor/**/*', '**/*WithInit.sol'],
+    outDir: 'contracts/exposed',
+  },
   warnings: {
     'contracts-exposed/**/*': {
+      'code-size': 'off',
+      'initcode-size': 'off',
+    },
+    'contracts/exposed/**/*': {
       'code-size': 'off',
       'initcode-size': 'off',
     },
     '*': {
       'unused-param': !argv.coverage, // coverage causes unused-param warnings
       'transient-storage': false,
-      default: 'error',
+      // Under tron-solc 0.8.26 the `chain` identifier is treated as a
+      // builtin and tickles "shadows a builtin symbol" on
+      // crosschain/CrosschainLinked.sol and
+      // crosschain/bridges/abstract/BridgeFungible.sol. We can't fix
+      // those without diverging from the byte-for-byte upstream OZ
+      // source, so warn (visible at compile time) rather than error.
+      default: 'warn',
     },
   },
+
+  // Bare `hardhat test` (no --network) routes to the TRE network so the
+  // tron pipeline + runtime bridge are active by default.
+  defaultNetwork: 'tre',
+
   networks: {
     tre: {
       // TRE_URL lets parallel-test workers each point at their own TRE
@@ -167,11 +223,6 @@ module.exports = {
       tron: true,
       accounts: [TRE_PRIVATE_KEY],
     },
-  },
-  exposed: {
-    imports: true,
-    initializers: true,
-    exclude: ['vendor/**/*', '**/*WithInit.sol'],
   },
   gasReporter: {
     enabled: argv.gas,
@@ -182,6 +233,22 @@ module.exports = {
   },
   paths: {
     sources: argv.src,
+  },
+
+  // Mocha hook/test timeout. TVM deploys are slow (~1-2s each:
+  // protobuf createSmartContract → broadcast → instamine →
+  // unconfirmed-receipt poll), and Governor-family fixtures deploy
+  // 7-10 contracts plus token mints + delegations. The upstream OZ
+  // default (4s, see .mocharc.js) is impossible on TVM; 600s gives
+  // slow-tail hooks headroom without hiding genuine hangs.
+  //
+  // `reporter` is a Spec-extending reporter that writes a per-file
+  // elapsed-time JSON when MOCHA_TIMINGS_OUT is set (consumed by
+  // scripts/bucket-files.js to weight parallel-test buckets by real
+  // wall time). When the env var is unset it's a pass-through to Spec.
+  mocha: {
+    timeout: 600_000,
+    reporter: require.resolve('./scripts/mocha-file-timings-reporter.js'),
   },
   docgen: require('./docs/config'),
 };

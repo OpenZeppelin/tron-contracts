@@ -31,7 +31,19 @@ const ZeroBytes = generators.bytes.zero;
 const sanitizeHexString = value => (value.length % 2 ? '0x0' : '0x') + value.replace(/0x/, '');
 const encodeStorageLeaf = value => ethers.encodeRlp(ethers.stripZerosLeft(value));
 
-describe('TrieProof', function () {
+// TVM port: skipped. This suite verifies the Solidity TrieProof library
+// against EVM Merkle-Patricia trie proofs (transactionsRoot / receiptsRoot
+// / eth_getProof) generated from a spawned `anvil` node. Two things make
+// it incompatible with the TRE stack:
+//   1. It needs un-bridged ethers to talk to anvil, but
+//      @openzeppelin/hardhat-tron globally overrides hre.ethers — so even
+//      anvil-signer contracts route through the TVM bridge and return
+//      TVM-shaped responses without `.getBlock()`.
+//   2. TVM blocks don't expose the EVM trie roots these proofs assert on.
+// The spike (source of truth) ships TrieProof.sol but has NO test for it,
+// for exactly these reasons. Re-enable only if the plugin grows a
+// per-signer bridge opt-out.
+describe.skip('TrieProof', function () {
   before('start anvil node', async function () {
     const port = 8546;
 
