@@ -43,10 +43,8 @@ describe('P256', function () {
       Object.assign(this, prepareSignature());
     });
 
-    // TVM-spike note: P256 has been stripped to the pure-Solidity path
-    // (no RIP-7212 precompile on TVM). Tests assert only against
-    // `$verifySolidity`; `$verify` and `$verifyNative` no longer exist
-    // on the exposed wrapper after the contract change.
+    // TVM note: P256 has been stripped to the pure-Solidity path
+    // (no RIP-7212 precompile on TVM). 
     it('verify valid signature', async function () {
       await expect(this.mock.$verifySolidity(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be
         .true;
