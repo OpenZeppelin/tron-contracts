@@ -37,7 +37,7 @@ module.exports = [
   },
   {
     name: '05-token-nft-erc6909',
-    dirs: ['contracts/token/ERC721', 'contracts/token/ERC1155', 'contracts/token/ERC6909'],
+    dirs: ['contracts/token/TRC721', 'contracts/token/TRC1155', 'contracts/token/ERC6909'],
   },
   {
     name: '06-finance-metatx-proxy-vendor',
