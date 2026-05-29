@@ -44,11 +44,9 @@ library P256 {
     uint256 private constant HALF_N = 0x7fffffff800000007fffffffffffffffde737d56d38bcf4279dce5617e3192a8;
 
     /**
-     * @dev Verifies a secp256r1 signature using the pure-Solidity implementation. TVM-spike note: the
-     * upstream OZ library tries the RIP-7212 precompile at `address(0x100)` first and falls back here;
-     * TRON-TVM does not ship that precompile, and the native branch and `verifyNative` entry point have
-     * been removed in this spike. Callers (WebAuthn, ERC7913P256Verifier) keep using `verify(...)`
-     * unchanged — the body now delegates straight to `verifySolidity`.
+     * @dev Verifies a secp256r1 signature using the pure-Solidity implementation.
+     * Note: The TVM does not implement RIP-7212 precompile for native P256 verification, so this function
+     * (unlike the EVM version in `openzeppelin-contracts`) verifies directly with solidity.
      *
      * @param h - hashed message
      * @param r - signature half R

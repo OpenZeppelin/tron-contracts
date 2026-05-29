@@ -44,8 +44,10 @@ describe('P256', function () {
     });
 
     // TVM note: P256 has been stripped to the pure-Solidity path
-    // (no RIP-7212 precompile on TVM). 
+    // (no RIP-7212 precompile on TVM). Only `verifyNative` was removed;
+    // `verify` and `verifySolidity` still exist and are asserted.
     it('verify valid signature', async function () {
+      await expect(this.mock.$verify(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be.true;
       await expect(this.mock.$verifySolidity(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be
         .true;
     });
@@ -53,6 +55,7 @@ describe('P256', function () {
     it('verify improper signature', async function () {
       const signature = this.signature;
       this.signature[0] = ethers.toBeHex(N, 0x20); // r = N
+      await expect(this.mock.$verify(this.messageHash, ...signature, ...this.publicKey)).to.eventually.be.false;
       await expect(this.mock.$verifySolidity(this.messageHash, ...signature, ...this.publicKey)).to.eventually.be.false;
     });
 
@@ -82,6 +85,7 @@ describe('P256', function () {
       // flip public key
       this.publicKey.reverse();
 
+      await expect(this.mock.$verify(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be.false;
       await expect(this.mock.$verifySolidity(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be
         .false;
     });
@@ -101,12 +105,12 @@ describe('P256', function () {
       ];
 
       // Make sure it works
-      await expect(this.mock.$verifySolidity(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be
-        .true;
+      await expect(this.mock.$verify(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be.true;
 
       // Flip signature
       this.signature.reverse();
 
+      await expect(this.mock.$verify(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be.false;
       await expect(this.mock.$verifySolidity(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be
         .false;
       await expect(
@@ -118,6 +122,7 @@ describe('P256', function () {
       // random message hash
       this.messageHash = ethers.hexlify(ethers.randomBytes(32));
 
+      await expect(this.mock.$verify(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be.false;
       await expect(this.mock.$verifySolidity(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be
         .false;
       await expect(
@@ -137,25 +142,12 @@ describe('P256', function () {
 
   // test cases for https://github.com/C2SP/wycheproof/blob/4672ff74d68766e7785c2cac4c597effccef2c5c/testvectors/ecdsa_secp256r1_sha256_p1363_test.json
   //
-  // TVM-spike note: upstream OZ runs this as ~210 individual `it()` blocks,
-  // each paying for a loadFixture revert/resnapshot round-trip (~50 ms) AND
-  // a server-side $verifySolidity call (~1.5 s — java-tron interprets pure-
-  // Solidity P256, no RIP-7212 precompile). At ~1.6 s/test × 210 cases the
-  // file took ~6 minutes of wall — about 1/3 of an entire parallel-worker's
-  // load.
-  //
-  // Each verifySolidity call is a STATELESS view, so we batch them through
-  // a single `it()` that fires all cases concurrently via Promise.all.
-  // The undici dispatcher carries 50 keep-alive sockets and TVM's
-  // /wallet/triggerconstantcontract handler is read-only (no consensus
-  // serialization), so the server processes them in parallel. Net wall
-  // time drops from ~6 min to ~30-60 s while preserving every per-case
-  // assertion. On failure, mocha's diff will show which (tcId, expected)
-  // mismatched — we collect mismatches and throw with full context.
+  // Each $verify call is a stateless view, so instead of one `it()` per case
+  // we batch all of them through a single concurrent Promise.all. This cuts
+  // wall time from ~6 min to ~30-60 s while keeping every per-case assertion;
+  // mismatches are collected and thrown with full context.
   describe('wycheproof tests', function () {
-    // Precompute the case list at module-load time (cheap; just JSON
-    // parsing and a few hex normalizations). Cases that don't parse to a
-    // 128-char signature or a 32-byte public key are filtered.
+    // Precompute the case list, filtering out malformed signatures/keys.
     const _cases = [];
     for (const { key, tests } of require('./ecdsa_secp256r1_sha256_p1363_test.json').testGroups) {
       let [x, y] = [key.wx, key.wy].map(v => ethers.stripZerosLeft('0x' + v, 32));
@@ -183,19 +175,14 @@ describe('P256', function () {
     }
 
     it(`runs ${_cases.length} wycheproof cases concurrently`, async function () {
-      // Fan out all calls at once; the undici keep-alive pool (capped at
-      // 50 sockets by plugin/http-agent.js) bounds concurrency naturally,
-      // and TVM's read-only /wallet/triggerconstantcontract endpoint is
-      // multi-threaded server-side. Total wall ≈ slowest single call,
-      // not the sum.
+      // Fan out all calls at once; the undici keep-alive pool bounds
+      // concurrency, and the TVM view endpoint is read-only.
       const results = await Promise.all(
-        _cases.map(c => this.mock.$verifySolidity(c.messageHash, c.r, c.s, c.x, c.y).then(actual => ({ c, actual }))),
+        _cases.map(c => this.mock.$verify(c.messageHash, c.r, c.s, c.x, c.y).then(actual => ({ c, actual }))),
       );
       const mismatches = results.filter(({ c, actual }) => actual !== c.expected);
       if (mismatches.length > 0) {
-        // Surface up to the first 5 mismatches with full context; mocha's
-        // diff will show the rest of the failure shape. Keeping a short
-        // bound prevents log spam if the entire batch goes sideways.
+        // Surface up to the first 5 mismatches to avoid log spam.
         const sample = mismatches
           .slice(0, 5)
           .map(({ c, actual }) => `tcId=${c.tcId} "${c.comment}" — got ${actual}, expected ${c.expected}`)
