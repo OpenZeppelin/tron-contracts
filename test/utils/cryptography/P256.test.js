@@ -43,11 +43,12 @@ describe('P256', function () {
       Object.assign(this, prepareSignature());
     });
 
+    // TVM note: P256 has been stripped to the pure-Solidity path
+    // (no RIP-7212 precompile on TVM). Only `verifyNative` was removed;
+    // `verify` and `verifySolidity` still exist and are asserted.
     it('verify valid signature', async function () {
       await expect(this.mock.$verify(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be.true;
       await expect(this.mock.$verifySolidity(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be
-        .true;
-      await expect(this.mock.$verifyNative(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be
         .true;
     });
 
@@ -56,7 +57,6 @@ describe('P256', function () {
       this.signature[0] = ethers.toBeHex(N, 0x20); // r = N
       await expect(this.mock.$verify(this.messageHash, ...signature, ...this.publicKey)).to.eventually.be.false;
       await expect(this.mock.$verifySolidity(this.messageHash, ...signature, ...this.publicKey)).to.eventually.be.false;
-      await expect(this.mock.$verifyNative(this.messageHash, ...signature, ...this.publicKey)).to.eventually.be.false;
     });
 
     it('recover public key', async function () {
@@ -88,8 +88,6 @@ describe('P256', function () {
       await expect(this.mock.$verify(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be.false;
       await expect(this.mock.$verifySolidity(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be
         .false;
-      await expect(this.mock.$verifyNative(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be
-        .false;
     });
 
     it('reject signature with flipped signature values ([r,s] >> [s,r])', async function () {
@@ -115,8 +113,6 @@ describe('P256', function () {
       await expect(this.mock.$verify(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be.false;
       await expect(this.mock.$verifySolidity(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be
         .false;
-      await expect(this.mock.$verifyNative(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be
-        .false;
       await expect(
         this.mock.$recovery(this.messageHash, this.recovery, ...this.signature),
       ).to.eventually.not.deep.equal(this.publicKey);
@@ -128,8 +124,6 @@ describe('P256', function () {
 
       await expect(this.mock.$verify(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be.false;
       await expect(this.mock.$verifySolidity(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be
-        .false;
-      await expect(this.mock.$verifyNative(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be
         .false;
       await expect(
         this.mock.$recovery(this.messageHash, this.recovery, ...this.signature),
@@ -147,36 +141,57 @@ describe('P256', function () {
   });
 
   // test cases for https://github.com/C2SP/wycheproof/blob/4672ff74d68766e7785c2cac4c597effccef2c5c/testvectors/ecdsa_secp256r1_sha256_p1363_test.json
+  //
+  // Each $verify call is a stateless view, so instead of one `it()` per case
+  // we batch all of them through a single concurrent Promise.all. This cuts
+  // wall time from ~6 min to ~30-60 s while keeping every per-case assertion;
+  // mismatches are collected and thrown with full context.
   describe('wycheproof tests', function () {
+    // Precompute the case list, filtering out malformed signatures/keys.
+    const _cases = [];
     for (const { key, tests } of require('./ecdsa_secp256r1_sha256_p1363_test.json').testGroups) {
-      // parse public key
       let [x, y] = [key.wx, key.wy].map(v => ethers.stripZerosLeft('0x' + v, 32));
       if (x.length > 66 || y.length > 66) continue;
       x = ethers.zeroPadValue(x, 32);
       y = ethers.zeroPadValue(y, 32);
-
-      // run all tests for this key
       for (const { tcId, comment, msg, sig, result } of tests) {
-        // only keep properly formatted signatures
         if (sig.length != 128) continue;
-
-        it(`${tcId}: ${comment}`, async function () {
-          // split signature, and reduce modulo N
-          let [r, s] = Array(2)
-            .fill()
-            .map((_, i) => ethers.toBigInt('0x' + sig.substring(64 * i, 64 * (i + 1))));
-          // move s to lower part of the curve if needed
-          if (s <= N && s > N / 2n) s = N - s;
-          // prepare signature
-          r = ethers.toBeHex(r, 32);
-          s = ethers.toBeHex(s, 32);
-          // hash
-          const messageHash = ethers.sha256('0x' + msg);
-
-          // check verify
-          await expect(this.mock.$verify(messageHash, r, s, x, y)).to.eventually.equal(result == 'valid');
+        // Split signature and reduce s modulo N (low-S normalization).
+        let [r, s] = Array(2)
+          .fill()
+          .map((_, i) => ethers.toBigInt('0x' + sig.substring(64 * i, 64 * (i + 1))));
+        if (s <= N && s > N / 2n) s = N - s;
+        _cases.push({
+          tcId,
+          comment,
+          r: ethers.toBeHex(r, 32),
+          s: ethers.toBeHex(s, 32),
+          x,
+          y,
+          messageHash: ethers.sha256('0x' + msg),
+          expected: result === 'valid',
         });
       }
     }
+
+    it(`runs ${_cases.length} wycheproof cases concurrently`, async function () {
+      // Fan out all calls at once; the undici keep-alive pool bounds
+      // concurrency, and the TVM view endpoint is read-only.
+      const results = await Promise.all(
+        _cases.map(c => this.mock.$verify(c.messageHash, c.r, c.s, c.x, c.y).then(actual => ({ c, actual }))),
+      );
+      const mismatches = results.filter(({ c, actual }) => actual !== c.expected);
+      if (mismatches.length > 0) {
+        // Surface up to the first 5 mismatches to avoid log spam.
+        const sample = mismatches
+          .slice(0, 5)
+          .map(({ c, actual }) => `tcId=${c.tcId} "${c.comment}" — got ${actual}, expected ${c.expected}`)
+          .join('\n  ');
+        throw new Error(
+          `${mismatches.length}/${_cases.length} wycheproof case(s) returned the wrong verify result:\n  ${sample}` +
+            (mismatches.length > 5 ? `\n  ...and ${mismatches.length - 5} more` : ''),
+        );
+      }
+    });
   });
 });
