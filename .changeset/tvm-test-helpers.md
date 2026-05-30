@@ -10,6 +10,3 @@ TVM-aware test helpers.
 - `txpool` `batchInBlock` made dual-mode — EVM path (`evm_setAutomine`) when an
   explicit provider is passed (anvil-backed tests), TVM path
   (`tre_blockTime`/`tre_mine`) otherwise.
-- Add `PackedUserOperation` / `UserOperationRequest` EIP-712 types and an
-  `erc4337` helper (UserOperation builder, `ERC4337Helper`, smart-account
-  wrappers) as groundwork for account-abstraction tests.
