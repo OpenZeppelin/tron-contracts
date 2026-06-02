@@ -397,17 +397,14 @@ describe('TRC20Votes', function () {
             expect(await this.token.getPastVotes(this.other1, t4.timepoint)).to.equal(100n);
           });
 
-          // TVM port: skipped. This asserts that N delegate/balance writes
-          // landing in ONE block produce exactly one checkpoint. The
-          // `batchInBlock` helper coalesces N broadcasts into a single block
-          // via `tre_blockTime(60) + tre_mine`, but that path is timing-
-          // sensitive under TRE: broadcasts with identical Date.now() ms get
-          // dedup'd by java-tron as same-txID, and a single witness can't
-          // reliably assemble N txs into one block. The property under test
-          // (one checkpoint per block, regardless of how many writes occur in
-          // it) IS true on mainnet — the contract logic is correct; TRE just
-          // can't stage the scenario. The spike (source of truth) documents
-          // this same limitation and the test fails there too.
+          // TVM: skipped. Asserts that N independent voting-unit writes landing in ONE
+         // block coalesce to a single checkpoint (keyed by the block clock). Staging N
+         // separate broadcasts into one block relies on batchInBlock (tre_blockTime +
+         // tre_mine), which is unreliable on the single-witness TRE: the manual-mine
+         // path leaks state ("node is already manual mining") and the pending pool
+         // doesn't always gather all N before the forced mine. The property itself is
+         // correct on TVM — clock() is identical for every tx in a block — only the
+         // scenario can't be staged. Re-enable once batchInBlock is deterministic.
           it.skip('does not add more than one checkpoint in a block', async function () {
             await this.token.connect(this.holder).transfer(this.recipient, 100n);
             expect(await this.token.numCheckpoints(this.other1)).to.equal(0n);
