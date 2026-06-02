@@ -1,13 +1,9 @@
 const { ethers } = require('hardhat');
 const { expect } = require('chai');
-const { spawn } = require('child_process');
 const { MerklePatriciaTrie, createMerkleProof } = require('@ethereumjs/mpt');
 
 const { Enum } = require('../../helpers/enums');
-const { zip } = require('../../helpers/iterate');
 const { generators } = require('../../helpers/random');
-const { BlockTries } = require('../../helpers/trie');
-const { batchInBlock } = require('../../helpers/txpool');
 
 const ProofError = Enum(
   'NO_ERROR', // No error occurred during proof traversal
@@ -28,94 +24,33 @@ const ProofError = Enum(
 
 const ZeroBytes = generators.bytes.zero;
 
-const sanitizeHexString = value => (value.length % 2 ? '0x0' : '0x') + value.replace(/0x/, '');
 const encodeStorageLeaf = value => ethers.encodeRlp(ethers.stripZerosLeft(value));
 
-// TVM port: skipped. This suite verifies the Solidity TrieProof library
-// against EVM Merkle-Patricia trie proofs (transactionsRoot / receiptsRoot
-// / eth_getProof) generated from a spawned `anvil` node. Two things make
-// it incompatible with the TRE stack:
-//   1. It needs un-bridged ethers to talk to anvil, but
-//      @openzeppelin/hardhat-tron globally overrides hre.ethers — so even
-//      anvil-signer contracts route through the TVM bridge and return
-//      TVM-shaped responses without `.getBlock()`.
-//   2. TVM blocks don't expose the EVM trie roots these proofs assert on.
-// The spike (source of truth) ships TrieProof.sol but has NO test for it,
-// for exactly these reasons. Re-enable only if the plugin grows a
-// per-signer bridge opt-out.
-describe.skip('TrieProof', function () {
-  before('start anvil node', async function () {
-    const port = 8546;
-
-    // start process and create provider
-    this.process = await spawn('anvil', ['--port', port], { timeout: 30000 });
-    await new Promise(resolve => this.process.stdout.once('data', resolve));
-    this.provider = new ethers.JsonRpcProvider(`http://localhost:${port}`);
-
-    // deploy mock on the hardhat network
+describe('TrieProof', function () {
+  before(async function () {
+    // Resolve signers so the deployer is funded before deploying.
+    await ethers.getSigners();
     this.mock = await ethers.deployContract('$TrieProof');
   });
 
-  beforeEach('use fresh storage contract with empty state for each test', async function () {
-    this.storage = await this.provider.getSigner(0).then(signer => ethers.deployContract('StorageSlotMock', signer));
-    this.target = await this.provider.getSigner(0).then(signer => ethers.deployContract('CallReceiverMock', signer));
-
-    this.getProof = ({
-      provider = this.provider,
-      address = this.storage.target,
-      storageKeys = [],
-      blockNumber = 'latest',
-    }) =>
-      provider.send('eth_getProof', [
-        address,
-        ethers.isHexString(storageKeys) ? [storageKeys] : storageKeys,
-        blockNumber,
-      ]);
-  });
-
-  after('stop anvil node', async function () {
-    this.process.kill();
-  });
-
   describe('verify', function () {
-    it('verify transaction and receipt inclusion in block', async function () {
-      // Multiple transactions/events in a block
-      const txs = await batchInBlock(
-        [
-          () => this.target.mockFunction({ gasLimit: 100000 }),
-          () => this.target.mockFunctionWithArgs(0, 1, { gasLimit: 100000 }),
-          () => this.target.mockFunctionWithArgs(17, 42, { gasLimit: 100000 }),
-        ],
-        this.provider,
-      );
+    it('verifies inclusion in an index-keyed trie', async function () {
+      // Transaction and receipt tries are keyed by rlp(index) (rlp(0) == 0x80,
+      // rlp(1) == 0x01, ...). Build one in-process and verify inclusion plus
+      // value retrieval for every entry.
+      const indexKey = i => ethers.encodeRlp(i === 0 ? '0x' : ethers.toBeHex(i));
+      const entries = Array.from({ length: 5 }, (_, i) => ethers.hexlify(generators.bytes(40 + i)));
 
-      // for some reason ethers doesn't expose the transactionsRoot in blocks, so we fetch the block details via RPC instead.
-      const { transactionsRoot, receiptsRoot } = await this.provider.send('eth_getBlockByNumber', [
-        txs.at(0).blockNumber,
-        false,
-      ]);
+      const trie = new MerklePatriciaTrie({ useKeyHashing: false });
+      for (const [i, entry] of entries.entries()) {
+        await trie.put(ethers.getBytes(indexKey(i)), ethers.getBytes(entry));
+      }
+      const root = ethers.hexlify(trie.root());
 
-      const blockTries = await this.provider
-        .getBlock(txs.at(0).blockNumber)
-        .then(block => BlockTries.from(block).ready());
-
-      // Sanity check trie roots
-      expect(blockTries.transactionTrieRoot).to.equal(transactionsRoot);
-      expect(blockTries.receiptTrieRoot).to.equal(receiptsRoot);
-
-      for (const tx of txs) {
-        // verify transaction inclusion in the block's transaction trie
-        const transaction = await tx.getTransaction().then(BlockTries.serializeTransaction);
-        const transactionProof = await blockTries.getTransactionProof(tx.index);
-        await expect(
-          this.mock.$verify(transaction, transactionsRoot, BlockTries.indexToKey(tx.index), transactionProof),
-        ).to.eventually.be.true;
-
-        // verify receipt inclusion in the block's receipt trie
-        const receipt = BlockTries.serializeReceipt(tx);
-        const receiptProof = await blockTries.getReceiptProof(tx.index);
-        await expect(this.mock.$verify(receipt, receiptsRoot, BlockTries.indexToKey(tx.index), receiptProof)).to
-          .eventually.be.true;
+      for (const [i, entry] of entries.entries()) {
+        const proof = (await createMerkleProof(trie, ethers.getBytes(indexKey(i)))).map(ethers.hexlify);
+        await expect(this.mock.$verify(entry, root, indexKey(i), proof)).to.eventually.be.true;
+        await expect(this.mock.$traverse(root, indexKey(i), proof)).to.eventually.equal(entry);
       }
     });
 
@@ -152,42 +87,41 @@ describe.skip('TrieProof', function () {
         },
       ]) {
         it(title, async function () {
-          // set storage state
-          const txs = await Promise.all(
-            Object.entries(slots).map(([slot, value]) => this.storage.setBytes32Slot(slot, value)),
+          // Storage trie: Ethereum keys slots by keccak256(slot) and stores
+          // RLP(stripZeros(value)) at the leaf.
+          const storageTrie = new MerklePatriciaTrie({ useKeyHashing: false });
+          for (const [slot, value] of Object.entries(slots)) {
+            await storageTrie.put(ethers.getBytes(ethers.keccak256(slot)), ethers.getBytes(encodeStorageLeaf(value)));
+          }
+          const storageHash = ethers.hexlify(storageTrie.root());
+
+          // State trie: the account leaf is RLP([nonce, balance, storageRoot,
+          // codeHash]) at keccak256(address). Filler accounts force the account
+          // proof to traverse real branch/extension nodes.
+          const address = '0x' + '00'.repeat(19) + '42';
+          const codeHash = ethers.keccak256('0x');
+          const account = ethers.encodeRlp(['0x01', '0x', storageHash, codeHash]);
+          const stateTrie = new MerklePatriciaTrie({ useKeyHashing: false });
+          await stateTrie.put(ethers.getBytes(ethers.keccak256(address)), ethers.getBytes(account));
+          for (let i = 1; i <= 8; i++) {
+            const filler = '0x' + '00'.repeat(19) + i.toString(16).padStart(2, '0');
+            const leaf = ethers.encodeRlp(['0x01', '0x', ethers.ZeroHash, codeHash]);
+            await stateTrie.put(ethers.getBytes(ethers.keccak256(filler)), ethers.getBytes(leaf));
+          }
+          const stateRoot = ethers.hexlify(stateTrie.root());
+          const accountProof = (await createMerkleProof(stateTrie, ethers.getBytes(ethers.keccak256(address)))).map(
+            ethers.hexlify,
           );
 
-          // get block that contains the latest storage changes
-          const { stateRoot, number: blockNumber } = await txs.at(-1).getBlock();
+          // Verify account inclusion in the state trie
+          await expect(this.mock.$verify(account, stateRoot, ethers.keccak256(address), accountProof)).to.eventually.be
+            .true;
 
-          // build storage proofs for all storage slots (in that block)
-          const { accountProof, storageHash, storageProof, codeHash } = await this.getProof({
-            storageKeys: Object.keys(slots),
-            blockNumber: ethers.toBeHex(blockNumber),
-          });
-
-          // Verify account details in the block's state trie
-          await expect(
-            this.mock.$verify(
-              ethers.encodeRlp([
-                '0x01', // nonce
-                '0x', // balance
-                storageHash,
-                codeHash,
-              ]),
-              stateRoot,
-              ethers.keccak256(this.storage.target),
-              accountProof,
-            ),
-          ).to.eventually.be.true;
-
-          // Verify storage proof in the account's storage trie
-          for (const [[slot, value], { proof, value: proofValue, key }] of zip(Object.entries(slots), storageProof)) {
-            // proof sanity check
-            expect(sanitizeHexString(proofValue)).to.equal(ethers.stripZerosLeft(value), proofValue);
-            expect(sanitizeHexString(key)).to.equal(slot, key);
-
-            // verify storage slot
+          // Verify each storage slot inclusion in the account's storage trie
+          for (const [slot, value] of Object.entries(slots)) {
+            const proof = (await createMerkleProof(storageTrie, ethers.getBytes(ethers.keccak256(slot)))).map(
+              ethers.hexlify,
+            );
             await expect(this.mock.$verify(encodeStorageLeaf(value), storageHash, ethers.keccak256(slot), proof)).to
               .eventually.be.true;
           }
@@ -273,11 +207,10 @@ describe.skip('TrieProof', function () {
     it('fails to process proof with invalid root hash', async function () {
       const slot = generators.bytes32();
       const value = generators.bytes32();
-      await this.storage.setBytes32Slot(slot, value);
-      const {
-        storageHash,
-        storageProof: [{ proof }],
-      } = await this.getProof({ storageKeys: [slot] });
+      const trie = new MerklePatriciaTrie({ useKeyHashing: false });
+      await trie.put(ethers.getBytes(ethers.keccak256(slot)), ethers.getBytes(encodeStorageLeaf(value)));
+      const storageHash = ethers.hexlify(trie.root());
+      const proof = (await createMerkleProof(trie, ethers.getBytes(ethers.keccak256(slot)))).map(ethers.hexlify);
 
       // Correct root hash
       await expect(this.mock.$verify(encodeStorageLeaf(value), storageHash, ethers.keccak256(slot), proof)).to
@@ -305,24 +238,23 @@ describe.skip('TrieProof', function () {
     });
 
     it('fails to process proof with invalid internal large hash', async function () {
-      // insert multiple values
-      const slot = generators.bytes32();
+      // Two entries whose keys differ in the first nibble produce a root branch
+      // with hash-referenced (large) leaf children.
+      const key = '0x10' + '00'.repeat(31);
       const value = generators.bytes32();
-      await this.storage.setBytes32Slot(slot, value);
-      await this.storage.setBytes32Slot(generators.bytes32(), generators.bytes32());
-
-      const {
-        storageHash,
-        storageProof: [{ proof }],
-      } = await this.getProof({ storageKeys: [slot] });
+      const trie = new MerklePatriciaTrie({ useKeyHashing: false });
+      await trie.put(ethers.getBytes(key), ethers.getBytes(encodeStorageLeaf(value)));
+      await trie.put(
+        ethers.getBytes('0x20' + '00'.repeat(31)),
+        ethers.getBytes(encodeStorageLeaf(generators.bytes32())),
+      );
+      const storageHash = ethers.hexlify(trie.root());
+      const proof = (await createMerkleProof(trie, ethers.getBytes(key))).map(ethers.hexlify);
 
       // Correct proof
-      await expect(this.mock.$verify(encodeStorageLeaf(value), storageHash, ethers.keccak256(slot), proof)).to
-        .eventually.be.true;
-      await expect(this.mock.$traverse(storageHash, ethers.keccak256(slot), proof)).to.eventually.equal(
-        encodeStorageLeaf(value),
-      );
-      await expect(this.mock.$tryTraverse(storageHash, ethers.keccak256(slot), proof)).to.eventually.deep.equal([
+      await expect(this.mock.$verify(encodeStorageLeaf(value), storageHash, key, proof)).to.eventually.be.true;
+      await expect(this.mock.$traverse(storageHash, key, proof)).to.eventually.equal(encodeStorageLeaf(value));
+      await expect(this.mock.$tryTraverse(storageHash, key, proof)).to.eventually.deep.equal([
         encodeStorageLeaf(value),
         ProofError.NO_ERROR,
       ]);
@@ -331,12 +263,11 @@ describe.skip('TrieProof', function () {
       const [p] = ethers.decodeRlp(proof[1]);
       proof[1] = ethers.encodeRlp([p, ethers.encodeRlp(generators.bytes32())]);
 
-      await expect(this.mock.$verify(encodeStorageLeaf(value), storageHash, ethers.keccak256(slot), proof)).to
-        .eventually.be.false;
-      await expect(this.mock.$traverse(storageHash, ethers.keccak256(slot), proof))
+      await expect(this.mock.$verify(encodeStorageLeaf(value), storageHash, key, proof)).to.eventually.be.false;
+      await expect(this.mock.$traverse(storageHash, key, proof))
         .to.revertedWithCustomError(this.mock, 'TrieProofTraversalError')
         .withArgs(ProofError.INVALID_LARGE_NODE);
-      await expect(this.mock.$tryTraverse(storageHash, ethers.keccak256(slot), proof)).to.eventually.deep.equal([
+      await expect(this.mock.$tryTraverse(storageHash, key, proof)).to.eventually.deep.equal([
         ZeroBytes,
         ProofError.INVALID_LARGE_NODE,
       ]);

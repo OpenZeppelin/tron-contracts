@@ -20,15 +20,14 @@ describe('Environment sanity', function () {
       expect(await ethers.provider.getBlockNumber()).to.equal(blockNumberBefore + 1);
     });
 
-    // TVM port: skipped. This asserts the block number rolls BACK to the
-    // pre-`cache and mine` value after the next `loadFixture` revert — an
-    // EVM assumption. The patched FullNode.jar deliberately keeps the block
-    // number MONOTONIC through tre_revert (account/contract state rolls back,
-    // height does not — see the spike's time-warp-snapshot.test.js, which
-    // asserts the opposite: `blockAfter == blockBefore + 1`). The spike has
-    // no EVM-style block-rollback sanity test for this reason.
-    it.skip('check snapshot', async function () {
-      expect(await ethers.provider.getBlockNumber()).to.equal(blockNumberBefore);
+    it('check snapshot', async function () {
+      // TVM divergence from EVM: `tre_revert` (driven by loadFixture's
+      // beforeEach) rolls back account/contract STATE but keeps the block
+      // height MONOTONIC — it does not rewind the block number the way an
+      // EVM snapshot revert does. So the block mined by `cache and mine` is
+      // not undone here; the height stays strictly above the cached pre-mine
+      // value rather than returning to it.
+      expect(await ethers.provider.getBlockNumber()).to.be.greaterThan(blockNumberBefore);
     });
   });
 });
