@@ -2036,7 +2036,9 @@ describe('AccessManager', function () {
         calldata: calldata,
         delay: this.delay,
       });
-      await expect(op1.schedule()).to.be.revertedWithoutReason();
+      // On TVM, scheduling calldata shorter than a 4-byte selector reverts with
+      // `FailedCall` rather than EVM's empty (no-reason) revert.
+      await expect(op1.schedule()).to.be.revertedWithCustomError(this.manager, 'FailedCall');
 
       // Manager contract
       const op2 = await prepareOperation(this.manager, {
@@ -2045,7 +2047,7 @@ describe('AccessManager', function () {
         calldata: calldata,
         delay: this.delay,
       });
-      await expect(op2.schedule()).to.be.revertedWithoutReason();
+      await expect(op2.schedule()).to.be.revertedWithCustomError(this.manager, 'FailedCall');
     });
 
     it('reverts scheduling an unknown operation to the manager', async function () {
