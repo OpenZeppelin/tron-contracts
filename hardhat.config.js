@@ -178,16 +178,17 @@ module.exports = {
     },
   },
 
-  // hardhat-exposed: same as upstream OZ except `outDir` is moved
-  // INSIDE `contracts/`. The generated `$<X>` wrappers sit under
-  // hardhat's source root and are merged into each batch's compile
-  // job by hardhat-exposed's hook, so wrapper bytecode lands in
-  // `artifacts/` (tron-solc-validated) alongside the originals.
+  // hardhat-exposed: generated `$<X>` wrappers live in a top-level
+  // `contracts-exposed/` tree (never under `contracts/`). The tron
+  // batched compile pairs each `contracts/<x>` batch with
+  // `contracts-exposed/<x>`, so wrapper bytecode lands in
+  // `artifacts/contracts-exposed/` (tron-solc-validated) alongside
+  // the originals.
   exposed: {
     imports: true,
     initializers: true,
     exclude: ['vendor/**/*', '**/*WithInit.sol'],
-    outDir: 'contracts/exposed',
+    outDir: 'contracts-exposed',
   },
   warnings: {
     'contracts-exposed/**/*': {
