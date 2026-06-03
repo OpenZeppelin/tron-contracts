@@ -129,4 +129,9 @@ jobs:
         with:
           check_hidden: true
           check_filenames: true
-          skip: package-lock.json,*.pdf,vendor
+          # Skip vendored third-party code: `vendor` and `lib` (Foundry deps such as
+          # forge-std, which carry their own typos we don't control).
+          skip: package-lock.json,*.pdf,vendor,lib
+          # "TRE" = TRON Runtime Environment (used throughout the TVM toolchain);
+          # codespell otherwise flags it as a misspelling of "tree"/"the".
+          ignore_words_list: tre
