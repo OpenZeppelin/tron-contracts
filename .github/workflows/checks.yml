@@ -87,7 +87,7 @@ jobs:
       - name: Set up environment
         uses: ./.github/actions/setup
       - name: Run tests
-        run: forge test -vvv
+        run: forge test --via-ir -vvv
 
   coverage:
     runs-on: ubuntu-latest
