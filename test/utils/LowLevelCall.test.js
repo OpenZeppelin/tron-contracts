@@ -32,7 +32,7 @@ describe('LowLevelCall', function () {
       });
 
       it('calls the requested function with value and returns true', async function () {
-        await this.account.sendTransaction({ to: this.mock, value, data: "0x" });
+        await this.account.sendTransaction({ to: this.mock, value, data: '0x' });
 
         const tx = this.mock.$callNoReturn(
           this.target,
@@ -77,7 +77,7 @@ describe('LowLevelCall', function () {
       });
 
       it('calls the requested function with value and returns true', async function () {
-        await this.account.sendTransaction({ to: this.mock, value, data: "0x" });
+        await this.account.sendTransaction({ to: this.mock, value, data: '0x' });
 
         const tx = this.mock.$callReturn64Bytes(
           this.target,

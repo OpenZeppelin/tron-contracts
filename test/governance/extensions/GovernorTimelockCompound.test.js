@@ -92,10 +92,9 @@ describe('GovernorTimelockCompound', function () {
       });
 
       it("doesn't accept ether transfers", async function () {
-        await expect(this.owner.sendTransaction({ to: this.mock, value: 1n, data: '0x' })).to.be.revertedWithCustomError(
-          this.mock,
-          'GovernorDisabledDeposit',
-        );
+        await expect(
+          this.owner.sendTransaction({ to: this.mock, value: 1n, data: '0x' }),
+        ).to.be.revertedWithCustomError(this.mock, 'GovernorDisabledDeposit');
       });
 
       it('post deployment check', async function () {
