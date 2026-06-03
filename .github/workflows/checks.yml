@@ -130,3 +130,6 @@ jobs:
           check_hidden: true
           check_filenames: true
           skip: package-lock.json,*.pdf,vendor
+          # "TRE" = TRON Runtime Environment (used throughout the TVM toolchain);
+          # codespell otherwise flags it as a misspelling of "tree"/"the".
+          ignore_words_list: tre
