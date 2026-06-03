@@ -42,7 +42,11 @@ if git diff --quiet --cached; then
 fi
 
 if [[ -v SUBMODULE_REMOTE ]]; then
-  lib=lib/openzeppelin-contracts
+  # Embed the non-upgradeable source repo as a submodule pinned to the exact
+  # commit this output was transpiled from (provenance / reproducibility).
+  # Our build is self-contained, so nothing imports from it — but keeping it
+  # mirrors openzeppelin-contracts-upgradeable. Named after the source repo.
+  lib=lib/tron-contracts
   git submodule add -b "${base#origin/}" "$SUBMODULE_REMOTE" "$lib"
   git -C "$lib" checkout "$commit"
   git add "$lib"
