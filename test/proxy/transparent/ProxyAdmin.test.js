@@ -39,10 +39,7 @@ async function fixture() {
   if (!innerCreate || !innerCreate.transferTo_address) {
     throw new Error('ProxyAdmin fixture: inner CREATE for ProxyAdmin not found in proxy deploy receipt');
   }
-  const proxyAdmin = await ethers.getContractAt(
-    'ProxyAdmin',
-    '0x' + innerCreate.transferTo_address.slice(2),
-  );
+  const proxyAdmin = await ethers.getContractAt('ProxyAdmin', '0x' + innerCreate.transferTo_address.slice(2));
 
   return { admin, other, v1, v2, proxy, proxyAdmin };
 }

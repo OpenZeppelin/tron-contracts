@@ -398,13 +398,13 @@ describe('TRC20Votes', function () {
           });
 
           // TVM: skipped. Asserts that N independent voting-unit writes landing in ONE
-         // block coalesce to a single checkpoint (keyed by the block clock). Staging N
-         // separate broadcasts into one block relies on batchInBlock (tre_blockTime +
-         // tre_mine), which is unreliable on the single-witness TRE: the manual-mine
-         // path leaks state ("node is already manual mining") and the pending pool
-         // doesn't always gather all N before the forced mine. The property itself is
-         // correct on TVM — clock() is identical for every tx in a block — only the
-         // scenario can't be staged. Re-enable once batchInBlock is deterministic.
+          // block coalesce to a single checkpoint (keyed by the block clock). Staging N
+          // separate broadcasts into one block relies on batchInBlock (tre_blockTime +
+          // tre_mine), which is unreliable on the single-witness TRE: the manual-mine
+          // path leaks state ("node is already manual mining") and the pending pool
+          // doesn't always gather all N before the forced mine. The property itself is
+          // correct on TVM — clock() is identical for every tx in a block — only the
+          // scenario can't be staged. Re-enable once batchInBlock is deterministic.
           it.skip('does not add more than one checkpoint in a block', async function () {
             await this.token.connect(this.holder).transfer(this.recipient, 100n);
             expect(await this.token.numCheckpoints(this.other1)).to.equal(0n);
