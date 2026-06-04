@@ -9,8 +9,18 @@ bash "$DIRNAME/patch-apply.sh"
 sed -i'' -e "s/<package-version>/$VERSION/g" "contracts/package.json"
 git add contracts/package.json
 
-npm run clean
-npm run compile
+# The transpiler only reads the solc AST + storage layout (it never touches
+# TVM bytecode), so transpilation is VM-agnostic. Compile with stock solc
+# under `--network hardhat`: hardhat.config.js routes the tron-solc pipeline
+# ONLY to tron networks (see tre.compiler.target), and stock solc has no wasm
+# memory ceiling, so the entire corpus lands in a SINGLE build-info.
+#
+# The default `npm run compile` runs `tron:compile-batches`, which splits the
+# corpus into ~14 passes (one build-info each) to dodge the tron-solc wasm
+# limit — but the transpiler requires exactly one build-info. SKIP_EXPOSED
+# keeps hardhat-exposed `$`-wrappers out of the build.
+rm -rf artifacts cache
+SKIP_EXPOSED=1 npx hardhat compile --network hardhat
 
 build_info=($(jq -r '.input.sources | keys | if any(test("^contracts/mocks/.*\\bunreachable\\b")) then empty else input_filename end' artifacts/build-info/*))
 build_info_num=${#build_info[@]}
@@ -27,7 +37,18 @@ fi
 # -p: emit public initializer
 # -n: use namespaces
 # -N: exclude from namespaces transformation
-# -q: partial transpilation using @openzeppelin/contracts as peer project
+# -q: peer-project (partial) transpilation. Stateless code (interfaces,
+#     libraries, Initializable) is NOT renamed — it is emitted as imports from
+#     the peer package `@openzeppelin/tron-contracts` (resolved via the
+#     lib/tron-contracts submodule + remappings.txt). This is what keeps the
+#     output structurally identical to openzeppelin-contracts-upgradeable: only
+#     STATEFUL contracts get the `Upgradeable` suffix, so the unmodified test
+#     suite (which deploys e.g. `$Checkpoints`) still resolves via the
+#     hardhat/env-artifacts.js suffix shim. The value is a path prefix
+#     prepended to each peer source's solc path (e.g. contracts/utils/Math.sol
+#     -> @openzeppelin/tron-contracts/contracts/utils/Math.sol); it does NOT
+#     depend on how our contracts import each other (relative imports to peer
+#     files are rewritten to peer imports automatically).
 npx @openzeppelin/upgrade-safe-transpiler -D \
   -b "$build_info" \
   -i contracts/proxy/utils/Initializable.sol \
@@ -41,10 +62,13 @@ npx @openzeppelin/upgrade-safe-transpiler -D \
   -p 'contracts/metatx/ERC2771Forwarder.sol' \
   -n \
   -N 'contracts/mocks/**/*' \
-  -q '@openzeppelin/'
+  -q '@openzeppelin/tron-contracts/'
 
-# create alias to Initializable and UUPSUpgradeable
-cp $DIRNAME/alias/*.sol contracts/proxy/utils/.
+# In peer mode the transpiler does NOT emit a local Initializable.sol /
+# UUPSUpgradeable.sol (it references them from the peer). Copy the alias stubs,
+# which re-export those two from the peer package, into the output so they
+# resolve under contracts/proxy/utils/.
+cp "$DIRNAME"/alias/*.sol contracts/proxy/utils/.
 
 # delete compilation artifacts of vanilla code
-npm run clean
+rm -rf artifacts cache
