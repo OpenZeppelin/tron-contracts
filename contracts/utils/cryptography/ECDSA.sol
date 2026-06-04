@@ -8,6 +8,9 @@ pragma solidity ^0.8.20;
  *
  * These functions can be used to verify that a message was signed by the holder
  * of the private keys of a given address.
+ *
+ * NOTE: On TRON, the 65-byte `(r, s, v)` signature encoding these functions produce and accept (with `v` in
+ * `{27, 28}`) is standardized by https://github.com/tronprotocol/tips/blob/master/tip-120.md[TIP-120].
  */
 library ECDSA {
     enum RecoverError {
