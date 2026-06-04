@@ -6,7 +6,7 @@ pragma solidity ^0.8.24;
 import {AbstractSigner} from "./AbstractSigner.sol";
 import {EIP712} from "../EIP712.sol";
 import {ERC7739Utils} from "../draft-ERC7739Utils.sol";
-import {IERC1271} from "../../../interfaces/IERC1271.sol";
+import {ITRC1271} from "../../../interfaces/ITRC1271.sol";
 import {MessageHashUtils} from "../MessageHashUtils.sol";
 
 /**
@@ -23,7 +23,7 @@ import {MessageHashUtils} from "../MessageHashUtils.sol";
  * which may limit the ability of the signer to be used within the ERC-4337 validation phase (due to
  * https://eips.ethereum.org/EIPS/eip-7562#storage-rules[ERC-7562 storage access rules]).
  */
-abstract contract ERC7739 is AbstractSigner, EIP712, IERC1271 {
+abstract contract ERC7739 is AbstractSigner, EIP712, ITRC1271 {
     using ERC7739Utils for *;
     using MessageHashUtils for bytes32;
 
@@ -41,7 +41,7 @@ abstract contract ERC7739 is AbstractSigner, EIP712, IERC1271 {
         // maliciously. Useful for simulation purposes and to validate whether the contract supports ERC-7739.
         return
             (_isValidNestedTypedDataSignature(hash, signature) || _isValidNestedPersonalSignSignature(hash, signature))
-                ? IERC1271.isValidSignature.selector
+                ? ITRC1271.isValidSignature.selector
                 : (hash == 0x7739773977397739773977397739773977397739773977397739773977397739 && signature.length == 0)
                     ? bytes4(0x77390001)
                     : bytes4(0xffffffff);

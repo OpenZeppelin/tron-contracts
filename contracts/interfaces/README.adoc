@@ -23,7 +23,7 @@ are useful to interact with third party contracts that implement them.
 - {ITRC1155Receiver}
 - {ITRC1155MetadataURI}
 - {ITRC1155Errors}
-- {IERC1271}
+- {ITRC1271}
 - {IERC1363}
 - {IERC1363Receiver}
 - {IERC1363Spender}
@@ -67,7 +67,7 @@ are useful to interact with third party contracts that implement them.
 
 {{ITRC1155Errors}}
 
-{{IERC1271}}
+{{ITRC1271}}
 
 {{IERC1363}}
 
