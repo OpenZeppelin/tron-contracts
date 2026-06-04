@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.6.0) (metatx/ERC2771Forwarder.sol)
+// OpenZeppelin Contracts (last updated v5.6.0) (metatx/TRC2771Forwarder.sol)
 
 pragma solidity ^0.8.24;
 
-import {ERC2771Context} from "./ERC2771Context.sol";
+import {TRC2771Context} from "./TRC2771Context.sol";
 import {ECDSA} from "../utils/cryptography/ECDSA.sol";
 import {EIP712} from "../utils/cryptography/EIP712.sol";
 import {Nonces} from "../utils/Nonces.sol";
@@ -11,7 +11,7 @@ import {Address} from "../utils/Address.sol";
 import {Errors} from "../utils/Errors.sol";
 
 /**
- * @dev A forwarder compatible with ERC-2771 contracts. See {ERC2771Context}.
+ * @dev A forwarder compatible with TRC-2771 contracts. See {TRC2771Context}.
  *
  * This forwarder operates on forward requests that include:
  *
@@ -29,9 +29,9 @@ import {Errors} from "../utils/Errors.sol";
  * multiple accounts.
  *
  * NOTE: Batching requests includes an optional refund for unused `msg.value` that is achieved by
- * performing a call with empty calldata. While this is within the bounds of ERC-2771 compliance,
+ * performing a call with empty calldata. While this is within the bounds of TRC-2771 compliance,
  * if the refund receiver happens to consider the forwarder a trusted forwarder, it MUST properly
- * handle `msg.data.length == 0`. `ERC2771Context` in OpenZeppelin Contracts versions prior to 4.9.3
+ * handle `msg.data.length == 0`. `TRC2771Context` in OpenZeppelin Contracts versions prior to 4.9.3
  * do not handle this properly.
  *
  * ==== Security Considerations
@@ -48,7 +48,7 @@ import {Errors} from "../utils/Errors.sol";
  * TRC-1155 transfers specifically, consider rejecting the use of the `data` field, since it can be
  * used to execute arbitrary code.
  */
-contract ERC2771Forwarder is EIP712, Nonces {
+contract TRC2771Forwarder is EIP712, Nonces {
     using ECDSA for bytes32;
 
     struct ForwardRequestData {
@@ -78,22 +78,22 @@ contract ERC2771Forwarder is EIP712, Nonces {
     /**
      * @dev The request `from` doesn't match with the recovered `signer`.
      */
-    error ERC2771ForwarderInvalidSigner(address signer, address from);
+    error TRC2771ForwarderInvalidSigner(address signer, address from);
 
     /**
      * @dev The `requestedValue` doesn't match with the available `msgValue`.
      */
-    error ERC2771ForwarderMismatchedValue(uint256 requestedValue, uint256 msgValue);
+    error TRC2771ForwarderMismatchedValue(uint256 requestedValue, uint256 msgValue);
 
     /**
      * @dev The request `deadline` has expired.
      */
-    error ERC2771ForwarderExpiredRequest(uint48 deadline);
+    error TRC2771ForwarderExpiredRequest(uint48 deadline);
 
     /**
      * @dev The request target doesn't trust the `forwarder`.
      */
-    error ERC2771UntrustfulTarget(address target, address forwarder);
+    error TRC2771UntrustfulTarget(address target, address forwarder);
 
     /**
      * @dev See {EIP712-constructor}.
@@ -115,7 +115,7 @@ contract ERC2771Forwarder is EIP712, Nonces {
     }
 
     /**
-     * @dev Executes a `request` on behalf of `signature`'s signer using the ERC-2771 protocol. The gas
+     * @dev Executes a `request` on behalf of `signature`'s signer using the TRC-2771 protocol. The gas
      * provided to the requested call may not be exactly the amount requested, but the call will not run
      * out of gas. Will revert if the request is invalid or the call reverts, in this case the nonce is not consumed.
      *
@@ -129,7 +129,7 @@ contract ERC2771Forwarder is EIP712, Nonces {
         // If the request is invalid or the call reverts, this whole function
         // will revert, ensuring value isn't stuck.
         if (msg.value != request.value) {
-            revert ERC2771ForwarderMismatchedValue(request.value, msg.value);
+            revert TRC2771ForwarderMismatchedValue(request.value, msg.value);
         }
 
         if (!_execute(request, true)) {
@@ -180,7 +180,7 @@ contract ERC2771Forwarder is EIP712, Nonces {
         // The batch should revert if there's a mismatched msg.value provided
         // to avoid request value tampering
         if (requestsValue != msg.value) {
-            revert ERC2771ForwarderMismatchedValue(requestsValue, msg.value);
+            revert TRC2771ForwarderMismatchedValue(requestsValue, msg.value);
         }
 
         // Some requests with value were invalid (possibly due to frontrunning).
@@ -262,15 +262,15 @@ contract ERC2771Forwarder is EIP712, Nonces {
         // batches and reversion is opt-in since it could be useful in some scenarios
         if (requireValidRequest) {
             if (!isTrustedForwarder) {
-                revert ERC2771UntrustfulTarget(request.to, address(this));
+                revert TRC2771UntrustfulTarget(request.to, address(this));
             }
 
             if (!active) {
-                revert ERC2771ForwarderExpiredRequest(request.deadline);
+                revert TRC2771ForwarderExpiredRequest(request.deadline);
             }
 
             if (!signerMatch) {
-                revert ERC2771ForwarderInvalidSigner(signer, request.from);
+                revert TRC2771ForwarderInvalidSigner(signer, request.from);
             }
         }
 
@@ -301,13 +301,13 @@ contract ERC2771Forwarder is EIP712, Nonces {
      * @dev Returns whether the target trusts this forwarder.
      *
      * This function performs a static call to the target contract calling the
-     * {ERC2771Context-isTrustedForwarder} function.
+     * {TRC2771Context-isTrustedForwarder} function.
      *
      * NOTE: Consider the execution of this forwarder is permissionless. Without this check, anyone may transfer assets
      * that are owned by, or are approved to this forwarder.
      */
     function _isTrustedByTarget(address target) internal view virtual returns (bool) {
-        bytes memory encodedParams = abi.encodeCall(ERC2771Context.isTrustedForwarder, (address(this)));
+        bytes memory encodedParams = abi.encodeCall(TRC2771Context.isTrustedForwarder, (address(this)));
 
         bool success;
         uint256 returnSize;

@@ -9,7 +9,7 @@ const time = require('../helpers/time');
 async function fixture() {
   const [sender, refundReceiver, another, ...accounts] = await ethers.getSigners();
 
-  const forwarder = await ethers.deployContract('ERC2771Forwarder', ['ERC2771Forwarder']);
+  const forwarder = await ethers.deployContract('TRC2771Forwarder', ['TRC2771Forwarder']);
   const receiver = await ethers.deployContract('CallReceiverMockTrustingForwarder', [forwarder]);
   const domain = await getDomain(forwarder);
   const types = { ForwardRequest };
@@ -52,7 +52,7 @@ async function fixture() {
   };
 }
 
-describe('ERC2771Forwarder', function () {
+describe('TRC2771Forwarder', function () {
   beforeEach(async function () {
     Object.assign(this, await loadFixture(fixture));
   });
@@ -113,7 +113,7 @@ describe('ERC2771Forwarder', function () {
 
         // nonce has changed
         await expect(this.forwarder.execute(request))
-          .to.be.revertedWithCustomError(this.forwarder, 'ERC2771ForwarderInvalidSigner')
+          .to.be.revertedWithCustomError(this.forwarder, 'TRC2771ForwarderInvalidSigner')
           .withArgs(
             ethers.verifyTypedData(
               this.domain,
@@ -129,7 +129,7 @@ describe('ERC2771Forwarder', function () {
         const request = await this.forgeRequest({ deadline: (await time.clock.timestamp()) - 1n });
 
         await expect(this.forwarder.execute(request))
-          .to.be.revertedWithCustomError(this.forwarder, 'ERC2771ForwarderExpiredRequest')
+          .to.be.revertedWithCustomError(this.forwarder, 'TRC2771ForwarderExpiredRequest')
           .withArgs(request.deadline);
       });
 
@@ -137,7 +137,7 @@ describe('ERC2771Forwarder', function () {
         const request = await this.forgeRequest({ value: 100n });
 
         await expect(this.forwarder.execute(request))
-          .to.be.revertedWithCustomError(this.forwarder, 'ERC2771ForwarderMismatchedValue')
+          .to.be.revertedWithCustomError(this.forwarder, 'TRC2771ForwarderMismatchedValue')
           .withArgs(request.value, 0n);
       });
     });
@@ -256,7 +256,7 @@ describe('ERC2771Forwarder', function () {
         this.requests[idx] = await this.forgeRequest({ value: 100n }, this.accounts[1]);
 
         await expect(this.forwarder.executeBatch(this.requests, this.another, { value: this.value }))
-          .to.be.revertedWithCustomError(this.forwarder, 'ERC2771ForwarderMismatchedValue')
+          .to.be.revertedWithCustomError(this.forwarder, 'TRC2771ForwarderMismatchedValue')
           .withArgs(requestsValue(this.requests), this.value);
       });
 
@@ -271,7 +271,7 @@ describe('ERC2771Forwarder', function () {
 
           // And then fail due to an already used nonce
           await expect(this.forwarder.executeBatch(this.requests, this.refundReceiver, { value: this.value }))
-            .to.be.revertedWithCustomError(this.forwarder, 'ERC2771ForwarderInvalidSigner')
+            .to.be.revertedWithCustomError(this.forwarder, 'TRC2771ForwarderInvalidSigner')
             .withArgs(
               ethers.verifyTypedData(
                 this.domain,
@@ -290,7 +290,7 @@ describe('ERC2771Forwarder', function () {
           );
 
           await expect(this.forwarder.executeBatch(this.requests, this.refundReceiver, { value: this.value }))
-            .to.be.revertedWithCustomError(this.forwarder, 'ERC2771ForwarderExpiredRequest')
+            .to.be.revertedWithCustomError(this.forwarder, 'TRC2771ForwarderExpiredRequest')
             .withArgs(this.requests[idx].deadline);
         });
       });

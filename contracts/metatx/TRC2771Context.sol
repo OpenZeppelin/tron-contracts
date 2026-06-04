@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.6.0) (metatx/ERC2771Context.sol)
+// OpenZeppelin Contracts (last updated v5.6.0) (metatx/TRC2771Context.sol)
 
 pragma solidity ^0.8.20;
 
 import {Context} from "../utils/Context.sol";
 
 /**
- * @dev Context variant with ERC-2771 support. See {_msgSender} for the calldata format.
+ * @dev Context variant with TRC-2771 support, as defined in https://github.com/tronprotocol/tips/blob/master/tip-2771.md[TIP-2771] (the TRON-side analogue of https://eips.ethereum.org/EIPS/eip-2771[EIP-2771]). See {_msgSender} for the calldata format.
  *
  * WARNING: Avoid using this pattern in contracts that rely on a specific calldata length as they'll
- * be affected by any forwarder whose `msg.data` is suffixed with the `from` address according to the ERC-2771
+ * be affected by any forwarder whose `msg.data` is suffixed with the `from` address according to the TRC-2771
  * specification adding the address size in bytes (20) to the calldata size. An example of an unexpected
  * behavior could be an unintended fallback (or another function) invocation while trying to invoke the `receive`
  * function only accessible if `msg.data.length == 0`.
@@ -18,7 +18,7 @@ import {Context} from "../utils/Context.sol";
  * Any forwarded request to this contract triggering a `delegatecall` to itself will result in an invalid {_msgSender}
  * recovery.
  */
-abstract contract ERC2771Context is Context {
+abstract contract TRC2771Context is Context {
     /// @custom:oz-upgrades-unsafe-allow state-variable-immutable
     address private immutable _trustedForwarder;
 
@@ -82,7 +82,7 @@ abstract contract ERC2771Context is Context {
     }
 
     /**
-     * @dev ERC-2771 specifies the context as being a single address (20 bytes).
+     * @dev TRC-2771 specifies the context as being a single address (20 bytes).
      */
     function _contextSuffixLength() internal view virtual override returns (uint256) {
         return 20;
