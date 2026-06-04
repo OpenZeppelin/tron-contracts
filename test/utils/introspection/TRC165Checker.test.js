@@ -270,7 +270,7 @@ describe('TRC165Checker', function () {
   // => tx.wait())` sub-method, which the bridge's `invoke` proxy
   // doesn't surface. The post-revert receipt-shape pattern OZ uses
   // also depends on EVM's mined-failed-tx model (see
-  // ERC2771Forwarder.test.js's "bubbles out of gas" comment for
+  // TRC2771Forwarder.test.js's "bubbles out of gas" comment for
   // the same TVM/EVM divergence). Defense is faithful; assertion
   // shape is not.
   it.skip('Return bomb resistance', async function () {

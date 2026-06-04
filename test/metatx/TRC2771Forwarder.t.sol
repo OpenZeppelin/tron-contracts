@@ -3,7 +3,7 @@
 pragma solidity ^0.8.20;
 
 import {Test} from "forge-std/Test.sol";
-import {ERC2771Forwarder} from "@openzeppelin/contracts/metatx/ERC2771Forwarder.sol";
+import {TRC2771Forwarder} from "@openzeppelin/contracts/metatx/TRC2771Forwarder.sol";
 import {CallReceiverMockTrustingForwarder, CallReceiverMock} from "@openzeppelin/contracts/mocks/CallReceiverMock.sol";
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {SafeCast} from "@openzeppelin/contracts/utils/math/SafeCast.sol";
@@ -16,11 +16,11 @@ enum TamperType {
     SIGNATURE
 }
 
-contract ERC2771ForwarderMock is ERC2771Forwarder {
-    constructor(string memory name) ERC2771Forwarder(name) {}
+contract TRC2771ForwarderMock is TRC2771Forwarder {
+    constructor(string memory name) TRC2771Forwarder(name) {}
 
     function forwardRequestStructHash(
-        ERC2771Forwarder.ForwardRequestData calldata request,
+        TRC2771Forwarder.ForwardRequestData calldata request,
         uint256 nonce
     ) external view returns (bytes32) {
         return
@@ -41,10 +41,10 @@ contract ERC2771ForwarderMock is ERC2771Forwarder {
     }
 }
 
-contract ERC2771ForwarderTest is Test {
+contract TRC2771ForwarderTest is Test {
     using ECDSA for bytes32;
 
-    ERC2771ForwarderMock internal _erc2771Forwarder;
+    TRC2771ForwarderMock internal _erc2771Forwarder;
     CallReceiverMockTrustingForwarder internal _receiver;
 
     uint256 internal _signerPrivateKey = 0xA11CE;
@@ -53,12 +53,12 @@ contract ERC2771ForwarderTest is Test {
     uint256 internal constant _MAX_ETHER = 10_000_000; // To avoid overflow
 
     function setUp() public {
-        _erc2771Forwarder = new ERC2771ForwarderMock("ERC2771Forwarder");
+        _erc2771Forwarder = new TRC2771ForwarderMock("TRC2771Forwarder");
         _receiver = new CallReceiverMockTrustingForwarder(address(_erc2771Forwarder));
     }
 
     // Forge a new ForwardRequestData
-    function _forgeRequestData() private view returns (ERC2771Forwarder.ForwardRequestData memory) {
+    function _forgeRequestData() private view returns (TRC2771Forwarder.ForwardRequestData memory) {
         return
             _forgeRequestData({
                 value: 0,
@@ -71,9 +71,9 @@ contract ERC2771ForwarderTest is Test {
         uint256 value,
         uint48 deadline,
         bytes memory data
-    ) private view returns (ERC2771Forwarder.ForwardRequestData memory) {
+    ) private view returns (TRC2771Forwarder.ForwardRequestData memory) {
         return
-            ERC2771Forwarder.ForwardRequestData({
+            TRC2771Forwarder.ForwardRequestData({
                 from: _signer,
                 to: address(_receiver),
                 value: value,
@@ -86,9 +86,9 @@ contract ERC2771ForwarderTest is Test {
 
     // Sign a ForwardRequestData (in place) for a given nonce. Also returns it for convenience.
     function _signRequestData(
-        ERC2771Forwarder.ForwardRequestData memory request,
+        TRC2771Forwarder.ForwardRequestData memory request,
         uint256 nonce
-    ) private view returns (ERC2771Forwarder.ForwardRequestData memory) {
+    ) private view returns (TRC2771Forwarder.ForwardRequestData memory) {
         bytes32 digest = _erc2771Forwarder.forwardRequestStructHash(request, nonce);
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(_signerPrivateKey, digest);
         request.signature = abi.encodePacked(r, s, v);
@@ -97,9 +97,9 @@ contract ERC2771ForwarderTest is Test {
 
     // Tamper a ForwardRequestData (in place). Also returns it for convenience.
     function _tamperRequestData(
-        ERC2771Forwarder.ForwardRequestData memory request,
+        TRC2771Forwarder.ForwardRequestData memory request,
         TamperType tamper
-    ) private returns (ERC2771Forwarder.ForwardRequestData memory) {
+    ) private returns (TRC2771Forwarder.ForwardRequestData memory) {
         if (tamper == TamperType.FROM) request.from = vm.randomAddress();
         else if (tamper == TamperType.TO) request.to = vm.randomAddress();
         else if (tamper == TamperType.VALUE) request.value = vm.randomUint();
@@ -111,17 +111,17 @@ contract ERC2771ForwarderTest is Test {
 
     // Predict the revert error for a tampered request, and expect it is emitted.
     function _tamperedExpectRevert(
-        ERC2771Forwarder.ForwardRequestData memory request,
+        TRC2771Forwarder.ForwardRequestData memory request,
         TamperType tamper,
         uint256 nonce
-    ) private returns (ERC2771Forwarder.ForwardRequestData memory) {
+    ) private returns (TRC2771Forwarder.ForwardRequestData memory) {
         if (tamper == TamperType.FROM) nonce = _erc2771Forwarder.nonces(request.from);
 
         // predict revert
         if (tamper == TamperType.TO) {
             vm.expectRevert(
                 abi.encodeWithSelector(
-                    ERC2771Forwarder.ERC2771UntrustfulTarget.selector,
+                    TRC2771Forwarder.TRC2771UntrustfulTarget.selector,
                     request.to,
                     address(_erc2771Forwarder)
                 )
@@ -131,7 +131,7 @@ contract ERC2771ForwarderTest is Test {
                 request.signature
             );
             vm.expectRevert(
-                abi.encodeWithSelector(ERC2771Forwarder.ERC2771ForwarderInvalidSigner.selector, recovered, request.from)
+                abi.encodeWithSelector(TRC2771Forwarder.TRC2771ForwarderInvalidSigner.selector, recovered, request.from)
             );
         }
         return request;
@@ -142,7 +142,7 @@ contract ERC2771ForwarderTest is Test {
         value = bound(value, 0, _MAX_ETHER);
 
         // create and sign request
-        ERC2771Forwarder.ForwardRequestData memory request = _forgeRequestData({
+        TRC2771Forwarder.ForwardRequestData memory request = _forgeRequestData({
             value: value,
             deadline: uint48(block.timestamp + 1),
             data: targetReverts
@@ -172,7 +172,7 @@ contract ERC2771ForwarderTest is Test {
         uint256 nonce = _erc2771Forwarder.nonces(_signer);
 
         // create an array of signed requests (that may fail)
-        ERC2771Forwarder.ForwardRequestData[] memory requests = new ERC2771Forwarder.ForwardRequestData[](batchSize);
+        TRC2771Forwarder.ForwardRequestData[] memory requests = new TRC2771Forwarder.ForwardRequestData[](batchSize);
         for (uint256 i = 0; i < batchSize; ++i) {
             bool failure = (seed >> i) & 0x1 == 0x1;
 
@@ -204,7 +204,7 @@ contract ERC2771ForwarderTest is Test {
         TamperType tamper = _asTamper(_tamper);
 
         // create request, sign, tamper
-        ERC2771Forwarder.ForwardRequestData memory request = _forgeRequestData();
+        TRC2771Forwarder.ForwardRequestData memory request = _forgeRequestData();
         _signRequestData(request, 0);
         _tamperRequestData(request, tamper);
 
@@ -216,7 +216,7 @@ contract ERC2771ForwarderTest is Test {
         TamperType tamper = _asTamper(_tamper);
 
         // create request, sign, tamper, expect execution revert
-        ERC2771Forwarder.ForwardRequestData memory request = _forgeRequestData();
+        TRC2771Forwarder.ForwardRequestData memory request = _forgeRequestData();
         _signRequestData(request, 0);
         _tamperRequestData(request, tamper);
         _tamperedExpectRevert(request, tamper, 0);
@@ -230,7 +230,7 @@ contract ERC2771ForwarderTest is Test {
         uint256 nonce = _erc2771Forwarder.nonces(_signer);
 
         // create an array of signed requests
-        ERC2771Forwarder.ForwardRequestData[] memory requests = new ERC2771Forwarder.ForwardRequestData[](3);
+        TRC2771Forwarder.ForwardRequestData[] memory requests = new TRC2771Forwarder.ForwardRequestData[](3);
         for (uint256 i = 0; i < requests.length; ++i) {
             requests[i] = _forgeRequestData({
                 value: 0,
@@ -253,7 +253,7 @@ contract ERC2771ForwarderTest is Test {
         uint256 nonce = _erc2771Forwarder.nonces(_signer);
 
         // create an array of signed requests
-        ERC2771Forwarder.ForwardRequestData[] memory requests = new ERC2771Forwarder.ForwardRequestData[](3);
+        TRC2771Forwarder.ForwardRequestData[] memory requests = new TRC2771Forwarder.ForwardRequestData[](3);
         for (uint256 i = 0; i < requests.length; ++i) {
             requests[i] = _forgeRequestData({
                 value: 0,

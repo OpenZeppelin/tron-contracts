@@ -11,9 +11,9 @@ const { shouldBehaveLikeRegularContext } = require('../utils/Context.behavior');
 async function fixture() {
   const [sender, other] = await ethers.getSigners();
 
-  const forwarder = await ethers.deployContract('ERC2771Forwarder', ['ERC2771Forwarder']);
+  const forwarder = await ethers.deployContract('TRC2771Forwarder', ['TRC2771Forwarder']);
   const forwarderAsSigner = await impersonate(forwarder.target);
-  const context = await ethers.deployContract('ERC2771ContextMock', [forwarder]);
+  const context = await ethers.deployContract('TRC2771ContextMock', [forwarder]);
   const domain = await getDomain(forwarder);
 
   const prepareAndSignRequest = async (signer, request) => {
@@ -31,7 +31,7 @@ async function fixture() {
   return { sender, other, forwarder, forwarderAsSigner, context, prepareAndSignRequest };
 }
 
-describe('ERC2771Context', function () {
+describe('TRC2771Context', function () {
   beforeEach(async function () {
     Object.assign(this, await loadFixture(fixture));
   });
