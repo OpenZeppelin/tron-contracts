@@ -11,7 +11,7 @@ import {Hashes} from "./Hashes.sol";
  * that are specific to an EIP-712 domain.
  *
  * This library provides methods to wrap, unwrap and operate over typed data signatures with a defensive
- * rehashing mechanism that includes the app's xref:api:utils/cryptography#EIP712-_domainSeparatorV4[EIP-712]
+ * rehashing mechanism that includes the app's xref:api:utils/cryptography#TIP712-_domainSeparatorV4[EIP-712]
  * and preserves readability of the signed content using an EIP-712 nested approach.
  *
  * A smart contract domain can validate a signature for a typed data structure in two ways:
@@ -23,7 +23,7 @@ import {Hashes} from "./Hashes.sol";
  * result of a call to `personal_sign` or `eth_signTypedData`, and this may be unsupported by
  * API clients that expect a return value of 129 bytes, or specifically the `r,s,v` parameters
  * of an xref:api:utils/cryptography#ECDSA[ECDSA] signature, as is for example specified for
- * xref:api:utils/cryptography#EIP712[EIP-712].
+ * xref:api:utils/cryptography#TIP712[EIP-712].
  */
 library ERC7739Utils {
     /**
@@ -56,7 +56,7 @@ library ERC7739Utils {
      *
      * - `signature` is the signature for the (ERC-7739) nested struct hash. This signature indirectly signs over the
      *   original "contents" hash (from the app) and the account's domain separator.
-     * - `APP_DOMAIN_SEPARATOR` is the EIP-712 {EIP712-_domainSeparatorV4} of the application smart contract that is
+     * - `APP_DOMAIN_SEPARATOR` is the EIP-712 {TIP712-_domainSeparatorV4} of the application smart contract that is
      *   requesting the signature verification (through ERC-1271).
      * - `contentsHash` is the hash of the underlying data structure or message.
      * - `contentsDescr` is a descriptor of the "contents" part of the EIP-712 type of the nested signature.

@@ -6,7 +6,7 @@ pragma solidity ^0.8.24;
 import {ITRC20Permit} from "./ITRC20Permit.sol";
 import {TRC20} from "../TRC20.sol";
 import {ECDSA} from "../../../utils/cryptography/ECDSA.sol";
-import {EIP712} from "../../../utils/cryptography/EIP712.sol";
+import {TIP712} from "../../../utils/cryptography/TIP712.sol";
 import {Nonces} from "../../../utils/Nonces.sol";
 
 /**
@@ -18,7 +18,7 @@ import {Nonces} from "../../../utils/Nonces.sol";
  * presenting a message signed by the account. By not relying on `{ITRC20-approve}`, the token holder account doesn't
  * need to send a transaction, and thus is not required to hold Ether at all.
  */
-abstract contract TRC20Permit is TRC20, ITRC20Permit, EIP712, Nonces {
+abstract contract TRC20Permit is TRC20, ITRC20Permit, TIP712, Nonces {
     bytes32 private constant PERMIT_TYPEHASH =
         keccak256("Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)");
 
@@ -33,11 +33,11 @@ abstract contract TRC20Permit is TRC20, ITRC20Permit, EIP712, Nonces {
     error ERC2612InvalidSigner(address signer, address owner);
 
     /**
-     * @dev Initializes the {EIP712} domain separator using the `name` parameter, and setting `version` to `"1"`.
+     * @dev Initializes the {TIP712} domain separator using the `name` parameter, and setting `version` to `"1"`.
      *
      * It's a good idea to use the same `name` that is defined as the TRC-20 token name.
      */
-    constructor(string memory name) EIP712(name, "1") {}
+    constructor(string memory name) TIP712(name, "1") {}
 
     /// @inheritdoc ITRC20Permit
     function permit(

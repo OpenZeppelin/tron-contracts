@@ -5,7 +5,7 @@ pragma solidity ^0.8.24;
 
 import {ITRC1155Receiver} from "../token/TRC1155/ITRC1155Receiver.sol";
 import {ITRC721Receiver} from "../token/TRC721/ITRC721Receiver.sol";
-import {EIP712} from "../utils/cryptography/EIP712.sol";
+import {TIP712} from "../utils/cryptography/TIP712.sol";
 import {SignatureChecker} from "../utils/cryptography/SignatureChecker.sol";
 import {ITRC165, TRC165} from "../utils/introspection/TRC165.sol";
 import {SafeCast} from "../utils/math/SafeCast.sol";
@@ -25,7 +25,7 @@ import {IGovernor, IERC6372} from "./IGovernor.sol";
  * - A voting module must implement {_getVotes}
  * - Additionally, {votingPeriod}, {votingDelay}, and {quorum} must also be implemented
  */
-abstract contract Governor is Context, TRC165, EIP712, Nonces, IGovernor, ITRC721Receiver, ITRC1155Receiver {
+abstract contract Governor is Context, TRC165, TIP712, Nonces, IGovernor, ITRC721Receiver, ITRC1155Receiver {
     using DoubleEndedQueue for DoubleEndedQueue.Bytes32Deque;
 
     bytes32 public constant BALLOT_TYPEHASH =
@@ -73,7 +73,7 @@ abstract contract Governor is Context, TRC165, EIP712, Nonces, IGovernor, ITRC72
     /**
      * @dev Sets the value for {name} and {version}
      */
-    constructor(string memory name_) EIP712(name_, version()) {
+    constructor(string memory name_) TIP712(name_, version()) {
         _name = name_;
     }
 

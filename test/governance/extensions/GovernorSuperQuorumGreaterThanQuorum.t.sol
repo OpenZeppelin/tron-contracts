@@ -15,11 +15,11 @@ import {GovernorVotes} from "../../../contracts/governance/extensions/GovernorVo
 import {Governor} from "../../../contracts/governance/Governor.sol";
 import {IVotes} from "../../../contracts/governance/utils/IVotes.sol";
 import {TRC20VotesExtendedTimestampMock} from "../../../contracts/mocks/token/TRC20VotesAdditionalCheckpointsMock.sol";
-import {EIP712} from "../../../contracts/utils/cryptography/EIP712.sol";
+import {TIP712} from "../../../contracts/utils/cryptography/TIP712.sol";
 import {TRC20} from "../../../contracts/token/TRC20/TRC20.sol";
 
 contract TokenMock is TRC20VotesExtendedTimestampMock {
-    constructor() TRC20("Mock Token", "MTK") EIP712("Mock Token", "1") {}
+    constructor() TRC20("Mock Token", "MTK") TIP712("Mock Token", "1") {}
 }
 
 /**

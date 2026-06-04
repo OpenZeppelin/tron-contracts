@@ -6,7 +6,7 @@ import {TRC721} from "../../token/TRC721/TRC721.sol";
 import {TRC721Consecutive} from "../../token/TRC721/extensions/TRC721Consecutive.sol";
 import {TRC721Pausable} from "../../token/TRC721/extensions/TRC721Pausable.sol";
 import {TRC721Votes} from "../../token/TRC721/extensions/TRC721Votes.sol";
-import {EIP712} from "../../utils/cryptography/EIP712.sol";
+import {TIP712} from "../../utils/cryptography/TIP712.sol";
 
 /**
  * @title TRC721ConsecutiveMock
@@ -21,7 +21,7 @@ contract TRC721ConsecutiveMock is TRC721Consecutive, TRC721Pausable, TRC721Votes
         address[] memory delegates,
         address[] memory receivers,
         uint96[] memory amounts
-    ) TRC721(name, symbol) EIP712(name, "1") {
+    ) TRC721(name, symbol) TIP712(name, "1") {
         _offset = offset;
 
         for (uint256 i = 0; i < delegates.length; ++i) {

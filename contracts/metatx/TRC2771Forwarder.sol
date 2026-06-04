@@ -5,7 +5,7 @@ pragma solidity ^0.8.24;
 
 import {TRC2771Context} from "./TRC2771Context.sol";
 import {ECDSA} from "../utils/cryptography/ECDSA.sol";
-import {EIP712} from "../utils/cryptography/EIP712.sol";
+import {TIP712} from "../utils/cryptography/TIP712.sol";
 import {Nonces} from "../utils/Nonces.sol";
 import {Address} from "../utils/Address.sol";
 import {Errors} from "../utils/Errors.sol";
@@ -48,7 +48,7 @@ import {Errors} from "../utils/Errors.sol";
  * TRC-1155 transfers specifically, consider rejecting the use of the `data` field, since it can be
  * used to execute arbitrary code.
  */
-contract TRC2771Forwarder is EIP712, Nonces {
+contract TRC2771Forwarder is TIP712, Nonces {
     using ECDSA for bytes32;
 
     struct ForwardRequestData {
@@ -96,9 +96,9 @@ contract TRC2771Forwarder is EIP712, Nonces {
     error TRC2771UntrustfulTarget(address target, address forwarder);
 
     /**
-     * @dev See {EIP712-constructor}.
+     * @dev See {TIP712-constructor}.
      */
-    constructor(string memory name) EIP712(name, "1") {}
+    constructor(string memory name) TIP712(name, "1") {}
 
     /**
      * @dev Returns `true` if a request is valid for a provided `signature` at the current block timestamp.
@@ -211,7 +211,7 @@ contract TRC2771Forwarder is EIP712, Nonces {
     }
 
     /**
-     * @dev Returns a tuple with the recovered the signer of an EIP712 forward request message hash
+     * @dev Returns a tuple with the recovered the signer of a TIP-712 forward request message hash
      * and a boolean indicating if the signature is valid.
      *
      * NOTE: The signature is considered valid if {ECDSA-tryRecoverCalldata} indicates no recover error for it.
