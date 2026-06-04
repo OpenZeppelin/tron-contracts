@@ -57,8 +57,9 @@ abstract contract Initializable {
     /**
      * @dev Storage of the initializable contract.
      *
-     * It's implemented on a custom ERC-7201 namespace to reduce the risk of storage collisions
-     * when using with upgradeable contracts.
+     * It's implemented on a custom https://github.com/tronprotocol/tips/blob/master/tip-7201.md[TIP-7201]
+     * (the TRON-side analogue of https://eips.ethereum.org/EIPS/eip-7201[ERC-7201]) namespace to reduce the
+     * risk of storage collisions when using with upgradeable contracts.
      *
      * @custom:storage-location erc7201:openzeppelin.storage.Initializable
      */
@@ -219,7 +220,7 @@ abstract contract Initializable {
     /**
      * @dev Pointer to storage slot. Allows integrators to override it with a custom storage location.
      *
-     * NOTE: Consider following the ERC-7201 formula to derive storage locations.
+     * NOTE: Consider following the TIP-7201 (ERC-7201) formula to derive storage locations.
      */
     function _initializableStorageSlot() internal pure virtual returns (bytes32) {
         return INITIALIZABLE_STORAGE;

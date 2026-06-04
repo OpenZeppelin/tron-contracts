@@ -43,7 +43,7 @@ pragma solidity ^0.8.20;
 
 const namespace = `\
 /**
- * @dev Derive an ERC-7201 slot from a string (namespace).
+ * @dev Derive a TIP-7201 (ERC-7201) slot from a string (namespace).
  */
 function erc7201Slot(string memory namespace) internal pure returns (bytes32 slot) {
     assembly ("memory-safe") {
