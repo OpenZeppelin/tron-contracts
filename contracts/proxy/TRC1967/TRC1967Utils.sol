@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.6.0) (proxy/ERC1967/ERC1967Utils.sol)
+// OpenZeppelin Contracts (last updated v5.6.0) (proxy/TRC1967/TRC1967Utils.sol)
 
 pragma solidity ^0.8.21;
 
 import {IBeacon} from "../beacon/IBeacon.sol";
-import {IERC1967} from "../../interfaces/IERC1967.sol";
+import {ITRC1967} from "../../interfaces/ITRC1967.sol";
 import {Address} from "../../utils/Address.sol";
 import {StorageSlot} from "../../utils/StorageSlot.sol";
 
 /**
  * @dev This library provides getters and event emitting update functions for
- * https://eips.ethereum.org/EIPS/eip-1967[ERC-1967] slots.
+ * https://github.com/tronprotocol/tips/blob/master/tip-1967.md[TIP-1967] (the TRON-side analogue of https://eips.ethereum.org/EIPS/eip-1967[EIP-1967]) slots.
  */
-library ERC1967Utils {
+library TRC1967Utils {
     /**
      * @dev Storage slot with the address of the current implementation.
      * This is the keccak-256 hash of "eip1967.proxy.implementation" subtracted by 1.
@@ -23,22 +23,22 @@ library ERC1967Utils {
     /**
      * @dev The `implementation` of the proxy is invalid.
      */
-    error ERC1967InvalidImplementation(address implementation);
+    error TRC1967InvalidImplementation(address implementation);
 
     /**
      * @dev The `admin` of the proxy is invalid.
      */
-    error ERC1967InvalidAdmin(address admin);
+    error TRC1967InvalidAdmin(address admin);
 
     /**
      * @dev The `beacon` of the proxy is invalid.
      */
-    error ERC1967InvalidBeacon(address beacon);
+    error TRC1967InvalidBeacon(address beacon);
 
     /**
      * @dev An upgrade function sees `msg.value > 0` that may be lost.
      */
-    error ERC1967NonPayable();
+    error TRC1967NonPayable();
 
     /**
      * @dev Returns the current implementation address.
@@ -48,11 +48,11 @@ library ERC1967Utils {
     }
 
     /**
-     * @dev Stores a new address in the ERC-1967 implementation slot.
+     * @dev Stores a new address in the TRC-1967 implementation slot.
      */
     function _setImplementation(address newImplementation) private {
         if (newImplementation.code.length == 0) {
-            revert ERC1967InvalidImplementation(newImplementation);
+            revert TRC1967InvalidImplementation(newImplementation);
         }
         StorageSlot.getAddressSlot(IMPLEMENTATION_SLOT).value = newImplementation;
     }
@@ -62,11 +62,11 @@ library ERC1967Utils {
      * This function is payable only if the setup call is performed, otherwise `msg.value` is rejected
      * to avoid stuck value in the contract.
      *
-     * Emits an {IERC1967-Upgraded} event.
+     * Emits an {ITRC1967-Upgraded} event.
      */
     function upgradeToAndCall(address newImplementation, bytes memory data) internal {
         _setImplementation(newImplementation);
-        emit IERC1967.Upgraded(newImplementation);
+        emit ITRC1967.Upgraded(newImplementation);
 
         if (data.length > 0) {
             Address.functionDelegateCall(newImplementation, data);
@@ -85,7 +85,7 @@ library ERC1967Utils {
     /**
      * @dev Returns the current admin.
      *
-     * TIP: To get this value clients can read directly from the storage slot shown below (specified by ERC-1967) using
+     * TIP: To get this value clients can read directly from the storage slot shown below (specified by TRC-1967) using
      * the https://ethereum.org/developers/docs/apis/json-rpc/#eth_getstorageat[`eth_getStorageAt`] RPC call.
      * `0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103`
      */
@@ -94,11 +94,11 @@ library ERC1967Utils {
     }
 
     /**
-     * @dev Stores a new address in the ERC-1967 admin slot.
+     * @dev Stores a new address in the TRC-1967 admin slot.
      */
     function _setAdmin(address newAdmin) private {
         if (newAdmin == address(0)) {
-            revert ERC1967InvalidAdmin(address(0));
+            revert TRC1967InvalidAdmin(address(0));
         }
         StorageSlot.getAddressSlot(ADMIN_SLOT).value = newAdmin;
     }
@@ -106,10 +106,10 @@ library ERC1967Utils {
     /**
      * @dev Changes the admin of the proxy.
      *
-     * Emits an {IERC1967-AdminChanged} event.
+     * Emits an {ITRC1967-AdminChanged} event.
      */
     function changeAdmin(address newAdmin) internal {
-        emit IERC1967.AdminChanged(getAdmin(), newAdmin);
+        emit ITRC1967.AdminChanged(getAdmin(), newAdmin);
         _setAdmin(newAdmin);
     }
 
@@ -128,18 +128,18 @@ library ERC1967Utils {
     }
 
     /**
-     * @dev Stores a new beacon in the ERC-1967 beacon slot.
+     * @dev Stores a new beacon in the TRC-1967 beacon slot.
      */
     function _setBeacon(address newBeacon) private {
         if (newBeacon.code.length == 0) {
-            revert ERC1967InvalidBeacon(newBeacon);
+            revert TRC1967InvalidBeacon(newBeacon);
         }
 
         StorageSlot.getAddressSlot(BEACON_SLOT).value = newBeacon;
 
         address beaconImplementation = IBeacon(newBeacon).implementation();
         if (beaconImplementation.code.length == 0) {
-            revert ERC1967InvalidImplementation(beaconImplementation);
+            revert TRC1967InvalidImplementation(beaconImplementation);
         }
     }
 
@@ -148,15 +148,15 @@ library ERC1967Utils {
      * This function is payable only if the setup call is performed, otherwise `msg.value` is rejected
      * to avoid stuck value in the contract.
      *
-     * Emits an {IERC1967-BeaconUpgraded} event.
+     * Emits an {ITRC1967-BeaconUpgraded} event.
      *
      * CAUTION: Invoking this function has no effect on an instance of {BeaconProxy} since v5, since
-     * it uses an immutable beacon without looking at the value of the ERC-1967 beacon slot for
+     * it uses an immutable beacon without looking at the value of the TRC-1967 beacon slot for
      * efficiency.
      */
     function upgradeBeaconToAndCall(address newBeacon, bytes memory data) internal {
         _setBeacon(newBeacon);
-        emit IERC1967.BeaconUpgraded(newBeacon);
+        emit ITRC1967.BeaconUpgraded(newBeacon);
 
         if (data.length > 0) {
             Address.functionDelegateCall(IBeacon(newBeacon).implementation(), data);
@@ -171,7 +171,7 @@ library ERC1967Utils {
      */
     function _checkNonPayable() private {
         if (msg.value > 0) {
-            revert ERC1967NonPayable();
+            revert TRC1967NonPayable();
         }
     }
 }

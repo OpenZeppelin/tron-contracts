@@ -5,13 +5,13 @@ pragma solidity ^0.8.20;
 
 import {IERC6909} from "../../interfaces/IERC6909.sol";
 import {Context} from "../../utils/Context.sol";
-import {IERC165, ERC165} from "../../utils/introspection/ERC165.sol";
+import {ITRC165, TRC165} from "../../utils/introspection/TRC165.sol";
 
 /**
  * @dev Implementation of ERC-6909.
  * See https://eips.ethereum.org/EIPS/eip-6909
  */
-contract ERC6909 is Context, ERC165, IERC6909 {
+contract ERC6909 is Context, TRC165, IERC6909 {
     mapping(address owner => mapping(uint256 id => uint256)) private _balances;
 
     mapping(address owner => mapping(address operator => bool)) private _operatorApprovals;
@@ -25,8 +25,8 @@ contract ERC6909 is Context, ERC165, IERC6909 {
     error ERC6909InvalidSender(address sender);
     error ERC6909InvalidSpender(address spender);
 
-    /// @inheritdoc IERC165
-    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {
+    /// @inheritdoc ITRC165
+    function supportsInterface(bytes4 interfaceId) public view virtual override(TRC165, ITRC165) returns (bool) {
         return interfaceId == type(IERC6909).interfaceId || super.supportsInterface(interfaceId);
     }
 

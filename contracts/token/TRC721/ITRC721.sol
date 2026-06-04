@@ -3,12 +3,12 @@
 
 pragma solidity >=0.6.2;
 
-import {IERC165} from "../../utils/introspection/IERC165.sol";
+import {ITRC165} from "../../utils/introspection/ITRC165.sol";
 
 /**
  * @dev Required interface of a TRC-721 compliant contract.
  */
-interface ITRC721 is IERC165 {
+interface ITRC721 is ITRC165 {
     /**
      * @dev Emitted when `tokenId` token is transferred from `from` to `to`.
      */

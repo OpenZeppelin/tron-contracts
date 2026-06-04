@@ -10,7 +10,7 @@ are useful to interact with third party contracts that implement them.
 - {ITRC20}
 - {ITRC20Errors}
 - {ITRC20Metadata}
-- {IERC165}
+- {ITRC165}
 - {ITRC721}
 - {ITRC721Receiver}
 - {ITRC721Enumerable}
@@ -30,7 +30,7 @@ are useful to interact with third party contracts that implement them.
 - {IERC1820Implementer}
 - {IERC1820Registry}
 - {IERC1822Proxiable}
-- {IERC1967}
+- {ITRC1967}
 - {IERC2309}
 - {IERC2612}
 - {IERC2981}
@@ -81,7 +81,7 @@ are useful to interact with third party contracts that implement them.
 
 {{IERC1822Proxiable}}
 
-{{IERC1967}}
+{{ITRC1967}}
 
 {{IERC2309}}
 

@@ -3,13 +3,13 @@
 
 pragma solidity >=0.6.2;
 
-import {IERC165} from "../../utils/introspection/IERC165.sol";
+import {ITRC165} from "../../utils/introspection/ITRC165.sol";
 
 /**
  * @dev Interface that must be implemented by smart contracts in order to receive
  * TRC-1155 token transfers.
  */
-interface ITRC1155Receiver is IERC165 {
+interface ITRC1155Receiver is ITRC165 {
     /**
      * @dev Handles the receipt of a single TRC-1155 token type. This function is
      * called at the end of a `safeTransferFrom` after the balance has been updated.

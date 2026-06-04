@@ -4,7 +4,7 @@
 pragma solidity ^0.8.20;
 
 import {IERC2981} from "../../interfaces/IERC2981.sol";
-import {IERC165, ERC165} from "../../utils/introspection/ERC165.sol";
+import {ITRC165, TRC165} from "../../utils/introspection/TRC165.sol";
 
 /**
  * @dev Implementation of the NFT Royalty Standard, a standardized way to retrieve royalty payment information.
@@ -19,7 +19,7 @@ import {IERC165, ERC165} from "../../utils/introspection/ERC165.sol";
  * https://eips.ethereum.org/EIPS/eip-2981#optional-royalty-payments[Rationale] in the ERC. Marketplaces are expected to
  * voluntarily pay royalties together with sales, but note that this standard is not yet widely supported.
  */
-abstract contract ERC2981 is IERC2981, ERC165 {
+abstract contract ERC2981 is IERC2981, TRC165 {
     struct RoyaltyInfo {
         address receiver;
         uint96 royaltyFraction;
@@ -48,8 +48,8 @@ abstract contract ERC2981 is IERC2981, ERC165 {
      */
     error ERC2981InvalidTokenRoyaltyReceiver(uint256 tokenId, address receiver);
 
-    /// @inheritdoc IERC165
-    function supportsInterface(bytes4 interfaceId) public view virtual override(IERC165, ERC165) returns (bool) {
+    /// @inheritdoc ITRC165
+    function supportsInterface(bytes4 interfaceId) public view virtual override(ITRC165, TRC165) returns (bool) {
         return interfaceId == type(IERC2981).interfaceId || super.supportsInterface(interfaceId);
     }
 

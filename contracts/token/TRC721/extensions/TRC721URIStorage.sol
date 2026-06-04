@@ -6,7 +6,7 @@ pragma solidity ^0.8.24;
 import {TRC721} from "../TRC721.sol";
 import {ITRC721Metadata} from "./ITRC721Metadata.sol";
 import {IERC4906} from "../../../interfaces/IERC4906.sol";
-import {IERC165} from "../../../interfaces/IERC165.sol";
+import {ITRC165} from "../../../interfaces/ITRC165.sol";
 
 /**
  * @dev TRC-721 token with storage based token URI management.
@@ -19,8 +19,8 @@ abstract contract TRC721URIStorage is IERC4906, TRC721 {
     // Optional mapping for token URIs
     mapping(uint256 tokenId => string) private _tokenURIs;
 
-    /// @inheritdoc IERC165
-    function supportsInterface(bytes4 interfaceId) public view virtual override(TRC721, IERC165) returns (bool) {
+    /// @inheritdoc ITRC165
+    function supportsInterface(bytes4 interfaceId) public view virtual override(TRC721, ITRC165) returns (bool) {
         return interfaceId == ERC4906_INTERFACE_ID || super.supportsInterface(interfaceId);
     }
 

@@ -11,7 +11,7 @@ const fixture = async () => {
   return { nonContractAddress, implementation };
 };
 
-describe('ERC1967Proxy', function () {
+describe('TRC1967Proxy', function () {
   beforeEach(async function () {
     Object.assign(this, await loadFixture(fixture));
   });
@@ -19,7 +19,7 @@ describe('ERC1967Proxy', function () {
   describe('(default) allowUninitialized is false', function () {
     before(function () {
       this.createProxy = (implementation, initData, opts) =>
-        ethers.deployContract('ERC1967Proxy', [implementation, initData], opts);
+        ethers.deployContract('TRC1967Proxy', [implementation, initData], opts);
     });
 
     shouldBehaveLikeProxy(false);
@@ -28,7 +28,7 @@ describe('ERC1967Proxy', function () {
   describe('(unsafe) allowUninitialized is true', function () {
     before(function () {
       this.createProxy = (implementation, initData, opts) =>
-        ethers.deployContract('ERC1967ProxyUnsafe', [implementation, initData], opts);
+        ethers.deployContract('TRC1967ProxyUnsafe', [implementation, initData], opts);
     });
 
     shouldBehaveLikeProxy(true);

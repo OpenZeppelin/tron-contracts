@@ -3,13 +3,13 @@
 
 pragma solidity >=0.6.2;
 
-import {IERC165} from "../utils/introspection/IERC165.sol";
+import {ITRC165} from "../utils/introspection/ITRC165.sol";
 
 /**
  * @dev Required interface of an ERC-6909 compliant contract, as defined in the
  * https://eips.ethereum.org/EIPS/eip-6909[ERC].
  */
-interface IERC6909 is IERC165 {
+interface IERC6909 is ITRC165 {
     /**
      * @dev Emitted when the allowance of a `spender` for an `owner` is set for a token of type `id`.
      * The new allowance is `amount`.

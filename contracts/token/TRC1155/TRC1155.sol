@@ -7,7 +7,7 @@ import {ITRC1155} from "./ITRC1155.sol";
 import {ITRC1155MetadataURI} from "./extensions/ITRC1155MetadataURI.sol";
 import {TRC1155Utils} from "./utils/TRC1155Utils.sol";
 import {Context} from "../../utils/Context.sol";
-import {IERC165, ERC165} from "../../utils/introspection/ERC165.sol";
+import {ITRC165, TRC165} from "../../utils/introspection/TRC165.sol";
 import {Arrays} from "../../utils/Arrays.sol";
 import {ITRC1155Errors} from "../../interfaces/draft-IERC6093.sol";
 
@@ -18,7 +18,7 @@ import {ITRC1155Errors} from "../../interfaces/draft-IERC6093.sol";
  *
  * Originally based on code by Enjin: https://github.com/enjin/erc-1155
  */
-abstract contract TRC1155 is Context, ERC165, ITRC1155, ITRC1155MetadataURI, ITRC1155Errors {
+abstract contract TRC1155 is Context, TRC165, ITRC1155, ITRC1155MetadataURI, ITRC1155Errors {
     using Arrays for uint256[];
     using Arrays for address[];
 
@@ -36,8 +36,8 @@ abstract contract TRC1155 is Context, ERC165, ITRC1155, ITRC1155MetadataURI, ITR
         _setURI(uri_);
     }
 
-    /// @inheritdoc IERC165
-    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {
+    /// @inheritdoc ITRC165
+    function supportsInterface(bytes4 interfaceId) public view virtual override(TRC165, ITRC165) returns (bool) {
         return
             interfaceId == type(ITRC1155).interfaceId ||
             interfaceId == type(ITRC1155MetadataURI).interfaceId ||
