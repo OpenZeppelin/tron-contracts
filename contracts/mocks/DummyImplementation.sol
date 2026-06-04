@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.21;
 
-import {ERC1967Utils} from "../proxy/ERC1967/ERC1967Utils.sol";
+import {TRC1967Utils} from "../proxy/TRC1967/TRC1967Utils.sol";
 import {StorageSlot} from "../utils/StorageSlot.sol";
 
 contract DummyImplementation {
@@ -46,7 +46,7 @@ contract DummyImplementation {
 
     // Use for forcing an unsafe TransparentUpgradeableProxy admin override
     function unsafeOverrideAdmin(address newAdmin) public {
-        StorageSlot.getAddressSlot(ERC1967Utils.ADMIN_SLOT).value = newAdmin;
+        StorageSlot.getAddressSlot(TRC1967Utils.ADMIN_SLOT).value = newAdmin;
     }
 }
 

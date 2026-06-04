@@ -27,7 +27,7 @@ describe('BeaconProxy', function () {
       const notBeacon = this.other;
 
       await expect(this.newBeaconProxy(notBeacon, '0x'))
-        .to.be.revertedWithCustomError(this.factory, 'ERC1967InvalidBeacon')
+        .to.be.revertedWithCustomError(this.factory, 'TRC1967InvalidBeacon')
         .withArgs(notBeacon);
     });
 
@@ -35,7 +35,7 @@ describe('BeaconProxy', function () {
       const badBeacon = await ethers.deployContract('BadBeaconNoImpl');
 
       // BadBeaconNoImpl does not provide `implementation()` and has no fallback.
-      // This causes ERC1967Utils._setBeacon to revert.
+      // This causes TRC1967Utils._setBeacon to revert.
       await expect(this.newBeaconProxy(badBeacon, '0x')).to.be.revertedWithoutReason();
     });
 
@@ -43,7 +43,7 @@ describe('BeaconProxy', function () {
       const badBeacon = await ethers.deployContract('BadBeaconNotContract');
 
       await expect(this.newBeaconProxy(badBeacon, '0x'))
-        .to.be.revertedWithCustomError(this.factory, 'ERC1967InvalidImplementation')
+        .to.be.revertedWithCustomError(this.factory, 'TRC1967InvalidImplementation')
         .withArgs(await badBeacon.implementation());
     });
   });
@@ -84,7 +84,7 @@ describe('BeaconProxy', function () {
     it('reverting initialization due to value', async function () {
       await expect(this.newBeaconProxy(this.beacon, '0x', { value: 1n })).to.be.revertedWithCustomError(
         this.factory,
-        'ERC1967NonPayable',
+        'TRC1967NonPayable',
       );
     });
 

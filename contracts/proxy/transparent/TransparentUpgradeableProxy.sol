@@ -3,9 +3,9 @@
 
 pragma solidity ^0.8.22;
 
-import {ERC1967Utils} from "../ERC1967/ERC1967Utils.sol";
-import {ERC1967Proxy} from "../ERC1967/ERC1967Proxy.sol";
-import {IERC1967} from "../../interfaces/IERC1967.sol";
+import {TRC1967Utils} from "../TRC1967/TRC1967Utils.sol";
+import {TRC1967Proxy} from "../TRC1967/TRC1967Proxy.sol";
+import {ITRC1967} from "../../interfaces/ITRC1967.sol";
 import {ProxyAdmin} from "./ProxyAdmin.sol";
 
 /**
@@ -14,7 +14,7 @@ import {ProxyAdmin} from "./ProxyAdmin.sol";
  * mechanism. The compiler is unaware that these functions are implemented by {TransparentUpgradeableProxy} and will not
  * include them in the ABI so this interface must be used to interact with it.
  */
-interface ITransparentUpgradeableProxy is IERC1967 {
+interface ITransparentUpgradeableProxy is ITRC1967 {
     /// @dev See {UUPSUpgradeable-upgradeToAndCall}
     function upgradeToAndCall(address newImplementation, bytes calldata data) external payable;
 }
@@ -59,7 +59,7 @@ interface ITransparentUpgradeableProxy is IERC1967 {
  * function and the functions declared in {ITransparentUpgradeableProxy} will be resolved in favor of the new one. This
  * could render the `upgradeToAndCall` function inaccessible, preventing upgradeability and compromising transparency.
  */
-contract TransparentUpgradeableProxy is ERC1967Proxy {
+contract TransparentUpgradeableProxy is TRC1967Proxy {
     // An immutable address for the admin to avoid unnecessary SLOADs before each call
     // at the expense of removing the ability to change the admin once it's set.
     // This is acceptable if the admin is always a ProxyAdmin instance or similar contract
@@ -74,12 +74,12 @@ contract TransparentUpgradeableProxy is ERC1967Proxy {
     /**
      * @dev Initializes an upgradeable proxy managed by an instance of a {ProxyAdmin} with an `initialOwner`,
      * backed by the implementation at `_logic`, and optionally initialized with `_data` as explained in
-     * {ERC1967Proxy-constructor}.
+     * {TRC1967Proxy-constructor}.
      */
-    constructor(address _logic, address initialOwner, bytes memory _data) payable ERC1967Proxy(_logic, _data) {
+    constructor(address _logic, address initialOwner, bytes memory _data) payable TRC1967Proxy(_logic, _data) {
         _admin = address(new ProxyAdmin(initialOwner));
         // Set the storage value and emit an event for ERC-1967 compatibility
-        ERC1967Utils.changeAdmin(_proxyAdmin());
+        TRC1967Utils.changeAdmin(_proxyAdmin());
     }
 
     /**
@@ -105,7 +105,7 @@ contract TransparentUpgradeableProxy is ERC1967Proxy {
     }
 
     /**
-     * @dev Upgrade the implementation of the proxy. See {ERC1967Utils-upgradeToAndCall}.
+     * @dev Upgrade the implementation of the proxy. See {TRC1967Utils-upgradeToAndCall}.
      *
      * Requirements:
      *
@@ -113,6 +113,6 @@ contract TransparentUpgradeableProxy is ERC1967Proxy {
      */
     function _dispatchUpgradeToAndCall() private {
         (address newImplementation, bytes memory data) = abi.decode(msg.data[4:], (address, bytes));
-        ERC1967Utils.upgradeToAndCall(newImplementation, data);
+        TRC1967Utils.upgradeToAndCall(newImplementation, data);
     }
 }

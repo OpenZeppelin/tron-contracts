@@ -10,11 +10,11 @@ async function fixture() {
   const implUpgradeUnsafe = await ethers.deployContract('UUPSUpgradeableUnsafeMock');
   const implUpgradeNonUUPS = await ethers.deployContract('NonUpgradeableMock');
   const implUnsupportedUUID = await ethers.deployContract('UUPSUnsupportedProxiableUUIDMock');
-  // Used for testing non ERC1967 compliant proxies (clones are proxies that don't use the ERC1967 implementation slot)
+  // Used for testing non TRC1967 compliant proxies (clones are proxies that don't use the TRC1967 implementation slot)
   const cloneFactory = await ethers.deployContract('$Clones');
 
   const instance = await ethers
-    .deployContract('ERC1967ProxyUnsafe', [implInitial, '0x'])
+    .deployContract('TRC1967ProxyUnsafe', [implInitial, '0x'])
     .then(proxy => implInitial.attach(proxy.target));
 
   return {
@@ -75,7 +75,7 @@ describe('UUPSUpgradeable', function () {
     ).to.be.revertedWithCustomError(this.implUpgradeOk, 'UUPSUnauthorizedCallContext');
   });
 
-  it('calling upgradeToAndCall from a contract that is not an ERC1967 proxy (with the right implementation) reverts', async function () {
+  it('calling upgradeToAndCall from a contract that is not an TRC1967 proxy (with the right implementation) reverts', async function () {
     // TVM CREATE addresses derive from `sha3(txHash || sender)`, not
     // `(sender, nonce)` like EVM — so `cloneFactory.$clone.staticCall(impl)`
     // returns a different address than the subsequent real
@@ -114,17 +114,17 @@ describe('UUPSUpgradeable', function () {
   // delegate to a non existing upgradeTo function causes a low level revert
   it('reject upgrade to non uups implementation', async function () {
     await expect(this.instance.upgradeToAndCall(this.implUpgradeNonUUPS, '0x'))
-      .to.be.revertedWithCustomError(this.instance, 'ERC1967InvalidImplementation')
+      .to.be.revertedWithCustomError(this.instance, 'TRC1967InvalidImplementation')
       .withArgs(this.implUpgradeNonUUPS);
   });
 
   it('reject proxy address as implementation', async function () {
     const otherInstance = await ethers
-      .deployContract('ERC1967ProxyUnsafe', [this.implInitial, '0x'])
+      .deployContract('TRC1967ProxyUnsafe', [this.implInitial, '0x'])
       .then(proxy => this.implInitial.attach(proxy.target));
 
     await expect(this.instance.upgradeToAndCall(otherInstance, '0x'))
-      .to.be.revertedWithCustomError(this.instance, 'ERC1967InvalidImplementation')
+      .to.be.revertedWithCustomError(this.instance, 'TRC1967InvalidImplementation')
       .withArgs(otherInstance);
   });
 });

@@ -27,7 +27,7 @@ import {ERC165} from "../utils/introspection/ERC165.sol";
 import {ERC165Checker} from "../utils/introspection/ERC165Checker.sol";
 import {TRC1155Holder} from "../token/TRC1155/utils/TRC1155Holder.sol";
 import {TRC721Holder} from "../token/TRC721/utils/TRC721Holder.sol";
-import {ERC1967Utils} from "../proxy/ERC1967/ERC1967Utils.sol";
+import {TRC1967Utils} from "../proxy/TRC1967/TRC1967Utils.sol";
 import {ERC7913P256Verifier} from "../utils/cryptography/verifiers/ERC7913P256Verifier.sol";
 import {ERC7913RSAVerifier} from "../utils/cryptography/verifiers/ERC7913RSAVerifier.sol";
 import {ERC7913WebAuthnVerifier} from "../utils/cryptography/verifiers/ERC7913WebAuthnVerifier.sol";
