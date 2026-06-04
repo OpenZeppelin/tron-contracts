@@ -9,7 +9,8 @@ import {Strings} from "../Strings.sol";
  * @dev Signature message hash utilities for producing digests to be consumed by {ECDSA} recovery or signing.
  *
  * The library provides methods for generating a hash of a message that conforms to the
- * https://eips.ethereum.org/EIPS/eip-191[ERC-191] and https://eips.ethereum.org/EIPS/eip-712[EIP 712]
+ * https://github.com/tronprotocol/tips/blob/master/tip-191.md[TIP-191] (the TRON-side analogue of
+ * https://eips.ethereum.org/EIPS/eip-191[ERC-191]) and https://eips.ethereum.org/EIPS/eip-712[EIP-712]
  * specifications.
  */
 library MessageHashUtils {
