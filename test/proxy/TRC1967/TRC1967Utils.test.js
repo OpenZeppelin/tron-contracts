@@ -7,14 +7,14 @@ const { getAddressInSlot, setSlot, ImplementationSlot, AdminSlot, BeaconSlot } =
 async function fixture() {
   const [, admin, anotherAccount] = await ethers.getSigners();
 
-  const utils = await ethers.deployContract('$ERC1967Utils');
+  const utils = await ethers.deployContract('$TRC1967Utils');
   const v1 = await ethers.deployContract('DummyImplementation');
   const v2 = await ethers.deployContract('CallReceiverMock');
 
   return { admin, anotherAccount, utils, v1, v2 };
 }
 
-describe('ERC1967Utils', function () {
+describe('TRC1967Utils', function () {
   beforeEach('setup', async function () {
     Object.assign(this, await loadFixture(fixture));
   });
@@ -42,7 +42,7 @@ describe('ERC1967Utils', function () {
 
       it('reverts when implementation does not contain code', async function () {
         await expect(this.utils.$upgradeToAndCall(this.anotherAccount, '0x'))
-          .to.be.revertedWithCustomError(this.utils, 'ERC1967InvalidImplementation')
+          .to.be.revertedWithCustomError(this.utils, 'TRC1967InvalidImplementation')
           .withArgs(this.anotherAccount);
       });
 
@@ -50,7 +50,7 @@ describe('ERC1967Utils', function () {
         it('reverts when value is sent', async function () {
           await expect(this.utils.$upgradeToAndCall(this.v2, '0x', { value: 1 })).to.be.revertedWithCustomError(
             this.utils,
-            'ERC1967NonPayable',
+            'TRC1967NonPayable',
           );
         });
       });
@@ -88,7 +88,7 @@ describe('ERC1967Utils', function () {
 
       it('reverts when setting the address zero as admin', async function () {
         await expect(this.utils.$changeAdmin(ethers.ZeroAddress))
-          .to.be.revertedWithCustomError(this.utils, 'ERC1967InvalidAdmin')
+          .to.be.revertedWithCustomError(this.utils, 'TRC1967InvalidAdmin')
           .withArgs(ethers.ZeroAddress);
       });
     });
@@ -118,7 +118,7 @@ describe('ERC1967Utils', function () {
 
       it('reverts when beacon does not contain code', async function () {
         await expect(this.utils.$upgradeBeaconToAndCall(this.anotherAccount, '0x'))
-          .to.be.revertedWithCustomError(this.utils, 'ERC1967InvalidBeacon')
+          .to.be.revertedWithCustomError(this.utils, 'TRC1967InvalidBeacon')
           .withArgs(this.anotherAccount);
       });
 
@@ -126,7 +126,7 @@ describe('ERC1967Utils', function () {
         const newBeacon = await ethers.deployContract('UpgradeableBeaconMock', [this.anotherAccount]);
 
         await expect(this.utils.$upgradeBeaconToAndCall(newBeacon, '0x'))
-          .to.be.revertedWithCustomError(this.utils, 'ERC1967InvalidImplementation')
+          .to.be.revertedWithCustomError(this.utils, 'TRC1967InvalidImplementation')
           .withArgs(this.anotherAccount);
       });
 
@@ -135,7 +135,7 @@ describe('ERC1967Utils', function () {
           const newBeacon = await ethers.deployContract('UpgradeableBeaconMock', [this.v2]);
           await expect(this.utils.$upgradeBeaconToAndCall(newBeacon, '0x', { value: 1 })).to.be.revertedWithCustomError(
             this.utils,
-            'ERC1967NonPayable',
+            'TRC1967NonPayable',
           );
         });
       });

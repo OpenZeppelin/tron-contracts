@@ -3,7 +3,7 @@
 pragma solidity ^0.8.22;
 
 import {UUPSUpgradeable} from "../../proxy/utils/UUPSUpgradeable.sol";
-import {ERC1967Utils} from "../../proxy/ERC1967/ERC1967Utils.sol";
+import {TRC1967Utils} from "../../proxy/TRC1967/TRC1967Utils.sol";
 
 contract NonUpgradeableMock {
     uint256 internal _counter;
@@ -24,7 +24,7 @@ contract UUPSUpgradeableMock is NonUpgradeableMock, UUPSUpgradeable {
 
 contract UUPSUpgradeableUnsafeMock is UUPSUpgradeableMock {
     function upgradeToAndCall(address newImplementation, bytes memory data) public payable override {
-        ERC1967Utils.upgradeToAndCall(newImplementation, data);
+        TRC1967Utils.upgradeToAndCall(newImplementation, data);
     }
 }
 

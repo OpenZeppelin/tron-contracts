@@ -74,9 +74,9 @@ module.exports = function shouldBehaveLikeTransparentUpgradeableProxy() {
     it('can overwrite the admin by the implementation', async function () {
       await this.instance.unsafeOverrideAdmin(this.other);
 
-      const ERC1967AdminSlotValue = await getAddressInSlot(this.proxy, AdminSlot);
-      expect(ERC1967AdminSlotValue).to.equal(this.other);
-      expect(ERC1967AdminSlotValue).to.not.equal(this.proxyAdmin);
+      const TRC1967AdminSlotValue = await getAddressInSlot(this.proxy, AdminSlot);
+      expect(TRC1967AdminSlotValue).to.equal(this.other);
+      expect(TRC1967AdminSlotValue).to.not.equal(this.proxyAdmin);
 
       // Still allows previous admin to execute admin operations
       await expect(this.proxy.connect(this.proxyAdminAsSigner).upgradeToAndCall(this.implementationV1, '0x'))

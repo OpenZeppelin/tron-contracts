@@ -6,10 +6,10 @@ const { getAddressInSlot, ImplementationSlot } = require('../helpers/storage');
 module.exports = function shouldBehaveLikeProxy(allowUninitialized = false) {
   it('cannot be initialized with a non-contract address', async function () {
     const initializeData = '0x00'; // non empty data to avoid uninitialized error
-    const contractFactory = await ethers.getContractFactory('ERC1967Proxy');
+    const contractFactory = await ethers.getContractFactory('TRC1967Proxy');
 
     await expect(this.createProxy(this.nonContractAddress, initializeData))
-      .to.be.revertedWithCustomError(contractFactory, 'ERC1967InvalidImplementation')
+      .to.be.revertedWithCustomError(contractFactory, 'TRC1967InvalidImplementation')
       .withArgs(this.nonContractAddress);
   });
 
@@ -50,11 +50,11 @@ module.exports = function shouldBehaveLikeProxy(allowUninitialized = false) {
     } else {
       it('reverts without initialization', async function () {
         const initializeData = '0x'; // empty data causes uninitialized error
-        const contractFactory = await ethers.getContractFactory('ERC1967Proxy');
+        const contractFactory = await ethers.getContractFactory('TRC1967Proxy');
 
         await expect(this.createProxy(this.implementation, initializeData)).to.be.revertedWithCustomError(
           contractFactory,
-          'ERC1967ProxyUninitialized',
+          'TRC1967ProxyUninitialized',
         );
       });
     }

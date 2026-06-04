@@ -4,11 +4,11 @@
 pragma solidity ^0.8.22;
 
 import {IERC1822Proxiable} from "../../interfaces/draft-IERC1822.sol";
-import {ERC1967Utils} from "../ERC1967/ERC1967Utils.sol";
+import {TRC1967Utils} from "../TRC1967/TRC1967Utils.sol";
 
 /**
  * @dev An upgradeability mechanism designed for UUPS proxies. The functions included here can perform an upgrade of an
- * {ERC1967Proxy}, when this contract is set as the implementation behind such a proxy.
+ * {TRC1967Proxy}, when this contract is set as the implementation behind such a proxy.
  *
  * A security mechanism ensures that an upgrade does not turn off upgradeability accidentally, although this risk is
  * reinstated if the upgrade retains upgradeability but removes the security mechanism, e.g. by replacing
@@ -72,7 +72,7 @@ abstract contract UUPSUpgradeable is IERC1822Proxiable {
      * function revert if invoked through a proxy. This is guaranteed by the `notDelegated` modifier.
      */
     function proxiableUUID() external view notDelegated returns (bytes32) {
-        return ERC1967Utils.IMPLEMENTATION_SLOT;
+        return TRC1967Utils.IMPLEMENTATION_SLOT;
     }
 
     /**
@@ -97,7 +97,7 @@ abstract contract UUPSUpgradeable is IERC1822Proxiable {
     function _checkProxy() internal view virtual {
         if (
             address(this) == __self || // Must be called through delegatecall
-            ERC1967Utils.getImplementation() != __self // Must be called through an active proxy
+            TRC1967Utils.getImplementation() != __self // Must be called through an active proxy
         ) {
             revert UUPSUnauthorizedCallContext();
         }
@@ -132,17 +132,17 @@ abstract contract UUPSUpgradeable is IERC1822Proxiable {
      * As a security check, {proxiableUUID} is invoked in the new implementation, and the return value
      * is expected to be the implementation slot in ERC-1967.
      *
-     * Emits an {IERC1967-Upgraded} event.
+     * Emits an {ITRC1967-Upgraded} event.
      */
     function _upgradeToAndCallUUPS(address newImplementation, bytes memory data) private {
         try IERC1822Proxiable(newImplementation).proxiableUUID() returns (bytes32 slot) {
-            if (slot != ERC1967Utils.IMPLEMENTATION_SLOT) {
+            if (slot != TRC1967Utils.IMPLEMENTATION_SLOT) {
                 revert UUPSUnsupportedProxiableUUID(slot);
             }
-            ERC1967Utils.upgradeToAndCall(newImplementation, data);
+            TRC1967Utils.upgradeToAndCall(newImplementation, data);
         } catch {
             // The implementation is not UUPS
-            revert ERC1967Utils.ERC1967InvalidImplementation(newImplementation);
+            revert TRC1967Utils.TRC1967InvalidImplementation(newImplementation);
         }
     }
 }
