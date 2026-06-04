@@ -4,7 +4,9 @@
 pragma solidity >=0.4.16;
 
 /**
- * @dev Interface of the TRC-20 standard as defined in the ERC.
+ * @dev Interface of the TRC-20 standard as defined in
+ * https://github.com/tronprotocol/tips/blob/master/tip-20.md[TIP-20] (the TRON-side analogue
+ * of https://eips.ethereum.org/EIPS/eip-20[EIP-20]).
  */
 interface ITRC20 {
     /**
