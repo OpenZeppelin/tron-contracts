@@ -17,16 +17,16 @@ const bobP256 = new NonNativeSigner(P256SigningKey.random());
 async function fixture() {
   const [signer, extraSigner, other] = await ethers.getSigners();
   const mock = await ethers.deployContract('$SignatureChecker');
-  const wallet = await ethers.deployContract('ERC1271WalletMock', [signer]);
-  const wallet2 = await ethers.deployContract('ERC1271WalletMock', [extraSigner]);
-  const malicious = await ethers.deployContract('ERC1271MaliciousMock');
+  const wallet = await ethers.deployContract('TRC1271WalletMock', [signer]);
+  const wallet2 = await ethers.deployContract('TRC1271WalletMock', [extraSigner]);
+  const malicious = await ethers.deployContract('TRC1271MaliciousMock');
   const signature = await signer.signMessage(TEST_MESSAGE);
   const verifier = await ethers.deployContract('ERC7913P256Verifier');
 
   return { signer, other, extraSigner, mock, wallet, wallet2, malicious, signature, verifier };
 }
 
-describe('SignatureChecker (ERC1271)', function () {
+describe('SignatureChecker (TRC1271)', function () {
   before('deploying', async function () {
     Object.assign(this, await loadFixture(fixture));
   });
@@ -57,10 +57,10 @@ describe('SignatureChecker (ERC1271)', function () {
     });
   });
 
-  describe('ERC1271 wallet', function () {
+  describe('TRC1271 wallet', function () {
     for (const fn of [
-      'isValidERC1271SignatureNow',
-      'isValidERC1271SignatureNowCalldata',
+      'isValidTRC1271SignatureNow',
+      'isValidTRC1271SignatureNowCalldata',
       'isValidSignatureNow',
       'isValidSignatureNowCalldata',
     ]) {
@@ -85,7 +85,7 @@ describe('SignatureChecker (ERC1271)', function () {
         //   - isValidSignatureNow{,Calldata}: Solidity routes via
         //     `signer.code.length == 0` → ECDSA.tryRecover →
         //     recovered != 0x...04 → returns false. Passes on TVM.
-        //   - isValidERC1271SignatureNow{,Calldata}: inline assembly
+        //   - isValidTRC1271SignatureNow{,Calldata}: inline assembly
         //     calls `staticcall(gas(), 0x4, ptr, len, 0x00, 0x20)`
         //     directly. java-tron's PrecompiledContracts.java
         //     (GreatVoyage-v4.8.1) registers Identity at 0x04
@@ -100,7 +100,7 @@ describe('SignatureChecker (ERC1271)', function () {
         //     staticcall path. Skipped on TVM here so the local test
         //     runner doesn't surface a TRE-image bug as a contract
         //     bug; mainnet behaves like EVM.
-        const tvmTreOomOnIdentity = fn === 'isValidERC1271SignatureNow' || fn === 'isValidERC1271SignatureNowCalldata';
+        const tvmTreOomOnIdentity = fn === 'isValidTRC1271SignatureNow' || fn === 'isValidTRC1271SignatureNowCalldata';
         (tvmTreOomOnIdentity ? it.skip : it)('with identity precompile', async function () {
           await expect(
             this.mock.getFunction(`$${fn}`)(

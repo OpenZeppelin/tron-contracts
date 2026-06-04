@@ -149,7 +149,7 @@ describe('GovernorWithParams', function () {
         });
 
         it('supports EIP-1271 signature signatures', async function () {
-          const wallet = await ethers.deployContract('ERC1271WalletMock', [this.other]);
+          const wallet = await ethers.deployContract('TRC1271WalletMock', [this.other]);
           await this.token.connect(this.voter2).delegate(wallet);
 
           // Run proposal

@@ -3,7 +3,7 @@ const { expect } = require('chai');
 const { Permit, formatType, getDomain } = require('../../helpers/eip712');
 const { ERC7739Signer } = require('../../helpers/erc7739');
 
-function shouldBehaveLikeERC1271({ erc7739 = false } = {}) {
+function shouldBehaveLikeTRC1271({ erc7739 = false } = {}) {
   const MAGIC_VALUE = '0x1626ba7e';
 
   describe(`supports ERC-${erc7739 ? 7739 : 1271}`, function () {
@@ -107,5 +107,5 @@ function shouldBehaveLikeERC1271({ erc7739 = false } = {}) {
 }
 
 module.exports = {
-  shouldBehaveLikeERC1271,
+  shouldBehaveLikeTRC1271,
 };

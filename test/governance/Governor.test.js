@@ -230,7 +230,7 @@ describe('Governor', function () {
         });
 
         it('votes with a valid EIP-1271 signature', async function () {
-          const wallet = await ethers.deployContract('ERC1271WalletMock', [this.userEOA]);
+          const wallet = await ethers.deployContract('TRC1271WalletMock', [this.userEOA]);
 
           await this.token.connect(this.voter1).delegate(wallet);
 

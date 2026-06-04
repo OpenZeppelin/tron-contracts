@@ -1,5 +1,5 @@
 const { ethers } = require('hardhat');
-const { shouldBehaveLikeERC1271 } = require('./ERC1271.behavior');
+const { shouldBehaveLikeTRC1271 } = require('./TRC1271.behavior');
 const { NonNativeSigner, P256SigningKey, RSASHA256SigningKey } = require('../../helpers/signers');
 
 describe('ERC7739', function () {
@@ -9,7 +9,7 @@ describe('ERC7739', function () {
       this.mock = await ethers.deployContract('$ERC7739ECDSAMock', ['ERC7739ECDSA', '1', this.signer.address]);
     });
 
-    shouldBehaveLikeERC1271({ erc7739: true });
+    shouldBehaveLikeTRC1271({ erc7739: true });
   });
 
   describe('for a P256 signer', function () {
@@ -23,7 +23,7 @@ describe('ERC7739', function () {
       ]);
     });
 
-    shouldBehaveLikeERC1271({ erc7739: true });
+    shouldBehaveLikeTRC1271({ erc7739: true });
   });
 
   describe('for an RSA signer', function () {
@@ -37,6 +37,6 @@ describe('ERC7739', function () {
       ]);
     });
 
-    shouldBehaveLikeERC1271({ erc7739: true });
+    shouldBehaveLikeTRC1271({ erc7739: true });
   });
 });

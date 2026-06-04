@@ -4,7 +4,7 @@
 pragma solidity ^0.8.24;
 
 import {ECDSA} from "./ECDSA.sol";
-import {IERC1271} from "../../interfaces/IERC1271.sol";
+import {ITRC1271} from "../../interfaces/ITRC1271.sol";
 import {IERC7913SignatureVerifier} from "../../interfaces/IERC7913.sol";
 import {Bytes} from "../Bytes.sol";
 
@@ -12,17 +12,17 @@ import {Bytes} from "../Bytes.sol";
  * @dev Signature verification helper that can be used instead of `ECDSA.recover` to seamlessly support:
  *
  * * ECDSA signatures from externally owned accounts (EOAs)
- * * ERC-1271 signatures from smart contract wallets like Argent and Safe Wallet (previously Gnosis Safe)
+ * * TRC-1271 signatures from smart contract wallets like Argent and Safe Wallet (previously Gnosis Safe)
  * * ERC-7913 signatures from keys that do not have an Ethereum address of their own
  *
- * See https://eips.ethereum.org/EIPS/eip-1271[ERC-1271] and https://eips.ethereum.org/EIPS/eip-7913[ERC-7913].
+ * See https://github.com/tronprotocol/tips/blob/master/tip-1271.md[TIP-1271] (the TRON-side analogue of https://eips.ethereum.org/EIPS/eip-1271[EIP-1271]) and https://eips.ethereum.org/EIPS/eip-7913[ERC-7913].
  */
 library SignatureChecker {
     using Bytes for bytes;
 
     /**
      * @dev Checks if a signature is valid for a given signer and data hash. If the signer has code, the
-     * signature is validated against it using ERC-1271, otherwise it's validated using `ECDSA.recover`.
+     * signature is validated against it using TRC-1271, otherwise it's validated using `ECDSA.recover`.
      *
      * NOTE: Unlike ECDSA signatures, contract signatures are revocable, and the outcome of this function can thus
      * change through time. It could return true at block N and false at block N+1 (or the opposite).
@@ -34,7 +34,7 @@ library SignatureChecker {
             (address recovered, ECDSA.RecoverError err, ) = ECDSA.tryRecover(hash, signature);
             return err == ECDSA.RecoverError.NoError && recovered == signer;
         } else {
-            return isValidERC1271SignatureNow(signer, hash, signature);
+            return isValidTRC1271SignatureNow(signer, hash, signature);
         }
     }
 
@@ -50,23 +50,23 @@ library SignatureChecker {
             (address recovered, ECDSA.RecoverError err, ) = ECDSA.tryRecoverCalldata(hash, signature);
             return err == ECDSA.RecoverError.NoError && recovered == signer;
         } else {
-            return isValidERC1271SignatureNowCalldata(signer, hash, signature);
+            return isValidTRC1271SignatureNowCalldata(signer, hash, signature);
         }
     }
 
     /**
      * @dev Checks if a signature is valid for a given signer and data hash. The signature is validated
-     * against the signer smart contract using ERC-1271.
+     * against the signer smart contract using TRC-1271.
      *
      * NOTE: Unlike ECDSA signatures, contract signatures are revocable, and the outcome of this function can thus
      * change through time. It could return true at block N and false at block N+1 (or the opposite).
      */
-    function isValidERC1271SignatureNow(
+    function isValidTRC1271SignatureNow(
         address signer,
         bytes32 hash,
         bytes memory signature
     ) internal view returns (bool result) {
-        bytes4 selector = IERC1271.isValidSignature.selector;
+        bytes4 selector = ITRC1271.isValidSignature.selector;
         uint256 length = signature.length;
 
         assembly ("memory-safe") {
@@ -87,12 +87,12 @@ library SignatureChecker {
         }
     }
 
-    function isValidERC1271SignatureNowCalldata(
+    function isValidTRC1271SignatureNowCalldata(
         address signer,
         bytes32 hash,
         bytes calldata signature
     ) internal view returns (bool result) {
-        bytes4 selector = IERC1271.isValidSignature.selector;
+        bytes4 selector = ITRC1271.isValidSignature.selector;
         uint256 length = signature.length;
 
         assembly ("memory-safe") {

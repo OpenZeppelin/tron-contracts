@@ -103,7 +103,7 @@ interface IGovernor is ITRC165, IERC6372 {
 
     /**
      * @dev The provided signature is not valid for the expected `voter`.
-     * If the `voter` is a contract, the signature is not valid using {IERC1271-isValidSignature}.
+     * If the `voter` is a contract, the signature is not valid using {ITRC1271-isValidSignature}.
      */
     error GovernorInvalidSignature(address voter);
 
