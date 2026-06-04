@@ -55,7 +55,7 @@ interface ITRC20Permit {
      * - `spender` cannot be the zero address.
      * - `deadline` must be a timestamp in the future.
      * - `v`, `r` and `s` must be a valid `secp256k1` signature from `owner`
-     * over the EIP712-formatted function arguments.
+     * over the TIP712-formatted function arguments.
      * - the signature must use ``owner``'s current nonce (see {nonces}).
      *
      * For more information on the signature format, see the
@@ -84,7 +84,7 @@ interface ITRC20Permit {
     function nonces(address owner) external view returns (uint256);
 
     /**
-     * @dev Returns the domain separator used in the encoding of the signature for {permit}, as defined by {EIP712}.
+     * @dev Returns the domain separator used in the encoding of the signature for {permit}, as defined by {TIP712}.
      */
     // solhint-disable-next-line func-name-mixedcase
     function DOMAIN_SEPARATOR() external view returns (bytes32);

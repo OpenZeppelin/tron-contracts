@@ -16,7 +16,7 @@ const fixture = async () => {
   const lengths = {};
   for (const [shortOrLong, [name, version]] of Object.entries(LENGTHS)) {
     lengths[shortOrLong] = { name, version };
-    lengths[shortOrLong].eip712 = await ethers.deployContract('$EIP712Verifier', [name, version]);
+    lengths[shortOrLong].eip712 = await ethers.deployContract('$TIP712Verifier', [name, version]);
     lengths[shortOrLong].domain = {
       name,
       version,
@@ -28,7 +28,7 @@ const fixture = async () => {
   return { from, to, lengths };
 };
 
-describe('EIP712', function () {
+describe('TIP712', function () {
   for (const [shortOrLong, [name, version]] of Object.entries(LENGTHS)) {
     describe(`with ${shortOrLong} name and version`, function () {
       beforeEach('deploying', async function () {
@@ -59,7 +59,7 @@ describe('EIP712', function () {
               .$clone(this.eip712)
               .then(tx => tx.wait())
               .then(receipt => receipt.logs.find(ev => ev.fragment.name == 'return$clone_address').args.instance)
-              .then(address => ethers.getContractAt('$EIP712Verifier', address));
+              .then(address => ethers.getContractAt('$TIP712Verifier', address));
 
             const expectedDomain = { ...this.domain, verifyingContract: clone.target };
             expect(await getDomain(clone)).to.be.deep.equal(expectedDomain);
@@ -94,11 +94,11 @@ describe('EIP712', function () {
       });
 
       it('name', async function () {
-        expect(await this.eip712.$_EIP712Name()).to.equal(name);
+        expect(await this.eip712.$_TIP712Name()).to.equal(name);
       });
 
       it('version', async function () {
-        expect(await this.eip712.$_EIP712Version()).to.equal(version);
+        expect(await this.eip712.$_TIP712Version()).to.equal(version);
       });
     });
   }
