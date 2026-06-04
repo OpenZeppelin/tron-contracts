@@ -3,7 +3,7 @@
 
 pragma solidity >=0.8.4;
 
-import {IERC165} from "../interfaces/IERC165.sol";
+import {ITRC165} from "../interfaces/ITRC165.sol";
 import {IERC6372} from "../interfaces/IERC6372.sol";
 
 /**
@@ -12,7 +12,7 @@ import {IERC6372} from "../interfaces/IERC6372.sol";
  * NOTE: Event parameters lack the `indexed` keyword for compatibility with GovernorBravo events.
  * Making event parameters `indexed` affects how events are decoded, potentially breaking existing indexers.
  */
-interface IGovernor is IERC165, IERC6372 {
+interface IGovernor is ITRC165, IERC6372 {
     enum ProposalState {
         Pending,
         Active,

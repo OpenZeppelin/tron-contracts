@@ -13,7 +13,7 @@ pragma solidity >=0.5.0;
  * for themselves, but externally-owned accounts (EOA) must delegate this to a
  * contract.
  *
- * {IERC165} interfaces can also be queried via the registry.
+ * {ITRC165} interfaces can also be queried via the registry.
  *
  * For an in-depth explanation and source code analysis, see the ERC text.
  */
@@ -58,7 +58,7 @@ interface IERC1820Registry {
      * Requirements:
      *
      * - the caller must be the current manager for `account`.
-     * - `interfaceHash` must not be an {IERC165} interface id (i.e. it must not
+     * - `interfaceHash` must not be an {ITRC165} interface id (i.e. it must not
      * end in 28 zeroes).
      * - `implementer` must implement {IERC1820Implementer} and return true when
      * queried for support, unless `implementer` is the caller. See
@@ -70,7 +70,7 @@ interface IERC1820Registry {
      * @dev Returns the implementer of `interfaceHash` for `account`. If no such
      * implementer is registered, returns the zero address.
      *
-     * If `interfaceHash` is an {IERC165} interface id (i.e. it ends with 28
+     * If `interfaceHash` is an {ITRC165} interface id (i.e. it ends with 28
      * zeroes), `account` will be queried for support of it.
      *
      * `account` being the zero address is an alias for the caller's address.

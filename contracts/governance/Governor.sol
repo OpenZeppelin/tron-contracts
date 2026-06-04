@@ -7,7 +7,7 @@ import {ITRC1155Receiver} from "../token/TRC1155/ITRC1155Receiver.sol";
 import {ITRC721Receiver} from "../token/TRC721/ITRC721Receiver.sol";
 import {EIP712} from "../utils/cryptography/EIP712.sol";
 import {SignatureChecker} from "../utils/cryptography/SignatureChecker.sol";
-import {IERC165, ERC165} from "../utils/introspection/ERC165.sol";
+import {ITRC165, TRC165} from "../utils/introspection/TRC165.sol";
 import {SafeCast} from "../utils/math/SafeCast.sol";
 import {DoubleEndedQueue} from "../utils/structs/DoubleEndedQueue.sol";
 import {Address} from "../utils/Address.sol";
@@ -25,7 +25,7 @@ import {IGovernor, IERC6372} from "./IGovernor.sol";
  * - A voting module must implement {_getVotes}
  * - Additionally, {votingPeriod}, {votingDelay}, and {quorum} must also be implemented
  */
-abstract contract Governor is Context, ERC165, EIP712, Nonces, IGovernor, ITRC721Receiver, ITRC1155Receiver {
+abstract contract Governor is Context, TRC165, EIP712, Nonces, IGovernor, ITRC721Receiver, ITRC1155Receiver {
     using DoubleEndedQueue for DoubleEndedQueue.Bytes32Deque;
 
     bytes32 public constant BALLOT_TYPEHASH =
@@ -86,8 +86,8 @@ abstract contract Governor is Context, ERC165, EIP712, Nonces, IGovernor, ITRC72
         }
     }
 
-    /// @inheritdoc IERC165
-    function supportsInterface(bytes4 interfaceId) public view virtual override(IERC165, ERC165) returns (bool) {
+    /// @inheritdoc ITRC165
+    function supportsInterface(bytes4 interfaceId) public view virtual override(ITRC165, TRC165) returns (bool) {
         return
             interfaceId == type(IGovernor).interfaceId ||
             interfaceId == type(IGovernor).interfaceId ^ IGovernor.getProposalId.selector ||

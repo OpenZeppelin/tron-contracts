@@ -8,7 +8,7 @@ import {ITRC721Metadata} from "./extensions/ITRC721Metadata.sol";
 import {TRC721Utils} from "./utils/TRC721Utils.sol";
 import {Context} from "../../utils/Context.sol";
 import {Strings} from "../../utils/Strings.sol";
-import {IERC165, ERC165} from "../../utils/introspection/ERC165.sol";
+import {ITRC165, TRC165} from "../../utils/introspection/TRC165.sol";
 import {ITRC721Errors} from "../../interfaces/draft-IERC6093.sol";
 
 /**
@@ -18,7 +18,7 @@ import {ITRC721Errors} from "../../interfaces/draft-IERC6093.sol";
  * the Metadata extension, but not including the Enumerable extension, which is available separately as
  * {TRC721Enumerable}.
  */
-abstract contract TRC721 is Context, ERC165, ITRC721, ITRC721Metadata, ITRC721Errors {
+abstract contract TRC721 is Context, TRC165, ITRC721, ITRC721Metadata, ITRC721Errors {
     using Strings for uint256;
 
     // Token name
@@ -43,8 +43,8 @@ abstract contract TRC721 is Context, ERC165, ITRC721, ITRC721Metadata, ITRC721Er
         _symbol = symbol_;
     }
 
-    /// @inheritdoc IERC165
-    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {
+    /// @inheritdoc ITRC165
+    function supportsInterface(bytes4 interfaceId) public view virtual override(TRC165, ITRC165) returns (bool) {
         return
             interfaceId == type(ITRC721).interfaceId ||
             interfaceId == type(ITRC721Metadata).interfaceId ||

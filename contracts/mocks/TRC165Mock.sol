@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.20;
 
-import {IERC165} from "../utils/introspection/IERC165.sol";
+import {ITRC165} from "../utils/introspection/ITRC165.sol";
 
 /**
  * https://eips.ethereum.org/EIPS/eip-214#specification
@@ -14,11 +14,11 @@ import {IERC165} from "../utils/introspection/IERC165.sol";
  * therefore, because this contract is staticcall'd we need to not emit events (which is how solidity-coverage works)
  * solidity-coverage ignores the /mocks folder, so we duplicate its implementation here to avoid instrumenting it
  */
-contract SupportsInterfaceWithLookupMock is IERC165 {
+contract SupportsInterfaceWithLookupMock is ITRC165 {
     /*
      * bytes4(keccak256('supportsInterface(bytes4)')) == 0x01ffc9a7
      */
-    bytes4 public constant INTERFACE_ID_ERC165 = 0x01ffc9a7;
+    bytes4 public constant INTERFACE_ID_TRC165 = 0x01ffc9a7;
 
     /**
      * @dev A mapping of interface id to whether or not it's supported.
@@ -30,7 +30,7 @@ contract SupportsInterfaceWithLookupMock is IERC165 {
      * implement ERC-165 itself.
      */
     constructor() {
-        _registerInterface(INTERFACE_ID_ERC165);
+        _registerInterface(INTERFACE_ID_TRC165);
     }
 
     /**
@@ -44,12 +44,12 @@ contract SupportsInterfaceWithLookupMock is IERC165 {
      * @dev Private method for registering an interface.
      */
     function _registerInterface(bytes4 interfaceId) internal {
-        require(interfaceId != 0xffffffff, "ERC165InterfacesSupported: invalid interface id");
+        require(interfaceId != 0xffffffff, "TRC165InterfacesSupported: invalid interface id");
         _supportedInterfaces[interfaceId] = true;
     }
 }
 
-contract ERC165InterfacesSupported is SupportsInterfaceWithLookupMock {
+contract TRC165InterfacesSupported is SupportsInterfaceWithLookupMock {
     constructor(bytes4[] memory interfaceIds) {
         for (uint256 i = 0; i < interfaceIds.length; i++) {
             _registerInterface(interfaceIds[i]);
@@ -57,8 +57,8 @@ contract ERC165InterfacesSupported is SupportsInterfaceWithLookupMock {
     }
 }
 
-// Similar to ERC165InterfacesSupported, but revert (without reason) when an interface is not supported
-contract ERC165RevertInvalid is SupportsInterfaceWithLookupMock {
+// Similar to TRC165InterfacesSupported, but revert (without reason) when an interface is not supported
+contract TRC165RevertInvalid is SupportsInterfaceWithLookupMock {
     constructor(bytes4[] memory interfaceIds) {
         for (uint256 i = 0; i < interfaceIds.length; i++) {
             _registerInterface(interfaceIds[i]);
@@ -71,7 +71,7 @@ contract ERC165RevertInvalid is SupportsInterfaceWithLookupMock {
     }
 }
 
-contract ERC165MaliciousData {
+contract TRC165MaliciousData {
     function supportsInterface(bytes4) public pure returns (bool) {
         assembly {
             mstore(0, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff)
@@ -80,15 +80,15 @@ contract ERC165MaliciousData {
     }
 }
 
-contract ERC165MissingData {
+contract TRC165MissingData {
     function supportsInterface(bytes4 interfaceId) public view {} // missing return
 }
 
-contract ERC165NotSupported {}
+contract TRC165NotSupported {}
 
-contract ERC165ReturnBombMock is IERC165 {
+contract TRC165ReturnBombMock is ITRC165 {
     function supportsInterface(bytes4 interfaceId) public pure override returns (bool) {
-        if (interfaceId == type(IERC165).interfaceId) {
+        if (interfaceId == type(ITRC165).interfaceId) {
             assembly {
                 mstore(0, 1)
             }

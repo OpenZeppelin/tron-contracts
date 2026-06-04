@@ -4,7 +4,7 @@
 pragma solidity ^0.8.24;
 
 import {TRC721} from "../TRC721.sol";
-import {IERC165} from "../../../utils/introspection/ERC165.sol";
+import {ITRC165} from "../../../utils/introspection/TRC165.sol";
 import {ERC2981} from "../../common/ERC2981.sol";
 
 /**
@@ -19,7 +19,7 @@ import {ERC2981} from "../../common/ERC2981.sol";
  * voluntarily pay royalties together with sales, but note that this standard is not yet widely supported.
  */
 abstract contract TRC721Royalty is ERC2981, TRC721 {
-    /// @inheritdoc IERC165
+    /// @inheritdoc ITRC165
     function supportsInterface(bytes4 interfaceId) public view virtual override(TRC721, ERC2981) returns (bool) {
         return super.supportsInterface(interfaceId);
     }

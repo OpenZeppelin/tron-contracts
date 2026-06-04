@@ -3,14 +3,14 @@
 
 pragma solidity >=0.6.2;
 
-import {IERC165} from "../../utils/introspection/IERC165.sol";
+import {ITRC165} from "../../utils/introspection/ITRC165.sol";
 
 /**
  * @dev Required interface of a TRC-1155 compliant contract, as defined in
  * https://github.com/tronprotocol/tips/blob/master/tip-1155.md[TIP-1155]
  * (the TRON-side analogue of https://eips.ethereum.org/EIPS/eip-1155[EIP-1155]).
  */
-interface ITRC1155 is IERC165 {
+interface ITRC1155 is ITRC165 {
     /**
      * @dev Emitted when `value` amount of tokens of type `id` are transferred from `from` to `to` by `operator`.
      */

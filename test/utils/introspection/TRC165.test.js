@@ -5,11 +5,11 @@ const { shouldSupportInterfaces } = require('./SupportsInterface.behavior');
 
 async function fixture() {
   return {
-    mock: await ethers.deployContract('$ERC165'),
+    mock: await ethers.deployContract('$TRC165'),
   };
 }
 
-describe('ERC165', function () {
+describe('TRC165', function () {
   beforeEach(async function () {
     Object.assign(this, await loadFixture(fixture));
   });

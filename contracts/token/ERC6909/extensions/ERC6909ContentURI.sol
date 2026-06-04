@@ -5,7 +5,7 @@ pragma solidity ^0.8.20;
 
 import {ERC6909} from "../ERC6909.sol";
 import {IERC6909ContentURI} from "../../../interfaces/IERC6909.sol";
-import {IERC165} from "../../../utils/introspection/IERC165.sol";
+import {ITRC165} from "../../../utils/introspection/ITRC165.sol";
 
 /**
  * @dev Implementation of the Content URI extension defined in ERC6909.
@@ -20,8 +20,8 @@ contract ERC6909ContentURI is ERC6909, IERC6909ContentURI {
     /// @dev See {ITRC1155-URI}
     event URI(string value, uint256 indexed id);
 
-    /// @inheritdoc IERC165
-    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC6909, IERC165) returns (bool) {
+    /// @inheritdoc ITRC165
+    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC6909, ITRC165) returns (bool) {
         return interfaceId == type(IERC6909ContentURI).interfaceId || super.supportsInterface(interfaceId);
     }
 

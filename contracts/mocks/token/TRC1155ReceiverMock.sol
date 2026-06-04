@@ -3,9 +3,9 @@
 pragma solidity ^0.8.20;
 
 import {ITRC1155Receiver} from "../../token/TRC1155/ITRC1155Receiver.sol";
-import {ERC165} from "../../utils/introspection/ERC165.sol";
+import {TRC165} from "../../utils/introspection/TRC165.sol";
 
-contract TRC1155ReceiverMock is ERC165, ITRC1155Receiver {
+contract TRC1155ReceiverMock is TRC165, ITRC1155Receiver {
     enum RevertType {
         None,
         RevertWithoutMessage,
