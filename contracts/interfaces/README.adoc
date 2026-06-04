@@ -10,7 +10,7 @@ are useful to interact with third party contracts that implement them.
 - {ITRC20}
 - {ITRC20Errors}
 - {ITRC20Metadata}
-- {IERC165}
+- {ITRC165}
 - {ITRC721}
 - {ITRC721Receiver}
 - {ITRC721Enumerable}

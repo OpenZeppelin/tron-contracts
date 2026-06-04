@@ -4,14 +4,14 @@
 pragma solidity ^0.8.20;
 
 import {TRC20} from "../TRC20.sol";
-import {ERC165, IERC165} from "../../../utils/introspection/ERC165.sol";
+import {TRC165, ITRC165} from "../../../utils/introspection/TRC165.sol";
 import {IERC7802} from "../../../interfaces/draft-IERC7802.sol";
 
 /**
  * @dev TRC20 extension that implements the standard token interface according to
  * https://eips.ethereum.org/EIPS/eip-7802[ERC-7802].
  */
-abstract contract TRC20Bridgeable is TRC20, ERC165, IERC7802 {
+abstract contract TRC20Bridgeable is TRC20, TRC165, IERC7802 {
     /// @dev Modifier to restrict access to the token bridge.
     modifier onlyTokenBridge() {
         // Token bridge should never be impersonated using a relayer/forwarder. Using msg.sender is preferable to
@@ -20,8 +20,8 @@ abstract contract TRC20Bridgeable is TRC20, ERC165, IERC7802 {
         _;
     }
 
-    /// @inheritdoc ERC165
-    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {
+    /// @inheritdoc TRC165
+    function supportsInterface(bytes4 interfaceId) public view virtual override(TRC165, ITRC165) returns (bool) {
         return interfaceId == type(IERC7802).interfaceId || super.supportsInterface(interfaceId);
     }
 

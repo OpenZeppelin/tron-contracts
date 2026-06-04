@@ -4,7 +4,7 @@
 pragma solidity >=0.6.2;
 
 import {ITRC20} from "./ITRC20.sol";
-import {IERC165} from "./IERC165.sol";
+import {ITRC165} from "./ITRC165.sol";
 
 /**
  * @title IERC1363
@@ -13,7 +13,7 @@ import {IERC165} from "./IERC165.sol";
  * Defines an extension interface for TRC-20 tokens that supports executing code on a recipient contract
  * after `transfer` or `transferFrom`, or code on a spender contract after `approve`, in a single transaction.
  */
-interface IERC1363 is ITRC20, IERC165 {
+interface IERC1363 is ITRC20, ITRC165 {
     /*
      * Note: the ERC-165 identifier for this interface is 0xb0202a11.
      * 0xb0202a11 ===

@@ -4,7 +4,7 @@
 pragma solidity ^0.8.20;
 
 import {TRC20} from "../TRC20.sol";
-import {IERC165, ERC165} from "../../../utils/introspection/ERC165.sol";
+import {ITRC165, TRC165} from "../../../utils/introspection/TRC165.sol";
 import {IERC1363} from "../../../interfaces/IERC1363.sol";
 import {ERC1363Utils} from "../utils/ERC1363Utils.sol";
 
@@ -16,7 +16,7 @@ import {ERC1363Utils} from "../utils/ERC1363Utils.sol";
  *
  * _Available since v5.1._
  */
-abstract contract ERC1363 is TRC20, ERC165, IERC1363 {
+abstract contract ERC1363 is TRC20, TRC165, IERC1363 {
     /**
      * @dev Indicates a failure within the {transfer} part of a transferAndCall operation.
      * @param receiver Address to which tokens are being transferred.
@@ -39,8 +39,8 @@ abstract contract ERC1363 is TRC20, ERC165, IERC1363 {
      */
     error ERC1363ApproveFailed(address spender, uint256 value);
 
-    /// @inheritdoc IERC165
-    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {
+    /// @inheritdoc ITRC165
+    function supportsInterface(bytes4 interfaceId) public view virtual override(TRC165, ITRC165) returns (bool) {
         return interfaceId == type(IERC1363).interfaceId || super.supportsInterface(interfaceId);
     }
 

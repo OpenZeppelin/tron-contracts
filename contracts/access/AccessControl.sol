@@ -5,7 +5,7 @@ pragma solidity ^0.8.20;
 
 import {IAccessControl} from "./IAccessControl.sol";
 import {Context} from "../utils/Context.sol";
-import {ERC165} from "../utils/introspection/ERC165.sol";
+import {TRC165} from "../utils/introspection/TRC165.sol";
 
 /**
  * @dev Contract module that allows children to implement role-based access
@@ -46,7 +46,7 @@ import {ERC165} from "../utils/introspection/ERC165.sol";
  * accounts that have been granted it. We recommend using {AccessControlDefaultAdminRules}
  * to enforce additional security measures for this role.
  */
-abstract contract AccessControl is Context, IAccessControl, ERC165 {
+abstract contract AccessControl is Context, IAccessControl, TRC165 {
     struct RoleData {
         mapping(address account => bool) hasRole;
         bytes32 adminRole;
@@ -65,7 +65,7 @@ abstract contract AccessControl is Context, IAccessControl, ERC165 {
         _;
     }
 
-    /// @inheritdoc ERC165
+    /// @inheritdoc TRC165
     function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
         return interfaceId == type(IAccessControl).interfaceId || super.supportsInterface(interfaceId);
     }

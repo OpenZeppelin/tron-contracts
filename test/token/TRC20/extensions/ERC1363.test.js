@@ -45,7 +45,7 @@ describe('ERC1363', function () {
     Object.assign(this, await loadFixture(fixture));
   });
 
-  shouldSupportInterfaces(['ERC165', 'ERC1363']);
+  shouldSupportInterfaces(['TRC165', 'ERC1363']);
   shouldBehaveLikeTRC20(value);
 
   describe('transferAndCall', function () {

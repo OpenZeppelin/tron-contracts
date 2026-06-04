@@ -5,7 +5,7 @@ pragma solidity ^0.8.24;
 
 import {TRC721} from "../TRC721.sol";
 import {ITRC721Enumerable} from "./ITRC721Enumerable.sol";
-import {IERC165} from "../../../utils/introspection/ERC165.sol";
+import {ITRC165} from "../../../utils/introspection/TRC165.sol";
 
 /**
  * @dev This implements an optional extension of {TRC721} defined in the ERC that adds enumerability
@@ -33,8 +33,8 @@ abstract contract TRC721Enumerable is TRC721, ITRC721Enumerable {
      */
     error TRC721EnumerableForbiddenBatchMint();
 
-    /// @inheritdoc IERC165
-    function supportsInterface(bytes4 interfaceId) public view virtual override(IERC165, TRC721) returns (bool) {
+    /// @inheritdoc ITRC165
+    function supportsInterface(bytes4 interfaceId) public view virtual override(ITRC165, TRC721) returns (bool) {
         return interfaceId == type(ITRC721Enumerable).interfaceId || super.supportsInterface(interfaceId);
     }
 

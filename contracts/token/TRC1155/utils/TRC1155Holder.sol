@@ -3,7 +3,7 @@
 
 pragma solidity ^0.8.20;
 
-import {IERC165, ERC165} from "../../../utils/introspection/ERC165.sol";
+import {ITRC165, TRC165} from "../../../utils/introspection/TRC165.sol";
 import {ITRC1155Receiver} from "../ITRC1155Receiver.sol";
 
 /**
@@ -14,9 +14,9 @@ import {ITRC1155Receiver} from "../ITRC1155Receiver.sol";
  *
  * @custom:stateless
  */
-abstract contract TRC1155Holder is ERC165, ITRC1155Receiver {
-    /// @inheritdoc IERC165
-    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {
+abstract contract TRC1155Holder is TRC165, ITRC1155Receiver {
+    /// @inheritdoc ITRC165
+    function supportsInterface(bytes4 interfaceId) public view virtual override(TRC165, ITRC165) returns (bool) {
         return interfaceId == type(ITRC1155Receiver).interfaceId || super.supportsInterface(interfaceId);
     }
 

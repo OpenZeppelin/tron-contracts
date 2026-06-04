@@ -32,7 +32,7 @@ const GOVERNOR_INTERFACE = [
   'castVoteWithReasonAndParamsBySig(uint256,uint8,address,string,bytes,bytes)',
 ];
 const SIGNATURES = {
-  ERC165: ['supportsInterface(bytes4)'],
+  TRC165: ['supportsInterface(bytes4)'],
   TRC721: [
     'balanceOf(address)',
     'ownerOf(uint256)',
@@ -113,11 +113,11 @@ function shouldSupportInterfaces(interfaces = [], signatures = SIGNATURES) {
     interfaces = Object.keys(interfaces);
   }
 
-  interfaces.unshift('ERC165');
-  signatures.ERC165 = SIGNATURES.ERC165;
+  interfaces.unshift('TRC165');
+  signatures.TRC165 = SIGNATURES.TRC165;
   const interfaceIds = mapValues(signatures, interfaceId, ([name]) => interfaces.includes(name));
 
-  describe('ERC165', function () {
+  describe('TRC165', function () {
     beforeEach(function () {
       this.contractUnderTest = this.mock || this.token;
     });

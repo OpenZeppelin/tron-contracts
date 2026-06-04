@@ -77,7 +77,7 @@ describe('TRC20Bridgeable', function () {
     });
   });
 
-  describe('ERC165', function () {
+  describe('TRC165', function () {
     shouldSupportInterfaces({
       ERC7802: ['crosschainMint(address,uint256)', 'crosschainBurn(address,uint256)'],
     });

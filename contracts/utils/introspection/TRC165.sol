@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.4.0) (utils/introspection/ERC165.sol)
+// OpenZeppelin Contracts (last updated v5.4.0) (utils/introspection/TRC165.sol)
 
 pragma solidity ^0.8.20;
 
-import {IERC165} from "./IERC165.sol";
+import {ITRC165} from "./ITRC165.sol";
 
 /**
- * @dev Implementation of the {IERC165} interface.
+ * @dev Implementation of the {ITRC165} interface.
  *
- * Contracts that want to implement ERC-165 should inherit from this contract and override {supportsInterface} to check
+ * Contracts that want to implement TRC-165 should inherit from this contract and override {supportsInterface} to check
  * for the additional interface id that will be supported. For example:
  *
  * ```solidity
@@ -17,9 +17,9 @@ import {IERC165} from "./IERC165.sol";
  * }
  * ```
  */
-abstract contract ERC165 is IERC165 {
-    /// @inheritdoc IERC165
+abstract contract TRC165 is ITRC165 {
+    /// @inheritdoc ITRC165
     function supportsInterface(bytes4 interfaceId) public view virtual returns (bool) {
-        return interfaceId == type(IERC165).interfaceId;
+        return interfaceId == type(ITRC165).interfaceId;
     }
 }
