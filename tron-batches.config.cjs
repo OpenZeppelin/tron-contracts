@@ -49,27 +49,35 @@ module.exports = [
     dirs: ['contracts/account', 'contracts/crosschain'],
   },
   { name: '09-spike', dirs: [], extraLeaves: ['Counter'] },
-  // Mocks split across batches to stay under the tron-solc 0.8.26 wasm
-  // memory ceiling. Top-level + utils is the safest fit; everything
-  // domain-specific lives in its own pass.
-  {
-    name: '10-mocks-base',
-    dirs: [],
-    extraLeaves: (() => {
-      const fs = require('fs');
-      const path = require('path');
-      // tron-batches.config.cjs lives at the project root, so the
-      // top-level mocks dir is `__dirname/contracts/mocks`. (This file
-      // used to live under scripts/, which is why the prior version
-      // had `__dirname/..` — the path bumped by one level when we
-      // promoted it to the consumer-config layer.)
-      const root = path.join(__dirname, 'contracts/mocks');
-      if (!fs.existsSync(root)) return [];
-      return fs.readdirSync(root)
-        .filter(f => f.endsWith('.sol'))
-        .map(f => f.replace(/\.sol$/, ''));
-    })(),
-  },
+  // Top-level mocks, split into sub-batches to stay under the tron-solc
+  // 0.8.26 wasm memory ceiling. The non-upgradeable corpus compiles all ~34
+  // top-level mocks in ONE pass, but the transpiled (upgradeable) variant
+  // inflates each mock with ERC-7201 namespaced-storage accessors plus a
+  // generated `*WithInit` constructor variant, so the single-pass closure
+  // OOMs ("memory access out of bounds"). Chunked dynamically so it tracks
+  // the mock set; lower CHUNK if a pass still OOMs in the upgradeable build.
+  // (In the non-upgradeable repo this just runs as a few cheap passes.)
+  ...(() => {
+    const fs = require('fs');
+    const path = require('path');
+    const root = path.join(__dirname, 'contracts/mocks');
+    if (!fs.existsSync(root)) return [{ name: '10-mocks-base', dirs: [] }];
+    const leaves = fs
+      .readdirSync(root)
+      .filter(f => f.endsWith('.sol'))
+      .map(f => f.replace(/\.sol$/, ''))
+      .sort();
+    const CHUNK = 12;
+    const out = [];
+    for (let i = 0; i < leaves.length; i += CHUNK) {
+      out.push({
+        name: `10-mocks-base-${String(i / CHUNK + 1).padStart(2, '0')}`,
+        dirs: [],
+        extraLeaves: leaves.slice(i, i + CHUNK),
+      });
+    }
+    return out;
+  })(),
   { name: '11-mocks-token', dirs: ['contracts/mocks/token'] },
   { name: '12-mocks-governance', dirs: ['contracts/mocks/governance'] },
   { name: '13-mocks-proxy-crosschain', dirs: ['contracts/mocks/proxy', 'contracts/mocks/crosschain', 'contracts/mocks/utils', 'contracts/mocks/compound'] },
