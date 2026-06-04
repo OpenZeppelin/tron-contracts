@@ -1,7 +1,6 @@
 const { ethers } = require('hardhat');
 const { expect } = require('chai');
 const { loadFixture } = require('@nomicfoundation/hardhat-network-helpers');
-const { PANIC_CODES } = require('@nomicfoundation/hardhat-chai-matchers/panic');
 const { StandardMerkleTree } = require('@openzeppelin/merkle-tree');
 
 const { generators } = require('../../helpers/random');
@@ -44,11 +43,7 @@ describe('MerkleTree', function () {
     // into one wall-clock slot. Same pattern used elsewhere in this
     // file — the per-tx savings are tiny but mocha pays this on every
     // beforeEach-then-assert sequence.
-    const [root, depth, nextIdx] = await Promise.all([
-      this.mock.root(),
-      this.mock.depth(),
-      this.mock.nextLeafIndex(),
-    ]);
+    const [root, depth, nextIdx] = await Promise.all([this.mock.root(), this.mock.depth(), this.mock.nextLeafIndex()]);
     expect(root).to.equal(merkleTree.root);
     expect(depth).to.equal(DEPTH);
     expect(nextIdx).to.equal(0n);

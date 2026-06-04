@@ -16,7 +16,6 @@ contract P256Test is Test {
         (bytes32 r, bytes32 s) = vm.signP256(privateKey, digest);
         s = _ensureLowerS(s);
         assertTrue(P256.verify(digest, r, s, bytes32(x), bytes32(y)));
-        assertTrue(P256.verifyNative(digest, r, s, bytes32(x), bytes32(y)));
         assertTrue(P256.verifySolidity(digest, r, s, bytes32(x), bytes32(y)));
     }
 

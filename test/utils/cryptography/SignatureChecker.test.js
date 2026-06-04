@@ -100,8 +100,7 @@ describe('SignatureChecker (ERC1271)', function () {
         //     staticcall path. Skipped on TVM here so the local test
         //     runner doesn't surface a TRE-image bug as a contract
         //     bug; mainnet behaves like EVM.
-        const tvmTreOomOnIdentity =
-          fn === 'isValidERC1271SignatureNow' || fn === 'isValidERC1271SignatureNowCalldata';
+        const tvmTreOomOnIdentity = fn === 'isValidERC1271SignatureNow' || fn === 'isValidERC1271SignatureNowCalldata';
         (tvmTreOomOnIdentity ? it.skip : it)('with identity precompile', async function () {
           await expect(
             this.mock.getFunction(`$${fn}`)(
