@@ -5,7 +5,9 @@ pragma solidity >=0.4.16;
 
 /**
  * @dev Interface of the ERC-165 standard, as defined in the
- * https://eips.ethereum.org/EIPS/eip-165[ERC].
+ * https://eips.ethereum.org/EIPS/eip-165[ERC]. On TRON the same interface-detection standard is
+ * published as https://github.com/tronprotocol/tips/blob/master/tip-165.md[TRC-165], with which
+ * it is functionally identical.
  *
  * Implementers can declare support of contract interfaces, which can then be
  * queried by others ({ERC165Checker}).
