@@ -2,13 +2,13 @@
 pragma solidity ^0.8.26;
 
 import {AccountEIP7702WithModulesMock} from "../patched/mocks/account/AccountMock.sol";
-import {TIP712} from "../patched/utils/cryptography/TIP712.sol";
+import {EIP712} from "../patched/utils/cryptography/EIP712.sol";
 import {EnumerableSet} from "../patched/utils/structs/EnumerableSet.sol";
 
 contract AccountHarness is AccountEIP7702WithModulesMock {
     using EnumerableSet for EnumerableSet.AddressSet;
 
-    constructor(string memory name, string memory version) TIP712(name, version) {}
+    constructor(string memory name, string memory version) EIP712(name, version) {}
 
     function getFallbackHandler(bytes4 selector) external view returns (address) {
         return _fallbackHandler(selector);
