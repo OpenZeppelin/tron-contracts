@@ -45,8 +45,10 @@ library P256 {
 
     /**
      * @dev Verifies a secp256r1 signature using the pure-Solidity implementation.
-     * Note: The TVM does not implement RIP-7212 precompile for native P256 verification, so this function
-     * (unlike the EVM version in `openzeppelin-contracts`) verifies directly with solidity.
+     * NOTE: A native secp256r1 precompile for the TVM is specified by
+     * https://github.com/tronprotocol/tips/blob/master/tip-7951.md[TIP-7951] (at address `0x100`, following
+     * https://eips.ethereum.org/EIPS/eip-7951[EIP-7951], which supersedes RIP-7212). Until it is enabled on the
+     * target network, this function (unlike the EVM version in `openzeppelin-contracts`) verifies directly in Solidity.
      *
      * @param h - hashed message
      * @param r - signature half R
