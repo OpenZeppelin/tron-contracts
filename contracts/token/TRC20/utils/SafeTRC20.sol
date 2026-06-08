@@ -61,6 +61,34 @@ library SafeTRC20 {
     }
 
     /**
+     * @dev Transfer `value` amount of `token` from the calling contract to `to`, hardened for tokens such as
+     * TRON USDT (`TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t`) whose `transfer` returns `false` on a *successful*
+     * transfer (while reverting on failure). Such tokens are incorrectly rejected by {safeTransfer}, whose
+     * relaxed check only tolerates an empty — not a `false` — return value.
+     *
+     * NOTE: Only `transfer` is affected on TRON USDT; its `transferFrom` correctly returns `true`, so
+     * {safeTransferFrom} already works and no `transferFrom` variant of this helper is needed.
+     *
+     * Rather than trusting the (unreliable) boolean return value, success is verified by checking that `to`'s
+     * balance increased by at least `value`. This is correct whether the token returns `true`, `false`, or
+     * nothing, and needs no hardcoded token address. Reverts with {SafeTRC20FailedOperation} (or bubbles the
+     * token's own revert) on failure.
+     *
+     * NOTE: This assumes a token that is neither rebasing nor fee-on-transfer, so a successful transfer
+     * increases `to`'s balance by exactly `value` (this holds for USDT). A self-transfer (`to == address(this)`)
+     * leaves the balance unchanged and is therefore considered successful as long as the call does not revert.
+     */
+    function safeTransferUSDT(ITRC20 token, address to, uint256 value) internal {
+        uint256 balanceBefore = token.balanceOf(to);
+        // Perform the transfer, bubbling a revert on hard failure, but ignore the returned bool: TRON USDT
+        // returns `false` on success. Success is verified below via the recipient's balance delta.
+        _safeTransfer(token, to, value, true);
+        if (to != address(this) && token.balanceOf(to) < balanceBefore + value) {
+            revert SafeTRC20FailedOperation(address(token));
+        }
+    }
+
+    /**
      * @dev Increase the calling contract's allowance toward `spender` by `value`. If `token` returns no value,
      * non-reverting calls are assumed to be successful.
      *

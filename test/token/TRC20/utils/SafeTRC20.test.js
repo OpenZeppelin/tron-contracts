@@ -15,6 +15,7 @@ async function fixture() {
   const trc20ReturnTrueMock = await ethers.deployContract('$TRC20', [name, symbol]); // default implementation returns true
   const trc20NoReturnMock = await ethers.deployContract('$TRC20NoReturnMock', [name, symbol]);
   const trc20ForceApproveMock = await ethers.deployContract('$TRC20ForceApproveMock', [name, symbol]);
+  const trc20UsdtMock = await ethers.deployContract('$TRC20USDTMock', [name, symbol]);
   const erc1363Mock = await ethers.deployContract('$ERC1363', [name, symbol]);
   const erc1363ReturnFalseOnErc20Mock = await ethers.deployContract('$ERC1363ReturnFalseOnTRC20Mock', [name, symbol]);
   const erc1363ReturnFalseMock = await ethers.deployContract('$ERC1363ReturnFalseMock', [name, symbol]);
@@ -34,6 +35,7 @@ async function fixture() {
     trc20ReturnTrueMock,
     trc20NoReturnMock,
     trc20ForceApproveMock,
+    trc20UsdtMock,
     erc1363Mock,
     erc1363ReturnFalseOnErc20Mock,
     erc1363ReturnFalseMock,
@@ -183,6 +185,37 @@ describe('SafeTRC20', function () {
         await this.mock.$forceApprove(this.token, this.spender, 200n);
         expect(await this.token.allowance(this.mock, this.spender)).to.equal(200n);
       });
+    });
+  });
+
+  describe('with a USDT-like token that transfers but returns false on success', function () {
+    beforeEach(async function () {
+      this.token = this.trc20UsdtMock;
+      await this.token.$_mint(this.mock, 100n);
+      await this.token.$_mint(this.owner, 100n);
+      await this.token.$_approve(this.owner, this.mock, ethers.MaxUint256);
+    });
+
+    it('safeTransfer reverts because the false return is read as a failure', async function () {
+      await expect(this.mock.$safeTransfer(this.token, this.receiver, 10n))
+        .to.be.revertedWithCustomError(this.mock, 'SafeTRC20FailedOperation')
+        .withArgs(this.token);
+    });
+
+    it('safeTransferUSDT transfers successfully despite the false return', async function () {
+      await expect(this.mock.$safeTransferUSDT(this.token, this.receiver, 10n))
+        .to.emit(this.token, 'Transfer')
+        .withArgs(this.mock, this.receiver, 10n);
+    });
+
+    it('safeTransferUSDT reverts when the underlying transfer reverts', async function () {
+      await expect(this.mock.$safeTransferUSDT(this.token, this.receiver, ethers.MaxUint256)).to.be.reverted;
+    });
+
+    it('safeTransferFrom works as-is because transferFrom returns true (no USDT variant needed)', async function () {
+      await expect(this.mock.$safeTransferFrom(this.token, this.owner, this.receiver, 10n))
+        .to.emit(this.token, 'Transfer')
+        .withArgs(this.owner, this.receiver, 10n);
     });
   });
 
