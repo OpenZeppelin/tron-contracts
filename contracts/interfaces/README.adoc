@@ -32,7 +32,7 @@ are useful to interact with third party contracts that implement them.
 - {IERC1822Proxiable}
 - {ITRC1967}
 - {IERC2309}
-- {IERC2612}
+- {ITIP2612}
 - {IERC2981}
 - {IERC3156FlashLender}
 - {IERC3156FlashBorrower}
@@ -85,7 +85,7 @@ are useful to interact with third party contracts that implement them.
 
 {{IERC2309}}
 
-{{IERC2612}}
+{{ITIP2612}}
 
 {{IERC2981}}
 
