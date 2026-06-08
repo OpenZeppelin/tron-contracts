@@ -41,7 +41,7 @@ if git diff --quiet --cached; then
   exit
 fi
 
-if [[ -v SUBMODULE_REMOTE ]]; then
+if [ -n "${SUBMODULE_REMOTE:-}" ]; then
   # Embed the non-upgradeable source repo as a submodule pinned to the exact
   # commit this output was transpiled from (provenance / reproducibility).
   # Our build is self-contained, so nothing imports from it — but keeping it
