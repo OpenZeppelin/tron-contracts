@@ -204,22 +204,53 @@ fi
 # ----- 5.5. Verify the patched jar is live on every worker ---------------
 #
 # `tre_version` on the patched fork returns a string with the
-# `oz-spike` suffix; on stock tronbox/tre:dev it returns the upstream
-# version without the suffix. Time-warp and snapshot/revert require the
-# patched jar, so a stock image silently degrades to per-test redeploy
-# (snapshot fallback) AND wall-clock time-warps (multi-day skips become
-# real-time waits). Warn loudly here so an out-of-date mount surfaces
-# at run start rather than as a confusing per-test failure.
+# `oz-tron` suffix; on stock tronbox/tre:dev it returns the upstream
+# version without it, and the OLDER `-oz-spike` fork lacks the renamed
+# cheatcode surface the runtime now calls (tre_setNextBlockTimestamp,
+# tre_setAccountBalance, impersonation). Time-warp, snapshot/revert and
+# impersonation all require the `-oz-tron` jar, so a stock/old image
+# silently degrades to per-test redeploy (snapshot fallback) AND wall-clock
+# time-warps (multi-day skips become real-time waits) — hundreds of
+# time-dependent / impersonation tests then fail. Build the right jar with
+# `scripts/build-tre-fork.sh`. Warn loudly here so an out-of-date mount
+# surfaces at run start rather than as a confusing per-test failure.
 for ((i=0; i<WORKERS; i++)); do
   port=$((BASE_PORT + i))
   V=$(curl -sS -m 3 -X POST "http://127.0.0.1:${port}/tre" \
     -H 'Content-Type: application/json' \
     -d '{"jsonrpc":"2.0","id":1,"method":"tre_version","params":[]}' 2>/dev/null \
     | python3 -c "import sys,json;print(json.load(sys.stdin).get('result',''))" 2>/dev/null || echo "")
-  if [[ "$V" != *"oz-spike"* ]]; then
-    echo "  WARN: worker $i tre_version='$V' (no oz-spike suffix) — patched jar may not be active." >&2
+  if [[ "$V" != *"oz-tron"* ]]; then
+    echo "  WARN: worker $i tre_version='$V' (no oz-tron suffix) — patched jar may be missing/stale;" >&2
+    echo "        time-warp/impersonation tests will fail. Rebuild via scripts/build-tre-fork.sh." >&2
   fi
 done
+
+# ----- 5.6. Prime each chain one block past genesis ----------------------
+#
+# At block 0 java-tron's proto3 JSON omits the zero-valued block number, so the
+# first CreateSmartContract deploy throws "Unable to get params: Cannot read
+# properties of undefined (reading 'toString')" from TronWeb's
+# getCurrentRefBlockParams. hardhat-tron's ensureUp() mines one block via
+# primeGenesis() to avoid this — but ONLY when it spawns the container. We
+# pre-spawn with `docker run`, so the in-process ensureUp() hits its
+# "TRE already reachable (skipping spawn)" early-return and primeGenesis never
+# runs. Mine one block per worker here (fanned out like the readiness curls).
+echo "→ Priming each chain one block past genesis (tre_mine)..."
+prime_pids=()
+for ((i=0; i<WORKERS; i++)); do
+  port=$((BASE_PORT + i))
+  (
+    resp=$(curl -sS -m 5 -X POST "http://127.0.0.1:${port}/tre" \
+      -H 'Content-Type: application/json' \
+      -d '{"jsonrpc":"2.0","id":1,"method":"tre_mine","params":[]}' 2>&1) || true
+    case "$resp" in
+      *'"error"'*|'') echo "  WARN: worker $i genesis prime (tre_mine) may have failed: $resp" >&2 ;;
+    esac
+  ) &
+  prime_pids+=("$!")
+done
+for pid in "${prime_pids[@]}"; do wait "$pid" 2>/dev/null || true; done
 
 # ----- 6. Spawn one hardhat-test process per bucket ----------------------
 
@@ -258,7 +289,13 @@ for ((i=0; i<WORKERS; i++)); do
     TRE_URL="http://127.0.0.1:${port}/jsonrpc" \
     MOCHA_TIMINGS_OUT="$timings_out" \
       ./node_modules/.bin/hardhat test --no-compile --network tre $files 2>&1
-    echo "WORKER_EXIT_CODE=$?"
+    rc=$?
+    echo "WORKER_EXIT_CODE=$rc"
+    # A subshell's exit status is that of its LAST command. Without this
+    # explicit re-raise, the trailing `echo` (always 0) masks hardhat's real
+    # exit code, so `wait` below captures 0, worst_exit stays 0, and CI reports
+    # green even when workers fail. Re-raise hardhat's code.
+    exit "$rc"
   ) > "$log" 2>&1 &
   WORKER_PIDS+=($!)
 done

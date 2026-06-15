@@ -1,19 +1,19 @@
 = Using with Upgrades
 
-If your contract is going to be deployed with upgradeability, such as using the xref:upgrades-plugins::index.adoc[OpenZeppelin Upgrades Plugins], you will need to use the Upgradeable variant of OpenZeppelin Contracts.
+If your contract is going to be deployed with upgradeability — for example behind an ERC-1967, UUPS, or transparent proxy — you will need to use the Upgradeable variant of OpenZeppelin Contracts for Tron.
 
-This variant is available as a separate package called `@openzeppelin/contracts-upgradeable`, which is hosted in the repository https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable[OpenZeppelin/openzeppelin-contracts-upgradeable]. It uses `@openzeppelin/contracts` as a peer dependency.
+This variant is available as a separate package called `@openzeppelin/tron-contracts-upgradeable`, hosted at https://github.com/OpenZeppelin/tron-contracts-upgradeable[OpenZeppelin/tron-contracts-upgradeable]. It uses `@openzeppelin/tron-contracts` as a peer dependency, and is generated automatically from it by OpenZeppelin's https://github.com/OpenZeppelin/openzeppelin-transpiler[Upgradeability Transpiler].
 
-It follows all of the rules for xref:upgrades-plugins::writing-upgradeable.adoc[Writing Upgradeable Contracts]: constructors are replaced by initializer functions, state variables are initialized in initializer functions, and we additionally check for storage incompatibilities across minor versions.
+It follows all of the standard rules for writing upgradeable contracts: constructors are replaced by initializer functions, state variables are initialized inside those initializers rather than inline, and contract state is kept in ERC-7201 namespaced storage so layouts stay compatible across upgrades.
 
-TIP: OpenZeppelin provides a full suite of tools for deploying and securing upgradeable smart contracts. xref:openzeppelin::upgrades.adoc[Check out the full list of resources].
+NOTE: OpenZeppelin's Hardhat and Foundry Upgrades Plugins target EVM chains and do not deploy to the Tron network. On Tron you deploy the proxy yourself with your Tron toolchain (see <<deployment>> below); the contract-authoring rules on this page apply unchanged.
 
 == Overview
 
 === Installation
 
 ```console
-$ npm install @openzeppelin/contracts-upgradeable @openzeppelin/contracts
+$ npm install @openzeppelin/tron-contracts-upgradeable @openzeppelin/tron-contracts
 ```
 
 === Usage
@@ -21,14 +21,14 @@ $ npm install @openzeppelin/contracts-upgradeable @openzeppelin/contracts
 The Upgradeable package replicates the structure of the main OpenZeppelin Contracts package, but every file and contract has the suffix `Upgradeable`.
 
 ```diff
--import {TRC721} from "@openzeppelin/contracts/token/TRC721/TRC721.sol";
-+import {TRC721Upgradeable} from "@openzeppelin/contracts-upgradeable/token/TRC721/TRC721Upgradeable.sol";
- 
+-import {TRC721} from "@openzeppelin/tron-contracts/token/TRC721/TRC721.sol";
++import {TRC721Upgradeable} from "@openzeppelin/tron-contracts-upgradeable/token/TRC721/TRC721Upgradeable.sol";
+
 -contract MyCollectible is TRC721 {
 +contract MyCollectible is TRC721Upgradeable {
 ```
 
-NOTE: Interfaces and libraries are not included in the Upgradeable package, but are instead imported from the main OpenZeppelin Contracts package.
+NOTE: Interfaces and libraries are not included in the Upgradeable package, but are instead imported from the `@openzeppelin/tron-contracts` peer package.
 
 Constructors are replaced by internal initializer functions following the naming convention `+__{ContractName}_init+`. Since these are internal, you must always define your own public initializer function and call the parent initializer of the contract you extend.
 
@@ -41,23 +41,18 @@ Constructors are replaced by internal initializer functions following the naming
 
 CAUTION: Use with multiple inheritance requires special attention. See the section below titled <<multiple-inheritance>>.
 
-Once this contract is set up and compiled, you can deploy it using the xref:upgrades-plugins::index.adoc[Upgrades Plugins]. The following snippet shows an example deployment script using Hardhat.
+[[deployment]]
+=== Deploying behind a proxy
 
-```js
-// scripts/deploy-my-collectible.js
-const { ethers, upgrades } = require("hardhat");
+Once this contract is set up and compiled, deploy it *behind a proxy* and call your `initialize` function exactly once. The implementation contract is never used directly. The flow is:
 
-async function main() {
-  const MyCollectible = await ethers.getContractFactory("MyCollectible");
+. Deploy the implementation contract (`MyCollectible`).
+. Deploy a proxy — for example an `ERC1967Proxy` from `@openzeppelin/tron-contracts` — pointing at the implementation, passing the ABI-encoded `initialize(...)` call as its initialization data. This runs `initialize` in the proxy's storage context, atomically with deployment.
+. Interact with the *proxy* address using the implementation's ABI.
 
-  const mc = await upgrades.deployProxy(MyCollectible);
+Because the EVM Upgrades Plugins do not support Tron, perform these steps with a Tron deployment toolchain such as https://github.com/tronprotocol/tronbox[TronBox] or https://github.com/OpenZeppelin/hardhat-tron[`@openzeppelin/hardhat-tron`] (which routes deploys through TronWeb). For UUPS proxies, the upgrade authorization (`_authorizeUpgrade`) lives in the implementation, so wire up its access control inside `initialize`.
 
-  await mc.waitForDeployment();
-  console.log("MyCollectible deployed to:", await mc.getAddress());
-}
-
-main();
-```
+CAUTION: Never call `initialize` on the implementation contract directly, and do not leave the implementation uninitialized in a way that lets someone else initialize it. Protect it by calling `_disableInitializers()` in the implementation's constructor — this is one of the few places a constructor is still used in an upgradeable contract.
 
 == Further Notes
 
@@ -66,12 +61,12 @@ main();
 
 Initializer functions are not linearized by the compiler like constructors. Because of this, each `+__{ContractName}_init+` function embeds the linearized calls to all parent initializers. As a consequence, calling two of these `init` functions can potentially initialize the same contract twice.
 
-The function `+__{ContractName}_init_unchained+` found in every contract is the initializer function minus the calls to parent initializers, and can be used to avoid the double initialization problem, but doing this manually is not recommended. We hope to be able to implement safety checks for this in future versions of the Upgrades Plugins.
+The function `+__{ContractName}_init_unchained+` found in every contract is the initializer function minus the calls to parent initializers, and can be used to avoid the double initialization problem, but doing this manually is not recommended.
 
 === Namespaced Storage
 
 You may notice that contracts use a struct with the `@custom:storage-location erc7201:<NAMESPACE_ID>` annotation to store the contract's state variables. This follows the https://eips.ethereum.org/EIPS/eip-7201[ERC-7201: Namespaced Storage Layout] pattern, where each contract has its own storage layout in a namespace that is separate from other contracts in the inheritance chain.
 
-Without namespaced storage, it isn't safe to simply add a state variable because it "shifts down" all of the state variables below in the inheritance chain. This makes the storage layouts incompatible, as explained in xref:upgrades-plugins::writing-upgradeable.adoc#modifying-your-contracts[Writing Upgradeable Contracts].
+Without namespaced storage, it isn't safe to simply add a state variable because it "shifts down" all of the state variables below in the inheritance chain. This makes the storage layouts incompatible, as explained in xref:backwards-compatibility.adoc[Backwards Compatibility].
 
 The namespaced storage pattern used in the Upgradeable package allows us to freely add new state variables in the future without compromising the storage compatibility with existing deployments. It also allows changing the inheritance order with no impact on the resulting storage layout, as long as all inherited contracts use namespaced storage.
