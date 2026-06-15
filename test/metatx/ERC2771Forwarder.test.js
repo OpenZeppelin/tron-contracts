@@ -297,9 +297,19 @@ describe('ERC2771Forwarder', function () {
 
       describe('when the refund receiver is a known address', function () {
         beforeEach(async function () {
-          this.initialRefundReceiverBalance = await ethers.provider.getBalance(this.refundReceiver);
           this.initialTamperedRequestNonce = await this.forwarder.nonces(this.requests[idx].from);
         });
+
+        // TVM-tuned: the skipped request's value is refunded to refundReceiver.
+        // Upstream asserts this by comparing refundReceiver's ABSOLUTE balance
+        // before/after (captured in beforeEach, checked in afterEach). On TVM
+        // that is order-dependent and flaky: `tre_revert` (driven by
+        // loadFixture) rolls back contract state but NOT account balances the
+        // way an EVM snapshot does, so a shared signer's balance accumulates
+        // across tests/files and the absolute check drifts. We instead assert
+        // the balance DELTA of the executeBatch tx via `changeEtherBalance`,
+        // which is computed from the tx's own value flow (internal_transactions)
+        // and is immune to any pre-existing balance.
 
         it('ignores a request with a valid signature for non-current nonce', async function () {
           // Execute first a request
@@ -307,15 +317,12 @@ describe('ERC2771Forwarder', function () {
           this.initialTamperedRequestNonce++; // Should be already incremented by the individual `execute`
 
           // And then ignore the same request in a batch due to an already used nonce
-          const events = await this.forwarder
-            .executeBatch(this.requests, this.refundReceiver, { value: this.value })
-            .then(tx => tx.wait())
-            .then(receipt =>
-              receipt.logs.filter(
-                log => log?.fragment?.type == 'event' && log?.fragment?.name == 'ExecutedForwardRequest',
-              ),
-            );
+          const tx = this.forwarder.executeBatch(this.requests, this.refundReceiver, { value: this.value });
+          await expect(tx).to.changeEtherBalance(this.refundReceiver, this.requests[idx].value);
 
+          const events = (await (await tx).wait()).logs.filter(
+            log => log?.fragment?.type == 'event' && log?.fragment?.name == 'ExecutedForwardRequest',
+          );
           expect(events).to.have.lengthOf(this.requests.length - 1);
         });
 
@@ -325,24 +332,16 @@ describe('ERC2771Forwarder', function () {
             this.accounts[1],
           );
 
-          const events = await this.forwarder
-            .executeBatch(this.requests, this.refundReceiver, { value: this.value })
-            .then(tx => tx.wait())
-            .then(receipt =>
-              receipt.logs.filter(
-                log => log?.fragment?.type == 'event' && log?.fragment?.name == 'ExecutedForwardRequest',
-              ),
-            );
+          const tx = this.forwarder.executeBatch(this.requests, this.refundReceiver, { value: this.value });
+          await expect(tx).to.changeEtherBalance(this.refundReceiver, this.requests[idx].value);
 
+          const events = (await (await tx).wait()).logs.filter(
+            log => log?.fragment?.type == 'event' && log?.fragment?.name == 'ExecutedForwardRequest',
+          );
           expect(events).to.have.lengthOf(this.requests.length - 1);
         });
 
         afterEach(async function () {
-          // The invalid request value was refunded
-          expect(await ethers.provider.getBalance(this.refundReceiver)).to.equal(
-            this.initialRefundReceiverBalance + this.requests[idx].value,
-          );
-
           // The invalid request from's nonce was not incremented
           expect(await this.forwarder.nonces(this.requests[idx].from)).to.equal(this.initialTamperedRequestNonce);
         });
