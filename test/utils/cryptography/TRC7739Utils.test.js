@@ -3,7 +3,7 @@ const { ethers } = require('hardhat');
 const { loadFixture } = require('@nomicfoundation/hardhat-network-helpers');
 
 const { Permit } = require('../../helpers/eip712');
-const { ERC4337Utils, PersonalSign } = require('../../helpers/erc7739');
+const { ERC4337Utils, PersonalSign } = require('../../helpers/trc7739');
 
 const details = ERC4337Utils.getContentsDetail({ Permit });
 

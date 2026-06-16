@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat');
 const { expect } = require('chai');
 const { Permit, formatType, getDomain } = require('../../helpers/eip712');
-const { TRC7739Signer } = require('../../helpers/erc7739');
+const { TRC7739Signer } = require('../../helpers/trc7739');
 
 function shouldBehaveLikeTRC1271({ erc7739 = false } = {}) {
   const MAGIC_VALUE = '0x1626ba7e';
