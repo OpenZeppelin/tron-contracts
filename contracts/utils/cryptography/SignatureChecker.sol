@@ -5,7 +5,7 @@ pragma solidity ^0.8.24;
 
 import {ECDSA} from "./ECDSA.sol";
 import {ITRC1271} from "../../interfaces/ITRC1271.sol";
-import {IERC7913SignatureVerifier} from "../../interfaces/IERC7913.sol";
+import {ITRC7913SignatureVerifier} from "../../interfaces/ITRC7913.sol";
 import {Bytes} from "../Bytes.sol";
 
 /**
@@ -124,7 +124,7 @@ library SignatureChecker {
      *
      * * If `signer.length < 20`: verification fails
      * * If `signer.length == 20`: verification is done using {isValidSignatureNow}
-     * * Otherwise: verification is done using {IERC7913SignatureVerifier}
+     * * Otherwise: verification is done using {ITRC7913SignatureVerifier}
      *
      * NOTE: Unlike ECDSA signatures, contract signatures are revocable, and the outcome of this function can thus
      * change through time. It could return true at block N and false at block N+1 (or the opposite).
@@ -140,11 +140,11 @@ library SignatureChecker {
             return isValidSignatureNow(address(bytes20(signer)), hash, signature);
         } else {
             (bool success, bytes memory result) = address(bytes20(signer)).staticcall(
-                abi.encodeCall(IERC7913SignatureVerifier.verify, (signer.slice(20), hash, signature))
+                abi.encodeCall(ITRC7913SignatureVerifier.verify, (signer.slice(20), hash, signature))
             );
             return (success &&
                 result.length >= 32 &&
-                abi.decode(result, (bytes32)) == bytes32(IERC7913SignatureVerifier.verify.selector));
+                abi.decode(result, (bytes32)) == bytes32(ITRC7913SignatureVerifier.verify.selector));
         }
     }
 

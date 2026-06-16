@@ -7,7 +7,7 @@ import {IAccessControlDefaultAdminRules} from "./IAccessControlDefaultAdminRules
 import {AccessControl, IAccessControl} from "../AccessControl.sol";
 import {SafeCast} from "../../utils/math/SafeCast.sol";
 import {Math} from "../../utils/math/Math.sol";
-import {IERC5313} from "../../interfaces/IERC5313.sol";
+import {ITRC5313} from "../../interfaces/ITRC5313.sol";
 import {ITRC165} from "../../utils/introspection/ITRC165.sol";
 
 /**
@@ -38,7 +38,7 @@ import {ITRC165} from "../../utils/introspection/ITRC165.sol";
  * }
  * ```
  */
-abstract contract AccessControlDefaultAdminRules is IAccessControlDefaultAdminRules, IERC5313, AccessControl {
+abstract contract AccessControlDefaultAdminRules is IAccessControlDefaultAdminRules, ITRC5313, AccessControl {
     // pending admin pair read/written together frequently
     address private _pendingDefaultAdmin;
     uint48 private _pendingDefaultAdminSchedule; // 0 == unset
@@ -66,7 +66,7 @@ abstract contract AccessControlDefaultAdminRules is IAccessControlDefaultAdminRu
         return interfaceId == type(IAccessControlDefaultAdminRules).interfaceId || super.supportsInterface(interfaceId);
     }
 
-    /// @inheritdoc IERC5313
+    /// @inheritdoc ITRC5313
     function owner() public view virtual returns (address) {
         return defaultAdmin();
     }

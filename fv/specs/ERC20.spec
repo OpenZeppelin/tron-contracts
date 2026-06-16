@@ -1,6 +1,6 @@
 import "helpers/helpers.spec";
 import "methods/IERC20.spec";
-import "methods/IERC2612.spec";
+import "methods/ITRC2612.spec";
 
 methods {
     // exposed for FV

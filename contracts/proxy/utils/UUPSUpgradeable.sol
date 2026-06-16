@@ -3,7 +3,7 @@
 
 pragma solidity ^0.8.22;
 
-import {IERC1822Proxiable} from "../../interfaces/draft-IERC1822.sol";
+import {ITRC1822Proxiable} from "../../interfaces/draft-ITRC1822.sol";
 import {TRC1967Utils} from "../TRC1967/TRC1967Utils.sol";
 
 /**
@@ -18,7 +18,7 @@ import {TRC1967Utils} from "../TRC1967/TRC1967Utils.sol";
  *
  * @custom:stateless
  */
-abstract contract UUPSUpgradeable is IERC1822Proxiable {
+abstract contract UUPSUpgradeable is ITRC1822Proxiable {
     /// @custom:oz-upgrades-unsafe-allow state-variable-immutable
     address private immutable __self = address(this);
 
@@ -135,7 +135,7 @@ abstract contract UUPSUpgradeable is IERC1822Proxiable {
      * Emits an {ITRC1967-Upgraded} event.
      */
     function _upgradeToAndCallUUPS(address newImplementation, bytes memory data) private {
-        try IERC1822Proxiable(newImplementation).proxiableUUID() returns (bytes32 slot) {
+        try ITRC1822Proxiable(newImplementation).proxiableUUID() returns (bytes32 slot) {
             if (slot != TRC1967Utils.IMPLEMENTATION_SLOT) {
                 revert UUPSUnsupportedProxiableUUID(slot);
             }

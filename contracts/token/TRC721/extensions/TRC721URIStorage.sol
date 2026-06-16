@@ -5,23 +5,23 @@ pragma solidity ^0.8.24;
 
 import {TRC721} from "../TRC721.sol";
 import {ITRC721Metadata} from "./ITRC721Metadata.sol";
-import {IERC4906} from "../../../interfaces/IERC4906.sol";
+import {ITRC4906} from "../../../interfaces/ITRC4906.sol";
 import {ITRC165} from "../../../interfaces/ITRC165.sol";
 
 /**
  * @dev TRC-721 token with storage based token URI management.
  */
-abstract contract TRC721URIStorage is IERC4906, TRC721 {
+abstract contract TRC721URIStorage is ITRC4906, TRC721 {
     // Interface ID as defined in ERC-4906. This does not correspond to a traditional interface ID as ERC-4906 only
     // defines events and does not include any external function.
-    bytes4 private constant ERC4906_INTERFACE_ID = bytes4(0x49064906);
+    bytes4 private constant TRC4906_INTERFACE_ID = bytes4(0x49064906);
 
     // Optional mapping for token URIs
     mapping(uint256 tokenId => string) private _tokenURIs;
 
     /// @inheritdoc ITRC165
     function supportsInterface(bytes4 interfaceId) public view virtual override(TRC721, ITRC165) returns (bool) {
-        return interfaceId == ERC4906_INTERFACE_ID || super.supportsInterface(interfaceId);
+        return interfaceId == TRC4906_INTERFACE_ID || super.supportsInterface(interfaceId);
     }
 
     /// @inheritdoc ITRC721Metadata
@@ -46,7 +46,7 @@ abstract contract TRC721URIStorage is IERC4906, TRC721 {
     /**
      * @dev Sets `_tokenURI` as the tokenURI of `tokenId`.
      *
-     * Emits {IERC4906-MetadataUpdate}.
+     * Emits {ITRC4906-MetadataUpdate}.
      */
     function _setTokenURI(uint256 tokenId, string memory _tokenURI) internal virtual {
         _tokenURIs[tokenId] = _tokenURI;

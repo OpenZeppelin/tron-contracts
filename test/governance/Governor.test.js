@@ -8,7 +8,7 @@ const { ProposalState, VoteType } = require('../helpers/enums');
 const time = require('../helpers/time');
 
 const { shouldSupportInterfaces } = require('../utils/introspection/SupportsInterface.behavior');
-const { shouldBehaveLikeERC6372 } = require('./utils/ERC6372.behavior');
+const { shouldBehaveLikeTRC6372 } = require('./utils/TRC6372.behavior');
 
 const TOKENS = [
   { Token: '$TRC20Votes', mode: 'blocknumber' },
@@ -97,7 +97,7 @@ describe('Governor', function () {
       });
 
       shouldSupportInterfaces(['TRC1155Receiver', 'Governor', 'Governor_5_3']);
-      shouldBehaveLikeERC6372(mode);
+      shouldBehaveLikeTRC6372(mode);
 
       it('deployment check', async function () {
         expect(await this.mock.name()).to.equal(name);

@@ -3,10 +3,10 @@
 
 pragma solidity ^0.8.26;
 
-import {IERC7786GatewaySource} from "../interfaces/draft-IERC7786.sol";
+import {ITRC7786GatewaySource} from "../interfaces/draft-ITRC7786.sol";
 import {InteroperableAddress} from "../utils/draft-InteroperableAddress.sol";
 import {Bytes} from "../utils/Bytes.sol";
-import {ERC7786Recipient} from "./ERC7786Recipient.sol";
+import {TRC7786Recipient} from "./TRC7786Recipient.sol";
 
 /**
  * @dev Core bridging mechanism.
@@ -19,7 +19,7 @@ import {ERC7786Recipient} from "./ERC7786Recipient.sol";
  * counterpart on a foreign chain. They must override the {_processMessage} function to handle messages that have
  * been verified.
  */
-abstract contract CrosschainLinked is ERC7786Recipient {
+abstract contract CrosschainLinked is TRC7786Recipient {
     using Bytes for bytes;
     using InteroperableAddress for bytes;
 
@@ -68,7 +68,7 @@ abstract contract CrosschainLinked is ERC7786Recipient {
     function _setLink(address gateway, bytes memory counterpart, bool allowOverride) internal virtual {
         // Sanity check, this should revert if gateway is not an ERC-7786 implementation. Note that since
         // supportsAttribute returns data, an EOA would fail that test (nothing returned).
-        IERC7786GatewaySource(gateway).supportsAttribute(bytes4(0));
+        ITRC7786GatewaySource(gateway).supportsAttribute(bytes4(0));
 
         bytes memory chainAddr = _extractChain(counterpart);
         if (allowOverride || _links[chainAddr].gateway == address(0)) {
@@ -90,10 +90,10 @@ abstract contract CrosschainLinked is ERC7786Recipient {
         bytes[] memory attributes
     ) internal virtual returns (bytes32) {
         (address gateway, bytes memory counterpart) = getLink(chainAddr);
-        return IERC7786GatewaySource(gateway).sendMessage(counterpart, payload, attributes);
+        return ITRC7786GatewaySource(gateway).sendMessage(counterpart, payload, attributes);
     }
 
-    /// @inheritdoc ERC7786Recipient
+    /// @inheritdoc TRC7786Recipient
     function _isAuthorizedGateway(
         address instance,
         bytes calldata sender

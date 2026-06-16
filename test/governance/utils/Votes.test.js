@@ -57,7 +57,7 @@ describe('Votes', function () {
           const lastTxTimepoint = await time.clockFromReceipt[mode](this.txs.at(-1));
           const clock = await this.votes.clock();
           await expect(this.votes.getPastTotalSupply(lastTxTimepoint))
-            .to.be.revertedWithCustomError(this.votes, 'ERC5805FutureLookup')
+            .to.be.revertedWithCustomError(this.votes, 'TRC5805FutureLookup')
             .withArgs(lastTxTimepoint, clock);
         });
 

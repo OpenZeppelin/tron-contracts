@@ -1,4 +1,4 @@
-import "./IERC5313.spec";
+import "./ITRC5313.spec";
 
 methods {
     // === View ==

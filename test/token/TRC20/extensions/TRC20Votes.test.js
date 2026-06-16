@@ -37,7 +37,7 @@ describe('TRC20Votes', function () {
         this.votes = this.token;
       });
 
-      // includes ERC6372 behavior check
+      // includes TRC6372 behavior check
       shouldBehaveLikeVotes([1, 17, 42], { mode, fungible: true });
 
       it('initial nonce is 0', async function () {
@@ -433,7 +433,7 @@ describe('TRC20Votes', function () {
           it('reverts if block number >= current block', async function () {
             const clock = await this.token.clock();
             await expect(this.token.getPastVotes(this.other1, 50_000_000_000n))
-              .to.be.revertedWithCustomError(this.token, 'ERC5805FutureLookup')
+              .to.be.revertedWithCustomError(this.token, 'TRC5805FutureLookup')
               .withArgs(50_000_000_000n, clock);
           });
 
@@ -496,7 +496,7 @@ describe('TRC20Votes', function () {
         it('reverts if block number >= current block', async function () {
           const clock = await this.token.clock();
           await expect(this.token.getPastTotalSupply(50_000_000_000n))
-            .to.be.revertedWithCustomError(this.token, 'ERC5805FutureLookup')
+            .to.be.revertedWithCustomError(this.token, 'TRC5805FutureLookup')
             .withArgs(50_000_000_000n, clock);
         });
 

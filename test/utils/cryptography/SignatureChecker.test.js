@@ -21,7 +21,7 @@ async function fixture() {
   const wallet2 = await ethers.deployContract('TRC1271WalletMock', [extraSigner]);
   const malicious = await ethers.deployContract('TRC1271MaliciousMock');
   const signature = await signer.signMessage(TEST_MESSAGE);
-  const verifier = await ethers.deployContract('ERC7913P256Verifier');
+  const verifier = await ethers.deployContract('TRC7913P256Verifier');
 
   return { signer, other, extraSigner, mock, wallet, wallet2, malicious, signature, verifier };
 }
@@ -134,7 +134,7 @@ describe('SignatureChecker (TRC1271)', function () {
     }
   });
 
-  describe('ERC7913', function () {
+  describe('TRC7913', function () {
     describe('isValidSignatureNow', function () {
       describe('with EOA signer', function () {
         it('with matching signer and signature', async function () {

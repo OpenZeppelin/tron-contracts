@@ -4,7 +4,7 @@
 pragma solidity ^0.8.24;
 
 import {ITRC20, TRC20} from "../TRC20.sol";
-import {IERC7674} from "../../../interfaces/draft-IERC7674.sol";
+import {ITRC7674} from "../../../interfaces/draft-ITRC7674.sol";
 import {Math} from "../../../utils/math/Math.sol";
 import {SlotDerivation} from "../../../utils/SlotDerivation.sol";
 import {TransientSlot} from "../../../utils/TransientSlot.sol";
@@ -16,7 +16,7 @@ import {TransientSlot} from "../../../utils/TransientSlot.sol";
  *
  * _Available since v5.1._
  */
-abstract contract TRC20TemporaryApproval is TRC20, IERC7674 {
+abstract contract TRC20TemporaryApproval is TRC20, ITRC7674 {
     using SlotDerivation for bytes32;
     using TransientSlot for bytes32;
     using TransientSlot for TransientSlot.Uint256Slot;

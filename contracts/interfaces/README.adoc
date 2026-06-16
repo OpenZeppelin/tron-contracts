@@ -16,48 +16,48 @@ are useful to interact with third party contracts that implement them.
 - {ITRC721Enumerable}
 - {ITRC721Metadata}
 - {ITRC721Errors}
-- {IERC777}
-- {IERC777Recipient}
-- {IERC777Sender}
+- {ITRC777}
+- {ITRC777Recipient}
+- {ITRC777Sender}
 - {ITRC1155}
 - {ITRC1155Receiver}
 - {ITRC1155MetadataURI}
 - {ITRC1155Errors}
 - {ITRC1271}
-- {IERC1363}
-- {IERC1363Receiver}
-- {IERC1363Spender}
-- {IERC1820Implementer}
-- {IERC1820Registry}
-- {IERC1822Proxiable}
+- {ITRC1363}
+- {ITRC1363Receiver}
+- {ITRC1363Spender}
+- {ITRC1820Implementer}
+- {ITRC1820Registry}
+- {ITRC1822Proxiable}
 - {ITRC1967}
-- {IERC2309}
+- {ITRC2309}
 - {ITRC2612}
-- {IERC2981}
-- {IERC3156FlashLender}
-- {IERC3156FlashBorrower}
+- {ITRC2981}
+- {ITRC3156FlashLender}
+- {ITRC3156FlashBorrower}
 - {ITRC4626}
-- {IERC4906}
-- {IERC5267}
-- {IERC5313}
-- {IERC5805}
-- {IERC6372}
-- {IERC6909}
-- {IERC6909ContentURI}
-- {IERC6909Metadata}
-- {IERC6909TokenSupply}
-- {IERC7579Module}
-- {IERC7579Validator}
-- {IERC7579Hook}
-- {IERC7579Execution}
-- {IERC7579AccountConfig}
-- {IERC7579ModuleConfig}
-- {IERC7674}
-- {IERC7751}
-- {IERC7786GatewaySource}
-- {IERC7786Recipient}
-- {IERC7802}
-- {IERC7913SignatureVerifier}
+- {ITRC4906}
+- {ITRC5267}
+- {ITRC5313}
+- {ITRC5805}
+- {ITRC6372}
+- {ITRC6909}
+- {ITRC6909ContentURI}
+- {ITRC6909Metadata}
+- {ITRC6909TokenSupply}
+- {ITRC7579Module}
+- {ITRC7579Validator}
+- {ITRC7579Hook}
+- {ITRC7579Execution}
+- {ITRC7579AccountConfig}
+- {ITRC7579ModuleConfig}
+- {ITRC7674}
+- {ITRC7751}
+- {ITRC7786GatewaySource}
+- {ITRC7786Recipient}
+- {ITRC7802}
+- {ITRC7913SignatureVerifier}
 
 == Detailed ABI
 
@@ -69,70 +69,70 @@ are useful to interact with third party contracts that implement them.
 
 {{ITRC1271}}
 
-{{IERC1363}}
+{{ITRC1363}}
 
-{{IERC1363Receiver}}
+{{ITRC1363Receiver}}
 
-{{IERC1363Spender}}
+{{ITRC1363Spender}}
 
-{{IERC1820Implementer}}
+{{ITRC1820Implementer}}
 
-{{IERC1820Registry}}
+{{ITRC1820Registry}}
 
-{{IERC1822Proxiable}}
+{{ITRC1822Proxiable}}
 
 {{ITRC1967}}
 
-{{IERC2309}}
+{{ITRC2309}}
 
 {{ITRC2612}}
 
-{{IERC2981}}
+{{ITRC2981}}
 
-{{IERC3156FlashLender}}
+{{ITRC3156FlashLender}}
 
-{{IERC3156FlashBorrower}}
+{{ITRC3156FlashBorrower}}
 
 {{ITRC4626}}
 
-{{IERC4906}}
+{{ITRC4906}}
 
-{{IERC5267}}
+{{ITRC5267}}
 
-{{IERC5313}}
+{{ITRC5313}}
 
-{{IERC5805}}
+{{ITRC5805}}
 
-{{IERC6372}}
+{{ITRC6372}}
 
-{{IERC6909}}
+{{ITRC6909}}
 
-{{IERC6909ContentURI}}
+{{ITRC6909ContentURI}}
 
-{{IERC6909Metadata}}
+{{ITRC6909Metadata}}
 
-{{IERC6909TokenSupply}}
+{{ITRC6909TokenSupply}}
 
-{{IERC7579Module}}
+{{ITRC7579Module}}
 
-{{IERC7579Validator}}
+{{ITRC7579Validator}}
 
-{{IERC7579Hook}}
+{{ITRC7579Hook}}
 
-{{IERC7579Execution}}
+{{ITRC7579Execution}}
 
-{{IERC7579AccountConfig}}
+{{ITRC7579AccountConfig}}
 
-{{IERC7579ModuleConfig}}
+{{ITRC7579ModuleConfig}}
 
-{{IERC7674}}
+{{ITRC7674}}
 
-{{IERC7751}}
+{{ITRC7751}}
 
-{{IERC7786GatewaySource}}
+{{ITRC7786GatewaySource}}
 
-{{IERC7786Recipient}}
+{{ITRC7786Recipient}}
 
-{{IERC7802}}
+{{ITRC7802}}
 
-{{IERC7913SignatureVerifier}}
+{{ITRC7913SignatureVerifier}}

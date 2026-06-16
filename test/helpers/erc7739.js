@@ -12,7 +12,7 @@ const TypedDataSign = contentsTypeName =>
     salt: 'bytes32',
   });
 
-class ERC7739Signer extends ethers.AbstractSigner {
+class TRC7739Signer extends ethers.AbstractSigner {
   #signer;
   #domain;
 
@@ -111,7 +111,7 @@ class ERC4337Utils {
 }
 
 module.exports = {
-  ERC7739Signer,
+  TRC7739Signer,
   ERC4337Utils,
   PersonalSign,
   TypedDataSign,

@@ -8,17 +8,17 @@ methods {
     // IERC1271
     function isValidSignature(bytes32,bytes)                                   external returns (bytes4);
 
-    // IERC7579AccountConfig
+    // ITRC7579AccountConfig
     function accountId()                                                       external returns (string)  envfree;
     function supportsExecutionMode(bytes32)                                    external returns (bool)    envfree;
     function supportsModule(uint256)                                           external returns (bool)    envfree;
 
-    // IERC7579ModuleConfig
+    // ITRC7579ModuleConfig
     function installModule(uint256,address,bytes)                              external;
     function uninstallModule(uint256,address,bytes)                            external;
     function isModuleInstalled(uint256,address,bytes)                          external returns (bool)    envfree;
 
-    // IERC7579Execution
+    // ITRC7579Execution
     function execute(bytes32,bytes)                                            external;
     function executeFromExecutor(bytes32,bytes)                                external returns (bytes[]);
 

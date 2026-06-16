@@ -57,7 +57,7 @@ describe('VotesExtended', function () {
           const lastTxTimepoint = await time.clockFromReceipt[mode](this.txs.at(-1));
           const clock = await this.votes.clock();
           await expect(this.votes.getPastTotalSupply(lastTxTimepoint))
-            .to.be.revertedWithCustomError(this.votes, 'ERC5805FutureLookup')
+            .to.be.revertedWithCustomError(this.votes, 'TRC5805FutureLookup')
             .withArgs(lastTxTimepoint, clock);
         });
 
@@ -119,7 +119,7 @@ describe('VotesExtended', function () {
         const timepoint = await time.clockFromReceipt[mode](tx);
 
         await expect(this.votes.getPastDelegate(this.accounts[0], timepoint + 1n))
-          .to.be.revertedWithCustomError(this.votes, 'ERC5805FutureLookup')
+          .to.be.revertedWithCustomError(this.votes, 'TRC5805FutureLookup')
           .withArgs(timepoint + 1n, timepoint);
       });
     });
@@ -144,7 +144,7 @@ describe('VotesExtended', function () {
         const timepoint = await time.clockFromReceipt[mode](tx);
 
         await expect(this.votes.getPastBalanceOf(this.accounts[0], timepoint + 1n))
-          .to.be.revertedWithCustomError(this.votes, 'ERC5805FutureLookup')
+          .to.be.revertedWithCustomError(this.votes, 'TRC5805FutureLookup')
           .withArgs(timepoint + 1n, timepoint);
       });
     });

@@ -6,23 +6,23 @@ const { loadFixture } = require('@nomicfoundation/hardhat-network-helpers');
 const { impersonate } = require('../../../helpers/account');
 const { getLocalChain } = require('../../../helpers/chains');
 
-const { shouldBehaveLikeBridgeERC20 } = require('../../../crosschain/BridgeERC20.behavior');
+const { shouldBehaveLikeBridgeTRC20 } = require('../../../crosschain/BridgeTRC20.behavior');
 
 async function fixture() {
   const chain = await getLocalChain();
   const accounts = await ethers.getSigners();
 
   // Mock gateway
-  const gateway = await ethers.deployContract('$ERC7786GatewayMock');
+  const gateway = await ethers.deployContract('$TRC7786GatewayMock');
   const gatewayAsEOA = await impersonate(gateway);
 
   // Chain A: legacy TRC20 with bridge
   const tokenA = await ethers.deployContract('$TRC20Crosschain', ['Token1', 'T1', []]);
   const bridgeA = tokenA; // self bridge
 
-  // Chain B: ERC7802 with bridge
+  // Chain B: TRC7802 with bridge
   const tokenB = await ethers.deployContract('$TRC20BridgeableMock', ['Token2', 'T2', ethers.ZeroAddress]);
-  const bridgeB = await ethers.deployContract('$BridgeERC7802', [[[gateway, chain.toErc7930(bridgeA)]], tokenB]);
+  const bridgeB = await ethers.deployContract('$BridgeTRC7802', [[[gateway, chain.toErc7930(bridgeA)]], tokenB]);
 
   // deployment check + counterpart setup
   await expect(bridgeA.$_setLink(gateway, chain.toErc7930(bridgeB), false))
@@ -38,7 +38,7 @@ describe('TRC20Crosschain', function () {
     Object.assign(this, await loadFixture(fixture));
   });
 
-  shouldBehaveLikeBridgeERC20();
+  shouldBehaveLikeBridgeTRC20();
 
   describe('crosschainTransferFrom', function () {
     it('with allowance: success', async function () {

@@ -25,12 +25,12 @@ abstract contract TRC20Permit is TRC20, ITRC20Permit, TIP712, Nonces {
     /**
      * @dev Permit deadline has expired.
      */
-    error ERC2612ExpiredSignature(uint256 deadline);
+    error TRC2612ExpiredSignature(uint256 deadline);
 
     /**
      * @dev Mismatched signature.
      */
-    error ERC2612InvalidSigner(address signer, address owner);
+    error TRC2612InvalidSigner(address signer, address owner);
 
     /**
      * @dev Initializes the {TIP712} domain separator using the `name` parameter, and setting `version` to `"1"`.
@@ -50,7 +50,7 @@ abstract contract TRC20Permit is TRC20, ITRC20Permit, TIP712, Nonces {
         bytes32 s
     ) public virtual {
         if (block.timestamp > deadline) {
-            revert ERC2612ExpiredSignature(deadline);
+            revert TRC2612ExpiredSignature(deadline);
         }
 
         bytes32 structHash = keccak256(abi.encode(PERMIT_TYPEHASH, owner, spender, value, _useNonce(owner), deadline));
@@ -59,7 +59,7 @@ abstract contract TRC20Permit is TRC20, ITRC20Permit, TIP712, Nonces {
 
         address signer = ECDSA.recover(hash, v, r, s);
         if (signer != owner) {
-            revert ERC2612InvalidSigner(signer, owner);
+            revert TRC2612InvalidSigner(signer, owner);
         }
 
         _approve(owner, spender, value);

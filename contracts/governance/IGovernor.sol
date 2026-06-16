@@ -4,7 +4,7 @@
 pragma solidity >=0.8.4;
 
 import {ITRC165} from "../interfaces/ITRC165.sol";
-import {IERC6372} from "../interfaces/IERC6372.sol";
+import {ITRC6372} from "../interfaces/ITRC6372.sol";
 
 /**
  * @dev Interface of the {Governor} core.
@@ -12,7 +12,7 @@ import {IERC6372} from "../interfaces/IERC6372.sol";
  * NOTE: Event parameters lack the `indexed` keyword for compatibility with GovernorBravo events.
  * Making event parameters `indexed` affects how events are decoded, potentially breaking existing indexers.
  */
-interface IGovernor is ITRC165, IERC6372 {
+interface IGovernor is ITRC165, ITRC6372 {
     enum ProposalState {
         Pending,
         Active,
@@ -281,7 +281,7 @@ interface IGovernor is ITRC165, IERC6372 {
      * proposal starts.
      *
      * NOTE: While this interface returns a uint256, timepoints are stored as uint48 following the ERC-6372 clock type.
-     * Consequently this value must fit in a uint48 (when added to the current clock). See {IERC6372-clock}.
+     * Consequently this value must fit in a uint48 (when added to the current clock). See {ITRC6372-clock}.
      */
     function votingDelay() external view returns (uint256);
 

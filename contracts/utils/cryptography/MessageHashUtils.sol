@@ -14,7 +14,7 @@ import {Strings} from "../Strings.sol";
  * specifications.
  */
 library MessageHashUtils {
-    error ERC5267ExtensionsNotSupported();
+    error TRC5267ExtensionsNotSupported();
 
     /**
      * @dev Returns the keccak256 digest of an ERC-191 signed data with version
@@ -101,7 +101,7 @@ library MessageHashUtils {
     }
 
     /**
-     * @dev Returns the EIP-712 domain separator constructed from an `eip712Domain`. See {IERC5267-eip712Domain}
+     * @dev Returns the EIP-712 domain separator constructed from an `eip712Domain`. See {ITRC5267-eip712Domain}
      *
      * This function dynamically constructs the domain separator based on which fields are present in the
      * `fields` parameter. It contains flags that indicate which domain fields are present:
@@ -181,7 +181,7 @@ library MessageHashUtils {
 
     /// @dev Builds an EIP-712 domain type hash depending on the `fields` provided, following https://eips.ethereum.org/EIPS/eip-5267[ERC-5267]
     function toDomainTypeHash(bytes1 fields) internal pure returns (bytes32 hash) {
-        if (fields & 0x20 == 0x20) revert ERC5267ExtensionsNotSupported();
+        if (fields & 0x20 == 0x20) revert TRC5267ExtensionsNotSupported();
 
         assembly ("memory-safe") {
             // align fields to the right for easy processing

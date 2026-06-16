@@ -9,7 +9,7 @@ import {Nonces} from "../../../utils/Nonces.sol";
 contract MyTokenTimestampBased is TRC20, TRC20Permit, TRC20Votes {
     constructor() TRC20("MyTokenTimestampBased", "MTK") TRC20Permit("MyTokenTimestampBased") {}
 
-    // Overrides IERC6372 functions to make the token & governor timestamp-based
+    // Overrides ITRC6372 functions to make the token & governor timestamp-based
 
     function clock() public view override returns (uint48) {
         return uint48(block.timestamp);

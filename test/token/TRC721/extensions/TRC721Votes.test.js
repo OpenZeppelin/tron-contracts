@@ -34,7 +34,7 @@ describe('TRC721Votes', function () {
         this.votes = this.token;
       });
 
-      // includes ERC6372 behavior check
+      // includes TRC6372 behavior check
       shouldBehaveLikeVotes(tokens, { mode, fungible: false });
 
       describe('balanceOf', function () {

@@ -1,7 +1,7 @@
 import "helpers/helpers.spec";
 import "methods/IERC20.spec";
-import "methods/IERC3156FlashLender.spec";
-import "methods/IERC3156FlashBorrower.spec";
+import "methods/ITRC3156FlashLender.spec";
+import "methods/ITRC3156FlashBorrower.spec";
 
 methods {
     // non standard ERC-3156 functions

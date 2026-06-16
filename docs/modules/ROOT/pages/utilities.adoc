@@ -141,7 +141,7 @@ A signer is represented as a `bytes` object that concatenates a verifier address
 
 [source,solidity]
 ----
-function _verifyERC7913Signature(bytes memory signer, bytes32 hash, bytes memory signature) internal view returns (bool) {
+function _verifyTRC7913Signature(bytes memory signer, bytes32 hash, bytes memory signature) internal view returns (bool) {
     return SignatureChecker.isValidSignatureNow(signer, hash, signature);
 }
 ----

@@ -175,7 +175,7 @@ class WebAuthnSigningKey extends P256SigningKey {
   }
 }
 
-class MultiERC7913SigningKey {
+class MultiTRC7913SigningKey {
   // this is a sorted array of objects that contain {signer, weight}
   #signers;
 
@@ -218,5 +218,5 @@ module.exports = {
   RSASigningKey,
   RSASHA256SigningKey,
   WebAuthnSigningKey,
-  MultiERC7913SigningKey,
+  MultiTRC7913SigningKey,
 };
