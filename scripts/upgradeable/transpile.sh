@@ -59,7 +59,7 @@ npx @openzeppelin/upgrade-safe-transpiler -D \
   -p 'contracts/access/manager/AccessManager.sol' \
   -p 'contracts/finance/VestingWallet.sol' \
   -p 'contracts/governance/TimelockController.sol' \
-  -p 'contracts/metatx/ERC2771Forwarder.sol' \
+  -p 'contracts/metatx/TRC2771Forwarder.sol' \
   -n \
   -N 'contracts/mocks/**/*' \
   -q '@openzeppelin/tron-contracts/'

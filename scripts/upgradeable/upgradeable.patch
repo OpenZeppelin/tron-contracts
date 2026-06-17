@@ -54,19 +54,19 @@ index c156fa1..895e393 100644
      /**
       * @dev Prevents a contract from calling itself, directly or indirectly.
       * Calling a `nonReentrant` function from another `nonReentrant`
-diff --git a/contracts/utils/cryptography/EIP712.sol b/contracts/utils/cryptography/EIP712.sol
-index 2bc45a4..a5aa41d 100644
---- a/contracts/utils/cryptography/EIP712.sol
-+++ b/contracts/utils/cryptography/EIP712.sol
+diff --git a/contracts/utils/cryptography/TIP712.sol b/contracts/utils/cryptography/TIP712.sol
+index 5446d00..13b4175 100644
+--- a/contracts/utils/cryptography/TIP712.sol
++++ b/contracts/utils/cryptography/TIP712.sol
 @@ -4,7 +4,6 @@
  pragma solidity ^0.8.24;
  
  import {MessageHashUtils} from "./MessageHashUtils.sol";
 -import {ShortStrings, ShortString} from "../ShortStrings.sol";
- import {IERC5267} from "../../interfaces/IERC5267.sol";
+ import {ITRC5267} from "../../interfaces/ITRC5267.sol";
  
  /**
-@@ -25,33 +24,18 @@ import {IERC5267} from "../../interfaces/IERC5267.sol";
+@@ -32,33 +31,15 @@ import {ITRC5267} from "../../interfaces/ITRC5267.sol";
   * NOTE: This contract implements the version of the encoding known as "v4", as implemented by the JSON RPC method
   * https://docs.metamask.io/guide/signing-data.html[`eth_signTypedDataV4` in MetaMask].
   *
@@ -78,7 +78,7 @@ index 2bc45a4..a5aa41d 100644
 + * NOTE: The upgradeable version of this contract does not use an immutable cache and recomputes the domain separator
 + * each time {_domainSeparatorV4} is called. This is cheaper than accessing a cached version in cold storage.
   */
- abstract contract EIP712 is IERC5267 {
+ abstract contract TIP712 is ITRC5267 {
 -    using ShortStrings for *;
 -
      bytes32 private constant TYPE_HASH =
@@ -90,9 +90,9 @@ index 2bc45a4..a5aa41d 100644
 -    uint256 private immutable _cachedChainId;
 -    address private immutable _cachedThis;
 -
-     bytes32 private immutable _hashedName;
-     bytes32 private immutable _hashedVersion;
- 
+-    bytes32 private immutable _hashedName;
+-    bytes32 private immutable _hashedVersion;
+-
 -    ShortString private immutable _name;
 -    ShortString private immutable _version;
 -    // slither-disable-next-line constable-states
@@ -104,7 +104,7 @@ index 2bc45a4..a5aa41d 100644
  
      /**
       * @dev Initializes the domain separator and parameter caches.
-@@ -66,29 +50,19 @@ abstract contract EIP712 is IERC5267 {
+@@ -73,32 +54,22 @@ abstract contract TIP712 is ITRC5267 {
       * contract upgrade].
       */
      constructor(string memory name, string memory version) {
@@ -133,14 +133,17 @@ index 2bc45a4..a5aa41d 100644
      }
  
      function _buildDomainSeparator() private view returns (bytes32) {
--        return keccak256(abi.encode(TYPE_HASH, _hashedName, _hashedVersion, block.chainid, address(this)));
-+        return keccak256(abi.encode(TYPE_HASH, _EIP712NameHash(), _EIP712VersionHash(), block.chainid, address(this)));
+         // TIP-712 defines the domain separator's `chainId` as `block.chainid & 0xffffffff` (the low four bytes),
+         // matching the value off-chain TRON signers and `eth_chainId` use. This is a no-op on networks where the
+         // CHAINID opcode already returns four bytes.
+-        return keccak256(abi.encode(TYPE_HASH, _hashedName, _hashedVersion, block.chainid & 0xffffffff, address(this)));
++        return keccak256(abi.encode(TYPE_HASH, _TIP712NameHash(), _TIP712VersionHash(), block.chainid & 0xffffffff, address(this)));
      }
  
      /**
-@@ -139,22 +113,38 @@ abstract contract EIP712 is IERC5267 {
+@@ -149,22 +120,38 @@ abstract contract TIP712 is ITRC5267 {
      /**
-      * @dev The name parameter for the EIP712 domain.
+      * @dev The name parameter for the TIP712 domain.
       *
 -     * NOTE: By default this function reads _name which is an immutable value.
 -     * It only reads from storage if necessary (in case the value is too large to fit in a ShortString).
@@ -148,43 +151,43 @@ index 2bc45a4..a5aa41d 100644
 +     * are a concern.
       */
 -    // solhint-disable-next-line func-name-mixedcase
--    function _EIP712Name() internal view returns (string memory) {
+-    function _TIP712Name() internal view returns (string memory) {
 -        return _name.toStringWithFallback(_nameFallback);
-+    function _EIP712Name() internal view virtual returns (string memory) {
++    function _TIP712Name() internal view virtual returns (string memory) {
 +        return _name;
      }
  
      /**
-      * @dev The version parameter for the EIP712 domain.
+      * @dev The version parameter for the TIP712 domain.
       *
 -     * NOTE: By default this function reads _version which is an immutable value.
 -     * It only reads from storage if necessary (in case the value is too large to fit in a ShortString).
 +     * NOTE: This function reads from storage by default, but can be redefined to return a constant value if gas costs
 +     * are a concern.
 +     */
-+    function _EIP712Version() internal view virtual returns (string memory) {
++    function _TIP712Version() internal view virtual returns (string memory) {
 +        return _version;
 +    }
 +
 +    /**
-+     * @dev The hash of the name parameter for the EIP712 domain.
++     * @dev The hash of the name parameter for the TIP712 domain.
 +     *
-+     * NOTE: In previous versions this function was virtual. In this version you should override `_EIP712Name` instead.
++     * NOTE: In previous versions this function was virtual. In this version you should override `_TIP712Name` instead.
 +     */
-+    function _EIP712NameHash() internal view returns (bytes32) {
-+        return keccak256(bytes(_EIP712Name()));
++    function _TIP712NameHash() internal view returns (bytes32) {
++        return keccak256(bytes(_TIP712Name()));
 +    }
 +
 +    /**
-+     * @dev The hash of the version parameter for the EIP712 domain.
++     * @dev The hash of the version parameter for the TIP712 domain.
 +     *
-+     * NOTE: In previous versions this function was virtual. In this version you should override `_EIP712Version` instead.
++     * NOTE: In previous versions this function was virtual. In this version you should override `_TIP712Version` instead.
       */
 -    // solhint-disable-next-line func-name-mixedcase
--    function _EIP712Version() internal view returns (string memory) {
+-    function _TIP712Version() internal view returns (string memory) {
 -        return _version.toStringWithFallback(_versionFallback);
-+    function _EIP712VersionHash() internal view returns (bytes32) {
-+        return keccak256(bytes(_EIP712Version()));
++    function _TIP712VersionHash() internal view returns (bytes32) {
++        return keccak256(bytes(_TIP712Version()));
      }
  }
 diff --git a/remappings.txt b/remappings.txt
@@ -195,11 +198,11 @@ index 304d138..0ae9093 100644
 -@openzeppelin/contracts/=contracts/
 +@openzeppelin/tron-contracts-upgradeable/=contracts/
 +@openzeppelin/tron-contracts/=lib/tron-contracts/
-diff --git a/test/utils/cryptography/EIP712.test.js b/test/utils/cryptography/EIP712.test.js
-index 2b6e7fa..268e0d2 100644
---- a/test/utils/cryptography/EIP712.test.js
-+++ b/test/utils/cryptography/EIP712.test.js
-@@ -47,27 +47,6 @@ describe('EIP712', function () {
+diff --git a/test/utils/cryptography/TIP712.test.js b/test/utils/cryptography/TIP712.test.js
+index a445b9b..6f7fa7a 100644
+--- a/test/utils/cryptography/TIP712.test.js
++++ b/test/utils/cryptography/TIP712.test.js
+@@ -47,27 +47,6 @@ describe('TIP712', function () {
            const rebuildDomain = await getDomain(this.eip712);
            expect(rebuildDomain).to.be.deep.equal(this.domain);
          });
@@ -215,7 +218,7 @@ index 2b6e7fa..268e0d2 100644
 -              .$clone(this.eip712)
 -              .then(tx => tx.wait())
 -              .then(receipt => receipt.logs.find(ev => ev.fragment.name == 'return$clone_address').args.instance)
--              .then(address => ethers.getContractAt('$EIP712Verifier', address));
+-              .then(address => ethers.getContractAt('$TIP712Verifier', address));
 -
 -            const expectedDomain = { ...this.domain, verifyingContract: clone.target };
 -            expect(await getDomain(clone)).to.be.deep.equal(expectedDomain);
