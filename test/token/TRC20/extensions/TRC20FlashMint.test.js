@@ -38,7 +38,7 @@ describe('TRC20FlashMint', function () {
 
     it('token mismatch', async function () {
       await expect(this.token.flashFee(ethers.ZeroAddress, loanValue))
-        .to.be.revertedWithCustomError(this.token, 'ERC3156UnsupportedToken')
+        .to.be.revertedWithCustomError(this.token, 'TRC3156UnsupportedToken')
         .withArgs(ethers.ZeroAddress);
     });
   });
@@ -51,7 +51,7 @@ describe('TRC20FlashMint', function () {
 
   describe('flashLoan', function () {
     it('success', async function () {
-      const receiver = await ethers.deployContract('ERC3156FlashBorrowerMock', [true, true]);
+      const receiver = await ethers.deployContract('TRC3156FlashBorrowerMock', [true, true]);
 
       const tx = await this.token.flashLoan(receiver, this.token, loanValue, '0x');
       await expect(tx)
@@ -70,21 +70,21 @@ describe('TRC20FlashMint', function () {
     });
 
     it('missing return value', async function () {
-      const receiver = await ethers.deployContract('ERC3156FlashBorrowerMock', [false, true]);
+      const receiver = await ethers.deployContract('TRC3156FlashBorrowerMock', [false, true]);
       await expect(this.token.flashLoan(receiver, this.token, loanValue, '0x'))
-        .to.be.revertedWithCustomError(this.token, 'ERC3156InvalidReceiver')
+        .to.be.revertedWithCustomError(this.token, 'TRC3156InvalidReceiver')
         .withArgs(receiver);
     });
 
     it('missing approval', async function () {
-      const receiver = await ethers.deployContract('ERC3156FlashBorrowerMock', [true, false]);
+      const receiver = await ethers.deployContract('TRC3156FlashBorrowerMock', [true, false]);
       await expect(this.token.flashLoan(receiver, this.token, loanValue, '0x'))
         .to.be.revertedWithCustomError(this.token, 'TRC20InsufficientAllowance')
         .withArgs(this.token, 0, loanValue);
     });
 
     it('unavailable funds', async function () {
-      const receiver = await ethers.deployContract('ERC3156FlashBorrowerMock', [true, true]);
+      const receiver = await ethers.deployContract('TRC3156FlashBorrowerMock', [true, true]);
       const data = this.token.interface.encodeFunctionData('transfer', [this.other.address, 10]);
       await expect(this.token.flashLoan(receiver, this.token, loanValue, data))
         .to.be.revertedWithCustomError(this.token, 'TRC20InsufficientBalance')
@@ -92,10 +92,10 @@ describe('TRC20FlashMint', function () {
     });
 
     it('more than maxFlashLoan', async function () {
-      const receiver = await ethers.deployContract('ERC3156FlashBorrowerMock', [true, true]);
+      const receiver = await ethers.deployContract('TRC3156FlashBorrowerMock', [true, true]);
       const data = this.token.interface.encodeFunctionData('transfer', [this.other.address, 10]);
       await expect(this.token.flashLoan(receiver, this.token, ethers.MaxUint256, data))
-        .to.be.revertedWithCustomError(this.token, 'ERC3156ExceededMaxLoan')
+        .to.be.revertedWithCustomError(this.token, 'TRC3156ExceededMaxLoan')
         .withArgs(ethers.MaxUint256 - initialSupply);
     });
 
@@ -104,7 +104,7 @@ describe('TRC20FlashMint', function () {
       const flashFee = 5_000n;
 
       beforeEach('init receiver balance & set flash fee', async function () {
-        this.receiver = await ethers.deployContract('ERC3156FlashBorrowerMock', [true, true]);
+        this.receiver = await ethers.deployContract('TRC3156FlashBorrowerMock', [true, true]);
 
         const tx = await this.token.$_mint(this.receiver, receiverInitialBalance);
         await expect(tx)

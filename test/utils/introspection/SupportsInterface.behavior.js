@@ -59,7 +59,7 @@ const SIGNATURES = {
     'onERC1155Received(address,address,uint256,uint256,bytes)',
     'onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)',
   ],
-  ERC1363: [
+  TRC1363: [
     'transferAndCall(address,uint256)',
     'transferAndCall(address,uint256,bytes)',
     'transferFromAndCall(address,address,uint256)',
@@ -89,8 +89,8 @@ const SIGNATURES = {
   ],
   Governor: GOVERNOR_INTERFACE,
   Governor_5_3: GOVERNOR_INTERFACE.concat('getProposalId(address[],uint256[],bytes[],bytes32)'),
-  ERC2981: ['royaltyInfo(uint256,uint256)'],
-  ERC6909: [
+  TRC2981: ['royaltyInfo(uint256,uint256)'],
+  TRC6909: [
     'balanceOf(address,uint256)',
     'allowance(address,address,uint256)',
     'isOperator(address,address)',
@@ -99,9 +99,9 @@ const SIGNATURES = {
     'approve(address,uint256,uint256)',
     'setOperator(address,bool)',
   ],
-  ERC6909TokenSupply: ['totalSupply(uint256)'],
-  ERC6909Metadata: ['name(uint256)', 'symbol(uint256)', 'decimals(uint256)'],
-  ERC6909ContentURI: ['contractURI()', 'tokenURI(uint256)'],
+  TRC6909TokenSupply: ['totalSupply(uint256)'],
+  TRC6909Metadata: ['name(uint256)', 'symbol(uint256)', 'decimals(uint256)'],
+  TRC6909ContentURI: ['contractURI()', 'tokenURI(uint256)'],
 };
 
 const INTERFACE_IDS = mapValues(SIGNATURES, interfaceId);

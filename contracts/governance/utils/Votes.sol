@@ -3,7 +3,7 @@
 
 pragma solidity ^0.8.24;
 
-import {IERC5805} from "../../interfaces/IERC5805.sol";
+import {ITRC5805} from "../../interfaces/ITRC5805.sol";
 import {Context} from "../../utils/Context.sol";
 import {Nonces} from "../../utils/Nonces.sol";
 import {TIP712} from "../../utils/cryptography/TIP712.sol";
@@ -30,7 +30,7 @@ import {Time} from "../../utils/types/Time.sol";
  * {TRC721-balanceOf}), and can use {_transferVotingUnits} to track a change in the distribution of those units (in the
  * previous example, it would be included in {TRC721-_update}).
  */
-abstract contract Votes is Context, TIP712, Nonces, IERC5805 {
+abstract contract Votes is Context, TIP712, Nonces, ITRC5805 {
     using Checkpoints for Checkpoints.Trace208;
 
     bytes32 private constant DELEGATION_TYPEHASH =
@@ -45,12 +45,12 @@ abstract contract Votes is Context, TIP712, Nonces, IERC5805 {
     /**
      * @dev The clock was incorrectly modified.
      */
-    error ERC6372InconsistentClock();
+    error TRC6372InconsistentClock();
 
     /**
      * @dev Lookup to future votes is not available.
      */
-    error ERC5805FutureLookup(uint256 timepoint, uint48 clock);
+    error TRC5805FutureLookup(uint256 timepoint, uint48 clock);
 
     /**
      * @dev Clock used for flagging checkpoints. Can be overridden to implement timestamp based
@@ -67,7 +67,7 @@ abstract contract Votes is Context, TIP712, Nonces, IERC5805 {
     function CLOCK_MODE() public view virtual returns (string memory) {
         // Check that the clock was not modified
         if (clock() != Time.blockNumber()) {
-            revert ERC6372InconsistentClock();
+            revert TRC6372InconsistentClock();
         }
         return "mode=blocknumber&from=default";
     }
@@ -77,7 +77,7 @@ abstract contract Votes is Context, TIP712, Nonces, IERC5805 {
      */
     function _validateTimepoint(uint256 timepoint) internal view returns (uint48) {
         uint48 currentTimepoint = clock();
-        if (timepoint >= currentTimepoint) revert ERC5805FutureLookup(timepoint, currentTimepoint);
+        if (timepoint >= currentTimepoint) revert TRC5805FutureLookup(timepoint, currentTimepoint);
         return SafeCast.toUint48(timepoint);
     }
 

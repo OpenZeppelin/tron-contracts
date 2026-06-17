@@ -25,7 +25,7 @@ Additionally there are multiple custom extensions, including:
 * {TRC20Votes}: support for voting and vote delegation. xref:governance.adoc#token[See the governance guide for a minimal example (with the required overrides when combining TRC20 + TRC20Permit + TRC20Votes)].
 * {TRC20Wrapper}: wrapper to create a TRC-20 backed by another TRC-20, with deposit and withdraw methods. Useful in conjunction with {TRC20Votes}.
 * {TRC20TemporaryApproval}: support for approvals lasting for only one transaction, as defined in ERC-7674.
-* {ERC1363}: support for calling the target of a transfer or approval, enabling code execution on the receiver within a single transaction.
+* {TRC1363}: support for calling the target of a transfer or approval, enabling code execution on the receiver within a single transaction.
 * {TRC4626}: tokenized vault that manages shares (represented as TRC-20) that are backed by assets (another TRC-20).
 
 Finally, there are some utilities to interact with TRC-20 contracts in various ways:
@@ -70,7 +70,7 @@ NOTE: This core set of contracts is designed to be unopinionated, allowing devel
 
 {{TRC20TemporaryApproval}}
 
-{{ERC1363}}
+{{TRC1363}}
 
 {{TRC4626}}
 
@@ -78,4 +78,4 @@ NOTE: This core set of contracts is designed to be unopinionated, allowing devel
 
 {{SafeTRC20}}
 
-{{ERC1363Utils}}
+{{TRC1363Utils}}

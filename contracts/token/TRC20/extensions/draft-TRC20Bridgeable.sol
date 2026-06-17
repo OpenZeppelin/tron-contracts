@@ -5,13 +5,13 @@ pragma solidity ^0.8.20;
 
 import {TRC20} from "../TRC20.sol";
 import {TRC165, ITRC165} from "../../../utils/introspection/TRC165.sol";
-import {IERC7802} from "../../../interfaces/draft-IERC7802.sol";
+import {ITRC7802} from "../../../interfaces/draft-ITRC7802.sol";
 
 /**
  * @dev TRC20 extension that implements the standard token interface according to
  * https://eips.ethereum.org/EIPS/eip-7802[ERC-7802].
  */
-abstract contract TRC20Bridgeable is TRC20, TRC165, IERC7802 {
+abstract contract TRC20Bridgeable is TRC20, TRC165, ITRC7802 {
     /// @dev Modifier to restrict access to the token bridge.
     modifier onlyTokenBridge() {
         // Token bridge should never be impersonated using a relayer/forwarder. Using msg.sender is preferable to
@@ -22,11 +22,11 @@ abstract contract TRC20Bridgeable is TRC20, TRC165, IERC7802 {
 
     /// @inheritdoc TRC165
     function supportsInterface(bytes4 interfaceId) public view virtual override(TRC165, ITRC165) returns (bool) {
-        return interfaceId == type(IERC7802).interfaceId || super.supportsInterface(interfaceId);
+        return interfaceId == type(ITRC7802).interfaceId || super.supportsInterface(interfaceId);
     }
 
     /**
-     * @dev See {IERC7802-crosschainMint}. Emits a {IERC7802-CrosschainMint} event.
+     * @dev See {ITRC7802-crosschainMint}. Emits a {ITRC7802-CrosschainMint} event.
      */
     function crosschainMint(address to, uint256 value) public virtual override onlyTokenBridge {
         _mint(to, value);
@@ -34,7 +34,7 @@ abstract contract TRC20Bridgeable is TRC20, TRC165, IERC7802 {
     }
 
     /**
-     * @dev See {IERC7802-crosschainBurn}. Emits a {IERC7802-CrosschainBurn} event.
+     * @dev See {ITRC7802-crosschainBurn}. Emits a {ITRC7802-CrosschainBurn} event.
      */
     function crosschainBurn(address from, uint256 value) public virtual override onlyTokenBridge {
         _burn(from, value);

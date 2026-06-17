@@ -80,7 +80,7 @@ describe('TRC20Permit', function () {
       );
 
       await expect(this.token.permit(this.owner, this.spender, value, maxDeadline, v, r, s))
-        .to.be.revertedWithCustomError(this.token, 'ERC2612InvalidSigner')
+        .to.be.revertedWithCustomError(this.token, 'TRC2612InvalidSigner')
         .withArgs(recovered, this.owner);
     });
 
@@ -90,7 +90,7 @@ describe('TRC20Permit', function () {
         .then(ethers.Signature.from);
 
       await expect(this.token.permit(this.owner, this.spender, value, maxDeadline, v, r, s))
-        .to.be.revertedWithCustomError(this.token, 'ERC2612InvalidSigner')
+        .to.be.revertedWithCustomError(this.token, 'TRC2612InvalidSigner')
         .withArgs(this.other, this.owner);
     });
 
@@ -102,7 +102,7 @@ describe('TRC20Permit', function () {
         .then(ethers.Signature.from);
 
       await expect(this.token.permit(this.owner, this.spender, value, deadline, v, r, s))
-        .to.be.revertedWithCustomError(this.token, 'ERC2612ExpiredSignature')
+        .to.be.revertedWithCustomError(this.token, 'TRC2612ExpiredSignature')
         .withArgs(deadline);
     });
   });

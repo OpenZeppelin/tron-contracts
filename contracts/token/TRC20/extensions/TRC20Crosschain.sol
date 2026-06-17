@@ -11,12 +11,12 @@ import {BridgeFungible} from "../../../crosschain/bridges/abstract/BridgeFungibl
  *
  * This extension makes the token compatible with counterparts on other chains, which can be:
  * * {TRC20Crosschain} instances,
- * * {TRC20} instances that are bridged using {BridgeERC20},
- * * {TRC20Bridgeable} instances that are bridged using {BridgeERC7802}.
+ * * {TRC20} instances that are bridged using {BridgeTRC20},
+ * * {TRC20Bridgeable} instances that are bridged using {BridgeTRC7802}.
  *
- * It is mostly equivalent to inheriting from both {TRC20Bridgeable} and {BridgeERC7802}, and configuring them such
+ * It is mostly equivalent to inheriting from both {TRC20Bridgeable} and {BridgeTRC7802}, and configuring them such
  * that:
- * * `token` (on the {BridgeERC7802} side) is `address(this)`,
+ * * `token` (on the {BridgeTRC7802} side) is `address(this)`,
  * * `_checkTokenBridge` (on the {TRC20Bridgeable} side) is implemented such that it only accepts self-calls.
  */
 // slither-disable-next-line locked-ether

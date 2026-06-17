@@ -4,7 +4,7 @@
 pragma solidity ^0.8.24;
 
 import {TRC721} from "../TRC721.sol";
-import {IERC2309} from "../../../interfaces/IERC2309.sol";
+import {ITRC2309} from "../../../interfaces/ITRC2309.sol";
 import {BitMaps} from "../../../utils/structs/BitMaps.sol";
 import {Checkpoints} from "../../../utils/structs/Checkpoints.sol";
 
@@ -27,7 +27,7 @@ import {Checkpoints} from "../../../utils/structs/Checkpoints.sol";
  * values during the {_mintConsecutive} execution if the super call is not called first. To be safe, execute the
  * super call before your custom logic.
  */
-abstract contract TRC721Consecutive is IERC2309, TRC721 {
+abstract contract TRC721Consecutive is ITRC2309, TRC721 {
     using BitMaps for BitMaps.BitMap;
     using Checkpoints for Checkpoints.Trace160;
 
@@ -99,7 +99,7 @@ abstract contract TRC721Consecutive is IERC2309, TRC721 {
      *
      * CAUTION: Does not invoke `onTRC721Received` on the receiver.
      *
-     * Emits a {IERC2309-ConsecutiveTransfer} event.
+     * Emits a {ITRC2309-ConsecutiveTransfer} event.
      */
     function _mintConsecutive(address to, uint96 batchSize) internal virtual returns (uint96) {
         uint96 next = _nextConsecutiveId();

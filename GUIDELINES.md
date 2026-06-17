@@ -121,7 +121,7 @@ In addition to the official Solidity Style Guide we have a number of other conve
 * Interface names should have a capital I prefix.
 
   ```solidity
-  interface IERC777 {
+  interface ITRC777 {
   ```
 
 * Contracts not intended to be used standalone should be marked abstract

@@ -5,7 +5,7 @@ pragma solidity ^0.8.24;
 
 import {Governor} from "../Governor.sol";
 import {IVotes} from "../utils/IVotes.sol";
-import {IERC5805} from "../../interfaces/IERC5805.sol";
+import {ITRC5805} from "../../interfaces/ITRC5805.sol";
 import {Time} from "../../utils/types/Time.sol";
 
 /**
@@ -13,16 +13,16 @@ import {Time} from "../../utils/types/Time.sol";
  * token.
  */
 abstract contract GovernorVotes is Governor {
-    IERC5805 private immutable _token;
+    ITRC5805 private immutable _token;
 
     constructor(IVotes tokenAddress) {
-        _token = IERC5805(address(tokenAddress));
+        _token = ITRC5805(address(tokenAddress));
     }
 
     /**
      * @dev The token that voting power is sourced from.
      */
-    function token() public view virtual returns (IERC5805) {
+    function token() public view virtual returns (ITRC5805) {
         return _token;
     }
 

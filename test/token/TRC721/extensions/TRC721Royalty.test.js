@@ -2,7 +2,7 @@ const { ethers } = require('hardhat');
 const { expect } = require('chai');
 const { loadFixture } = require('@nomicfoundation/hardhat-network-helpers');
 
-const { shouldBehaveLikeERC2981 } = require('../../common/ERC2981.behavior');
+const { shouldBehaveLikeTRC2981 } = require('../../common/TRC2981.behavior');
 
 const name = 'Non Fungible Token';
 const symbol = 'NFT';
@@ -53,5 +53,5 @@ describe('TRC721Royalty', function () {
     });
   });
 
-  shouldBehaveLikeERC2981();
+  shouldBehaveLikeTRC2981();
 });

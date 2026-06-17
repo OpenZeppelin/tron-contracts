@@ -4,7 +4,7 @@
 pragma solidity ^0.8.20;
 
 import {ITRC20} from "../ITRC20.sol";
-import {IERC1363} from "../../../interfaces/IERC1363.sol";
+import {ITRC1363} from "../../../interfaces/ITRC1363.sol";
 
 /**
  * @title SafeTRC20
@@ -138,13 +138,13 @@ library SafeTRC20 {
     }
 
     /**
-     * @dev Performs an {ERC1363} transferAndCall, with a fallback to the simple {TRC20} transfer if the target has no
-     * code. This can be used to implement a {TRC721}-like safe transfer that relies on {ERC1363} checks when
+     * @dev Performs an {TRC1363} transferAndCall, with a fallback to the simple {TRC20} transfer if the target has no
+     * code. This can be used to implement a {TRC721}-like safe transfer that relies on {TRC1363} checks when
      * targeting contracts.
      *
      * Reverts if the returned value is other than `true`.
      */
-    function transferAndCallRelaxed(IERC1363 token, address to, uint256 value, bytes memory data) internal {
+    function transferAndCallRelaxed(ITRC1363 token, address to, uint256 value, bytes memory data) internal {
         if (to.code.length == 0) {
             safeTransfer(token, to, value);
         } else if (!token.transferAndCall(to, value, data)) {
@@ -153,14 +153,14 @@ library SafeTRC20 {
     }
 
     /**
-     * @dev Performs an {ERC1363} transferFromAndCall, with a fallback to the simple {TRC20} transferFrom if the target
-     * has no code. This can be used to implement a {TRC721}-like safe transfer that relies on {ERC1363} checks when
+     * @dev Performs an {TRC1363} transferFromAndCall, with a fallback to the simple {TRC20} transferFrom if the target
+     * has no code. This can be used to implement a {TRC721}-like safe transfer that relies on {TRC1363} checks when
      * targeting contracts.
      *
      * Reverts if the returned value is other than `true`.
      */
     function transferFromAndCallRelaxed(
-        IERC1363 token,
+        ITRC1363 token,
         address from,
         address to,
         uint256 value,
@@ -174,17 +174,17 @@ library SafeTRC20 {
     }
 
     /**
-     * @dev Performs an {ERC1363} approveAndCall, with a fallback to the simple {TRC20} approve if the target has no
-     * code. This can be used to implement a {TRC721}-like safe transfer that rely on {ERC1363} checks when
+     * @dev Performs an {TRC1363} approveAndCall, with a fallback to the simple {TRC20} approve if the target has no
+     * code. This can be used to implement a {TRC721}-like safe transfer that rely on {TRC1363} checks when
      * targeting contracts.
      *
      * NOTE: When the recipient address (`to`) has no code (i.e. is an EOA), this function behaves as {forceApprove}.
-     * Oppositely, when the recipient address (`to`) has code, this function only attempts to call {ERC1363-approveAndCall}
+     * Oppositely, when the recipient address (`to`) has code, this function only attempts to call {TRC1363-approveAndCall}
      * once without retrying, and relies on the returned value to be true.
      *
      * Reverts if the returned value is other than `true`.
      */
-    function approveAndCallRelaxed(IERC1363 token, address to, uint256 value, bytes memory data) internal {
+    function approveAndCallRelaxed(ITRC1363 token, address to, uint256 value, bytes memory data) internal {
         if (to.code.length == 0) {
             forceApprove(token, to, value);
         } else if (!token.approveAndCall(to, value, data)) {

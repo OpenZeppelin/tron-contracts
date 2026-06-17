@@ -3,8 +3,8 @@
 
 pragma solidity ^0.8.20;
 
-import {IERC3156FlashBorrower} from "../../../interfaces/IERC3156FlashBorrower.sol";
-import {IERC3156FlashLender} from "../../../interfaces/IERC3156FlashLender.sol";
+import {ITRC3156FlashBorrower} from "../../../interfaces/ITRC3156FlashBorrower.sol";
+import {ITRC3156FlashLender} from "../../../interfaces/ITRC3156FlashLender.sol";
 import {TRC20} from "../TRC20.sol";
 
 /**
@@ -18,23 +18,23 @@ import {TRC20} from "../TRC20.sol";
  * {maxFlashLoan} will not correctly reflect the maximum that can be flash minted. We recommend
  * overriding {maxFlashLoan} so that it correctly reflects the supply cap.
  */
-abstract contract TRC20FlashMint is TRC20, IERC3156FlashLender {
+abstract contract TRC20FlashMint is TRC20, ITRC3156FlashLender {
     bytes32 private constant RETURN_VALUE = keccak256("ERC3156FlashBorrower.onFlashLoan");
 
     /**
      * @dev The loan token is not valid.
      */
-    error ERC3156UnsupportedToken(address token);
+    error TRC3156UnsupportedToken(address token);
 
     /**
      * @dev The requested loan exceeds the max loan value for `token`.
      */
-    error ERC3156ExceededMaxLoan(uint256 maxLoan);
+    error TRC3156ExceededMaxLoan(uint256 maxLoan);
 
     /**
-     * @dev The receiver of a flashloan is not a valid {IERC3156FlashBorrower-onFlashLoan} implementer.
+     * @dev The receiver of a flashloan is not a valid {ITRC3156FlashBorrower-onFlashLoan} implementer.
      */
-    error ERC3156InvalidReceiver(address receiver);
+    error TRC3156InvalidReceiver(address receiver);
 
     /**
      * @dev Returns the maximum amount of tokens available for loan.
@@ -60,7 +60,7 @@ abstract contract TRC20FlashMint is TRC20, IERC3156FlashLender {
      */
     function flashFee(address token, uint256 value) public view virtual returns (uint256) {
         if (token != address(this)) {
-            revert ERC3156UnsupportedToken(token);
+            revert TRC3156UnsupportedToken(token);
         }
         return _flashFee(token, value);
     }
@@ -87,12 +87,12 @@ abstract contract TRC20FlashMint is TRC20, IERC3156FlashLender {
 
     /**
      * @dev Performs a flash loan. New tokens are minted and sent to the
-     * `receiver`, who is required to implement the {IERC3156FlashBorrower}
+     * `receiver`, who is required to implement the {ITRC3156FlashBorrower}
      * interface. By the end of the flash loan, the receiver is expected to own
      * value + fee tokens and have them approved back to the token contract itself so
      * they can be burned.
      * @param receiver The receiver of the flash loan. Should implement the
-     * {IERC3156FlashBorrower-onFlashLoan} interface.
+     * {ITRC3156FlashBorrower-onFlashLoan} interface.
      * @param token The token to be flash loaned. Only `address(this)` is
      * supported.
      * @param value The amount of tokens to be loaned.
@@ -103,19 +103,19 @@ abstract contract TRC20FlashMint is TRC20, IERC3156FlashLender {
     // minted at the beginning is always recovered and burned at the end, or else the entire function will revert.
     // slither-disable-next-line reentrancy-no-eth
     function flashLoan(
-        IERC3156FlashBorrower receiver,
+        ITRC3156FlashBorrower receiver,
         address token,
         uint256 value,
         bytes calldata data
     ) public virtual returns (bool) {
         uint256 maxLoan = maxFlashLoan(token);
         if (value > maxLoan) {
-            revert ERC3156ExceededMaxLoan(maxLoan);
+            revert TRC3156ExceededMaxLoan(maxLoan);
         }
         uint256 fee = flashFee(token, value);
         _mint(address(receiver), value);
         if (receiver.onFlashLoan(_msgSender(), token, value, fee, data) != RETURN_VALUE) {
-            revert ERC3156InvalidReceiver(address(receiver));
+            revert TRC3156InvalidReceiver(address(receiver));
         }
         address flashFeeReceiver = _flashFeeReceiver();
         _spendAllowance(address(receiver), address(this), value + fee);

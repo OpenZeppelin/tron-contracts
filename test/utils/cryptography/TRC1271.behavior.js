@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat');
 const { expect } = require('chai');
 const { Permit, formatType, getDomain } = require('../../helpers/eip712');
-const { ERC7739Signer } = require('../../helpers/erc7739');
+const { TRC7739Signer } = require('../../helpers/trc7739');
 
 function shouldBehaveLikeTRC1271({ erc7739 = false } = {}) {
   const MAGIC_VALUE = '0x1626ba7e';
@@ -13,7 +13,7 @@ function shouldBehaveLikeTRC1271({ erc7739 = false } = {}) {
         await ethers.provider.getCode(this.mock.address).then(code => code != '0x' || this.mock.deploy());
       }
       this._signer = erc7739
-        ? new ERC7739Signer(this.signer, this.domain ?? (await getDomain(this.mock)))
+        ? new TRC7739Signer(this.signer, this.domain ?? (await getDomain(this.mock)))
         : this.signer;
     });
 
@@ -40,7 +40,7 @@ function shouldBehaveLikeTRC1271({ erc7739 = false } = {}) {
 
     describe('TypedDataSign', function () {
       beforeEach(async function () {
-        // Dummy app domain, different from the ERC7739's domain
+        // Dummy app domain, different from the TRC7739's domain
         // Note the difference of format (signer domain doesn't include a salt, but app domain does)
         this.appDomain = {
           name: 'SomeApp',

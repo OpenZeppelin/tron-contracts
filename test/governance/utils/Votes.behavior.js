@@ -5,7 +5,7 @@ const { mine } = require('@nomicfoundation/hardhat-network-helpers');
 const { getDomain, Delegation } = require('../../helpers/eip712');
 const time = require('../../helpers/time');
 
-const { shouldBehaveLikeERC6372 } = require('./ERC6372.behavior');
+const { shouldBehaveLikeTRC6372 } = require('./TRC6372.behavior');
 
 function shouldBehaveLikeVotes(tokens, { mode = 'blocknumber', fungible = true }) {
   beforeEach(async function () {
@@ -13,7 +13,7 @@ function shouldBehaveLikeVotes(tokens, { mode = 'blocknumber', fungible = true }
     this.domain = await getDomain(this.votes);
   });
 
-  shouldBehaveLikeERC6372(mode);
+  shouldBehaveLikeTRC6372(mode);
 
   const getWeight = token => (fungible ? token : 1n);
 
@@ -220,7 +220,7 @@ function shouldBehaveLikeVotes(tokens, { mode = 'blocknumber', fungible = true }
         const timepoint = 50_000_000_000n;
         const clock = await this.votes.clock();
         await expect(this.votes.getPastTotalSupply(timepoint))
-          .to.be.revertedWithCustomError(this.votes, 'ERC5805FutureLookup')
+          .to.be.revertedWithCustomError(this.votes, 'TRC5805FutureLookup')
           .withArgs(timepoint, clock);
       });
 
@@ -270,7 +270,7 @@ function shouldBehaveLikeVotes(tokens, { mode = 'blocknumber', fungible = true }
         expect(await this.votes.getPastTotalSupply(t4.timepoint + 1n)).to.equal(weight[2]);
         expect(await this.votes.getPastTotalSupply(t5.timepoint)).to.equal(0n);
         await expect(this.votes.getPastTotalSupply(t5.timepoint + 1n))
-          .to.be.revertedWithCustomError(this.votes, 'ERC5805FutureLookup')
+          .to.be.revertedWithCustomError(this.votes, 'TRC5805FutureLookup')
           .withArgs(t5.timepoint + 1n, t5.timepoint + 1n);
       });
     });
@@ -289,7 +289,7 @@ function shouldBehaveLikeVotes(tokens, { mode = 'blocknumber', fungible = true }
           const clock = await this.votes.clock();
           const timepoint = 50_000_000_000n; // far in the future
           await expect(this.votes.getPastVotes(this.bob, timepoint))
-            .to.be.revertedWithCustomError(this.votes, 'ERC5805FutureLookup')
+            .to.be.revertedWithCustomError(this.votes, 'TRC5805FutureLookup')
             .withArgs(timepoint, clock);
         });
 

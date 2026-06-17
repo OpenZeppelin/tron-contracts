@@ -5,7 +5,7 @@ pragma solidity ^0.8.24;
 
 import {MessageHashUtils} from "./MessageHashUtils.sol";
 import {ShortStrings, ShortString} from "../ShortStrings.sol";
-import {IERC5267} from "../../interfaces/IERC5267.sol";
+import {ITRC5267} from "../../interfaces/ITRC5267.sol";
 
 /**
  * @dev https://github.com/tronprotocol/tips/blob/master/tip-712.md[TIP-712] is a standard for hashing and signing of
@@ -38,7 +38,7 @@ import {IERC5267} from "../../interfaces/IERC5267.sol";
  *
  * @custom:oz-upgrades-unsafe-allow state-variable-immutable
  */
-abstract contract TIP712 is IERC5267 {
+abstract contract TIP712 is ITRC5267 {
     using ShortStrings for *;
 
     bytes32 private constant TYPE_HASH =
@@ -120,7 +120,7 @@ abstract contract TIP712 is IERC5267 {
         return MessageHashUtils.toTypedDataHash(_domainSeparatorV4(), structHash);
     }
 
-    /// @inheritdoc IERC5267
+    /// @inheritdoc ITRC5267
     function eip712Domain()
         public
         view

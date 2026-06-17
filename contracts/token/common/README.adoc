@@ -2,9 +2,9 @@
 
 Functionality that is common to multiple token standards.
 
-* {ERC2981}: NFT Royalties compatible with both TRC-721 and TRC-1155.
+* {TRC2981}: NFT Royalties compatible with both TRC-721 and TRC-1155.
 ** For TRC-721 consider {TRC721Royalty} which clears the royalty information from storage on burn.
 
 == Contracts
 
-{{ERC2981}}
+{{TRC2981}}

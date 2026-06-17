@@ -14,7 +14,7 @@ import {Address} from "../utils/Address.sol";
 import {Context} from "../utils/Context.sol";
 import {Nonces} from "../utils/Nonces.sol";
 import {Strings} from "../utils/Strings.sol";
-import {IGovernor, IERC6372} from "./IGovernor.sol";
+import {IGovernor, ITRC6372} from "./IGovernor.sol";
 
 /**
  * @dev Core of the governance system, designed to be extended through various modules.
@@ -788,10 +788,10 @@ abstract contract Governor is Context, TRC165, TIP712, Nonces, IGovernor, ITRC72
         return (state(proposalId) == ProposalState.Pending) && caller == proposalProposer(proposalId);
     }
 
-    /// @inheritdoc IERC6372
+    /// @inheritdoc ITRC6372
     function clock() public view virtual returns (uint48);
 
-    /// @inheritdoc IERC6372
+    /// @inheritdoc ITRC6372
     // solhint-disable-next-line func-name-mixedcase
     function CLOCK_MODE() public view virtual returns (string memory);
 
