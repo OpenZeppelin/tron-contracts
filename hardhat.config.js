@@ -187,7 +187,11 @@ module.exports = {
   exposed: {
     imports: true,
     initializers: true,
-    exclude: ['vendor/**/*', '**/*WithInit.sol'],
+    // `*WithInit*` (not just `*WithInit.sol`) so the closure-split
+    // `contracts/mocks/withinit/WithInit_NN.sol` files (see
+    // scripts/upgradeable/split-withinit.js) are also kept out of
+    // hardhat-exposed's `$`-wrapper generation.
+    exclude: ['vendor/**/*', '**/*WithInit*.sol', '**/withinit/**/*'],
     outDir: 'contracts-exposed',
   },
   warnings: {
