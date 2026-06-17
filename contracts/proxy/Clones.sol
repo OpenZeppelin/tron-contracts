@@ -95,6 +95,13 @@ library Clones {
         if (address(this).balance < value) {
             revert Errors.InsufficientBalance(address(this).balance, value);
         }
+        // On TVM a `create2` collision can consume (near-)the full energy budget before the
+        // opcode-level failure surfaces, turning repeated collisions into an energy-griefing
+        // vector. Reject the collision cheaply by checking the predicted address for code
+        // before attempting the expensive deployment.
+        if (predictDeterministicAddress(implementation, salt).code.length != 0) {
+            revert Errors.FailedDeployment();
+        }
         assembly ("memory-safe") {
             // Cleans the upper 96 bits of the `implementation` word, then packs the first 3 bytes
             // of the `implementation` address with the bytecode before the address.

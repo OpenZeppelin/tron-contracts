@@ -14,8 +14,9 @@ import {ITRC7913SignatureVerifier} from "../../../interfaces/ITRC7913.sol";
 contract TRC7913P256Verifier is ITRC7913SignatureVerifier {
     /// @inheritdoc ITRC7913SignatureVerifier
     function verify(bytes calldata key, bytes32 hash, bytes calldata signature) public view virtual returns (bytes4) {
-        // Signature length may be 0x40 or 0x41.
-        if (key.length == 0x40 && signature.length >= 0x40) {
+        // A P256 signature is exactly `r || s` (0x40 bytes). Require the canonical length so that
+        // trailing bytes cannot produce multiple distinct encodings that verify identically.
+        if (key.length == 0x40 && signature.length == 0x40) {
             bytes32 qx = bytes32(key[0x00:0x20]);
             bytes32 qy = bytes32(key[0x20:0x40]);
             bytes32 r = bytes32(signature[0x00:0x20]);

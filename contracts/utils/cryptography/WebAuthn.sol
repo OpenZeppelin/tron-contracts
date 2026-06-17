@@ -108,7 +108,10 @@ library WebAuthn {
             _validateUserPresentBitSet(auth.authenticatorData[32]) && // 16
             (!requireUV || _validateUserVerifiedBitSet(auth.authenticatorData[32])) && // 17
             _validateBackupEligibilityAndState(auth.authenticatorData[32]) && // Consistency check
-            // P256.verify handles signature malleability internally
+            // P256.verify rejects non-canonical (high-`s`) signatures to prevent malleability.
+            // WebAuthn ES256 assertions are not required to be low-`s`, so any high-`s` signature
+            // must be normalized off-chain (`s = N - s`) before submission; otherwise verification
+            // returns false even though the assertion is valid.
             P256.verify(
                 sha256(
                     abi.encodePacked(

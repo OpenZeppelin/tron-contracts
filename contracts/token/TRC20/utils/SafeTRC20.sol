@@ -14,6 +14,12 @@ import {ITRC1363} from "../../../interfaces/ITRC1363.sol";
  * successful.
  * To use this library you can add a `using SafeTRC20 for ITRC20;` statement to your contract,
  * which allows you to call the safe operations as `token.safeTransfer(...)`, etc.
+ *
+ * WARNING: These wrappers are not a token-authenticity check and are intended for contract-based TRC-20 tokens.
+ * Because a call returning ABI-encoded `true` (or no data) is treated as success, a code-less address that returns
+ * `0x...01` for a TRC-20-shaped call can be reported as a successful operation even though no balance or allowance
+ * was modified. Do not treat a `SafeTRC20` "success" as proof of a transfer when the `token` address is untrusted or
+ * user-supplied; vet the token first.
  */
 library SafeTRC20 {
     /**
@@ -48,6 +54,13 @@ library SafeTRC20 {
 
     /**
      * @dev Variant of {safeTransfer} that returns a bool instead of reverting if the operation is not successful.
+     *
+     * WARNING: A `false` return value does NOT imply the absence of token-side effects. This helper reports success
+     * only when the call does not revert and returns either no data or ABI-encoded `true`. USDT-like tokens that
+     * update balances but return ABI-encoded `false` (false-on-success) will therefore make this function return
+     * `false` even though the transfer happened. Using `false` to trigger a fallback/retry path with such tokens can
+     * double-send or corrupt accounting. For false-on-success tokens use {safeTransferUSDT} (balance-delta
+     * verification) instead of relying on this return value.
      */
     function trySafeTransfer(ITRC20 token, address to, uint256 value) internal returns (bool) {
         return _safeTransfer(token, to, value, false);
