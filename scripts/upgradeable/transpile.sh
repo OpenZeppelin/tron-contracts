@@ -6,7 +6,12 @@ VERSION="$(jq -r .version contracts/package.json)"
 DIRNAME="$(dirname -- "${BASH_SOURCE[0]}")"
 
 bash "$DIRNAME/patch-apply.sh"
-sed -i'' -e "s/<package-version>/$VERSION/g" "contracts/package.json"
+# Portable in-place edit. `sed -i'' -e ...` is GNU-only: on macOS/BSD sed, `-i`
+# consumes the next arg (`-e`) as the backup SUFFIX, leaving a stray
+# `contracts/package.json-e` that `git add contracts` then commits. Round-trip
+# through a temp file instead so it behaves identically on GNU and BSD sed.
+sed "s/<package-version>/$VERSION/g" "contracts/package.json" > "contracts/package.json.tmp"
+mv "contracts/package.json.tmp" "contracts/package.json"
 git add contracts/package.json
 
 # The transpiler only reads the solc AST + storage layout (it never touches
@@ -69,6 +74,24 @@ npx @openzeppelin/upgrade-safe-transpiler -D \
 # which re-export those two from the peer package, into the output so they
 # resolve under contracts/proxy/utils/.
 cp "$DIRNAME"/alias/*.sol contracts/proxy/utils/.
+
+# Split the monolithic hardhat-exposed `contracts/mocks/WithInit.sol` (one
+# `*WithInit` constructor variant per initializable contract → ~190 contracts,
+# whole-corpus import closure) into closure-bounded files under
+# contracts/mocks/withinit/. The single file's closure blows the tron-solc
+# 0.8.26 wasm memory ceiling, so `npm run compile` (tron:compile-batches) cannot
+# compile it in one pass. Idempotent + a no-op if the file is absent / already
+# split. See the script header for details.
+node "$DIRNAME/split-withinit.js"
+
+# Swap in the upgradeable-variant README. The source repo's README describes the
+# non-upgradeable package; the transpiled output is a different package
+# (`@openzeppelin/tron-contracts-upgradeable`) and needs its own landing doc
+# (peer-dependency model, initializer/namespaced-storage usage, etc.). Kept as a
+# template alongside the transpiler scripts rather than patched so it stays easy
+# to edit.
+cp "$DIRNAME/root-readme.md" README.md
+git add README.md
 
 # delete compilation artifacts of vanilla code
 rm -rf artifacts cache
