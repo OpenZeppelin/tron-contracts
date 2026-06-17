@@ -73,9 +73,7 @@ const _binPack = (() => {
   // Greedy first-fit: returns array of file-groups, each group's UNION closure
   // <= threshold (a group with a single over-threshold file is kept as-is).
   return (files, threshold) => {
-    const withCl = files
-      .map(f => ({ f, cl: closure(f) }))
-      .sort((a, b) => b.cl.size - a.cl.size);
+    const withCl = files.map(f => ({ f, cl: closure(f) })).sort((a, b) => b.cl.size - a.cl.size);
     const bins = [];
     for (const { f, cl } of withCl) {
       let placed = false;
@@ -210,7 +208,10 @@ module.exports = [
   })(),
   { name: '11-mocks-token', dirs: ['contracts/mocks/token'] },
   { name: '12-mocks-governance', dirs: ['contracts/mocks/governance'] },
-  { name: '13-mocks-proxy-crosschain', dirs: ['contracts/mocks/proxy', 'contracts/mocks/crosschain', 'contracts/mocks/utils', 'contracts/mocks/compound'] },
+  {
+    name: '13-mocks-proxy-crosschain',
+    dirs: ['contracts/mocks/proxy', 'contracts/mocks/crosschain', 'contracts/mocks/utils', 'contracts/mocks/compound'],
+  },
   { name: '14-mocks-docs', dirs: ['contracts/mocks/docs'] },
   // hardhat-exposed `initializers: true` emits a `*WithInit` constructor
   // variant for every initializable contract. Upstream that lands in a single

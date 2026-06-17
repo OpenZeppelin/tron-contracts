@@ -206,9 +206,7 @@ function main() {
     const parts = [];
     for (const u of bin.units) {
       for (const imp of u.imports) {
-        const rebased = imp.replace(/(["'])(\.\.?\/)/, (mm, q, dots) =>
-          dots === './' ? `${q}../` : `${q}../${dots}`,
-        );
+        const rebased = imp.replace(/(["'])(\.\.?\/)/, (mm, q, dots) => (dots === './' ? `${q}../` : `${q}../${dots}`));
         if (!seenImports.has(rebased)) {
           seenImports.add(rebased);
           parts.push(rebased);
@@ -217,7 +215,14 @@ function main() {
     }
     parts.push('');
     for (const u of bin.units) parts.push(u.body, '');
-    const content = header + '\n' + parts.join('\n').replace(/\n{3,}/g, '\n\n').trimEnd() + '\n';
+    const content =
+      header +
+      '\n' +
+      parts
+        .join('\n')
+        .replace(/\n{3,}/g, '\n\n')
+        .trimEnd() +
+      '\n';
     const file = path.join(OUT_DIR, `WithInit_${nn}.sol`);
     fs.writeFileSync(file, content);
     console.log(`  WithInit_${nn}.sol: ${bin.units.length} units, closure ${bin.closure.size} sources`);
