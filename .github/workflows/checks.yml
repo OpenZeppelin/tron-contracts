@@ -42,6 +42,15 @@ jobs:
         with:
           path: tre/FullNode.jar
           key: tre-jar-${{ hashFiles('package-lock.json') }}
+      # build-tre-fork.sh repacks the jar with Python's zipfile. Python 3.12+
+      # rejects java-tron's FullNode.jar with "Overlapped entries ... (possible
+      # zip bomb)" (overlap check added in 3.12), and the ubuntu-latest runner's
+      # system python is 3.12. Pin 3.11 (pre-check) for the repack.
+      - name: Set up Python 3.11 (zipfile repack compatibility)
+        if: steps.jar-cache.outputs.cache-hit != 'true'
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
       - name: Build patched FullNode.jar
         if: steps.jar-cache.outputs.cache-hit != 'true'
         run: bash scripts/build-tre-fork.sh
