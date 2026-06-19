@@ -71,8 +71,24 @@ jobs:
         with:
           name: tre-fullnode-jar
           path: tre
+      # Cache the compiled corpus (artifacts + generated $ wrappers). The output
+      # is a pure function of the contract sources, the compiler config and the
+      # tron-solc version, so key on those. NO restore-keys: a partial hit would
+      # silently run the suite against stale bytecode.
+      - name: Restore compiled artifacts
+        id: tron-artifacts
+        uses: actions/cache@v5
+        with:
+          path: |
+            artifacts
+            contracts-exposed
+          key: tron-artifacts-${{ hashFiles('contracts/**/*.sol', 'hardhat.config.js', 'tron-batches.config.cjs', 'remappings.txt', 'package-lock.json') }}
       - name: Run tests and generate gas report
         run: npm run test
+        env:
+          # On a cache hit the corpus is already compiled — skip exposed:regen +
+          # the tron batched compile inside run-tests-parallel.sh.
+          SKIP_COMPILE: ${{ steps.tron-artifacts.outputs.cache-hit == 'true' && '1' || '' }}
       - name: Check linearisation of the inheritance graph
         run: npm run test:inheritance
       - name: Check pragma validity
@@ -112,8 +128,20 @@ jobs:
           cp -rnT contracts lib/tron-contracts/contracts
       - name: Transpile to upgradeable
         run: bash scripts/upgradeable/transpile.sh
+      # Runs AFTER transpile so the key hashes the transpiled corpus — distinct
+      # from the non-upgradeable cache. No restore-keys (see the tests job).
+      - name: Restore compiled artifacts (upgradeable)
+        id: tron-artifacts
+        uses: actions/cache@v5
+        with:
+          path: |
+            artifacts
+            contracts-exposed
+          key: tron-artifacts-upgradeable-${{ hashFiles('contracts/**/*.sol', 'hardhat.config.js', 'tron-batches.config.cjs', 'remappings.txt', 'package-lock.json') }}
       - name: Run tests
         run: npm run test
+        env:
+          SKIP_COMPILE: ${{ steps.tron-artifacts.outputs.cache-hit == 'true' && '1' || '' }}
       - name: Check linearisation of the inheritance graph
         run: npm run test:inheritance
       - name: Check pragma validity
