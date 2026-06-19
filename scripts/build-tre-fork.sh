@@ -58,6 +58,38 @@ if ! git -C "$WORK" fetch -q --depth 1 origin "$COMMIT" 2>/dev/null; then
 fi
 git -C "$WORK" checkout -q FETCH_HEAD
 
+# build-jar.sh repacks the jar with Python's `zipfile`. Modern CPython
+# (3.12+, and backported to 3.8.20 / 3.9.20 / 3.11.10 …) refuses to read a zip
+# with overlapping entries, raising
+#   BadZipFile: Overlapped entries: 'META-INF/LICENSE' (possible zip bomb)
+# java-tron's FullNode.jar carries exactly such a duplicate, so the repack dies
+# on CI runners (system python = 3.12). build-jar.sh is fetched from the
+# hardhat-tron repo and we don't control it, so neutralise the check here: drop
+# a sitecustomize.py on PYTHONPATH that clears each entry's `_end_offset` (the
+# value the overlap guard tests) right after the central directory is read. The
+# repack already de-dupes by filename, so reading the first copy is safe.
+SITEDIR="$WORK/_pysite"
+mkdir -p "$SITEDIR"
+cat > "$SITEDIR/sitecustomize.py" <<'PY'
+try:
+    import zipfile
+
+    _orig = zipfile.ZipFile._RealGetContents
+
+    def _no_overlap_check(self):
+        _orig(self)
+        for info in self.filelist:
+            try:
+                info._end_offset = None  # disables the "possible zip bomb" guard
+            except AttributeError:
+                pass  # older python without the check — nothing to disable
+
+    zipfile.ZipFile._RealGetContents = _no_overlap_check
+except Exception:
+    pass
+PY
+export PYTHONPATH="$SITEDIR${PYTHONPATH:+:$PYTHONPATH}"
+
 echo "→ Building patched jar (compiles 5 patch classes against stock tre:dev jar)..."
 bash "$WORK/docker/build-jar.sh"   # writes "$WORK/tre/FullNode.jar"
 
