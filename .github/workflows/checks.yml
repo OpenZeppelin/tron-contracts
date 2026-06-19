@@ -91,7 +91,12 @@ jobs:
           SKIP_COMPILE: ${{ steps.tron-artifacts.outputs.cache-hit == 'true' && '1' || '' }}
       - name: Check linearisation of the inheritance graph
         run: npm run test:inheritance
+      # test:pragma recompiles every contract (per-file, to validate its pragma
+      # range) — pure contract work. A cache hit means the corpus is byte-for-byte
+      # a prior state where pragma already passed, so skip it: test-only changes
+      # then do zero compilation. It always runs when contracts change (miss).
       - name: Check pragma validity
+        if: steps.tron-artifacts.outputs.cache-hit != 'true'
         run: npm run test:pragma -- --concurrency 1
       - name: Check procedurally generated contracts are up-to-date
         run: npm run test:generation
@@ -144,7 +149,9 @@ jobs:
           SKIP_COMPILE: ${{ steps.tron-artifacts.outputs.cache-hit == 'true' && '1' || '' }}
       - name: Check linearisation of the inheritance graph
         run: npm run test:inheritance
+      # Skip the per-file pragma recompile on a cache hit (see the tests job).
       - name: Check pragma validity
+        if: steps.tron-artifacts.outputs.cache-hit != 'true'
         run: npm run test:pragma -- --concurrency 1
       - name: Check storage layout
         uses: ./.github/actions/storage-layout
