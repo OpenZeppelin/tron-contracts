@@ -1,10 +1,10 @@
 import "helpers/helpers.spec";
-import "methods/IERC20.spec";
+import "methods/ITRC20.spec";
 import "methods/ITRC3156FlashLender.spec";
 import "methods/ITRC3156FlashBorrower.spec";
 
 methods {
-    // non standard ERC-3156 functions
+    // non standard TRC-3156 functions
     function flashFeeReceiver() external returns (address) envfree;
 
     // function summaries below

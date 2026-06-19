@@ -174,7 +174,14 @@ module.exports = {
       // batchesPath so the file stays editable without restarting
       // hardhat. Switch to inline `batches: require('./...')` if you
       // want startup validation of the array shape.
-      batchesPath: './tron-batches.config.cjs',
+      //
+      // Overridable via the BATCHES env var so `compile:harnesses` can
+      // point the batched compile at the FV harness batch set (which
+      // allowlists the `fv/harnesses` basenames) instead of the default
+      // contracts batches. Without this the harness compile reuses the
+      // contracts allowlist and silently compiles `contracts/` rather
+      // than the harnesses.
+      batchesPath: process.env.BATCHES || './tron-batches.config.cjs',
     },
   },
 

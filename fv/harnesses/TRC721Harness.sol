@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.20;
 
-import {ERC721} from "../patched/token/ERC721/ERC721.sol";
+import {TRC721} from "../patched/token/TRC721/TRC721.sol";
 
-contract ERC721Harness is ERC721 {
-    constructor(string memory name, string memory symbol) ERC721(name, symbol) {}
+contract TRC721Harness is TRC721 {
+    constructor(string memory name, string memory symbol) TRC721(name, symbol) {}
 
     function mint(address account, uint256 tokenId) external {
         _mint(account, tokenId);

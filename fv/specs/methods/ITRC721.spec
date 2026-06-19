@@ -1,5 +1,5 @@
 methods {
-    // IERC721
+    // ITRC721
     function balanceOf(address)                              external returns (uint256) envfree;
     function ownerOf(uint256)                                external returns (address) envfree;
     function getApproved(uint256)                            external returns (address) envfree;
@@ -10,7 +10,7 @@ methods {
     function approve(address,uint256)                        external;
     function setApprovalForAll(address,bool)                 external;
 
-    // IERC721Metadata
+    // ITRC721Metadata
     function name()                                          external returns (string);
     function symbol()                                        external returns (string);
     function tokenURI(uint256)                               external returns (string);
