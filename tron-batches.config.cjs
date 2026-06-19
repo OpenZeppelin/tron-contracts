@@ -129,7 +129,6 @@ module.exports = [
       // Fallback: one batch for the whole subtree.
       return [{ name: '02b-exposed-peer', include: ['contracts-exposed/$_/**/*.sol'] }];
     }
-    const rel = path.relative(__dirname, contractsDir);
     const out = [];
     for (const sub of fs
       .readdirSync(contractsDir, { withFileTypes: true })
