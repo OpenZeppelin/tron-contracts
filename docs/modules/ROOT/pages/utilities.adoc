@@ -538,9 +538,9 @@ IMPORTANT: Only use these functions after carefully confirming they're necessary
 
 === Historical Block Hashes
 
-xref:api:utils.adoc#Blockhash[`Blockhash`] provides L2 protocol developers with extended access to historical block hashes beyond Ethereum's native 256-block limit. By leveraging https://eips.ethereum.org/EIPS/eip-2935[EIP-2935]'s history storage contract, the library enables access to block hashes up to 8,191 blocks in the past, making it invaluable for L2 fraud proofs and state verification systems.
+xref:api:utils.adoc#Blockhash[`Blockhash`] provides access to historical block hashes through the native `BLOCKHASH` opcode, which exposes the hashes of the most recent 256 blocks.
 
-The library seamlessly combines native `BLOCKHASH` opcode access for recent blocks (≤256) with EIP-2935 history storage queries for older blocks (257-8,191). It handles edge cases gracefully by returning zero for future blocks or those beyond the history window, matching the EVM's behavior. The implementation uses gas-efficient assembly for static calls to the history storage contract.
+The library is a thin wrapper around the opcode. It handles edge cases gracefully by returning zero for the current block, future blocks, or blocks older than 256, matching the VM's native behavior. Note that TVM does not implement https://eips.ethereum.org/EIPS/eip-2935[EIP-2935] history storage, so access cannot be extended beyond the 256-block window.
 
 [source,solidity]
 ----
@@ -553,7 +553,7 @@ contract L1Inbox {
 }
 ----
 
-IMPORTANT: After EIP-2935 activation, it takes 8,191 blocks to completely fill the history storage. Before that, only block hashes since the fork block will be available.
+IMPORTANT: Only the 256 most recent block hashes are available. Any query for an older block, the current block, or a future block returns `bytes32(0)`. Treat a zero result as "unavailable" rather than a valid hash.
 
 === Time
 

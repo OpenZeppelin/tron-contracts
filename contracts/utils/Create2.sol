@@ -44,6 +44,14 @@ library Create2 {
         if (bytecode.length == 0) {
             revert Create2EmptyBytecode();
         }
+        // On TVM a `create2` that collides with an already-deployed address can consume
+        // (near-)the full energy budget before the opcode-level failure surfaces, turning
+        // repeated collisions into an energy-griefing vector (especially when sponsored or
+        // batched). Reject the collision cheaply by checking the predicted address for code
+        // before attempting the expensive deployment.
+        if (computeAddress(salt, keccak256(bytecode)).code.length != 0) {
+            revert Errors.FailedDeployment();
+        }
         assembly ("memory-safe") {
             addr := create2(amount, add(bytecode, 0x20), mload(bytecode), salt)
         }
@@ -53,6 +61,12 @@ library Create2 {
             } else {
                 LowLevelCall.bubbleRevert();
             }
+        }
+        // `create2` can "succeed" with a non-zero address while depositing no runtime code (e.g.
+        // initcode that returns empty data or self-destructs during construction). Such an address
+        // is not callable, so callers that record/initialize/fund it would silently no-op. Reject it.
+        if (addr.code.length == 0) {
+            revert Errors.FailedDeployment();
         }
     }
 

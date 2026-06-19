@@ -79,20 +79,21 @@ abstract contract TRC7739 is AbstractSigner, TIP712, ITRC1271 {
 
         ) = eip712Domain();
 
+        // A malformed (but non-empty) `contentsDescr` makes `typedDataSignStructHash` return
+        // `bytes32(0)`, which would collapse the verified digest to `appSeparator.toTypedDataHash(0)`
+        // and drop the binding to `contentsHash` and the account-domain fields. Reject that case.
+        bytes32 structHash = TRC7739Utils.typedDataSignStructHash(
+            contentsDescr,
+            contentsHash,
+            abi.encode(keccak256(bytes(name)), keccak256(bytes(version)), chainId, verifyingContract, salt)
+        );
+
         // Check that contentHash and separator are correct
         // Rebuild nested hash
         return
             hash == appSeparator.toTypedDataHash(contentsHash) &&
             bytes(contentsDescr).length != 0 &&
-            _rawSignatureValidation(
-                appSeparator.toTypedDataHash(
-                    TRC7739Utils.typedDataSignStructHash(
-                        contentsDescr,
-                        contentsHash,
-                        abi.encode(keccak256(bytes(name)), keccak256(bytes(version)), chainId, verifyingContract, salt)
-                    )
-                ),
-                signature
-            );
+            structHash != bytes32(0) &&
+            _rawSignatureValidation(appSeparator.toTypedDataHash(structHash), signature);
     }
 }
