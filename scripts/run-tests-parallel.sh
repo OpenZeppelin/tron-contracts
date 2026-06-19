@@ -98,6 +98,21 @@ done
 # compile failure then aborts fast, before any Docker work. Set
 # SKIP_COMPILE=1 to reuse existing artifacts during local iteration.
 if [[ "${SKIP_COMPILE:-}" != "1" ]]; then
+  # The test suite deploys hardhat-exposed `$<X>` wrappers (e.g. $TRC20,
+  # $Clones). Those live in `contracts-exposed/` — which is gitignored and
+  # generated, not committed — and `npm run compile` runs with SKIP_EXPOSED=1
+  # so it will NOT create them. On a fresh checkout (CI) the dir is absent, so
+  # generate the wrappers first via `exposed:regen` (stock solc under the
+  # hardhat network; wipes its own artifacts/cache afterwards). Skipped when
+  # the dir already exists so local iteration isn't slowed; run exposed:regen
+  # by hand after changing a contract's surface.
+  if [[ ! -d contracts-exposed ]]; then
+    echo "→ Generating hardhat-exposed \$ wrappers (contracts-exposed/)..."
+    if ! npm run exposed:regen; then
+      echo "ERROR: exposed:regen failed — cannot build \$<X> test wrappers." >&2
+      exit 1
+    fi
+  fi
   echo "→ Compiling corpus (tron-solc batches) before spawning workers..."
   # No `set -e` in this script, so guard the compile explicitly: a failed
   # compile must abort before any containers spin up (otherwise workers run
