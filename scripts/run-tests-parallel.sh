@@ -85,6 +85,31 @@ for ((i=0; i<WORKERS; i++)); do
   fi
 done
 
+# ----- 3.5. Compile the corpus ONCE before fanning out ------------------
+#
+# Each worker runs `hardhat test --no-compile` so the tron-solc batched
+# compile happens exactly once here instead of N times in parallel (N
+# concurrent wasm compiles would thrash memory and race on artifacts/).
+# This is also the ONLY compile in CI: the `tests` / `tests-upgradeable`
+# jobs have no separate compile step, `artifacts/` is gitignored, and
+# `scripts/upgradeable/transpile.sh` deletes it — so without this the
+# workers would deploy against zero artifacts. Compile needs only local
+# tron-solc (no TRE container), so it runs before container bringup; a
+# compile failure then aborts fast, before any Docker work. Set
+# SKIP_COMPILE=1 to reuse existing artifacts during local iteration.
+if [[ "${SKIP_COMPILE:-}" != "1" ]]; then
+  echo "→ Compiling corpus (tron-solc batches) before spawning workers..."
+  # No `set -e` in this script, so guard the compile explicitly: a failed
+  # compile must abort before any containers spin up (otherwise workers run
+  # against stale/absent artifacts and fail confusingly).
+  if ! npm run compile; then
+    echo "ERROR: compile failed — aborting before spawning workers." >&2
+    exit 1
+  fi
+else
+  echo "→ SKIP_COMPILE=1 set — reusing existing artifacts."
+fi
+
 # ----- 4. Bring up all containers in parallel ----------------------------
 
 WORKER_PIDS=()
