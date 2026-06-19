@@ -14,6 +14,15 @@ const WRONG_MESSAGE_HASH = ethers.hashMessage(WRONG_MESSAGE);
 const aliceP256 = new NonNativeSigner(P256SigningKey.random());
 const bobP256 = new NonNativeSigner(P256SigningKey.random());
 
+// An ERC-7913 P256 signature is the canonical `r || s` (0x40 bytes).
+// `signMessage()` serialises `r || s || v` (0x41 bytes); the recovery byte `v`
+// is meaningless for P256 and TRC7913P256Verifier rejects any length other than
+// 0x40, so build the 0x40-byte form directly from the (r, s) the key produces.
+const p256Erc7913Signature = signer => {
+  const { r, s } = signer.signingKey.sign(ethers.hashMessage(TEST_MESSAGE));
+  return ethers.concat([r, s]);
+};
+
 async function fixture() {
   const [signer, extraSigner, other] = await ethers.getSigners();
   const mock = await ethers.deployContract('$SignatureChecker');
@@ -189,7 +198,7 @@ describe('SignatureChecker (TRC1271)', function () {
             aliceP256.signingKey.publicKey.qx,
             aliceP256.signingKey.publicKey.qy,
           ]);
-          const signature = await aliceP256.signMessage(TEST_MESSAGE);
+          const signature = p256Erc7913Signature(aliceP256);
 
           await expect(this.mock.$isValidSignatureNow(ethers.Typed.bytes(signer), TEST_MESSAGE_HASH, signature)).to
             .eventually.be.true;
@@ -201,7 +210,7 @@ describe('SignatureChecker (TRC1271)', function () {
             aliceP256.signingKey.publicKey.qx,
             aliceP256.signingKey.publicKey.qy,
           ]);
-          const signature = await aliceP256.signMessage(TEST_MESSAGE);
+          const signature = p256Erc7913Signature(aliceP256);
 
           await expect(this.mock.$isValidSignatureNow(ethers.Typed.bytes(signer), TEST_MESSAGE_HASH, signature)).to
             .eventually.be.false;
@@ -209,7 +218,7 @@ describe('SignatureChecker (TRC1271)', function () {
 
         it('with invalid key', async function () {
           const signer = ethers.concat([this.verifier.target, ethers.randomBytes(32)]);
-          const signature = await aliceP256.signMessage(TEST_MESSAGE);
+          const signature = p256Erc7913Signature(aliceP256);
 
           await expect(this.mock.$isValidSignatureNow(ethers.Typed.bytes(signer), TEST_MESSAGE_HASH, signature)).to
             .eventually.be.false;
@@ -229,7 +238,7 @@ describe('SignatureChecker (TRC1271)', function () {
 
         it('with signer too short', async function () {
           const signer = ethers.randomBytes(19); // too short
-          const signature = await aliceP256.signMessage(TEST_MESSAGE);
+          const signature = p256Erc7913Signature(aliceP256);
           await expect(this.mock.$isValidSignatureNow(ethers.Typed.bytes(signer), TEST_MESSAGE_HASH, signature)).to
             .eventually.be.false;
         });
@@ -263,7 +272,7 @@ describe('SignatureChecker (TRC1271)', function () {
               aliceP256.signingKey.publicKey.qx,
               aliceP256.signingKey.publicKey.qy,
             ]),
-            signature: await aliceP256.signMessage(TEST_MESSAGE),
+            signature: p256Erc7913Signature(aliceP256),
           },
         );
 
@@ -326,7 +335,7 @@ describe('SignatureChecker (TRC1271)', function () {
               aliceP256.signingKey.publicKey.qx,
               aliceP256.signingKey.publicKey.qy,
             ]),
-            signature: await aliceP256.signMessage(TEST_MESSAGE),
+            signature: p256Erc7913Signature(aliceP256),
           },
           {
             signer: ethers.concat([
@@ -334,7 +343,7 @@ describe('SignatureChecker (TRC1271)', function () {
               bobP256.signingKey.publicKey.qx,
               bobP256.signingKey.publicKey.qy,
             ]),
-            signature: await bobP256.signMessage(TEST_MESSAGE),
+            signature: p256Erc7913Signature(bobP256),
           },
         );
 
@@ -355,7 +364,7 @@ describe('SignatureChecker (TRC1271)', function () {
               aliceP256.signingKey.publicKey.qx,
               aliceP256.signingKey.publicKey.qy,
             ]),
-            signature: await aliceP256.signMessage(TEST_MESSAGE),
+            signature: p256Erc7913Signature(aliceP256),
           },
           {
             signer: ethers.concat([
@@ -363,7 +372,7 @@ describe('SignatureChecker (TRC1271)', function () {
               bobP256.signingKey.publicKey.qx,
               bobP256.signingKey.publicKey.qy,
             ]),
-            signature: await bobP256.signMessage(TEST_MESSAGE),
+            signature: p256Erc7913Signature(bobP256),
           },
         ).reverse(); // reverse
 
