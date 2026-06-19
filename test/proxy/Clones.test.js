@@ -46,6 +46,15 @@ async function fixture() {
       // `newCloneDeterministic` below, which keeps the staticCall
       // pattern because CREATE2's address is `sha3(0x41, sender, salt,
       // codeHash)`, identical across simulations and real txs.
+      // EVM fallback: a `staticCall` BEFORE the real deploy predicts the CREATE
+      // address there (it doesn't bump the factory nonce, so the real deploy
+      // lands at the same `(sender, nonce)`-derived address). On TVM the address
+      // is `sha3(txHash || sender)` so this prediction won't match — there we use
+      // the receipt's internal-tx trace instead. This keeps the suite runnable on
+      // the in-process EVM (e.g. under solidity-coverage), not just on TRE.
+      const predicted = await (args
+        ? factory.$cloneWithImmutableArgs.staticCall(implementation, args)
+        : factory.$clone.staticCall(implementation));
       const tx = await (args
         ? opts.deployValue
           ? factory.$cloneWithImmutableArgs(implementation, args, ethers.Typed.uint256(opts.deployValue))
@@ -54,13 +63,13 @@ async function fixture() {
           ? factory.$clone(implementation, ethers.Typed.uint256(opts.deployValue))
           : factory.$clone(implementation));
       const receipt = await tx.wait();
+      // transferTo_address is TVM hex (`41...` prefix + 20-byte body); strip the
+      // prefix and re-prefix with `0x` for ethers-compatible attach. Absent (EVM)
+      // → fall back to the staticCall-predicted address.
       const internalTx = receipt.internalTransactions && receipt.internalTransactions[0];
-      if (!internalTx || !internalTx.transferTo_address) {
-        throw new Error('newClone: clone address not found in receipt.internalTransactions');
-      }
-      // transferTo_address is TVM hex (`41...` prefix + 20-byte body);
-      // strip the prefix and re-prefix with `0x` for ethers-compatible attach.
-      const clone = implementation.attach('0x' + internalTx.transferTo_address.slice(2));
+      const address =
+        internalTx && internalTx.transferTo_address ? '0x' + internalTx.transferTo_address.slice(2) : predicted;
+      const clone = implementation.attach(address);
       if (opts.initData || opts.initValue) {
         await deployer.sendTransaction({ to: clone, value: opts.initValue ?? 0n, data: opts.initData ?? '0x' });
       }
@@ -151,7 +160,12 @@ describe('Clones', function () {
           await expect(deployClone()).to.be.reverted;
         });
 
-        it('address prediction', async function () {
+        // [skip-on-coverage] predictDeterministicAddress derives the CREATE2 address with the
+        // TVM/TIP-26 0x41 hash prefix; the off-chain expectation (ethers.getCreate2Address) uses
+        // the EVM/EIP-1014 0xff prefix. The contract hashes with 0x41 regardless of network, so on
+        // the in-process EVM the on-chain prediction can never equal the EVM CREATE2 address — a
+        // TVM address-FORMAT property with no EVM equivalent (same as Create2.computeAddress).
+        it('address prediction [skip-on-coverage]', async function () {
           const salt = ethers.randomBytes(32);
 
           const expected = ethers.getCreate2Address(

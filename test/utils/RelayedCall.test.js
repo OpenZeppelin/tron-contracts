@@ -36,7 +36,19 @@ describe('RelayedCall', function () {
       this.relayer = await this.computeRelayerAddress();
     });
 
-    it('automatic relayer deployment', async function () {
+    // [skip-on-coverage] The relayer address is derived from a CREATE2
+    // computation hardcoded in RelayedCall.sol to the TVM TIP-26 prefix
+    // 0x41 (`mstore8(0x0b, 0x41)`), not the EVM 0xff. On the in-process
+    // EVM the contract still computes/returns the 0x41-derived address
+    // while the EVM `create2` opcode actually deploys at the 0xff-derived
+    // address — so the contract emits one address and code lands at a
+    // different one. The contract cannot be changed (it must stay 0x41 for
+    // TVM), and no test-side prediction can reconcile this: matching the
+    // emitted 0x41 address fails the post-deploy `getCode != 0x` assertion
+    // (code is at 0xff), and matching 0xff fails the emitted-address
+    // assertion. This is the TVM-only CREATE2-prefix format case with no
+    // EVM equivalent.
+    it('automatic relayer deployment [skip-on-coverage]', async function () {
       await expect(ethers.provider.getCode(this.relayer)).to.eventually.equal('0x');
 
       // First call performs deployment
@@ -62,7 +74,17 @@ describe('RelayedCall', function () {
     // The CREATE2 deployment itself still works (proven by
     // `automatic relayer deployment` above); this is a runtime
     // behavior gap, not an address-prediction gap.
-    describe('relayed call', function () {
+    //
+    // [skip-on-coverage] Also unrunnable on the in-process EVM: the
+    // RelayedCall.sol assembly hardcodes the TVM 0x41 CREATE2 prefix for
+    // its relayer address, but the EVM `create2` opcode deploys at the
+    // 0xff-derived address. So the contract calls the (empty) 0x41 address
+    // — the relayer code never executes, `CalledUnrestricted` is never
+    // emitted, and value is never forwarded. The contract can't be
+    // changed (0x41 is required on TVM) and there is no test-side EVM
+    // equivalent for a contract that calls a hardcoded TVM-prefixed
+    // address.
+    describe('relayed call [skip-on-coverage]', function () {
       it('target success', async function () {
         const tx = this.mock.$relayCall(
           ethers.Typed.address(this.target),
@@ -144,7 +166,11 @@ describe('RelayedCall', function () {
       this.relayer = await this.computeRelayerAddress(this.salt);
     });
 
-    it('automatic relayer deployment', async function () {
+    // [skip-on-coverage] See the default-salt variant: the relayer
+    // CREATE2 address is hardcoded to the TVM 0x41 prefix in
+    // RelayedCall.sol, irreconcilable with the EVM 0xff opcode-derived
+    // deploy address. No EVM equivalent.
+    it('automatic relayer deployment [skip-on-coverage]', async function () {
       await expect(ethers.provider.getCode(this.relayer)).to.eventually.equal('0x');
 
       // First call performs deployment
@@ -174,7 +200,12 @@ describe('RelayedCall', function () {
     // The CREATE2 deployment itself still works (proven by
     // `automatic relayer deployment` above); this is a runtime
     // behavior gap, not an address-prediction gap.
-    describe('relayed call', function () {
+    //
+    // [skip-on-coverage] See the default-salt variant: on the in-process
+    // EVM the contract calls the hardcoded 0x41-prefixed relayer address,
+    // which is empty (EVM `create2` deployed at the 0xff address), so
+    // `CalledUnrestricted` never fires. No EVM equivalent.
+    describe('relayed call [skip-on-coverage]', function () {
       it('target success', async function () {
         const tx = this.mock.$relayCall(
           ethers.Typed.address(this.target),

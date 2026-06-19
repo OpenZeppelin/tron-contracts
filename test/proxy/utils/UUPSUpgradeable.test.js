@@ -77,19 +77,24 @@ describe('UUPSUpgradeable', function () {
 
   it('calling upgradeToAndCall from a contract that is not an TRC1967 proxy (with the right implementation) reverts', async function () {
     // TVM CREATE addresses derive from `sha3(txHash || sender)`, not
-    // `(sender, nonce)` like EVM — so `cloneFactory.$clone.staticCall(impl)`
-    // returns a different address than the subsequent real
-    // `$clone(impl)` deploy. Deploy first, then extract the clone's
-    // address from the receipt's `internal_transactions` (the
-    // TVM-recorded CREATE result). See test/proxy/Clones.test.js
-    // newClone for the same pattern with rationale.
+    // `(sender, nonce)` like EVM — so on TVM `cloneFactory.$clone.staticCall(impl)`
+    // returns a different address than the subsequent real `$clone(impl)`
+    // deploy, and the clone's address must be read from the receipt's
+    // `internal_transactions` (the TVM-recorded CREATE result).
+    //
+    // On the in-process EVM (coverage runs) there is no `internalTransactions`
+    // field, and CREATE derives from `(sender, nonce)` — so a `staticCall`
+    // performed BEFORE the real deploy predicts the exact same address. We
+    // therefore predict first and fall back to the prediction when the
+    // TVM-only `internalTransactions` trace is absent. See
+    // test/proxy/Clones.test.js newClone for the same pattern with rationale.
+    const predicted = await this.cloneFactory.$clone.staticCall(this.implUpgradeOk);
     const tx = await this.cloneFactory.$clone(this.implUpgradeOk);
     const receipt = await tx.wait();
     const internalTx = receipt.internalTransactions && receipt.internalTransactions[0];
-    if (!internalTx || !internalTx.transferTo_address) {
-      throw new Error('clone address not found in receipt.internalTransactions');
-    }
-    const instance = this.implInitial.attach('0x' + internalTx.transferTo_address.slice(2));
+    const cloneAddress =
+      internalTx && internalTx.transferTo_address ? '0x' + internalTx.transferTo_address.slice(2) : predicted;
+    const instance = this.implInitial.attach(cloneAddress);
 
     await expect(instance.upgradeToAndCall(this.implUpgradeUnsafe, '0x')).to.be.revertedWithCustomError(
       instance,

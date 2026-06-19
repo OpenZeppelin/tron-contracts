@@ -2037,8 +2037,16 @@ describe('AccessManager', function () {
         delay: this.delay,
       });
       // On TVM, scheduling calldata shorter than a 4-byte selector reverts with
-      // `FailedCall` rather than EVM's empty (no-reason) revert.
-      await expect(op1.schedule()).to.be.revertedWithCustomError(this.manager, 'FailedCall');
+      // the `FailedCall` custom error; on the in-process EVM (used under
+      // solidity-coverage) the same path reverts without a reason. Assert
+      // whichever the active VM produces. Detect the VM by the network's `tron`
+      // flag (true only on the TRE network; absent on the coverage EVM).
+      const expectShortCalldataRevert = promise =>
+        require('hardhat').network.config.tron
+          ? expect(promise).to.be.revertedWithCustomError(this.manager, 'FailedCall')
+          : expect(promise).to.be.revertedWithoutReason();
+
+      await expectShortCalldataRevert(op1.schedule());
 
       // Manager contract
       const op2 = await prepareOperation(this.manager, {
@@ -2047,7 +2055,7 @@ describe('AccessManager', function () {
         calldata: calldata,
         delay: this.delay,
       });
-      await expect(op2.schedule()).to.be.revertedWithCustomError(this.manager, 'FailedCall');
+      await expectShortCalldataRevert(op2.schedule());
     });
 
     it('reverts scheduling an unknown operation to the manager', async function () {
