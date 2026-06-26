@@ -16,7 +16,7 @@ library Address {
     error AddressEmptyCode(address target);
 
     /**
-     * @dev Replacement for Solidity's `transfer`: sends `amount` wei to
+     * @dev Replacement for Solidity's `transfer`: sends `amount` sun to
      * `recipient`, forwarding all available gas and reverting on errors.
      *
      * https://eips.ethereum.org/EIPS/eip-1884[EIP1884] increases the gas cost
@@ -69,11 +69,11 @@ library Address {
 
     /**
      * @dev Same as {xref-Address-functionCall-address-bytes-}[`functionCall`],
-     * but also transferring `value` wei to `target`.
+     * but also transferring `value` sun to `target`.
      *
      * Requirements:
      *
-     * - the calling contract must have an ETH balance of at least `value`.
+     * - the calling contract must have a TRX balance of at least `value`.
      * - the called Solidity function must be `payable`.
      */
     function functionCallWithValue(address target, bytes memory data, uint256 value) internal returns (bytes memory) {

@@ -13,7 +13,7 @@ pragma solidity ^0.8.20;
  */
 library Errors {
     /**
-     * @dev The ETH balance of the account is not enough to perform the operation.
+     * @dev The TRX balance of the account is not enough to perform the operation.
      */
     error InsufficientBalance(uint256 balance, uint256 needed);
 

@@ -184,7 +184,7 @@ contract TRC2771Forwarder is TIP712, Nonces {
         }
 
         // Some requests with value were invalid (possibly due to frontrunning).
-        // To avoid leaving ETH in the contract this value is refunded.
+        // To avoid leaving TRX in the contract this value is refunded.
         if (refundValue != 0) {
             // We know refundReceiver != address(0) && requestsValue == msg.value
             // meaning we can ensure refundValue is not taken from the original contract's balance

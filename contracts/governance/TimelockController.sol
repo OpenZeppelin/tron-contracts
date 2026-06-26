@@ -150,7 +150,7 @@ contract TimelockController is AccessControl, TRC721Holder, TRC1155Holder {
     }
 
     /**
-     * @dev Contract might receive/hold ETH as part of the maintenance process.
+     * @dev Contract might receive/hold TRX as part of the maintenance process.
      */
     receive() external payable virtual {}
 
