@@ -82,21 +82,26 @@ library SafeTRC20 {
      * NOTE: Only `transfer` is affected on TRON USDT; its `transferFrom` correctly returns `true`, so
      * {safeTransferFrom} already works and no `transferFrom` variant of this helper is needed.
      *
-     * Rather than trusting the (unreliable) boolean return value, success is verified by checking that `to`'s
-     * balance increased by at least `value`. This is correct whether the token returns `true`, `false`, or
-     * nothing, and needs no hardcoded token address. Reverts with {SafeTRC20FailedOperation} (or bubbles the
-     * token's own revert) on failure.
+     * Rather than trusting the (unreliable) boolean return value, success is verified by checking that the
+     * calling contract's balance decreased by at least `value`. This is correct whether the token returns
+     * `true`, `false`, or nothing, and needs no hardcoded token address. Reverts with {SafeTRC20FailedOperation}
+     * (or bubbles the token's own revert) on failure.
      *
-     * NOTE: This assumes a token that is neither rebasing nor fee-on-transfer, so a successful transfer
-     * increases `to`'s balance by exactly `value` (this holds for USDT). A self-transfer (`to == address(this)`)
-     * leaves the balance unchanged and is therefore considered successful as long as the call does not revert.
+     * Checking the sender's debit rather than the recipient's credit keeps this correct even if USDT's fee is
+     * ever enabled: the sender is always debited the full `value`, while only the recipient would receive less.
+     *
+     * NOTE: Success here means the calling contract was debited `value`; it does NOT guarantee that `to` received
+     * `value`. With a fee-on-transfer token the recipient gets less than `value`, and this function still treats
+     * the transfer as successful. A self-transfer (`to == address(this)`) leaves the balance unchanged and is
+     * therefore considered successful as long as the call does not revert.
      */
     function safeTransferUSDT(ITRC20 token, address to, uint256 value) internal {
-        uint256 balanceBefore = token.balanceOf(to);
+        uint256 balanceBefore = token.balanceOf(address(this));
         // Perform the transfer, bubbling a revert on hard failure, but ignore the returned bool: TRON USDT
-        // returns `false` on success. Success is verified below via the recipient's balance delta.
+        // returns `false` on success. Success is verified below via the sender's balance delta, which (unlike
+        // the recipient's) stays correct if USDT's fee is enabled, since the sender is always debited `value`.
         _safeTransfer(token, to, value, true);
-        if (to != address(this) && token.balanceOf(to) < balanceBefore + value) {
+        if (to != address(this) && balanceBefore - token.balanceOf(address(this)) < value) {
             revert SafeTRC20FailedOperation(address(token));
         }
     }
