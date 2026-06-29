@@ -14,7 +14,7 @@ At a high level, signatures are a set of cryptographic algorithms that allow for
 
 xref:api:utils/cryptography.adoc#ECDSA[`ECDSA`] provides functions for recovering and managing Ethereum account ECDSA signatures. These are often generated via https://web3js.readthedocs.io/en/v1.7.3/web3-eth.html#sign[`web3.eth.sign`], and form a 65-byte array (of type `bytes` in Solidity) arranged the following way: `[[v (1)], [r (32)], [s (32)]]`.
 
-The data signer can be recovered with xref:api:utils/cryptography.adoc#ECDSA-recover-bytes32-bytes-[`ECDSA.recover`], and its address compared to verify the signature. Most wallets will hash the data to sign and add the prefix `\x19Ethereum Signed Message:\n`, so when attempting to recover the signer of an Ethereum signed message hash, you'll want to use xref:api:utils/cryptography.adoc#MessageHashUtils-toEthSignedMessageHash-bytes32-[`toEthSignedMessageHash`].
+The data signer can be recovered with xref:api:utils/cryptography.adoc#ECDSA-recover-bytes32-bytes-[`ECDSA.recover`], and its address compared to verify the signature. Native TRON wallets (e.g. TronWeb's `signMessageV2` and TronLink) will hash the data to sign and add the prefix `\x19TRON Signed Message:\n`, so when attempting to recover the signer of a TRON signed message hash, you'll want to use xref:api:utils/cryptography.adoc#MessageHashUtils-toTronSignedMessageHash-bytes32-[`toTronSignedMessageHash`].
 
 [source,solidity]
 ----
@@ -23,7 +23,7 @@ using MessageHashUtils for bytes32;
 
 function _verify(bytes32 data, bytes memory signature, address account) internal pure returns (bool) {
     return data
-        .toEthSignedMessageHash()
+        .toTronSignedMessageHash()
         .recover(signature) == account;
 }
 ----
