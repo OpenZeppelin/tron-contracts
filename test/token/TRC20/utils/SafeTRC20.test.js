@@ -16,6 +16,7 @@ async function fixture() {
   const trc20NoReturnMock = await ethers.deployContract('$TRC20NoReturnMock', [name, symbol]);
   const trc20ForceApproveMock = await ethers.deployContract('$TRC20ForceApproveMock', [name, symbol]);
   const trc20UsdtMock = await ethers.deployContract('$TRC20USDTMock', [name, symbol]);
+  const trc20UsdtFeeMock = await ethers.deployContract('$TRC20USDTFeeMock', [name, symbol]);
   const erc1363Mock = await ethers.deployContract('$TRC1363', [name, symbol]);
   const erc1363ReturnFalseOnErc20Mock = await ethers.deployContract('$TRC1363ReturnFalseOnTRC20Mock', [name, symbol]);
   const erc1363ReturnFalseMock = await ethers.deployContract('$TRC1363ReturnFalseMock', [name, symbol]);
@@ -36,6 +37,7 @@ async function fixture() {
     trc20NoReturnMock,
     trc20ForceApproveMock,
     trc20UsdtMock,
+    trc20UsdtFeeMock,
     erc1363Mock,
     erc1363ReturnFalseOnErc20Mock,
     erc1363ReturnFalseMock,
@@ -216,6 +218,39 @@ describe('SafeTRC20', function () {
       await expect(this.mock.$safeTransferFrom(this.token, this.owner, this.receiver, 10n))
         .to.emit(this.token, 'Transfer')
         .withArgs(this.owner, this.receiver, 10n);
+    });
+  });
+
+  describe('with a USDT-like token that has its transfer fee enabled', function () {
+    beforeEach(async function () {
+      this.token = this.trc20UsdtFeeMock;
+      await this.token.$_mint(this.mock, 100n);
+      // 1% fee routed to `other`: the sender is debited the full `value`, the recipient receives `value - fee`.
+      await this.token.setFee(100n, this.other);
+    });
+
+    it('safeTransferUSDT succeeds even though the recipient receives less than value (fee taken)', async function () {
+      // Sender (this.mock) is debited the full 100; recipient gets 99, collector gets 1. A recipient-balance
+      // check would reject this; the sender-balance check accepts it.
+      await expect(this.mock.$safeTransferUSDT(this.token, this.receiver, 100n))
+        .to.emit(this.token, 'Transfer')
+        .withArgs(this.mock, this.receiver, 99n)
+        .to.emit(this.token, 'Transfer')
+        .withArgs(this.mock, this.other, 1n);
+
+      expect(await this.token.balanceOf(this.mock)).to.equal(0n);
+      expect(await this.token.balanceOf(this.receiver)).to.equal(99n);
+      expect(await this.token.balanceOf(this.other)).to.equal(1n);
+    });
+
+    it('safeTransferUSDT reverts when the sender is net-debited less than value (sender is the fee collector)', async function () {
+      // Documented edge: if the calling contract itself is the fee collector, the fee is credited back to it,
+      // so its net debit is `value - fee < value` and the check rejects the (otherwise successful) transfer.
+      // This requires the calling contract to be the token's fee owner, so it is not a real-world concern.
+      await this.token.setFee(100n, this.mock);
+      await expect(this.mock.$safeTransferUSDT(this.token, this.receiver, 100n))
+        .to.be.revertedWithCustomError(this.mock, 'SafeTRC20FailedOperation')
+        .withArgs(this.token);
     });
   });
 
