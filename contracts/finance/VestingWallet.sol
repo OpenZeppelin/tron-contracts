@@ -34,7 +34,7 @@ import {Ownable} from "../access/Ownable.sol";
  * Consider disabling one of the withdrawal methods.
  */
 contract VestingWallet is Context, Ownable {
-    event EtherReleased(uint256 amount);
+    event TRXReleased(uint256 amount);
     event TRC20Released(address indexed token, uint256 amount);
 
     uint256 private _released;
@@ -52,7 +52,7 @@ contract VestingWallet is Context, Ownable {
     }
 
     /**
-     * @dev The contract should be able to receive Eth.
+     * @dev The contract should be able to receive TRX.
      */
     receive() external payable virtual {}
 
@@ -78,7 +78,7 @@ contract VestingWallet is Context, Ownable {
     }
 
     /**
-     * @dev Amount of eth already released
+     * @dev Amount of TRX already released
      */
     function released() public view virtual returns (uint256) {
         return _released;
@@ -92,7 +92,7 @@ contract VestingWallet is Context, Ownable {
     }
 
     /**
-     * @dev Getter for the amount of releasable eth.
+     * @dev Getter for the amount of releasable TRX.
      */
     function releasable() public view virtual returns (uint256) {
         return vestedAmount(uint64(block.timestamp)) - released();
@@ -109,12 +109,12 @@ contract VestingWallet is Context, Ownable {
     /**
      * @dev Release the native tokens (TRX) that have already vested.
      *
-     * Emits a {EtherReleased} event.
+     * Emits a {TRXReleased} event.
      */
     function release() public virtual {
         uint256 amount = releasable();
         _released += amount;
-        emit EtherReleased(amount);
+        emit TRXReleased(amount);
         Address.sendValue(payable(owner()), amount);
     }
 

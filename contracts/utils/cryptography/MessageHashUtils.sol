@@ -57,7 +57,7 @@ library MessageHashUtils {
     }
 
     /**
-     * @dev Returns the keccak256 digest of an ERC-191 signed data with version
+     * @dev Returns the keccak256 digest of a TIP-191 signed data with version
      * `0x00` (data with intended validator).
      *
      * The digest is calculated by prefixing an arbitrary `data` with `"\x19\x00"` and the intended
@@ -85,7 +85,7 @@ library MessageHashUtils {
     }
 
     /**
-     * @dev Returns the keccak256 digest of an EIP-712 typed data (ERC-191 version `0x01`).
+     * @dev Returns the keccak256 digest of an EIP-712 typed data (TIP-191 version `0x01`).
      *
      * The digest is calculated from a `domainSeparator` and a `structHash`, by prefixing them with
      * `\x19\x01` and hashing the result. It corresponds to the hash signed by the

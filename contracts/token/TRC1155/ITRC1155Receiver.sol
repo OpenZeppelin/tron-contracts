@@ -8,6 +8,11 @@ import {ITRC165} from "../../utils/introspection/ITRC165.sol";
 /**
  * @dev Interface that must be implemented by smart contracts in order to receive
  * TRC-1155 token transfers.
+ *
+ * NOTE: The callbacks deliberately keep the `onERC1155Received` / `onERC1155BatchReceived` names (and the
+ * magic values `0xf23a6e61` / `0xbc197c81`). TIP-1155 adopts the EIP-1155 receiver interface without
+ * modification, so — unlike TIP-721, which renames its hook to `onTRC721Received` — these names and
+ * selectors must not be changed, to remain compatible with existing EIP-1155 receivers.
  */
 interface ITRC1155Receiver is ITRC165 {
     /**

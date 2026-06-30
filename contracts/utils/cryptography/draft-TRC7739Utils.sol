@@ -57,7 +57,7 @@ library TRC7739Utils {
      * - `signature` is the signature for the (ERC-7739) nested struct hash. This signature indirectly signs over the
      *   original "contents" hash (from the app) and the account's domain separator.
      * - `APP_DOMAIN_SEPARATOR` is the EIP-712 {TIP712-_domainSeparatorV4} of the application smart contract that is
-     *   requesting the signature verification (through ERC-1271).
+     *   requesting the signature verification (through TRC-1271).
      * - `contentsHash` is the hash of the underlying data structure or message.
      * - `contentsDescr` is a descriptor of the "contents" part of the EIP-712 type of the nested signature.
      *
@@ -94,7 +94,7 @@ library TRC7739Utils {
     }
 
     /**
-     * @dev Nests an `ERC-191` digest into a `PersonalSign` EIP-712 struct, and returns the corresponding struct hash.
+     * @dev Nests a `TIP-191` digest into a `PersonalSign` EIP-712 struct, and returns the corresponding struct hash.
      * This struct hash must be combined with a domain separator, using {MessageHashUtils-toTypedDataHash} before
      * being verified/recovered.
      *

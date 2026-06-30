@@ -211,7 +211,7 @@ contract TRC2771Forwarder is TIP712, Nonces {
     }
 
     /**
-     * @dev Returns a tuple with the recovered the signer of a TIP-712 forward request message hash
+     * @dev Returns a tuple with the recovered signer of a TIP-712 forward request message hash
      * and a boolean indicating if the signature is valid.
      *
      * NOTE: The signature is considered valid if {ECDSA-tryRecoverCalldata} indicates no recover error for it.

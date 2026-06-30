@@ -426,7 +426,7 @@ interface IGovernor is ITRC165, ITRC6372 {
     ) external returns (uint256 balance);
 
     /**
-     * @dev Cast a vote using the voter's signature, including ERC-1271 signature support.
+     * @dev Cast a vote using the voter's signature, including TRC-1271 signature support.
      *
      * Emits a {VoteCast} event.
      */
@@ -439,7 +439,7 @@ interface IGovernor is ITRC165, ITRC6372 {
 
     /**
      * @dev Cast a vote with a reason and additional encoded parameters using the voter's signature,
-     * including ERC-1271 signature support.
+     * including TRC-1271 signature support.
      *
      * Emits a {VoteCast} or {VoteCastWithParams} event depending on the length of params.
      */
