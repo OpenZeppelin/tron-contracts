@@ -13,7 +13,7 @@ import {EnumerableSet} from "../../structs/EnumerableSet.sol";
  *
  * This contract allows managing a set of authorized signers and requires a minimum number of
  * signatures (threshold) to approve operations. It uses ERC-7913 formatted signers, which
- * makes it natively compatible with ECDSA and ERC-1271 signers.
+ * makes it natively compatible with ECDSA and TRC-1271 signers.
  *
  * Example of usage:
  *
@@ -120,7 +120,7 @@ abstract contract MultiSignerTRC7913 is AbstractSigner {
      * the multisig's security or functionality. Examples include uncontrolled addresses (e.g., `address(0)`),
      * the account's own address (which may cause recursive validation loops), or contracts that may unintentionally
      * allow arbitrary validation (e.g. using the identity precompile at `address(0x04)`, which would return the
-     * ERC-1271 magic value for any `isValidSignature` call).
+     * TRC-1271 magic value for any `isValidSignature` call).
      */
     function _addSigners(bytes[] memory newSigners) internal virtual {
         for (uint256 i = 0; i < newSigners.length; ++i) {

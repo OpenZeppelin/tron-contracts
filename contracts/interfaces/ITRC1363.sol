@@ -15,7 +15,7 @@ import {ITRC165} from "./ITRC165.sol";
  */
 interface ITRC1363 is ITRC20, ITRC165 {
     /*
-     * Note: the ERC-165 identifier for this interface is 0xb0202a11.
+     * Note: the TRC-165 identifier for this interface is 0xb0202a11.
      * 0xb0202a11 ===
      *   bytes4(keccak256('transferAndCall(address,uint256)')) ^
      *   bytes4(keccak256('transferAndCall(address,uint256,bytes)')) ^

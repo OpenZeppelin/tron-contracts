@@ -14,7 +14,7 @@ async function envSetup(mock, beneficiary, token) {
         await mock.connect(beneficiary).transferOwnership(beneficiaryMock);
         return { args: [], error: [mock, 'FailedCall'] };
       },
-      releasedEvent: 'EtherReleased',
+      releasedEvent: 'TRXReleased',
       args: [],
     },
     token: {

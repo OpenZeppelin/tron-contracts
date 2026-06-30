@@ -6,7 +6,7 @@ pragma solidity >=0.8.4;
 import {IAccessControl} from "../IAccessControl.sol";
 
 /**
- * @dev External interface of AccessControlDefaultAdminRules declared to support ERC-165 detection.
+ * @dev External interface of AccessControlDefaultAdminRules declared to support TRC-165 detection.
  */
 interface IAccessControlDefaultAdminRules is IAccessControl {
     /**

@@ -12,7 +12,8 @@ import {TRC1967Utils} from "../TRC1967/TRC1967Utils.sol";
  *
  * The beacon address can only be set once during construction, and cannot be changed afterwards. It is stored in an
  * immutable variable to avoid unnecessary storage reads, and also in the beacon storage slot specified by
- * https://eips.ethereum.org/EIPS/eip-1967[ERC-1967] so that it can be accessed externally.
+ * https://github.com/tronprotocol/tips/blob/master/tip-1967.md[TIP-1967] (the TRON-side analogue of
+ * https://eips.ethereum.org/EIPS/eip-1967[EIP-1967]) so that it can be accessed externally.
  *
  * CAUTION: Since the beacon address can never be changed, you must ensure that you either control the beacon, or trust
  * the beacon to not upgrade the implementation maliciously.

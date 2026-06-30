@@ -9,7 +9,7 @@ import {ITRC721Errors} from "../../../interfaces/draft-IERC6093.sol";
 /**
  * @dev Library that provides common TRC-721 utility functions.
  *
- * See https://eips.ethereum.org/EIPS/eip-721[TRC-721].
+ * See https://github.com/tronprotocol/tips/blob/master/tip-721.md[TIP-721]
  *
  * _Available since v5.1._
  */

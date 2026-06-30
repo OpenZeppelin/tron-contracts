@@ -44,7 +44,7 @@ abstract contract UUPSUpgradeable is ITRC1822Proxiable {
 
     /**
      * @dev Check that the execution is being performed through a delegatecall call and that the execution context is
-     * a proxy contract with an implementation (as defined in ERC-1967) pointing to self. This should only be the case
+     * a proxy contract with an implementation (as defined in TRC-1967) pointing to self. This should only be the case
      * for UUPS and transparent proxies that are using the current contract as their implementation. Execution of a
      * function through ERC-1167 minimal proxies (clones) would not normally pass this test, but is not guaranteed to
      * fail.
@@ -92,7 +92,7 @@ abstract contract UUPSUpgradeable is ITRC1822Proxiable {
 
     /**
      * @dev Reverts if the execution is not performed via delegatecall or the execution
-     * context is not of a proxy with an ERC-1967 compliant implementation pointing to self.
+     * context is not of a proxy with an TRC-1967 compliant implementation pointing to self.
      */
     function _checkProxy() internal view virtual {
         if (
@@ -130,7 +130,7 @@ abstract contract UUPSUpgradeable is ITRC1822Proxiable {
      * @dev Performs an implementation upgrade with a security check for UUPS proxies, and additional setup call.
      *
      * As a security check, {proxiableUUID} is invoked in the new implementation, and the return value
-     * is expected to be the implementation slot in ERC-1967.
+     * is expected to be the implementation slot in TRC-1967.
      *
      * Emits an {ITRC1967-Upgraded} event.
      */

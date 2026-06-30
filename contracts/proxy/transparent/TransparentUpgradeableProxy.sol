@@ -49,7 +49,7 @@ interface ITransparentUpgradeableProxy is ITRC1967 {
  * meta-transaction in any way, and any other meta-transaction setup should be made in the implementation contract.
  *
  * IMPORTANT: This contract avoids unnecessary storage reads by setting the admin only during construction as an
- * immutable variable, preventing any changes thereafter. However, the admin slot defined in ERC-1967 can still be
+ * immutable variable, preventing any changes thereafter. However, the admin slot defined in TRC-1967 can still be
  * overwritten by the implementation logic pointed to by this proxy. In such cases, the contract may end up in an
  * undesirable state where the admin slot is different from the actual admin. Relying on the value of the admin slot
  * is generally fine if the implementation is trusted.
@@ -78,7 +78,7 @@ contract TransparentUpgradeableProxy is TRC1967Proxy {
      */
     constructor(address _logic, address initialOwner, bytes memory _data) payable TRC1967Proxy(_logic, _data) {
         _admin = address(new ProxyAdmin(initialOwner));
-        // Set the storage value and emit an event for ERC-1967 compatibility
+        // Set the storage value and emit an event for TRC-1967 compatibility
         TRC1967Utils.changeAdmin(_proxyAdmin());
     }
 
