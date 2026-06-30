@@ -107,7 +107,7 @@ contract VestingWallet is Context, Ownable {
     }
 
     /**
-     * @dev Release the native tokens (ether) that have already vested.
+     * @dev Release the native tokens (TRX) that have already vested.
      *
      * Emits a {EtherReleased} event.
      */
@@ -131,7 +131,7 @@ contract VestingWallet is Context, Ownable {
     }
 
     /**
-     * @dev Calculates the amount of ether that has already vested. Default implementation is a linear vesting curve.
+     * @dev Calculates the amount of TRX that has already vested. Default implementation is a linear vesting curve.
      */
     function vestedAmount(uint64 timestamp) public view virtual returns (uint256) {
         return _vestingSchedule(address(this).balance + released(), timestamp);

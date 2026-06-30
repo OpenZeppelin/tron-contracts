@@ -78,7 +78,7 @@ abstract contract Governor is Context, TRC165, TIP712, Nonces, IGovernor, ITRC72
     }
 
     /**
-     * @dev Function to receive ETH that will be handled by the governor (disabled if executor is a third party contract)
+     * @dev Function to receive TRX that will be handled by the governor (disabled if executor is a third party contract)
      */
     receive() external payable virtual {
         if (_executor() != address(this)) {
@@ -650,7 +650,7 @@ abstract contract Governor is Context, TRC165, TIP712, Nonces, IGovernor, ITRC72
     /**
      * @dev Relays a transaction or function call to an arbitrary target. In cases where the governance executor
      * is some contract other than the governor itself, like when using a timelock, this function can be invoked
-     * in a governance proposal to recover tokens or Ether that was sent to the governor contract by mistake.
+     * in a governance proposal to recover tokens or TRX that was sent to the governor contract by mistake.
      * Note that if the executor is simply the governor itself, use of `relay` is redundant.
      */
     function relay(address target, uint256 value, bytes calldata data) public payable virtual onlyGovernance {

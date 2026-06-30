@@ -10,7 +10,7 @@ pragma solidity >=0.4.16;
  *
  * Adds the {permit} method, which can be used to change an account's TRC-20 allowance (see {ITRC20-allowance}) by
  * presenting a message signed by the account. By not relying on {ITRC20-approve}, the token holder account doesn't
- * need to send a transaction, and thus is not required to hold Ether at all.
+ * need to send a transaction, and thus is not required to hold TRX at all.
  *
  * ==== Security Considerations
  *
