@@ -5,6 +5,14 @@ const { loadFixture } = require('@nomicfoundation/hardhat-network-helpers');
 const { domainType, domainSeparator, hashTypedData } = require('../../helpers/eip712');
 const { generators } = require('../../helpers/random');
 
+// TRON personal-sign digest, matching TronWeb's TRON_MESSAGE_PREFIX (signMessageV2 / TronLink, TIP-191):
+// keccak256("\x19TRON Signed Message:\n" + len(message) + message). Mirrors ethers.hashMessage but with the
+// TRON prefix instead of the Ethereum one.
+function tronHashMessage(message) {
+  const bytes = typeof message === 'string' ? ethers.toUtf8Bytes(message) : ethers.getBytes(message);
+  return ethers.keccak256(ethers.concat([ethers.toUtf8Bytes(`\x19TRON Signed Message:\n${bytes.length}`), bytes]));
+}
+
 async function fixture() {
   const mock = await ethers.deployContract('$MessageHashUtils');
   return { mock };
@@ -15,27 +23,27 @@ describe('MessageHashUtils', function () {
     Object.assign(this, await loadFixture(fixture));
   });
 
-  describe('toEthSignedMessageHash', function () {
+  describe('toTronSignedMessageHash', function () {
     it('prefixes bytes32 data correctly', async function () {
       const message = ethers.randomBytes(32);
-      const expectedHash = ethers.hashMessage(message);
+      const expectedHash = tronHashMessage(message);
 
-      await expect(this.mock.getFunction('$toEthSignedMessageHash(bytes32)')(message)).to.eventually.equal(
+      await expect(this.mock.getFunction('$toTronSignedMessageHash(bytes32)')(message)).to.eventually.equal(
         expectedHash,
       );
     });
 
     it('prefixes dynamic length data correctly', async function () {
       const message = ethers.randomBytes(128);
-      const expectedHash = ethers.hashMessage(message);
+      const expectedHash = tronHashMessage(message);
 
-      await expect(this.mock.getFunction('$toEthSignedMessageHash(bytes)')(message)).to.eventually.equal(expectedHash);
+      await expect(this.mock.getFunction('$toTronSignedMessageHash(bytes)')(message)).to.eventually.equal(expectedHash);
     });
 
     it('version match for bytes32', async function () {
       const message = ethers.randomBytes(32);
-      const fixed = await this.mock.getFunction('$toEthSignedMessageHash(bytes32)')(message);
-      const dynamic = await this.mock.getFunction('$toEthSignedMessageHash(bytes)')(message);
+      const fixed = await this.mock.getFunction('$toTronSignedMessageHash(bytes32)')(message);
+      const dynamic = await this.mock.getFunction('$toTronSignedMessageHash(bytes)')(message);
 
       expect(fixed).to.equal(dynamic);
     });

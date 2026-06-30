@@ -17,40 +17,43 @@ library MessageHashUtils {
     error TRC5267ExtensionsNotSupported();
 
     /**
-     * @dev Returns the keccak256 digest of an ERC-191 signed data with version
-     * `0x45` (`personal_sign` messages).
+     * @dev Returns the keccak256 digest of a TIP-191 signed data for personal-sign messages
+     * (the TRON analogue of ERC-191 version `0x45`).
      *
      * The digest is calculated by prefixing a bytes32 `messageHash` with
-     * `"\x19Ethereum Signed Message:\n32"` and hashing the result. It corresponds with the
-     * hash signed when using the https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_sign[`eth_sign`] JSON-RPC method.
+     * `"\x19TRON Signed Message:\n32"` and hashing the result. It corresponds with the hash signed
+     * by native TRON wallet tooling, e.g. TronWeb's `signMessage` / `signMessageV2` and TronLink,
+     * which use the TRON prefix rather than the Ethereum one.
      *
      * NOTE: The `messageHash` parameter is intended to be the result of hashing a raw message with
      * keccak256, although any bytes32 value can be safely used because the final digest will
      * be re-hashed.
      *
+     * NOTE: The leading version byte is kept as `0x19` to match the prefix emitted by TronWeb /
+     * TronLink in practice, even though the byte-length of `"TRON Signed Message:\n"` is `0x15`.
+     *
      * See {ECDSA-recover}.
      */
-    function toEthSignedMessageHash(bytes32 messageHash) internal pure returns (bytes32 digest) {
+    function toTronSignedMessageHash(bytes32 messageHash) internal pure returns (bytes32 digest) {
         assembly ("memory-safe") {
-            mstore(0x00, "\x19Ethereum Signed Message:\n32") // 32 is the bytes-length of messageHash
-            mstore(0x1c, messageHash) // 0x1c (28) is the length of the prefix
-            digest := keccak256(0x00, 0x3c) // 0x3c is the length of the prefix (0x1c) + messageHash (0x20)
+            mstore(0x00, "\x19TRON Signed Message:\n32") // 32 is the bytes-length of messageHash
+            mstore(0x18, messageHash) // 0x18 (24) is the length of the prefix
+            digest := keccak256(0x00, 0x38) // 0x38 is the length of the prefix (0x18) + messageHash (0x20)
         }
     }
 
     /**
-     * @dev Returns the keccak256 digest of an ERC-191 signed data with version
-     * `0x45` (`personal_sign` messages).
+     * @dev Returns the keccak256 digest of a TIP-191 signed data for personal-sign messages
+     * (the TRON analogue of ERC-191 version `0x45`).
      *
      * The digest is calculated by prefixing an arbitrary `message` with
-     * `"\x19Ethereum Signed Message:\n" + len(message)` and hashing the result. It corresponds with the
-     * hash signed when using the https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_sign[`eth_sign`] JSON-RPC method.
+     * `"\x19TRON Signed Message:\n" + len(message)` and hashing the result. It corresponds with the
+     * hash signed by native TRON wallet tooling such as TronWeb's `signMessageV2` and TronLink.
      *
      * See {ECDSA-recover}.
      */
-    function toEthSignedMessageHash(bytes memory message) internal pure returns (bytes32) {
-        return
-            keccak256(bytes.concat("\x19Ethereum Signed Message:\n", bytes(Strings.toString(message.length)), message));
+    function toTronSignedMessageHash(bytes memory message) internal pure returns (bytes32) {
+        return keccak256(bytes.concat("\x19TRON Signed Message:\n", bytes(Strings.toString(message.length)), message));
     }
 
     /**
