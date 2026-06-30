@@ -1,7 +1,7 @@
 import "helpers/helpers.spec";
-import "ERC20.spec";
+import "TRC20.spec";
 
-using ERC20PermitHarness as underlying;
+using TRC20PermitHarness as underlying;
 
 methods {
     function underlying()                          external returns(address) envfree;
@@ -37,10 +37,10 @@ definition sumOfUnderlyingBalancesLowerThanUnderlyingSupply(address a, address b
 invariant noAllowance(address user)
     underlying.allowance(currentContract, user) == 0
     {
-        preserved ERC20PermitHarness.approve(address spender, uint256 value) with (env e) {
+        preserved TRC20PermitHarness.approve(address spender, uint256 value) with (env e) {
             require e.msg.sender != currentContract;
         }
-        preserved ERC20PermitHarness.permit(address owner, address spender, uint256 value, uint256 deadline, uint8 v, bytes32 r, bytes32 s) with (env e) {
+        preserved TRC20PermitHarness.permit(address owner, address spender, uint256 value, uint256 deadline, uint8 v, bytes32 r, bytes32 s) with (env e) {
             require owner != currentContract;
         }
     }
@@ -60,11 +60,11 @@ invariant totalSupplyIsSmallerThanUnderlyingBalance()
             require e.msg.sender != currentContract;
             require sumOfUnderlyingBalancesLowerThanUnderlyingSupply(e.msg.sender, currentContract);
         }
-        preserved ERC20PermitHarness.transferFrom(address from, address to, uint256 amount) with (env e) {
+        preserved TRC20PermitHarness.transferFrom(address from, address to, uint256 amount) with (env e) {
             requireInvariant noAllowance(e.msg.sender);
             require sumOfUnderlyingBalancesLowerThanUnderlyingSupply(from, to);
         }
-        preserved ERC20PermitHarness.burn(address from, uint256 amount) with (env e) {
+        preserved TRC20PermitHarness.burn(address from, uint256 amount) with (env e) {
             // If someone can burn from the wrapper, than the invariant obviously doesn't hold.
             require from != currentContract;
             require sumOfUnderlyingBalancesLowerThanUnderlyingSupply(from, currentContract);

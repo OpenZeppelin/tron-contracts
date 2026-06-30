@@ -1,6 +1,6 @@
 import "helpers/helpers.spec";
-import "methods/IERC721.spec";
-import "methods/IERC721Receiver.spec";
+import "methods/ITRC721.spec";
+import "methods/ITRC721Receiver.spec";
 
 methods {
     // exposed for FV

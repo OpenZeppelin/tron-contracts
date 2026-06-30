@@ -36,10 +36,36 @@ async function fixture() {
   const innerCreate = (deployReceipt.internalTransactions || []).find(
     itx => !itx.rejected && /63726561/.test(itx.note || ''), // "crea" in hex
   );
-  if (!innerCreate || !innerCreate.transferTo_address) {
+
+  let proxyAdminAddress;
+  if (innerCreate && innerCreate.transferTo_address) {
+    // TVM path: transferTo_address is TVM-format hex (21 bytes, `41` prefix +
+    // 20-byte body); strip the prefix and re-prefix with `0x`.
+    proxyAdminAddress = '0x' + innerCreate.transferTo_address.slice(2);
+  } else {
+    // EVM fallback (no internal_transactions, e.g. under solidity-coverage on
+    // the in-process EVM): TransparentUpgradeableProxy's constructor calls
+    // TRC1967Utils.changeAdmin, which emits `AdminChanged(address
+    // previousAdmin, address newAdmin)` — `newAdmin` IS the freshly-deployed
+    // inner ProxyAdmin's address. Parse it out of the deploy receipt logs.
+    const proxyInterface = (await ethers.getContractFactory('TransparentUpgradeableProxy')).interface;
+    for (const log of deployReceipt.logs) {
+      let parsed;
+      try {
+        parsed = proxyInterface.parseLog(log);
+      } catch {
+        continue;
+      }
+      if (parsed && parsed.name === 'AdminChanged') {
+        proxyAdminAddress = parsed.args.newAdmin;
+        break;
+      }
+    }
+  }
+  if (!proxyAdminAddress) {
     throw new Error('ProxyAdmin fixture: inner CREATE for ProxyAdmin not found in proxy deploy receipt');
   }
-  const proxyAdmin = await ethers.getContractAt('ProxyAdmin', '0x' + innerCreate.transferTo_address.slice(2));
+  const proxyAdmin = await ethers.getContractAt('ProxyAdmin', proxyAdminAddress);
 
   return { admin, other, v1, v2, proxy, proxyAdmin };
 }

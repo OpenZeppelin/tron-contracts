@@ -15,7 +15,7 @@ internalTask(TASK_TEST_GET_TEST_FILES).setAction(async (args, hre, runSuper) => 
   const ignoredIfProxy = [
     'proxy/beacon/BeaconProxy.test.js',
     'proxy/beacon/UpgradeableBeacon.test.js',
-    'proxy/ERC1967/ERC1967Proxy.test.js',
+    'proxy/TRC1967/TRC1967Proxy.test.js',
     'proxy/transparent/ProxyAdmin.test.js',
     'proxy/transparent/TransparentUpgradeableProxy.test.js',
     'proxy/utils/UUPSUpgradeable.test.js',

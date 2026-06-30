@@ -120,14 +120,21 @@ for (const f of fs.readdirSync(path.join(__dirname, 'hardhat'))) {
  */
 module.exports = {
   solidity: {
-    version: argv.compiler,
+    // Under coverage we compile with STOCK solc on the in-process Hardhat EVM
+    // (see the defaultNetwork gate below), NOT tron-solc. solidity-coverage's
+    // statement-hit attribution only works on the LEGACY (non-IR) pipeline, but
+    // our contracts use the `require(cond, CustomError())` overload which only
+    // compiles in legacy on solc >= 0.8.27 — so bump the coverage compile to
+    // 0.8.28 and turn viaIR OFF. The TVM deploy pipeline is untouched (still
+    // tron-solc 0.8.26 + viaIR on its tron network).
+    version: argv.coverage ? '0.8.28' : argv.compiler,
     settings: {
       optimizer: {
         enabled: true,
         runs: argv.runs,
       },
       evmVersion: argv.evm,
-      viaIR: argv.ir,
+      viaIR: argv.coverage ? false : argv.ir,
       outputSelection: { '*': { '*': ['storageLayout'] } },
       // `useLiteralContent: true` embeds source code as literal text
       // into each contract's metadata JSON (instead of just URL refs),
@@ -174,7 +181,14 @@ module.exports = {
       // batchesPath so the file stays editable without restarting
       // hardhat. Switch to inline `batches: require('./...')` if you
       // want startup validation of the array shape.
-      batchesPath: './tron-batches.config.cjs',
+      //
+      // Overridable via the BATCHES env var so `compile:harnesses` can
+      // point the batched compile at the FV harness batch set (which
+      // allowlists the `fv/harnesses` basenames) instead of the default
+      // contracts batches. Without this the harness compile reuses the
+      // contracts allowlist and silently compiles `contracts/` rather
+      // than the harnesses.
+      batchesPath: process.env.BATCHES || './tron-batches.config.cjs',
     },
   },
 
@@ -191,7 +205,18 @@ module.exports = {
     // `contracts/mocks/withinit/WithInit_NN.sol` files (see
     // scripts/upgradeable/split-withinit.js) are also kept out of
     // hardhat-exposed's `$`-wrapper generation.
-    exclude: ['vendor/**/*', '**/*WithInit*.sol', '**/withinit/**/*'],
+    // Under coverage, also skip generating the `$TRC7739Mock` wrapper: with the
+    // optimizer off (forced by solidity-coverage on the legacy pipeline) its
+    // nested-typed-data accessor is the one source that still hits "stack too
+    // deep". The production draft-TRC7739.sol is still instrumented and covered
+    // via its real mock; only this generated `$` accessor is dropped, and only
+    // for the coverage build.
+    exclude: [
+      'vendor/**/*',
+      '**/*WithInit*.sol',
+      '**/withinit/**/*',
+      ...(argv.coverage ? ['mocks/utils/cryptography/TRC7739Mock.sol'] : []),
+    ],
     outDir: 'contracts-exposed',
   },
   warnings: {
@@ -217,8 +242,12 @@ module.exports = {
   },
 
   // Bare `hardhat test` (no --network) routes to the TRE network so the
-  // tron pipeline + runtime bridge are active by default.
-  defaultNetwork: 'tre',
+  // tron pipeline + runtime bridge are active by default. Under coverage we
+  // switch to the in-process Hardhat EVM: solidity-coverage instruments + runs
+  // on that VM (it hooks the EDR `step` events), and the contracts are
+  // EVM-source-compatible. This also keeps the tron bridge inactive so the JS
+  // suite executes on the VM solidity-coverage actually hooks.
+  defaultNetwork: argv.coverage ? 'hardhat' : 'tre',
 
   networks: {
     tre: {

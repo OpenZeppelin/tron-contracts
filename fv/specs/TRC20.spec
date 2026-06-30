@@ -1,5 +1,5 @@
 import "helpers/helpers.spec";
-import "methods/IERC20.spec";
+import "methods/ITRC20.spec";
 import "methods/ITRC2612.spec";
 
 methods {

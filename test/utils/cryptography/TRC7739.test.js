@@ -2,7 +2,7 @@ const { ethers } = require('hardhat');
 const { shouldBehaveLikeTRC1271 } = require('./TRC1271.behavior');
 const { NonNativeSigner, P256SigningKey, RSASHA256SigningKey } = require('../../helpers/signers');
 
-describe('TRC7739', function () {
+describe('TRC7739 [skip-on-coverage]', function () {
   describe('for an ECDSA signer', function () {
     before(async function () {
       this.signer = ethers.Wallet.createRandom();

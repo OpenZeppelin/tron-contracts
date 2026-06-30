@@ -101,6 +101,16 @@ function resolveName(hre, name) {
 }
 
 extendEnvironment(hre => {
+  // This shim only supports the hardhat-tron ethers FACADE, which the bridge
+  // installs solely on a tron-typed network (ethers-bridge.js gates its whole
+  // extendEnvironment on `hre.network.config.tron`). Gate identically. Crucially
+  // this avoids touching `hre.ethers` at all on non-tron networks: under
+  // solidity-coverage (which forces defaultNetwork=hardhat) eagerly reading
+  // hre.ethers here would instantiate hardhat-ethers against the PRE-coverage
+  // provider, so the suite would execute on a VM that solidity-coverage never
+  // hooked via attachToHardhatVM — every contract then records 0 coverage hits.
+  if (!(hre.network && hre.network.config && hre.network.config.tron)) return;
+
   // Only relevant when the tron facade is active (it sets these as plain,
   // writable function properties — see ethers-bridge.js extendEnvironment).
   if (!hre.ethers || typeof hre.ethers.deployContract !== 'function') return;
