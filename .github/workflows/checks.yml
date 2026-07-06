@@ -64,6 +64,12 @@ jobs:
       GAS: true
     steps:
       - uses: actions/checkout@v6
+        with:
+          # The transpiled (-upgradeable) build imports its stateless peer code
+          # from the `lib/tron-contracts` submodule (remapped in remappings.txt);
+          # check it out so compilation resolves. No-op in this repo (which has no
+          # such submodule), so the non-upgradeable CI is unchanged.
+          submodules: ${{ endsWith(github.repository, '-upgradeable') && 'true' || 'false' }}
       - name: Set up environment
         uses: ./.github/actions/setup
       - name: Download patched FullNode.jar
@@ -106,6 +112,10 @@ jobs:
           token: ${{ github.token }}
 
   tests-upgradeable:
+    # Applies upgradeable.patch + re-runs the transpiler on the source tree; only
+    # meaningful in the non-upgradeable source repo. The -upgradeable repo is
+    # already transpiled, so this would re-patch renamed/absent files and fail.
+    if: ${{ !endsWith(github.repository, '-upgradeable') }}
     runs-on: ubuntu-latest
     needs: build-tre-jar
     env:
@@ -160,6 +170,10 @@ jobs:
           token: ${{ github.token }}
 
   tests-foundry:
+    # The Foundry tests import non-upgradeable contract paths directly (e.g.
+    # contracts/token/TRC20/TRC20.sol), which don't exist in the transpiled tree
+    # (they become *Upgradeable.sol or move to the peer). Not run in -upgradeable.
+    if: ${{ !endsWith(github.repository, '-upgradeable') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -175,6 +189,10 @@ jobs:
     needs: build-tre-jar
     steps:
       - uses: actions/checkout@v6
+        with:
+          # See the `tests` job: peer submodule needed to compile in the
+          # -upgradeable repo; no-op here.
+          submodules: ${{ endsWith(github.repository, '-upgradeable') && 'true' || 'false' }}
       - name: Set up environment
         uses: ./.github/actions/setup
       - name: Download patched FullNode.jar
@@ -189,6 +207,9 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   harnesses:
+    # `make -C fv apply` patches non-upgradeable contract paths and the FV suite
+    # verifies the source contracts; neither applies to the transpiled repo.
+    if: ${{ !endsWith(github.repository, '-upgradeable') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -203,6 +224,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          # See the `tests` job: peer submodule needed so Slither can resolve the
+          # transpiled output's imports in the -upgradeable repo; no-op here.
+          submodules: ${{ endsWith(github.repository, '-upgradeable') && 'true' || 'false' }}
       - name: Set up environment
         uses: ./.github/actions/setup
       - uses: crytic/slither-action@v0.4.1
