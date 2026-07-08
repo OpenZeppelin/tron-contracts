@@ -73,8 +73,12 @@ describe('VestingWallet', function () {
     });
 
     it('delivers the vested tokens to the beneficiary instead of reverting', async function () {
-      expect(await this.usdtWallet.releasable(this.usdt)).to.equal(tokenAmount);
-      await expect(this.usdtWallet.release(this.usdt)).to.changeTokenBalances(
+      // `releasable`/`release` are overloaded (no-arg for TRX, address for TRC-20). Disambiguate with
+      // `ethers.Typed.address` (as VestingWallet.behavior.js does) — a bare `release(this.usdt)` resolves fine under
+      // `hardhat test` but throws an ambiguous-fragment TypeError under `hardhat coverage` (ethers v6 quirk).
+      const asset = ethers.Typed.address(this.usdt);
+      expect(await this.usdtWallet.releasable(asset)).to.equal(tokenAmount);
+      await expect(this.usdtWallet.release(asset)).to.changeTokenBalances(
         this.usdt,
         [this.usdtWallet, this.usdtBeneficiary],
         [-tokenAmount, tokenAmount],
