@@ -46,6 +46,37 @@ describe('TRC4626', function () {
     }
   });
 
+  // Regression for the audit finding: TRC4626._transferOut previously used SafeTRC20.safeTransfer, which reverts for
+  // a false-on-success underlying such as TRON USDT (whose `transfer` returns `false` on a successful transfer).
+  // Deposits worked (transferFrom returns `true`) but every withdraw/redeem reverted, permanently freezing the
+  // vault's assets. _transferOut now uses safeTransferUSDT (balance-delta verification).
+  describe('withdraw/redeem with a USDT-like underlying (transfer returns false on success)', function () {
+    const assets = 100n;
+
+    beforeEach(async function () {
+      this.usdt = await ethers.deployContract('$TRC20USDTMock', ['Tether USD', 'USDT']);
+      this.vault = await ethers.deployContract('$TRC4626', ['Vault USDT', 'vUSDT', this.usdt]);
+      await this.usdt.$_mint(this.holder, assets);
+      await this.usdt.connect(this.holder).approve(this.vault, ethers.MaxUint256);
+      await this.vault.connect(this.holder).deposit(assets, this.holder);
+    });
+
+    it('withdraw delivers the underlying instead of reverting', async function () {
+      await expect(
+        this.vault.connect(this.holder).withdraw(assets, this.recipient, this.holder),
+      ).to.changeTokenBalances(this.usdt, [this.vault, this.recipient], [-assets, assets]);
+    });
+
+    it('redeem delivers the underlying instead of reverting', async function () {
+      const shares = await this.vault.balanceOf(this.holder);
+      await expect(this.vault.connect(this.holder).redeem(shares, this.recipient, this.holder)).to.changeTokenBalances(
+        this.usdt,
+        [this.vault, this.recipient],
+        [-assets, assets],
+      );
+    });
+  });
+
   describe('reentrancy', function () {
     const reenterType = Enum('No', 'Before', 'After');
 

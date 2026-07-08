@@ -127,7 +127,9 @@ contract VestingWallet is Context, Ownable {
         uint256 amount = releasable(token);
         _trc20Released[token] += amount;
         emit TRC20Released(token, amount);
-        SafeTRC20.safeTransfer(ITRC20(token), owner(), amount);
+        // safeTransferUSDT (balance-delta), not safeTransfer: a token such as TRON USDT returns `false` from a
+        // successful `transfer`, which safeTransfer misreads as failure and reverts — freezing vested tokens.
+        SafeTRC20.safeTransferUSDT(ITRC20(token), owner(), amount);
     }
 
     /**

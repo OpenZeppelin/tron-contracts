@@ -56,6 +56,32 @@ describe('VestingWallet', function () {
     Object.assign(this, await loadFixture(fixture));
   });
 
+  // VestingWallet.release(token) previously used SafeTRC20.safeTransfer, which
+  // reverts for a false-on-success token such as TRON USDT (whose `transfer` returns `false` on success), freezing
+  // vested tokens. release now uses safeTransferUSDT (balance-delta verification). Self-contained: the wallet starts
+  // fully in the past so the whole allocation is vested immediately (no clock travel needed).
+  describe('release(token) with a USDT-like token (transfer returns false on success)', function () {
+    const tokenAmount = 1000n;
+
+    beforeEach(async function () {
+      const [, beneficiary] = await ethers.getSigners();
+      const pastStart = (await time.clock.timestamp()) - time.duration.years(2);
+      this.usdtBeneficiary = beneficiary;
+      this.usdtWallet = await ethers.deployContract('VestingWallet', [beneficiary, pastStart, time.duration.years(1)]);
+      this.usdt = await ethers.deployContract('$TRC20USDTMock', ['Tether USD', 'USDT']);
+      await this.usdt.$_mint(this.usdtWallet, tokenAmount);
+    });
+
+    it('delivers the vested tokens to the beneficiary instead of reverting', async function () {
+      expect(await this.usdtWallet.releasable(this.usdt)).to.equal(tokenAmount);
+      await expect(this.usdtWallet.release(this.usdt)).to.changeTokenBalances(
+        this.usdt,
+        [this.usdtWallet, this.usdtBeneficiary],
+        [-tokenAmount, tokenAmount],
+      );
+    });
+  });
+
   it('rejects zero address for beneficiary', async function () {
     await expect(ethers.deployContract('VestingWallet', [ethers.ZeroAddress, this.start, this.duration]))
       .revertedWithCustomError(this.mock, 'OwnableInvalidOwner')

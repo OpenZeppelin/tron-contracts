@@ -305,9 +305,12 @@ abstract contract TRC4626 is TRC20, ITRC4626 {
         SafeTRC20.safeTransferFrom(ITRC20(asset()), from, address(this), assets);
     }
 
-    /// @dev Performs a transfer out of underlying assets. The default implementation uses `SafeTRC20`. Used by {_withdraw}.
+    /// @dev Performs a transfer out of underlying assets. Used by {_withdraw}. Uses
+    /// {SafeTRC20-safeTransferUSDT} (balance-delta verification) rather than {SafeTRC20-safeTransfer}: an underlying
+    /// that returns `false` on a *successful* `transfer` (e.g. TRON USDT) is misread as a failure by `safeTransfer`,
+    /// which would revert every {withdraw}/{redeem} and permanently freeze the vault's assets.
     function _transferOut(address to, uint256 assets) internal virtual {
-        SafeTRC20.safeTransfer(ITRC20(asset()), to, assets);
+        SafeTRC20.safeTransferUSDT(ITRC20(asset()), to, assets);
     }
 
     function _decimalsOffset() internal view virtual returns (uint8) {

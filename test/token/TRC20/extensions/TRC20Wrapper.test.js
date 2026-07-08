@@ -53,6 +53,30 @@ describe('TRC20Wrapper', function () {
     expect(await this.token.underlying()).to.equal(this.underlying);
   });
 
+  // TRC20Wrapper.withdrawTo previously used SafeTRC20.safeTransfer, which reverts
+  // for a false-on-success underlying such as TRON USDT (whose `transfer` returns `false` on success). depositFor
+  // worked (transferFrom returns `true`) but every withdrawTo reverted, trapping the underlying behind the wrapper.
+  // withdrawTo now uses safeTransferUSDT (balance-delta verification).
+  describe('withdrawTo with a USDT-like underlying (transfer returns false on success)', function () {
+    const value = 100n;
+
+    beforeEach(async function () {
+      this.underlying = await ethers.deployContract('$TRC20USDTMock', ['Tether USD', 'USDT']);
+      this.token = await ethers.deployContract('$TRC20Wrapper', ['Wrapped USDT', 'WUSDT', this.underlying]);
+      await this.underlying.$_mint(this.holder, value);
+      await this.underlying.connect(this.holder).approve(this.token, ethers.MaxUint256);
+      await this.token.connect(this.holder).depositFor(this.holder, value);
+    });
+
+    it('delivers the underlying instead of reverting', async function () {
+      await expect(this.token.connect(this.holder).withdrawTo(this.recipient, value)).to.changeTokenBalances(
+        this.underlying,
+        [this.token, this.recipient],
+        [-value, value],
+      );
+    });
+  });
+
   describe('deposit', function () {
     it('executes with approval', async function () {
       await this.underlying.connect(this.holder).approve(this.token, initialSupply);

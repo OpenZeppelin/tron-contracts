@@ -73,7 +73,10 @@ abstract contract TRC20Wrapper is TRC20 {
             revert TRC20InvalidReceiver(account);
         }
         _burn(_msgSender(), value);
-        SafeTRC20.safeTransfer(_underlying, account, value);
+        // safeTransferUSDT (balance-delta), not safeTransfer: an underlying such as TRON USDT returns `false` from a
+        // successful `transfer`, which safeTransfer misreads as failure and reverts — permanently trapping the
+        // underlying behind the wrapper.
+        SafeTRC20.safeTransferUSDT(_underlying, account, value);
         return true;
     }
 
