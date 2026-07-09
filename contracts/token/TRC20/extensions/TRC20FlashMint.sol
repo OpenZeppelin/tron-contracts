@@ -19,7 +19,7 @@ import {TRC20} from "../TRC20.sol";
  * overriding {maxFlashLoan} so that it correctly reflects the supply cap.
  */
 abstract contract TRC20FlashMint is TRC20, ITRC3156FlashLender {
-    bytes32 private constant RETURN_VALUE = keccak256("ERC3156FlashBorrower.onFlashLoan");
+    bytes32 private constant RETURN_VALUE = keccak256("TRC3156FlashBorrower.onFlashLoan");
 
     /**
      * @dev The loan token is not valid.
