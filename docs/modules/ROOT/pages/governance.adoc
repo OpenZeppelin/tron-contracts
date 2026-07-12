@@ -72,7 +72,7 @@ votingDelay: How long after a proposal is created should voting power be fixed. 
 
 votingPeriod: How long does a proposal remain open to votes.
 
-These parameters are specified in the unit defined in the token's clock. Assuming the token uses block numbers, and assuming block time of around 12 seconds, we will have set votingDelay = 1 day = 7200 blocks, and votingPeriod = 1 week = 50400 blocks.
+These parameters are specified in the unit defined in the token's clock. Assuming the token uses block numbers, and assuming TRON's block time of around 3 seconds, we will have set votingDelay = 1 day = 28800 blocks, and votingPeriod = 1 week = 201600 blocks.
 
 We can optionally set a proposal threshold as well. This restricts proposal creation to accounts that have enough voting power.
 

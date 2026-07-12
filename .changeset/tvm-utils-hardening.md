@@ -17,4 +17,4 @@ Harden deterministic deployment, signature, and token utilities, and correct rel
   and `trySafeTransfer` may report `false` for false-on-success tokens, and that long `name`/`version`
   values are unreliable behind proxies/clones.
 - `Blockhash` documentation now reflects the opcode-only (256-block) behavior rather than EIP-2935
-  extended history, which TVM does not implement.
+  extended history, which is not yet active on TRON mainnet (specified for the TVM by TIP-2935).
