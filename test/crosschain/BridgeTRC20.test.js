@@ -44,6 +44,30 @@ describe('CrosschainBridgeTRC20', function () {
 
   shouldBehaveLikeBridgeTRC20({ chainAIsCustodial: true });
 
+  // A recipient embedded in a crosschain message payload must be the 20-byte EVM address. TronWeb conventions
+  // surface addresses as the 21-byte 0x41-prefixed form; without a length check `bytes20(toBinary)` would silently
+  // truncate that to a different recipient and release custody to the wrong address. BridgeFungible rejects it.
+  describe('rejects a non-20-byte (21-byte 0x41-prefixed TRON) recipient in the payload', function () {
+    const amount = 100n;
+
+    it('reverts BridgeInvalidRecipient instead of releasing custody to a truncated address', async function () {
+      const [alice, bruce] = this.accounts;
+      const tron21 = ethers.concat(['0x41', bruce.address]); // 21-byte 0x41-prefixed form of bruce
+      const payload = ethers.AbiCoder.defaultAbiCoder().encode(
+        ['bytes', 'bytes', 'uint256'],
+        [this.chain.toErc7930(alice), tron21, amount],
+      );
+      // Deliver through the registered gateway + counterpart so authorization passes and _processMessage runs.
+      await expect(
+        this.bridgeA
+          .connect(this.gatewayAsEOA)
+          .receiveMessage(ethers.ZeroHash, this.chain.toErc7930(this.bridgeB), payload),
+      )
+        .to.be.revertedWithCustomError(this.bridgeA, 'BridgeInvalidRecipient')
+        .withArgs(tron21);
+    });
+  });
+
   // Regression test for the audit finding: BridgeTRC20._onReceive previously used SafeTRC20.safeTransfer, which
   // reverts for TRON USDT (whose `transfer` returns `false` on a successful transfer). Because locking
   // (_onSend -> safeTransferFrom) keeps working for USDT, that asymmetry let deposits through while permanently

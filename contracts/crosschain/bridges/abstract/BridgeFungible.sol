@@ -26,6 +26,14 @@ abstract contract BridgeFungible is Context, CrosschainLinked {
     event CrosschainFungibleTransferReceived(bytes32 indexed receiveId, bytes from, address indexed to, uint256 amount);
 
     /**
+     * @dev The received crosschain recipient is not a canonical 20-byte address. Addresses embedded in a `bytes`
+     * payload MUST use the 20-byte EVM form; the 21-byte `0x41`-prefixed / Base58Check representations that TRON
+     * tooling (TronWeb, node APIs) surfaces would otherwise be silently truncated to a different, unintended
+     * recipient, so they are rejected here rather than releasing custody to the wrong address.
+     */
+    error BridgeInvalidRecipient(bytes recipient);
+
+    /**
      * @dev Transfer `amount` tokens to a crosschain receiver.
      *
      * Note: The `to` parameter is the full InteroperableAddress (chain ref + address).
@@ -65,6 +73,9 @@ abstract contract BridgeFungible is Context, CrosschainLinked {
     ) internal virtual override {
         // split payload
         (bytes memory from, bytes memory toBinary, uint256 amount) = abi.decode(payload, (bytes, bytes, uint256));
+        // The recipient must be the canonical 20-byte EVM address. Reject the 21-byte 0x41-prefixed TRON form (and
+        // any other malformed length) rather than letting `bytes20` silently truncate it to the wrong recipient.
+        if (toBinary.length != 20) revert BridgeInvalidRecipient(toBinary);
         address to = address(bytes20(toBinary));
 
         _onReceive(to, amount);
