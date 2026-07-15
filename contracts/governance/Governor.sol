@@ -394,10 +394,11 @@ abstract contract Governor is Context, TRC165, TIP712, Nonces, IGovernor, ITRC72
         bytes32 descriptionHash
     ) public payable virtual returns (uint256) {
         uint256 proposalId = getProposalId(targets, values, calldatas, descriptionHash);
+        bool needsQueueing = proposalNeedsQueuing(proposalId);
 
         _validateStateBitmap(
             proposalId,
-            _encodeStateBitmap(ProposalState.Succeeded) | _encodeStateBitmap(ProposalState.Queued)
+            _encodeStateBitmap(needsQueueing ? ProposalState.Queued : ProposalState.Succeeded)
         );
 
         // mark as executed before calls to avoid reentrancy
