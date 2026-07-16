@@ -7,7 +7,7 @@ import {ITRC1363Receiver} from "../../../interfaces/ITRC1363Receiver.sol";
 import {ITRC1363Spender} from "../../../interfaces/ITRC1363Spender.sol";
 
 /**
- * @dev Library that provides common TRC-1363 utility functions.
+ * @dev Library that provides common ERC-1363 utility functions.
  *
  * See https://eips.ethereum.org/EIPS/eip-1363[ERC-1363].
  */

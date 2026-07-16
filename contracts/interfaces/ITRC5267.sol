@@ -10,7 +10,7 @@ interface ITRC5267 {
     event EIP712DomainChanged();
 
     /**
-     * @dev returns the fields and values that describe the domain separator used by this contract for TIP-712
+     * @dev returns the fields and values that describe the domain separator used by this contract for EIP-712
      * signature.
      */
     function eip712Domain()

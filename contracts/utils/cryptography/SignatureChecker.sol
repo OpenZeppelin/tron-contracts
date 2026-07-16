@@ -27,7 +27,7 @@ library SignatureChecker {
      * NOTE: Unlike ECDSA signatures, contract signatures are revocable, and the outcome of this function can thus
      * change through time. It could return true at block N and false at block N+1 (or the opposite).
      *
-     * NOTE: For an extended version of this function that supports TRC-7913 signatures, see {isValidSignatureNow-bytes-bytes32-bytes-}.
+     * NOTE: For an extended version of this function that supports ERC-7913 signatures, see {isValidSignatureNow-bytes-bytes32-bytes-}.
      */
     function isValidSignatureNow(address signer, bytes32 hash, bytes memory signature) internal view returns (bool) {
         if (signer.code.length == 0) {
@@ -115,7 +115,7 @@ library SignatureChecker {
     }
 
     /**
-     * @dev Verifies a signature for a given TRC-7913 signer and hash.
+     * @dev Verifies a signature for a given ERC-7913 signer and hash.
      *
      * The signer is a `bytes` object that is the concatenation of an address and optionally a key:
      * `verifier || key`. A signer must be at least 20 bytes long.
@@ -149,7 +149,7 @@ library SignatureChecker {
     }
 
     /**
-     * @dev Verifies multiple TRC-7913 `signatures` for a given `hash` using a set of `signers`.
+     * @dev Verifies multiple ERC-7913 `signatures` for a given `hash` using a set of `signers`.
      * Returns `false` if the number of signers and signatures is not the same.
      *
      * The signers should be ordered by their `keccak256` hash to ensure efficient duplication check. Unordered

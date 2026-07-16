@@ -8,11 +8,11 @@ import {SignatureChecker} from "../SignatureChecker.sol";
 import {EnumerableSet} from "../../structs/EnumerableSet.sol";
 
 /**
- * @dev Implementation of {AbstractSigner} using multiple TRC-7913 signers with a threshold-based
+ * @dev Implementation of {AbstractSigner} using multiple ERC-7913 signers with a threshold-based
  * signature verification system.
  *
  * This contract allows managing a set of authorized signers and requires a minimum number of
- * signatures (threshold) to approve operations. It uses TRC-7913 formatted signers, which
+ * signatures (threshold) to approve operations. It uses ERC-7913 formatted signers, which
  * makes it natively compatible with ECDSA and TRC-1271 signers.
  *
  * Example of usage:
@@ -220,7 +220,7 @@ abstract contract MultiSignerTRC7913 is AbstractSigner {
         bytes32 hash,
         bytes calldata signature
     ) internal view virtual override returns (bool) {
-        if (signature.length == 0) return false; // For TRC-7739 compatibility
+        if (signature.length == 0) return false; // For ERC-7739 compatibility
         (bytes[] memory signers, bytes[] memory signatures) = abi.decode(signature, (bytes[], bytes[]));
         return _validateThreshold(signers) && _validateSignatures(hash, signers, signatures);
     }

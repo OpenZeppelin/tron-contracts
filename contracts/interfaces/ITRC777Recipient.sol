@@ -4,7 +4,7 @@
 pragma solidity >=0.5.0;
 
 /**
- * @dev Interface of the TRC-777 Tokens Recipient standard as defined in the ERC.
+ * @dev Interface of the ERC-777 Tokens Recipient standard as defined in the ERC.
  *
  * Accounts can be notified of {ITRC777} tokens being sent to them by having a
  * contract implement this interface (contract holders can be their own

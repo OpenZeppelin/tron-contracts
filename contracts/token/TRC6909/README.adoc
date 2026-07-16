@@ -1,4 +1,4 @@
-= TRC-6909
+= ERC-6909
 
 [.readme-notice]
 NOTE: This document is better viewed at https://docs.openzeppelin.com/contracts/api/token/erc6909
