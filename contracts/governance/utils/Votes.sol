@@ -61,7 +61,7 @@ abstract contract Votes is Context, TIP712, Nonces, ITRC5805 {
     }
 
     /**
-     * @dev Machine-readable description of the clock as specified in ERC-6372.
+     * @dev Machine-readable description of the clock as specified in TRC-6372.
      */
     // solhint-disable-next-line func-name-mixedcase
     function CLOCK_MODE() public view virtual returns (string memory) {

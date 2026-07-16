@@ -8,7 +8,7 @@ import {ITRC3156FlashLender} from "../../../interfaces/ITRC3156FlashLender.sol";
 import {TRC20} from "../TRC20.sol";
 
 /**
- * @dev Implementation of the ERC-3156 Flash loans extension, as defined in
+ * @dev Implementation of the TRC-3156 Flash loans extension, as defined in
  * https://eips.ethereum.org/EIPS/eip-3156[ERC-3156].
  *
  * Adds the {flashLoan} method, which provides flash loan support at the token

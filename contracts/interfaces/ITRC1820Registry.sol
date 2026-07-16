@@ -4,7 +4,7 @@
 pragma solidity >=0.5.0;
 
 /**
- * @dev Interface of the global ERC-1820 Registry, as defined in the
+ * @dev Interface of the global TRC-1820 Registry, as defined in the
  * https://eips.ethereum.org/EIPS/eip-1820[ERC]. Accounts may register
  * implementers for interfaces in this registry, as well as query support.
  *
@@ -85,27 +85,27 @@ interface ITRC1820Registry {
     function interfaceHash(string calldata interfaceName) external pure returns (bytes32);
 
     /**
-     * @notice Updates the cache with whether the contract implements an ERC-165 interface or not.
+     * @notice Updates the cache with whether the contract implements an TRC-165 interface or not.
      * @param account Address of the contract for which to update the cache.
-     * @param interfaceId ERC-165 interface for which to update the cache.
+     * @param interfaceId TRC-165 interface for which to update the cache.
      */
     function updateERC165Cache(address account, bytes4 interfaceId) external;
 
     /**
-     * @notice Checks whether a contract implements an ERC-165 interface or not.
+     * @notice Checks whether a contract implements an TRC-165 interface or not.
      * If the result is not cached a direct lookup on the contract address is performed.
      * If the result is not cached or the cached value is out-of-date, the cache MUST be updated manually by calling
      * {updateERC165Cache} with the contract address.
      * @param account Address of the contract to check.
-     * @param interfaceId ERC-165 interface to check.
+     * @param interfaceId TRC-165 interface to check.
      * @return True if `account` implements `interfaceId`, false otherwise.
      */
     function implementsERC165Interface(address account, bytes4 interfaceId) external view returns (bool);
 
     /**
-     * @notice Checks whether a contract implements an ERC-165 interface or not without using or updating the cache.
+     * @notice Checks whether a contract implements an TRC-165 interface or not without using or updating the cache.
      * @param account Address of the contract to check.
-     * @param interfaceId ERC-165 interface to check.
+     * @param interfaceId TRC-165 interface to check.
      * @return True if `account` implements `interfaceId`, false otherwise.
      */
     function implementsERC165InterfaceNoCache(address account, bytes4 interfaceId) external view returns (bool);

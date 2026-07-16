@@ -10,7 +10,7 @@ import {SlotDerivation} from "../../../utils/SlotDerivation.sol";
 import {TransientSlot} from "../../../utils/TransientSlot.sol";
 
 /**
- * @dev Extension of {TRC20} that adds support for temporary allowances following ERC-7674.
+ * @dev Extension of {TRC20} that adds support for temporary allowances following TRC-7674.
  *
  * WARNING: This is a draft contract. The corresponding ERC is still subject to changes.
  *

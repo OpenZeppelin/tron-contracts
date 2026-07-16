@@ -7,7 +7,7 @@ import {WebAuthn} from "../WebAuthn.sol";
 import {ITRC7913SignatureVerifier} from "../../../interfaces/ITRC7913.sol";
 
 /**
- * @dev ERC-7913 signature verifier that supports WebAuthn authentication assertions.
+ * @dev TRC-7913 signature verifier that supports WebAuthn authentication assertions.
  *
  * This verifier enables the validation of WebAuthn signatures using P256 public keys.
  * The key is expected to be a 64-byte concatenation of the P256 public key coordinates (qx || qy).

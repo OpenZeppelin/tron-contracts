@@ -10,7 +10,7 @@ import {SignatureChecker} from "../SignatureChecker.sol";
  * @dev Implementation of {AbstractSigner} using
  * https://eips.ethereum.org/EIPS/eip-7913[ERC-7913] signature verification.
  *
- * For {Account} usage, a {_setSigner} function is provided to set the ERC-7913 formatted {signer}.
+ * For {Account} usage, a {_setSigner} function is provided to set the TRC-7913 formatted {signer}.
  * Doing so is easier for a factory, who is likely to use initializable clones of this contract.
  *
  * The signer is a `bytes` object that concatenates a verifier address and a key: `verifier || key`.
@@ -40,12 +40,12 @@ abstract contract SignerTRC7913 is AbstractSigner {
         _setSigner(signer_);
     }
 
-    /// @dev Return the ERC-7913 signer (i.e. `verifier || key`).
+    /// @dev Return the TRC-7913 signer (i.e. `verifier || key`).
     function signer() public view virtual returns (bytes memory) {
         return _signer;
     }
 
-    /// @dev Sets the signer (i.e. `verifier || key`) with an ERC-7913 formatted signer.
+    /// @dev Sets the signer (i.e. `verifier || key`) with an TRC-7913 formatted signer.
     function _setSigner(bytes memory signer_) internal {
         _signer = signer_;
     }
