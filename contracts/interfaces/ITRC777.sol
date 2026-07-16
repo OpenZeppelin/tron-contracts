@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.4.0) (interfaces/ITRC777.sol)
+// Tron Contracts (last updated v5.4.0) (interfaces/ITRC777.sol)
 
 pragma solidity >=0.5.0;
 
 /**
- * @dev Interface of the ERC-777 Token standard as defined in the ERC.
+ * @dev Interface of the TRC-777 Token standard as defined in the ERC.
  *
  * This contract uses the
  * https://eips.ethereum.org/EIPS/eip-1820[ERC-1820 registry standard] to let

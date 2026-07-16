@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.6.0) (utils/cryptography/MessageHashUtils.sol)
+// Tron Contracts (last updated v5.6.0) (utils/cryptography/MessageHashUtils.sol)
 
 pragma solidity ^0.8.24;
 
@@ -85,7 +85,7 @@ library MessageHashUtils {
     }
 
     /**
-     * @dev Returns the keccak256 digest of an EIP-712 typed data (TIP-191 version `0x01`).
+     * @dev Returns the keccak256 digest of an TIP-712 typed data (TIP-191 version `0x01`).
      *
      * The digest is calculated from a `domainSeparator` and a `structHash`, by prefixing them with
      * `\x19\x01` and hashing the result. It corresponds to the hash signed by the
@@ -104,7 +104,7 @@ library MessageHashUtils {
     }
 
     /**
-     * @dev Returns the EIP-712 domain separator constructed from an `eip712Domain`. See {ITRC5267-eip712Domain}
+     * @dev Returns the TIP-712 domain separator constructed from an `eip712Domain`. See {ITRC5267-eip712Domain}
      *
      * This function dynamically constructs the domain separator based on which fields are present in the
      * `fields` parameter. It contains flags that indicate which domain fields are present:

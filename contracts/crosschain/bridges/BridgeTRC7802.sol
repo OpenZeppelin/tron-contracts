@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.6.0) (crosschain/bridges/BridgeTRC7802.sol)
+// Tron Contracts (last updated v5.6.0) (crosschain/bridges/BridgeTRC7802.sol)
 
 pragma solidity ^0.8.26;
 
@@ -7,7 +7,7 @@ import {ITRC7802} from "../../interfaces/draft-ITRC7802.sol";
 import {BridgeFungible} from "./abstract/BridgeFungible.sol";
 
 /**
- * @dev This is a variant of {BridgeFungible} that implements the bridge logic for ERC-7802 compliant tokens.
+ * @dev This is a variant of {BridgeFungible} that implements the bridge logic for TRC-7802 compliant tokens.
  */
 // slither-disable-next-line locked-ether
 abstract contract BridgeTRC7802 is BridgeFungible {
@@ -22,12 +22,12 @@ abstract contract BridgeTRC7802 is BridgeFungible {
         return _token;
     }
 
-    /// @dev "Locking" tokens using an ERC-7802 crosschain burn
+    /// @dev "Locking" tokens using an TRC-7802 crosschain burn
     function _onSend(address from, uint256 amount) internal virtual override {
         token().crosschainBurn(from, amount);
     }
 
-    /// @dev "Unlocking" tokens using an ERC-7802 crosschain mint
+    /// @dev "Unlocking" tokens using an TRC-7802 crosschain mint
     function _onReceive(address to, uint256 amount) internal virtual override {
         token().crosschainMint(to, amount);
     }

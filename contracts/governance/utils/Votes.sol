@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.6.0) (governance/utils/Votes.sol)
+// Tron Contracts (last updated v5.6.0) (governance/utils/Votes.sol)
 
 pragma solidity ^0.8.24;
 
@@ -61,7 +61,7 @@ abstract contract Votes is Context, TIP712, Nonces, ITRC5805 {
     }
 
     /**
-     * @dev Machine-readable description of the clock as specified in ERC-6372.
+     * @dev Machine-readable description of the clock as specified in TRC-6372.
      */
     // solhint-disable-next-line func-name-mixedcase
     function CLOCK_MODE() public view virtual returns (string memory) {

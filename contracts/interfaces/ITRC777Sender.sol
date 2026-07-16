@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.4.0) (interfaces/ITRC777Sender.sol)
+// Tron Contracts (last updated v5.4.0) (interfaces/ITRC777Sender.sol)
 
 pragma solidity >=0.5.0;
 
 /**
- * @dev Interface of the ERC-777 Tokens Sender standard as defined in the ERC.
+ * @dev Interface of the TRC-777 Tokens Sender standard as defined in the ERC.
  *
  * {ITRC777} Token holders can be notified of operations performed on their
  * tokens by having a contract implement this interface (contract holders can be

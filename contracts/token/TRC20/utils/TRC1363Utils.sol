@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.4.0) (token/TRC20/utils/TRC1363Utils.sol)
+// Tron Contracts (last updated v5.4.0) (token/TRC20/utils/TRC1363Utils.sol)
 
 pragma solidity ^0.8.20;
 
@@ -7,7 +7,7 @@ import {ITRC1363Receiver} from "../../../interfaces/ITRC1363Receiver.sol";
 import {ITRC1363Spender} from "../../../interfaces/ITRC1363Spender.sol";
 
 /**
- * @dev Library that provides common ERC-1363 utility functions.
+ * @dev Library that provides common TRC-1363 utility functions.
  *
  * See https://eips.ethereum.org/EIPS/eip-1363[ERC-1363].
  */

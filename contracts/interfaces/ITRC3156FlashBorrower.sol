@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.4.0) (interfaces/ITRC3156FlashBorrower.sol)
+// Tron Contracts (last updated v5.4.0) (interfaces/ITRC3156FlashBorrower.sol)
 
 pragma solidity >=0.5.0;
 
 /**
- * @dev Interface of the ERC-3156 FlashBorrower, as defined in
+ * @dev Interface of the TRC-3156 FlashBorrower, as defined in
  * https://eips.ethereum.org/EIPS/eip-3156[ERC-3156].
  */
 interface ITRC3156FlashBorrower {

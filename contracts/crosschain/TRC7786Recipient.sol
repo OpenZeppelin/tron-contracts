@@ -1,23 +1,23 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.6.0) (crosschain/TRC7786Recipient.sol)
+// Tron Contracts (last updated v5.6.0) (crosschain/TRC7786Recipient.sol)
 
 pragma solidity ^0.8.20;
 
 import {ITRC7786Recipient} from "../interfaces/draft-ITRC7786.sol";
 
 /**
- * @dev Base implementation of an ERC-7786 compliant cross-chain message receiver.
+ * @dev Base implementation of an TRC-7786 compliant cross-chain message receiver.
  *
  * This abstract contract exposes the `receiveMessage` function that is used for communication with (one or multiple)
  * destination gateways. This contract leaves two functions unimplemented:
  *
  * * {_isAuthorizedGateway}, an internal getter used to verify whether an address is recognised by the contract as a
- * valid ERC-7786 destination gateway. One or multiple gateway can be supported. Note that any malicious address for
+ * valid TRC-7786 destination gateway. One or multiple gateway can be supported. Note that any malicious address for
  * which this function returns true would be able to impersonate any account on any other chain sending any message.
  *
  * * {_processMessage}, the internal function that will be called with any message that has been validated.
  *
- * ERC-7786 requires the gateway to ensure messages are not delivered more than once. Therefore, we don't need to keep
+ * TRC-7786 requires the gateway to ensure messages are not delivered more than once. Therefore, we don't need to keep
  * track of the processed receiveId.
  *
  * @custom:stateless
@@ -43,7 +43,7 @@ abstract contract TRC7786Recipient is ITRC7786Recipient {
     }
 
     /**
-     * @dev Virtual getter that returns whether an address is a valid ERC-7786 gateway for a given sender.
+     * @dev Virtual getter that returns whether an address is a valid TRC-7786 gateway for a given sender.
      *
      * The `sender` parameter is an interoperable address that include the source chain. The chain part can be
      * extracted using the {InteroperableAddress} library to selectively authorize gateways based on the origin chain

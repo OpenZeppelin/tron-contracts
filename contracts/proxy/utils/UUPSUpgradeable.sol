@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.5.0) (proxy/utils/UUPSUpgradeable.sol)
+// Tron Contracts (last updated v5.5.0) (proxy/utils/UUPSUpgradeable.sol)
 
 pragma solidity ^0.8.22;
 
@@ -46,7 +46,7 @@ abstract contract UUPSUpgradeable is ITRC1822Proxiable {
      * @dev Check that the execution is being performed through a delegatecall call and that the execution context is
      * a proxy contract with an implementation (as defined in TRC-1967) pointing to self. This should only be the case
      * for UUPS and transparent proxies that are using the current contract as their implementation. Execution of a
-     * function through ERC-1167 minimal proxies (clones) would not normally pass this test, but is not guaranteed to
+     * function through TRC-1167 minimal proxies (clones) would not normally pass this test, but is not guaranteed to
      * fail.
      */
     modifier onlyProxy() {
@@ -64,7 +64,7 @@ abstract contract UUPSUpgradeable is ITRC1822Proxiable {
     }
 
     /**
-     * @dev Implementation of the ERC-1822 {proxiableUUID} function. This returns the storage slot used by the
+     * @dev Implementation of the TRC-1822 {proxiableUUID} function. This returns the storage slot used by the
      * implementation. It is used to validate the implementation's compatibility when performing an upgrade.
      *
      * IMPORTANT: A proxy pointing at a proxiable contract should not be considered proxiable itself, because this risks

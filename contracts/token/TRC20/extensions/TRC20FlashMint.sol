@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.6.0) (token/TRC20/extensions/TRC20FlashMint.sol)
+// Tron Contracts (last updated v5.6.0) (token/TRC20/extensions/TRC20FlashMint.sol)
 
 pragma solidity ^0.8.20;
 
@@ -8,7 +8,7 @@ import {ITRC3156FlashLender} from "../../../interfaces/ITRC3156FlashLender.sol";
 import {TRC20} from "../TRC20.sol";
 
 /**
- * @dev Implementation of the ERC-3156 Flash loans extension, as defined in
+ * @dev Implementation of the TRC-3156 Flash loans extension, as defined in
  * https://eips.ethereum.org/EIPS/eip-3156[ERC-3156].
  *
  * Adds the {flashLoan} method, which provides flash loan support at the token
