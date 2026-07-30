@@ -77,6 +77,18 @@ const { argv } = require('yargs/yargs')()
     },
   });
 
+// True when compiling the transpiled `@openzeppelin/tron-contracts-upgradeable`
+// package (the transpiler renames contracts/package.json). Used to special-case
+// the coverage compile: the generated upgradeable contracts nest deeper (extra
+// initializer + namespaced-storage indirection) and overflow the stack on the
+// legacy (non-IR) pipeline solidity-coverage normally uses.
+let isUpgradeable = false;
+try {
+  isUpgradeable = require('./contracts/package.json').name.endsWith('-upgradeable');
+} catch {
+  // contracts/package.json may be absent (e.g. a partial checkout); treat as non-upgradeable.
+}
+
 const TRE_PRIVATE_KEY = '0xdd23ca549a97cb330b011aebb674730df8b14acaee42d211ab45692699ab8ba5';
 
 require('@nomicfoundation/hardhat-chai-matchers');
@@ -127,6 +139,12 @@ module.exports = {
     // compiles in legacy on solc >= 0.8.27 — so bump the coverage compile to
     // 0.8.28 and turn viaIR OFF. The TVM deploy pipeline is untouched (still
     // tron-solc 0.8.26 + viaIR on its tron network).
+    //
+    // Exception: the transpiled -upgradeable contracts nest too deep for the
+    // legacy pipeline (stack-too-deep), so there we must keep viaIR ON for the
+    // coverage compile. Attribution is coarser under IR, but coverage of the
+    // mechanically-generated mirror is not a tracked metric — the source repo's
+    // legacy-pipeline coverage is the accurate one.
     version: argv.coverage ? '0.8.28' : argv.compiler,
     settings: {
       optimizer: {
@@ -134,7 +152,7 @@ module.exports = {
         runs: argv.runs,
       },
       evmVersion: argv.evm,
-      viaIR: argv.coverage ? false : argv.ir,
+      viaIR: argv.coverage ? isUpgradeable : argv.ir,
       outputSelection: { '*': { '*': ['storageLayout'] } },
       // `useLiteralContent: true` embeds source code as literal text
       // into each contract's metadata JSON (instead of just URL refs),

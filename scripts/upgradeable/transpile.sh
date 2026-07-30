@@ -93,5 +93,12 @@ node "$DIRNAME/split-withinit.js"
 cp "$DIRNAME/root-readme.md" README.md
 git add README.md
 
+# The transpiler reprints Solidity from the AST, so its output is not guaranteed
+# to match our Prettier config — which fails the `lint` job on the transpiled
+# (-upgradeable) repo. Format the generated sources in place so the output lints
+# clean. Only contracts/ is transpiled (test/ is copied verbatim and already
+# formatted), and this matches the `{contracts}` half of `npm run lint:sol`.
+npx prettier --log-level warn --ignore-path .gitignore --write 'contracts/**/*.sol'
+
 # delete compilation artifacts of vanilla code
 rm -rf artifacts cache
