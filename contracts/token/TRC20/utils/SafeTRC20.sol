@@ -59,7 +59,7 @@ library SafeTRC20 {
      * only when the call does not revert and returns either no data or ABI-encoded `true`. USDT-like tokens that
      * update balances but return ABI-encoded `false` (false-on-success) will therefore make this function return
      * `false` even though the transfer happened. Using `false` to trigger a fallback/retry path with such tokens can
-     * double-send or corrupt accounting. For false-on-success tokens use {safeTransferUSDT} (balance-delta
+     * double-send or corrupt accounting. For false-on-success tokens use {safeTransferChecked} (balance-delta
      * verification) instead of relying on this return value.
      */
     function trySafeTransfer(ITRC20 token, address to, uint256 value) internal returns (bool) {
@@ -74,32 +74,38 @@ library SafeTRC20 {
     }
 
     /**
-     * @dev Transfer `value` amount of `token` from the calling contract to `to`, hardened for tokens such as
-     * TRON USDT (`TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t`) whose `transfer` returns `false` on a *successful*
-     * transfer (while reverting on failure). Such tokens are incorrectly rejected by {safeTransfer}, whose
-     * relaxed check only tolerates an empty — not a `false` — return value.
+     * @dev Transfer `value` amount of `token` from the calling contract to `to`, verifying success by the
+     * caller's balance delta rather than by the returned boolean. This is the recommended default for outbound
+     * transfers on TRON: the dominant token, TRON USDT (`TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t`), returns `false`
+     * from a `transfer` that actually *succeeded* (while reverting on real failure), and such a token is
+     * incorrectly rejected by {safeTransfer}, whose relaxed check tolerates an empty — but not a `false` —
+     * return value. Because the boolean is unreliable, success is instead confirmed by checking that the calling
+     * contract's balance decreased by at least `value`; this holds whether the token returns `true`, `false`, or
+     * nothing, and needs no hardcoded token address. Reverts with {SafeTRC20FailedOperation} (or bubbles the
+     * token's own revert) on failure.
      *
      * NOTE: Only `transfer` is affected on TRON USDT; its `transferFrom` correctly returns `true`, so
      * {safeTransferFrom} already works and no `transferFrom` variant of this helper is needed.
      *
-     * Rather than trusting the (unreliable) boolean return value, success is verified by checking that the
-     * calling contract's balance decreased by at least `value`. This is correct whether the token returns
-     * `true`, `false`, or nothing, and needs no hardcoded token address. Reverts with {SafeTRC20FailedOperation}
-     * (or bubbles the token's own revert) on failure.
+     * Success here means the calling contract was debited at least `value`; it does NOT guarantee that `to`
+     * received `value`. This is correct for standard tokens and for fee-on-transfer tokens whether the fee is
+     * borne by the recipient (net debit `== value`) or added on top (net debit `> value`) — in both cases the
+     * recipient may receive less than `value` and the transfer is still treated as successful. Checking the
+     * caller's debit rather than the recipient's credit is what keeps this fee-tolerant. A self-transfer
+     * (`to == address(this)`) leaves the balance unchanged and is skipped from the check, so it succeeds as long
+     * as the call does not revert.
      *
-     * Checking the sender's debit rather than the recipient's credit keeps this correct even if USDT's fee is
-     * ever enabled: the sender is always debited the full `value`, while only the recipient would receive less.
-     *
-     * NOTE: Success here means the calling contract was debited `value`; it does NOT guarantee that `to` received
-     * `value`. With a fee-on-transfer token the recipient gets less than `value`, and this function still treats
-     * the transfer as successful. A self-transfer (`to == address(this)`) leaves the balance unchanged and is
-     * therefore considered successful as long as the call does not revert.
+     * WARNING: This is NOT correct for rebasing or reflection tokens that can *increase* the caller's balance
+     * during the transfer (e.g. a positive rebase, or a redistribution token that credits part of the fee back
+     * to holders). There the caller's net debit can fall below `value`, causing a spurious revert — or, if the
+     * credited amount exceeds `value`, an arithmetic underflow panic. Such tokens must not be paid out through
+     * this helper.
      */
-    function safeTransferUSDT(ITRC20 token, address to, uint256 value) internal {
+    function safeTransferChecked(ITRC20 token, address to, uint256 value) internal {
         uint256 balanceBefore = token.balanceOf(address(this));
         // Perform the transfer, bubbling a revert on hard failure, but ignore the returned bool: TRON USDT
-        // returns `false` on success. Success is verified below via the sender's balance delta, which (unlike
-        // the recipient's) stays correct if USDT's fee is enabled, since the sender is always debited `value`.
+        // returns `false` on success. Success is verified below via the caller's balance delta, which stays
+        // correct for fee-on-transfer tokens since the caller is always debited at least `value`.
         _safeTransfer(token, to, value, true);
         if (to != address(this) && balanceBefore - token.balanceOf(address(this)) < value) {
             revert SafeTRC20FailedOperation(address(token));

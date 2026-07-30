@@ -11,7 +11,8 @@ which reverts for tokens such as TRON USDT
 working for USDT (its `transferFrom` returns `true`), the asymmetry let
 deposits through while permanently trapping every withdrawal in the bridge.
 
-`_onReceive` now uses `SafeTRC20.safeTransferUSDT`, which verifies success via
-the recipient's balance delta and works whether the token returns `true`,
-`false`, or nothing. This assumes a token that is neither rebasing nor
-fee-on-transfer, which such a custodial bridge requires regardless.
+`_onReceive` now uses `SafeTRC20.safeTransferChecked`, which verifies success
+via the caller's balance delta and works whether the token returns `true`,
+`false`, or nothing. This custodial bridge still assumes a token that is
+neither rebasing nor fee-on-transfer, which it requires for release accounting
+regardless of the transfer helper.
