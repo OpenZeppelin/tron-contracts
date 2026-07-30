@@ -41,7 +41,9 @@ jobs:
         uses: actions/cache@v5
         with:
           path: tre/FullNode.jar
-          key: tre-jar-${{ hashFiles('package-lock.json') }}
+          # The jar is compiled against the pinned TRE image's stock FullNode.jar,
+          # so a digest bump in pin-tre-image.sh must invalidate the cache too.
+          key: tre-jar-${{ hashFiles('package-lock.json', 'scripts/pin-tre-image.sh') }}
       - name: Build patched FullNode.jar
         if: steps.jar-cache.outputs.cache-hit != 'true'
         run: bash scripts/build-tre-fork.sh
