@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.5.0) (interfaces/ITRC3156FlashLender.sol)
+// Tron Contracts (last updated v5.5.0) (interfaces/ITRC3156FlashLender.sol)
 
 pragma solidity >=0.5.0;
 
@@ -7,7 +7,8 @@ import {ITRC3156FlashBorrower} from "./ITRC3156FlashBorrower.sol";
 
 /**
  * @dev Interface of the TRC-3156 FlashLender, as defined in
- * https://eips.ethereum.org/EIPS/eip-3156[ERC-3156].
+ * https://github.com/tronprotocol/tips/blob/master/tip-3156.md[TIP-3156] (the TRON-side analogue
+ * of https://eips.ethereum.org/EIPS/eip-3156[EIP-3156]).
  */
 interface ITRC3156FlashLender {
     /**

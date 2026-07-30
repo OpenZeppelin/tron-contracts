@@ -153,6 +153,10 @@ cleanup() {
 }
 trap cleanup EXIT INT TERM
 
+# `tronbox/tre:dev` is a mutable tag; resolve it to a known-good digest so every
+# worker (and hardhat-tron's own spawn) runs the same image run to run.
+bash scripts/pin-tre-image.sh
+
 echo "→ Starting $WORKERS TRE container(s) in parallel..."
 # Background the docker create + run calls so all N workers start
 # concurrently. Previously the for-loop blocked on each `docker run

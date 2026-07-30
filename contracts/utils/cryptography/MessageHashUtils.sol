@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.6.0) (utils/cryptography/MessageHashUtils.sol)
+// Tron Contracts (last updated v5.6.0) (utils/cryptography/MessageHashUtils.sol)
 
 pragma solidity ^0.8.24;
 
