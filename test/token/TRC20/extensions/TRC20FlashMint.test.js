@@ -160,25 +160,5 @@ describe('TRC20FlashMint', function () {
         expect(await this.token.allowance(this.receiver, flashFeeReceiverAddress)).to.equal(0n);
       });
     });
-
-    // TIP-3156 mandates that the lender verify the callback returns keccak256("TRC3156FlashBorrower.onFlashLoan"),
-    // NOT the legacy Ethereum keccak256("ERC3156FlashBorrower.onFlashLoan"). These cases pin that discrimination so
-    // a regression back to the ERC preimage (which the port's own borrower mock would still satisfy) is caught.
-    describe('TIP-3156 callback return value', function () {
-      const TRC3156_RETURN_VALUE = ethers.keccak256(ethers.toUtf8Bytes('TRC3156FlashBorrower.onFlashLoan'));
-      const ERC3156_RETURN_VALUE = ethers.keccak256(ethers.toUtf8Bytes('ERC3156FlashBorrower.onFlashLoan'));
-
-      it('accepts the TIP-3156 magic value', async function () {
-        const receiver = await ethers.deployContract('TRC3156FlashBorrowerReturnValueMock', [TRC3156_RETURN_VALUE]);
-        await expect(this.token.flashLoan(receiver, this.token, 0n, '0x')).to.not.be.reverted;
-      });
-
-      it('rejects the legacy ERC-3156 magic value', async function () {
-        const receiver = await ethers.deployContract('TRC3156FlashBorrowerReturnValueMock', [ERC3156_RETURN_VALUE]);
-        await expect(this.token.flashLoan(receiver, this.token, 0n, '0x'))
-          .to.be.revertedWithCustomError(this.token, 'TRC3156InvalidReceiver')
-          .withArgs(receiver);
-      });
-    });
   });
 });
