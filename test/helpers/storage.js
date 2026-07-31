@@ -6,8 +6,8 @@ const AdminLabel = 'eip1967.proxy.admin';
 const BeaconLabel = 'eip1967.proxy.beacon';
 
 const erc1967Slot = label => ethers.toBeHex(ethers.toBigInt(ethers.id(label)) - 1n);
-const erc7201Slot = label => ethers.toBeHex(ethers.toBigInt(ethers.keccak256(erc1967Slot(label))) & ~0xffn);
-const erc7201format = contractName => `openzeppelin.storage.${contractName}`;
+const trc7201Slot = label => ethers.toBeHex(ethers.toBigInt(ethers.keccak256(erc1967Slot(label))) & ~0xffn);
+const trc7201format = contractName => `openzeppelin.storage.${contractName}`;
 
 const getSlot = (address, slot) =>
   ethers.provider.getStorage(address, ethers.isBytesLike(slot) ? slot : erc1967Slot(slot));
@@ -25,7 +25,7 @@ const upgradeableSlot = (contractName, offset) => {
   try {
     // Try to get the artifact paths, will throw if it doesn't exist
     artifacts._getArtifactPathSync(`${contractName}Upgradeable`);
-    return offset + ethers.toBigInt(erc7201Slot(erc7201format(contractName)));
+    return offset + ethers.toBigInt(trc7201Slot(trc7201format(contractName)));
   } catch {
     return offset;
   }
@@ -39,8 +39,8 @@ module.exports = {
   AdminSlot: erc1967Slot(AdminLabel),
   BeaconSlot: erc1967Slot(BeaconLabel),
   erc1967Slot,
-  erc7201Slot,
-  erc7201format,
+  trc7201Slot,
+  trc7201format,
   setSlot,
   getSlot,
   getAddressInSlot,

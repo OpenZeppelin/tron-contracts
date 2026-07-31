@@ -420,7 +420,7 @@ using SlotDerivation for bytes32;
 string private constant _NAMESPACE = "<namespace>" // eg. example.main
 
 function erc7201Pointer() internal view returns (bytes32) {
-    return _NAMESPACE.erc7201Slot();
+    return _NAMESPACE.trc7201Slot();
 }
 ----
 

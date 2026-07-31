@@ -157,6 +157,16 @@ jobs:
         run: bash scripts/upgradeable/transpile.sh
       # Runs AFTER transpile so the key hashes the transpiled corpus — distinct
       # from the non-upgradeable cache. No restore-keys (see the tests job).
+      #
+      # MUST also hash the peer tree (lib/tron-contracts/contracts): the
+      # transpiler moves stateless code (interfaces, libraries such as
+      # SlotDerivation) OUT of contracts/ and imports it from the peer, so the
+      # hardhat-exposed `$` wrappers for that code are generated from the peer
+      # copy (contracts-exposed/$_/@openzeppelin/tron-contracts/...). A change
+      # confined to a peer library — e.g. renaming an internal function — then
+      # leaves contracts/ byte-identical, so without the peer in the key the job
+      # hits a stale cache and (SKIP_COMPILE=1) runs against stale wrappers. This
+      # is the exact "stale bytecode" hazard the tests-job key comment warns of.
       - name: Restore compiled artifacts (upgradeable)
         id: tron-artifacts
         uses: actions/cache@v5
@@ -164,7 +174,7 @@ jobs:
           path: |
             artifacts
             contracts-exposed
-          key: tron-artifacts-upgradeable-${{ hashFiles('contracts/**/*.sol', 'hardhat.config.js', 'tron-batches.config.cjs', 'remappings.txt', 'package-lock.json') }}
+          key: tron-artifacts-upgradeable-${{ hashFiles('contracts/**/*.sol', 'lib/tron-contracts/contracts/**/*.sol', 'hardhat.config.js', 'tron-batches.config.cjs', 'remappings.txt', 'package-lock.json') }}
       - name: Run tests
         run: npm run test
         env:
