@@ -113,7 +113,7 @@ For smart contract wallets that implement ERC-1271, you can explicitly use:
 [source,solidity]
 ----
 function _verifyContractSignature(address signer, bytes32 hash, bytes memory signature) internal view returns (bool) {
-    return SignatureChecker.isValidERC1271SignatureNow(signer, hash, signature);
+    return SignatureChecker.isValidTRC1271SignatureNow(signer, hash, signature);
 }
 ----
 
@@ -174,17 +174,17 @@ For an on-chain Merkle Tree, see the xref:api:utils.adoc#MerkleTree[`MerkleTree`
 
 In Solidity, it's frequently helpful to know whether or not a contract supports an interface you'd like to use. ERC-165 is a standard that enables runtime interface detection. Contracts provide helpers both for implementing ERC-165 in your contracts and querying other contracts:
 
-* xref:api:utils.adoc#IERC165[`IERC165`] — this is the ERC-165 interface that defines xref:api:utils.adoc#IERC165-supportsInterface-bytes4-[`supportsInterface`]. When implementing ERC-165, you'll conform to this interface.
-* xref:api:utils.adoc#ERC165[`ERC165`] — inherit this contract if you'd like to support interface detection using a lookup table in contract storage. You can register interfaces using xref:api:utils.adoc#ERC165-_registerInterface-bytes4-[`_registerInterface(bytes4)`]: check out example usage as part of the TRC-721 implementation.
-* xref:api:utils.adoc#ERC165Checker[`ERC165Checker`] — ERC165Checker simplifies the process of checking whether or not a contract supports an interface you care about.
-* include with `using ERC165Checker for address;`
-* xref:api:utils.adoc#ERC165Checker-_supportsInterface-address-bytes4-[`myAddress._supportsInterface(bytes4)`]
-* xref:api:utils.adoc#ERC165Checker-_supportsAllInterfaces-address-bytes4---[`myAddress._supportsAllInterfaces(bytes4[\])`]
+* xref:api:utils.adoc#ITRC165[`ITRC165`] — this is the ERC-165 interface that defines xref:api:utils.adoc#ITRC165-supportsInterface-bytes4-[`supportsInterface`]. When implementing ERC-165, you'll conform to this interface.
+* xref:api:utils.adoc#TRC165[`TRC165`] — inherit this contract if you'd like to support interface detection using a lookup table in contract storage. You can register interfaces using xref:api:utils.adoc#TRC165-_registerInterface-bytes4-[`_registerInterface(bytes4)`]: check out example usage as part of the TRC-721 implementation.
+* xref:api:utils.adoc#TRC165Checker[`TRC165Checker`] — TRC165Checker simplifies the process of checking whether or not a contract supports an interface you care about.
+* include with `using TRC165Checker for address;`
+* xref:api:utils.adoc#TRC165Checker-_supportsInterface-address-bytes4-[`myAddress._supportsInterface(bytes4)`]
+* xref:api:utils.adoc#TRC165Checker-_supportsAllInterfaces-address-bytes4---[`myAddress._supportsAllInterfaces(bytes4[\])`]
 
 [source,solidity]
 ----
 contract MyContract {
-    using ERC165Checker for address;
+    using TRC165Checker for address;
 
     bytes4 private InterfaceId_TRC721 = 0x80ac58cd;
 
