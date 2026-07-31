@@ -6,11 +6,11 @@ pragma solidity >=0.5.0;
 /**
  * @title ITRC1363Receiver
  * @dev Interface for any contract that wants to support `transferAndCall` or `transferFromAndCall`
- * from ERC-1363 token contracts.
+ * from TRC-1363 token contracts.
  */
 interface ITRC1363Receiver {
     /**
-     * @dev Whenever ERC-1363 tokens are transferred to this contract via `transferAndCall` or `transferFromAndCall`
+     * @dev Whenever TRC-1363 tokens are transferred to this contract via `transferAndCall` or `transferFromAndCall`
      * by `operator` from `from`, this function is called.
      *
      * NOTE: To accept the transfer, this must return

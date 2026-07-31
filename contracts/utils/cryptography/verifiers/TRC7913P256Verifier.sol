@@ -7,7 +7,7 @@ import {P256} from "../P256.sol";
 import {ITRC7913SignatureVerifier} from "../../../interfaces/ITRC7913.sol";
 
 /**
- * @dev ERC-7913 signature verifier that support P256 (secp256r1) keys.
+ * @dev TRC-7913 signature verifier that support P256 (secp256r1) keys.
  *
  * @custom:stateless
  */
@@ -15,7 +15,7 @@ contract TRC7913P256Verifier is ITRC7913SignatureVerifier {
     /// @inheritdoc ITRC7913SignatureVerifier
     function verify(bytes calldata key, bytes32 hash, bytes calldata signature) public view virtual returns (bytes4) {
         // A P256 signature is `r || s` (0x40 bytes). A trailing recovery byte (a 0x41-byte signature) is
-        // tolerated and ignored, matching OZ ERC-7913 and {SignerP256}: only the first 0x40 bytes are read,
+        // tolerated and ignored, matching OZ TRC-7913 and {SignerP256}: only the first 0x40 bytes are read,
         // and signature malleability is already prevented by {P256-verify}'s low-s check, so trailing bytes
         // cannot change the verification result.
         if (key.length == 0x40 && signature.length >= 0x40) {

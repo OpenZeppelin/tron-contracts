@@ -6,7 +6,7 @@ pragma solidity >=0.6.2;
 import {ITRC165} from "../utils/introspection/ITRC165.sol";
 
 /**
- * @dev Required interface of an ERC-6909 compliant contract, as defined in the
+ * @dev Required interface of a TRC-6909 compliant contract, as defined in the
  * https://eips.ethereum.org/EIPS/eip-6909[ERC].
  */
 interface ITRC6909 is ITRC165 {

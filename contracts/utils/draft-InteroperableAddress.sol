@@ -9,7 +9,8 @@ import {Bytes} from "./Bytes.sol";
 import {Calldata} from "./Calldata.sol";
 
 /**
- * @dev Helper library to format and parse https://ethereum-magicians.org/t/erc-7930-interoperable-addresses/23365[ERC-7930] interoperable
+ * @dev Helper library to format and parse TRC-7930 (see
+ * https://ethereum-magicians.org/t/erc-7930-interoperable-addresses/23365[ERC-7930]) interoperable
  * addresses.
  */
 library InteroperableAddress {
@@ -20,9 +21,9 @@ library InteroperableAddress {
     error InteroperableAddressEmptyReferenceAndAddress();
 
     /**
-     * @dev Format an ERC-7930 interoperable address (version 1) from its components `chainType`, `chainReference`
+     * @dev Format a TRC-7930 interoperable address (version 1) from its components `chainType`, `chainReference`
      * and `addr`. This is a generic function that supports any chain type, chain reference and address supported by
-     * ERC-7930, including interoperable addresses with empty chain reference or empty address.
+     * TRC-7930, including interoperable addresses with empty chain reference or empty address.
      */
     function formatV1(
         bytes2 chainType,
@@ -42,7 +43,7 @@ library InteroperableAddress {
     }
 
     /**
-     * @dev Variant of {formatV1-bytes2-bytes-bytes-} specific to EVM chains. Returns the ERC-7930 interoperable
+     * @dev Variant of {formatV1-bytes2-bytes-bytes-} specific to EVM chains. Returns the TRC-7930 interoperable
      * address (version 1) for a given chainid and ethereum address.
      */
     function formatEvmV1(uint256 chainid, address addr) internal pure returns (bytes memory) {
@@ -66,8 +67,8 @@ library InteroperableAddress {
     }
 
     /**
-     * @dev Parse a ERC-7930 interoperable address (version 1) into its different components. Reverts if the input is
-     * not following a version 1 of ERC-7930.
+     * @dev Parse a TRC-7930 interoperable address (version 1) into its different components. Reverts if the input is
+     * not following a version 1 of TRC-7930.
      *
      * NOTE: Trailing bytes after a valid v1 encoding are ignored. The same decoded address may therefore correspond
      * to multiple distinct input byte strings.
@@ -93,7 +94,7 @@ library InteroperableAddress {
 
     /**
      * @dev Variant of {parseV1} that does not revert on invalid input. Instead, it returns `false` as the first
-     * return value to indicate parsing failure when the input does not follow version 1 of ERC-7930.
+     * return value to indicate parsing failure when the input does not follow version 1 of TRC-7930.
      */
     function tryParseV1(
         bytes memory self
@@ -149,7 +150,7 @@ library InteroperableAddress {
     }
 
     /**
-     * @dev Parse a ERC-7930 interoperable address (version 1) corresponding to an EIP-155 chain. The `chainId` and
+     * @dev Parse a TRC-7930 interoperable address (version 1) corresponding to an EIP-155 chain. The `chainId` and
      * `addr` return values will be zero if the input doesn't include a chainReference or an address, respectively.
      *
      * NOTE: Trailing bytes after a valid v1 encoding are ignored. The same decoded (chainId, addr) may therefore
@@ -157,7 +158,7 @@ library InteroperableAddress {
      *
      * Requirements:
      *
-     * * The input must be a valid ERC-7930 interoperable address (version 1)
+     * * The input must be a valid TRC-7930 interoperable address (version 1)
      * * The underlying chainType must be "eip-155"
      */
     function parseEvmV1(bytes memory self) internal pure returns (uint256 chainId, address addr) {
@@ -177,7 +178,7 @@ library InteroperableAddress {
 
     /**
      * @dev Variant of {parseEvmV1} that does not revert on invalid input. Instead, it returns `false` as the first
-     * return value to indicate parsing failure when the input does not follow version 1 of ERC-7930.
+     * return value to indicate parsing failure when the input does not follow version 1 of TRC-7930.
      */
     function tryParseEvmV1(bytes memory self) internal pure returns (bool success, uint256 chainId, address addr) {
         (bool success_, bytes2 chainType_, bytes memory chainReference_, bytes memory addr_) = tryParseV1(self);

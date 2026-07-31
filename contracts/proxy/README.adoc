@@ -9,12 +9,12 @@ Most of the proxies below are built on an abstract base contract.
 
 - {Proxy}: Abstract contract implementing the core delegation functionality.
 
-In order to avoid clashes with the storage variables of the implementation contract behind a proxy, we use https://eips.ethereum.org/EIPS/eip-1967[ERC-1967] storage slots.
+In order to avoid clashes with the storage variables of the implementation contract behind a proxy, we use https://github.com/tronprotocol/tips/blob/master/tip-1967.md[TIP-1967] (the TRON-side analogue of https://eips.ethereum.org/EIPS/eip-1967[EIP-1967]) storage slots.
 
-- {TRC1967Utils}: Internal functions to get and set the storage slots defined in ERC-1967.
-- {TRC1967Proxy}: A proxy using ERC-1967 storage slots. Not upgradeable by default.
+- {TRC1967Utils}: Internal functions to get and set the storage slots defined in TRC-1967.
+- {TRC1967Proxy}: A proxy using TRC-1967 storage slots. Not upgradeable by default.
 
-There are two alternative ways to add upgradeability to an ERC-1967 proxy. Their differences are explained below in <<transparent-vs-uups>>.
+There are two alternative ways to add upgradeability to a TRC-1967 proxy. Their differences are explained below in <<transparent-vs-uups>>.
 
 - {TransparentUpgradeableProxy}: A proxy with a built-in immutable admin and upgrade interface.
 - {UUPSUpgradeable}: An upgradeability mechanism to be included in the implementation contract.
@@ -26,7 +26,7 @@ A different family of proxies is beacon proxies. This pattern, popularized by Dh
 - {BeaconProxy}: A proxy that retrieves its implementation from a beacon contract.
 - {UpgradeableBeacon}: A beacon contract with a built-in admin that can upgrade the {BeaconProxy} pointing to it.
 
-In this pattern, the proxy contract doesn't hold the implementation address in storage like an ERC-1967 proxy. Instead, the address is stored in a separate beacon contract. The `upgrade` operations are sent to the beacon instead of to the proxy contract, and all proxies that follow that beacon are automatically upgraded.
+In this pattern, the proxy contract doesn't hold the implementation address in storage like a TRC-1967 proxy. Instead, the address is stored in a separate beacon contract. The `upgrade` operations are sent to the beacon instead of to the proxy contract, and all proxies that follow that beacon are automatically upgraded.
 
 Outside the realm of upgradeability, proxies can also be useful to make cheap contract clones, such as those created by an on-chain factory contract that creates many instances of the same contract. These instances are designed to be both cheap to deploy, and cheap to call.
 
@@ -54,7 +54,7 @@ The current implementation of this security mechanism uses https://eips.ethereum
 
 {{Proxy}}
 
-== ERC-1967
+== TRC-1967
 
 {{ITRC1967}}
 

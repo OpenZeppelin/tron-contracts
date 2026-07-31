@@ -12,13 +12,13 @@ import {MessageHashUtils} from "../MessageHashUtils.sol";
 /**
  * @dev Validates signatures wrapping the message hash in a nested TIP712 type. See {TRC7739Utils}.
  *
- * Linking the signature to the EIP-712 domain separator is a security measure to prevent signature replay across different
- * EIP-712 domains (e.g. a single offchain owner of multiple contracts).
+ * Linking the signature to the TIP-712 domain separator is a security measure to prevent signature replay across different
+ * TIP-712 domains (e.g. a single offchain owner of multiple contracts).
  *
  * This contract requires implementing the {_rawSignatureValidation} function, which passes the wrapped message hash,
  * which may be either an typed data or a personal sign nested type.
  *
- * NOTE: xref:api:utils/cryptography#TIP712[EIP-712] uses xref:api:utils/cryptography#ShortStrings[ShortStrings] to
+ * NOTE: xref:api:utils/cryptography#TIP712[TIP-712] uses xref:api:utils/cryptography#ShortStrings[ShortStrings] to
  * optimize gas costs for short strings (up to 31 characters). Consider that strings longer than that will use storage,
  * which may limit the ability of the signer to be used within the ERC-4337 validation phase (due to
  * https://eips.ethereum.org/EIPS/eip-7562#storage-rules[ERC-7562 storage access rules]).
@@ -28,17 +28,17 @@ abstract contract TRC7739 is AbstractSigner, TIP712, ITRC1271 {
     using MessageHashUtils for bytes32;
 
     /**
-     * @dev Attempts validating the signature in a nested EIP-712 type.
+     * @dev Attempts validating the signature in a nested TIP-712 type.
      *
-     * A nested EIP-712 type might be presented in 2 different ways:
+     * A nested TIP-712 type might be presented in 2 different ways:
      *
-     * - As a nested EIP-712 typed data
-     * - As a _personal_ signature (an EIP-712 mimic of the `eth_personalSign` for a smart contract)
+     * - As a nested TIP-712 typed data
+     * - As a _personal_ signature (a TIP-712 mimic of the `eth_personalSign` for a smart contract)
      */
     function isValidSignature(bytes32 hash, bytes calldata signature) public view virtual returns (bytes4 result) {
         // For the hash `0x7739773977397739773977397739773977397739773977397739773977397739` and an empty signature,
         // we return the magic value `0x77390001` as it's assumed impossible to find a preimage for it that can be used
-        // maliciously. Useful for simulation purposes and to validate whether the contract supports ERC-7739.
+        // maliciously. Useful for simulation purposes and to validate whether the contract supports TRC-7739.
         return
             (_isValidNestedTypedDataSignature(hash, signature) || _isValidNestedPersonalSignSignature(hash, signature))
                 ? ITRC1271.isValidSignature.selector
@@ -55,7 +55,7 @@ abstract contract TRC7739 is AbstractSigner, TIP712, ITRC1271 {
     }
 
     /**
-     * @dev Nested EIP-712 typed data verification.
+     * @dev Nested TIP-712 typed data verification.
      */
     function _isValidNestedTypedDataSignature(
         bytes32 hash,
