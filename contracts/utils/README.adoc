@@ -42,7 +42,7 @@ Miscellaneous contracts and libraries containing utility functions you can use t
  * {RelayedCall}: A library for performing calls that use minimal and predictable relayers to hide the sender.
  * {RLP}: Library for encoding and decoding data in Ethereum's Recursive Length Prefix format.
  * {ShortStrings}: Library to encode (and decode) short strings into (or from) a single bytes32 slot for optimizing costs. Short strings are limited to 31 characters.
- * {SlotDerivation}: Methods for deriving storage slot from ERC-7201 namespaces as well as from constructions such as mapping and arrays.
+ * {SlotDerivation}: Methods for deriving storage slot from https://github.com/tronprotocol/tips/blob/master/tip-7201.md[TIP-7201] (the TRON-side analogue of https://eips.ethereum.org/EIPS/eip-7201[ERC-7201]) namespaces as well as from constructions such as mapping and arrays.
  * {StorageSlot}: Methods for accessing specific storage slots formatted as common primitive types.
  * {Strings}: Common operations for strings formatting.
  * {Time}: A library that provides helpers for manipulating time-related objects, including a `Delay` type.

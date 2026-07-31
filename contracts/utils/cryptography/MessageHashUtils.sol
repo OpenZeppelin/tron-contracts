@@ -10,8 +10,9 @@ import {Strings} from "../Strings.sol";
  *
  * The library provides methods for generating a hash of a message that conforms to the
  * https://github.com/tronprotocol/tips/blob/master/tip-191.md[TIP-191] (the TRON-side analogue of
- * https://eips.ethereum.org/EIPS/eip-191[ERC-191]) and https://eips.ethereum.org/EIPS/eip-712[EIP-712]
- * specifications.
+ * https://eips.ethereum.org/EIPS/eip-191[ERC-191]) and
+ * https://github.com/tronprotocol/tips/blob/master/tip-712.md[TIP-712] (the TRON-side analogue of
+ * https://eips.ethereum.org/EIPS/eip-712[EIP-712]) specifications.
  */
 library MessageHashUtils {
     error TRC5267ExtensionsNotSupported();
