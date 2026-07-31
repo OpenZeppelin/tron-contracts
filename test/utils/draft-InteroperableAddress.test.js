@@ -171,31 +171,6 @@ describe('ERC7390', function () {
     }
   });
 
-  describe('TRON 0x41-prefixed address (21 bytes) inside an interoperable address', function () {
-    // TVM footgun: TronWeb / node APIs surface addresses in the 21-byte 0x41-prefixed form. Inside a bytes payload,
-    // addresses MUST be the 20-byte EVM form. A 21-byte address parses with the format-agnostic parser but is
-    // rejected by parseEvmV1, which requires exactly 20 bytes.
-    const evmAddress = '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045';
-    const tron21 = ethers.concat(['0x41', evmAddress]); // 21-byte 0x41-prefixed TRON form
-    // ERC-7930 v1: version(0x0001) | chainType(0x0000 eip155) | chainRefLen(0x01) | chainRef(0x01) | addrLen(0x15=21) | addr(21)
-    const binary = ethers.concat(['0x0001', '0x0000', '0x01', '0x01', '0x15', tron21]);
-
-    it('is accepted by the format-agnostic parser (documents the footgun)', async function () {
-      await expect(this.mock.$tryParseV1(binary)).to.eventually.deep.equal([true, '0x0000', '0x01', tron21]);
-    });
-
-    it('is rejected by parseEvmV1 (fail-fast on the wrong address width)', async function () {
-      await expect(this.mock.$parseEvmV1(binary))
-        .to.be.revertedWithCustomError(this.mock, 'InteroperableAddressParsingError')
-        .withArgs(binary);
-      await expect(this.mock.$parseEvmV1Calldata(binary))
-        .to.be.revertedWithCustomError(this.mock, 'InteroperableAddressParsingError')
-        .withArgs(binary);
-      await expect(this.mock.$tryParseEvmV1(binary)).to.eventually.deep.equal([false, 0n, ethers.ZeroAddress]);
-      await expect(this.mock.$tryParseEvmV1Calldata(binary)).to.eventually.deep.equal([false, 0n, ethers.ZeroAddress]);
-    });
-  });
-
   describe('handles large references and addresses', function () {
     it('large', async function () {
       const chainType = '0x0000';

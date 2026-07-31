@@ -44,27 +44,40 @@ describe('CrosschainBridgeTRC20', function () {
 
   shouldBehaveLikeBridgeTRC20({ chainAIsCustodial: true });
 
-  // A recipient embedded in a crosschain message payload must be the 20-byte EVM address. TronWeb conventions
-  // surface addresses as the 21-byte 0x41-prefixed form; without a length check `bytes20(toBinary)` would silently
-  // truncate that to a different recipient and release custody to the wrong address. BridgeFungible rejects it.
-  describe('rejects a non-20-byte (21-byte 0x41-prefixed TRON) recipient in the payload', function () {
+  // A recipient embedded in a crosschain message payload must be exactly 20 bytes. `bytes20` silently reshapes
+  // anything else into a different address — dropping the tail of a longer value, right-padding a shorter one with
+  // zeros — so the length is checked rather than the cast trusted. Both directions are covered here.
+  describe('rejects a non-20-byte recipient in the payload', function () {
     const amount = 100n;
 
-    it('reverts BridgeInvalidRecipient instead of releasing custody to a truncated address', async function () {
-      const [alice, bruce] = this.accounts;
-      const tron21 = ethers.concat(['0x41', bruce.address]); // 21-byte 0x41-prefixed form of bruce
-      const payload = ethers.AbiCoder.defaultAbiCoder().encode(
-        ['bytes', 'bytes', 'uint256'],
-        [this.chain.toErc7930(alice), tron21, amount],
-      );
+    beforeEach(function () {
       // Deliver through the registered gateway + counterpart so authorization passes and _processMessage runs.
-      await expect(
+      this.deliver = recipient =>
         this.bridgeA
           .connect(this.gatewayAsEOA)
-          .receiveMessage(ethers.ZeroHash, this.chain.toErc7930(this.bridgeB), payload),
-      )
+          .receiveMessage(
+            ethers.ZeroHash,
+            this.chain.toErc7930(this.bridgeB),
+            ethers.AbiCoder.defaultAbiCoder().encode(
+              ['bytes', 'bytes', 'uint256'],
+              [this.chain.toErc7930(this.accounts[0]), recipient, amount],
+            ),
+          );
+    });
+
+    it('reverts on a 21-byte recipient, which `bytes20` would truncate', async function () {
+      // The 21-byte 0x41-prefixed form TronWeb and the node APIs surface for an account.
+      const recipient = ethers.concat(['0x41', this.accounts[1].address]);
+      await expect(this.deliver(recipient))
         .to.be.revertedWithCustomError(this.bridgeA, 'BridgeInvalidRecipient')
-        .withArgs(tron21);
+        .withArgs(recipient);
+    });
+
+    it('reverts on a 19-byte recipient, which `bytes20` would zero-pad', async function () {
+      const recipient = ethers.dataSlice(this.accounts[1].address, 0, 19);
+      await expect(this.deliver(recipient))
+        .to.be.revertedWithCustomError(this.bridgeA, 'BridgeInvalidRecipient')
+        .withArgs(recipient);
     });
   });
 
