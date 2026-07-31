@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.4.0) (interfaces/ITRC5267.sol)
+// Tron Contracts (last updated v5.4.0) (interfaces/ITRC5267.sol)
 
 pragma solidity >=0.4.16;
 
@@ -10,7 +10,7 @@ interface ITRC5267 {
     event EIP712DomainChanged();
 
     /**
-     * @dev returns the fields and values that describe the domain separator used by this contract for EIP-712
+     * @dev returns the fields and values that describe the domain separator used by this contract for TIP-712
      * signature.
      */
     function eip712Domain()

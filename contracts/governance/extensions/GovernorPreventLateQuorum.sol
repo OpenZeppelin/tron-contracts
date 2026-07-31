@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.4.0) (governance/extensions/GovernorPreventLateQuorum.sol)
+// Tron Contracts (last updated v5.4.0) (governance/extensions/GovernorPreventLateQuorum.sol)
 
 pragma solidity ^0.8.24;
 

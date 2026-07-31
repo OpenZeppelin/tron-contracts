@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.4.0) (utils/cryptography/signers/MultiSignerTRC7913Weighted.sol)
+// Tron Contracts (last updated v5.4.0) (utils/cryptography/signers/MultiSignerTRC7913Weighted.sol)
 
 pragma solidity ^0.8.26;
 
