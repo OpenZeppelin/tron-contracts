@@ -67,7 +67,7 @@ The TVM is EVM-compatible, but TRON standardizes many interfaces under its own [
 | `CREATE2` address derivation | [TIP-26](https://github.com/tronprotocol/tips/blob/master/tip-26.md) | EIP-1014 | `Create2`, `Clones` |
 
 > [!NOTE]
-> Several of these carry TVM-specific behavior documented in the affected contract's NatSpec — for example: the TIP-712 domain separator masks `chainId` to its low four bytes (the value TRON exposes via `eth_chainId`); `CREATE2` derives addresses with a `0x41` prefix; and TRON USDT's `transfer` returns `false` even on a successful transfer, which `SafeTRC20.safeTransferUSDT` handles by verifying the recipient's balance delta.
+> Several of these carry TVM-specific behavior documented in the affected contract's NatSpec — for example: the TIP-712 domain separator masks `chainId` to its low four bytes (the value TRON exposes via `eth_chainId`); `CREATE2` derives addresses with a `0x41` prefix; and TRON USDT's `transfer` returns `false` even on a successful transfer, which `SafeTRC20.safeTransferUSDT` handles by verifying the calling contract's own balance delta (the sender's debit).
 
 ## TVM differences
 

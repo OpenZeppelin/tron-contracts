@@ -51,23 +51,7 @@ function _verify(
 }
 ----
 
-By default, the `verify` function will try calling the https://github.com/ethereum/RIPs/blob/master/RIPS/rip-7212.md[RIP-7212] precompile at address `0x100` and will fallback to an implementation in Solidity if not available. We encourage you to use `verifyNative` if you know the precompile is available on the chain you're working on and on any other chain on which you intend to use the same bytecode in the future. In case of any doubts regarding the implementation roadmap of the native precompile `P256` of potential future target chains, please consider using `verifySolidity`.
-
-[source,solidity]
-----
-using P256 for bytes32;
-
-function _verify(
-    bytes32 data,
-    bytes32 r,
-    bytes32 s,
-    bytes32 qx,
-    bytes32 qy
-) internal view returns (bool) {
-    // Will only call the precompile at address(0x100)
-    return data.verifyNative(r, s, qx, qy);
-}
-----
+On TRON, the `verify` function performs the verification entirely in Solidity (it is equivalent to `verifySolidity`). Unlike the upstream OpenZeppelin implementation, it does not attempt the https://github.com/ethereum/RIPs/blob/master/RIPS/rip-7212.md[RIP-7212] precompile: the native secp256r1 precompile specified for the TVM by https://github.com/tronprotocol/tips/blob/master/tip-7951.md[TIP-7951] (at address `0x100`) is not assumed to be enabled. This removes any dependency on precompile availability at the cost of higher Energy consumption per verification.
 
 IMPORTANT: The P256 library only allows for `s` values in the lower order of the curve (i.e. `s <= N/2`) to prevent malleability. In case your tooling produces signatures in both sides of the curve, consider flipping the `s` value to keep compatibility.
 
@@ -540,7 +524,7 @@ IMPORTANT: Only use these functions after carefully confirming they're necessary
 
 xref:api:utils.adoc#Blockhash[`Blockhash`] provides access to historical block hashes through the native `BLOCKHASH` opcode, which exposes the hashes of the most recent 256 blocks.
 
-The library is a thin wrapper around the opcode. It handles edge cases gracefully by returning zero for the current block, future blocks, or blocks older than 256, matching the VM's native behavior. Note that TVM does not implement https://eips.ethereum.org/EIPS/eip-2935[EIP-2935] history storage, so access cannot be extended beyond the 256-block window.
+The library is a thin wrapper around the opcode. It handles edge cases gracefully by returning zero for the current block, future blocks, or blocks older than 256, matching the VM's native behavior. Note that the extended https://eips.ethereum.org/EIPS/eip-2935[EIP-2935] history storage — specified for the TVM by https://github.com/tronprotocol/tips/blob/master/tip-2935.md[TIP-2935] at the same canonical address — is not yet active on TRON mainnet, so access cannot currently be extended beyond the 256-block window.
 
 [source,solidity]
 ----
