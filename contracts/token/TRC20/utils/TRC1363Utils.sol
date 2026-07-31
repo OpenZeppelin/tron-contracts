@@ -9,7 +9,8 @@ import {ITRC1363Spender} from "../../../interfaces/ITRC1363Spender.sol";
 /**
  * @dev Library that provides common TRC-1363 utility functions.
  *
- * See https://eips.ethereum.org/EIPS/eip-1363[ERC-1363].
+ * See https://github.com/tronprotocol/tips/blob/master/tip-1363.md[TIP-1363] (the TRON-side analogue of
+ * https://eips.ethereum.org/EIPS/eip-1363[EIP-1363]).
  */
 library TRC1363Utils {
     /**

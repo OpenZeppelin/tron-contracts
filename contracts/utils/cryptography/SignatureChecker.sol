@@ -13,9 +13,9 @@ import {Bytes} from "../Bytes.sol";
  *
  * * ECDSA signatures from externally owned accounts (EOAs)
  * * TRC-1271 signatures from smart contract wallets like Argent and Safe Wallet (previously Gnosis Safe)
- * * ERC-7913 signatures from keys that do not have an Ethereum address of their own
+ * * TRC-7913 signatures from keys that do not have an Ethereum address of their own
  *
- * See https://github.com/tronprotocol/tips/blob/master/tip-1271.md[TIP-1271] (the TRON-side analogue of https://eips.ethereum.org/EIPS/eip-1271[EIP-1271]) and https://eips.ethereum.org/EIPS/eip-7913[ERC-7913].
+ * See https://github.com/tronprotocol/tips/blob/master/tip-1271.md[TIP-1271] (the TRON-side analogue of https://eips.ethereum.org/EIPS/eip-1271[EIP-1271]) and https://github.com/tronprotocol/tips/blob/master/tip-7913.md[TIP-7913] (the TRON-side analogue of https://eips.ethereum.org/EIPS/eip-7913[EIP-7913]).
  */
 library SignatureChecker {
     using Bytes for bytes;

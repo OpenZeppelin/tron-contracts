@@ -9,7 +9,7 @@ Most of the proxies below are built on an abstract base contract.
 
 - {Proxy}: Abstract contract implementing the core delegation functionality.
 
-In order to avoid clashes with the storage variables of the implementation contract behind a proxy, we use https://eips.ethereum.org/EIPS/eip-1967[ERC-1967] storage slots.
+In order to avoid clashes with the storage variables of the implementation contract behind a proxy, we use https://github.com/tronprotocol/tips/blob/master/tip-1967.md[TIP-1967] (the TRON-side analogue of https://eips.ethereum.org/EIPS/eip-1967[EIP-1967]) storage slots.
 
 - {TRC1967Utils}: Internal functions to get and set the storage slots defined in TRC-1967.
 - {TRC1967Proxy}: A proxy using TRC-1967 storage slots. Not upgradeable by default.

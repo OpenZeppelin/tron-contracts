@@ -8,7 +8,8 @@ import {SignatureChecker} from "../SignatureChecker.sol";
 
 /**
  * @dev Implementation of {AbstractSigner} using
- * https://eips.ethereum.org/EIPS/eip-7913[ERC-7913] signature verification.
+ * https://github.com/tronprotocol/tips/blob/master/tip-7913.md[TIP-7913] (the TRON-side analogue of
+ * https://eips.ethereum.org/EIPS/eip-7913[EIP-7913]) signature verification.
  *
  * For {Account} usage, a {_setSigner} function is provided to set the TRC-7913 formatted {signer}.
  * Doing so is easier for a factory, who is likely to use initializable clones of this contract.

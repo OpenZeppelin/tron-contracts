@@ -9,8 +9,8 @@ import {BitMaps} from "../../../utils/structs/BitMaps.sol";
 import {Checkpoints} from "../../../utils/structs/Checkpoints.sol";
 
 /**
- * @dev Implementation of the TRC-2309 "Consecutive Transfer Extension" as defined in
- * https://eips.ethereum.org/EIPS/eip-2309[ERC-2309].
+ * @dev Implementation of the TRC-2309 "Consecutive Transfer Extension" (see
+ * https://eips.ethereum.org/EIPS/eip-2309[ERC-2309]).
  *
  * This extension allows the minting of large batches of tokens, during contract construction only. For upgradeable
  * contracts this implies that batch minting is only available during proxy deployment, and not in subsequent upgrades.

@@ -8,7 +8,9 @@ import {ITRC165} from "./ITRC165.sol";
 
 /**
  * @title ITRC1363
- * @dev Interface of the ERC-1363 standard as defined in the https://eips.ethereum.org/EIPS/eip-1363[ERC-1363].
+ * @dev Interface of the TRC-1363 standard as defined in
+ * https://github.com/tronprotocol/tips/blob/master/tip-1363.md[TIP-1363] (the TRON-side analogue of
+ * https://eips.ethereum.org/EIPS/eip-1363[EIP-1363]).
  *
  * Defines an extension interface for TRC-20 tokens that supports executing code on a recipient contract
  * after `transfer` or `transferFrom`, or code on a spender contract after `approve`, in a single transaction.

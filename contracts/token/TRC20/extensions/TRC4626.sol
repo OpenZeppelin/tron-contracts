@@ -95,7 +95,7 @@ abstract contract TRC4626 is TRC20, ITRC4626 {
     error TRC4626ExceededMaxRedeem(address owner, uint256 shares, uint256 max);
 
     /**
-     * @dev Set the underlying asset contract. This must be a TRC20-compatible contract (TRC-20 or ERC-777).
+     * @dev Set the underlying asset contract. This must be a TRC20-compatible contract (TRC-20 or TRC-777).
      */
     constructor(ITRC20 asset_) {
         (bool success, uint8 assetDecimals) = _tryGetAssetDecimals(asset_);

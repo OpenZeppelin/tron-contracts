@@ -8,8 +8,8 @@ pragma solidity >=0.5.0;
  *
  * Accounts can be notified of {ITRC777} tokens being sent to them by having a
  * contract implement this interface (contract holders can be their own
- * implementer) and registering it on the
- * https://eips.ethereum.org/EIPS/eip-1820[ERC-1820 global registry].
+ * implementer) and registering it on the TRC-1820 global registry (see
+ * https://eips.ethereum.org/EIPS/eip-1820[ERC-1820]).
  *
  * See {ITRC1820Registry} and {ITRC1820Implementer}.
  */

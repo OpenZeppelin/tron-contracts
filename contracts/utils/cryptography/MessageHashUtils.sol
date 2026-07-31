@@ -182,7 +182,7 @@ library MessageHashUtils {
         }
     }
 
-    /// @dev Builds an EIP-712 domain type hash depending on the `fields` provided, following https://eips.ethereum.org/EIPS/eip-5267[ERC-5267]
+    /// @dev Builds a TIP-712 domain type hash depending on the `fields` provided, following TRC-5267 (see https://eips.ethereum.org/EIPS/eip-5267[ERC-5267])
     function toDomainTypeHash(bytes1 fields) internal pure returns (bytes32 hash) {
         if (fields & 0x20 == 0x20) revert TRC5267ExtensionsNotSupported();
 

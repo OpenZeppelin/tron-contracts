@@ -8,8 +8,8 @@ import {TRC165, ITRC165} from "../../../utils/introspection/TRC165.sol";
 import {ITRC7802} from "../../../interfaces/draft-ITRC7802.sol";
 
 /**
- * @dev TRC20 extension that implements the standard token interface according to
- * https://eips.ethereum.org/EIPS/eip-7802[ERC-7802].
+ * @dev TRC20 extension that implements the standard token interface according to TRC-7802 (see
+ * https://eips.ethereum.org/EIPS/eip-7802[ERC-7802]).
  */
 abstract contract TRC20Bridgeable is TRC20, TRC165, ITRC7802 {
     /// @dev Modifier to restrict access to the token bridge.
