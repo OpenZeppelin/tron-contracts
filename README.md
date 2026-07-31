@@ -73,6 +73,9 @@ The TVM is EVM-compatible, but TRON standardizes many interfaces under its own [
 
 This port adapts non-obvious differences between the TVM and the EVM, including `CREATE2` / plain `CREATE` address derivation, the `block.chainid` value used in TIP-712 domain separators, the TRC-721 receiver-hook magic value, and the handling of tokens that return `false` on a successful `transfer`. Each adaptation is documented in the affected contract's NatSpec.
 
+> [!IMPORTANT]
+> **Addresses embedded inside `bytes` payloads MUST use the 20-byte EVM form.** During execution the TVM represents every address as the low 20 bytes, so `msg.sender`, `address(this)`, and `address`-typed arguments are identical to the EVM. The 21-byte `0x41`-prefixed and Base58Check (`T…`) forms that TRON tooling (TronWeb, node APIs) works with are off-chain encodings only — they never appear on-chain. When an address is carried inside a `bytes` argument — an ERC-7930 interoperable address, a crosschain bridge message, an ERC-7913 signer (`verifier || key`), or any packed calldata — it must be the raw 20-byte value. The 21-byte form is rejected where the format is self-describing (`InteroperableAddress.parseEvmV1` and `BridgeFungible` revert on a non-20-byte address) and would otherwise be silently mis-parsed into the wrong address. Strip the `0x41` prefix at the encoding boundary (e.g. in your TronWeb integration) before placing an address in a `bytes` payload.
+
 ## Security
 
 This code is **unaudited** and under active development; use it at your own risk. Please report any security issues responsibly via the repository's security policy rather than opening a public issue.
