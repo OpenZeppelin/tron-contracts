@@ -73,6 +73,14 @@ The TVM is EVM-compatible, but TRON standardizes many interfaces under its own [
 
 This port adapts non-obvious differences between the TVM and the EVM, including `CREATE2` / plain `CREATE` address derivation, the `block.chainid` value used in TIP-712 domain separators, the TRC-721 receiver-hook magic value, and the handling of tokens that return `false` on a successful `transfer`. Each adaptation is documented in the affected contract's NatSpec.
 
+### Native TRC-10 assets
+
+This library works with contract-based tokens: TRC-20, TRC-721, TRC-1155 and the other TRC standards listed above. Native TRC-10 assets, which a TRON account can hold alongside TRX, are outside its scope.
+
+Moving a TRC-10 requires the TVM's token-aware call — `address.transferToken(amount, id)`, compiling to `CALLTOKEN`. Every value-bearing path here uses an ordinary `call`, which carries TRX only. A TRC-10 credited to a contract built on this library therefore stays with that contract, and no supplied path forwards or withdraws it. This includes the governance executors: `Governor.relay`, `Governor.execute` and `TimelockController.execute`/`executeBatch` accept TRX through `value`, and their proposal and operation hashes bind targets, TRX values and calldata, with no field for a token identifier or amount.
+
+Hold assets that contracts need to move as TRC-20 — either natively or by wrapping the TRC-10.
+
 ## Security
 
 This code is **unaudited** and under active development; use it at your own risk. Please report any security issues responsibly via the repository's security policy rather than opening a public issue.
