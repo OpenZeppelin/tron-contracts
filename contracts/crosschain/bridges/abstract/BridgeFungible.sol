@@ -9,7 +9,7 @@ import {TRC7786Recipient} from "../../TRC7786Recipient.sol";
 import {CrosschainLinked} from "../../CrosschainLinked.sol";
 
 /**
- * @dev Base contract for bridging TRC-20 between chains using an TRC-7786 gateway.
+ * @dev Base contract for bridging TRC-20 between chains using a TRC-7786 gateway.
  *
  * In order to use this contract, two functions must be implemented to link it to the token:
  * * {_onSend}: called when a crosschain transfer is going out. Must take the sender tokens or revert.

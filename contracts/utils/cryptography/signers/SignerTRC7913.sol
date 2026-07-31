@@ -45,7 +45,7 @@ abstract contract SignerTRC7913 is AbstractSigner {
         return _signer;
     }
 
-    /// @dev Sets the signer (i.e. `verifier || key`) with an TRC-7913 formatted signer.
+    /// @dev Sets the signer (i.e. `verifier || key`) with a TRC-7913 formatted signer.
     function _setSigner(bytes memory signer_) internal {
         _signer = signer_;
     }

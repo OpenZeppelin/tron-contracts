@@ -8,11 +8,11 @@ import {Hashes} from "./Hashes.sol";
 
 /**
  * @dev Utilities to process https://ercs.ethereum.org/ERCS/erc-7739[TRC-7739] typed data signatures
- * that are specific to an TIP-712 domain.
+ * that are specific to a TIP-712 domain.
  *
  * This library provides methods to wrap, unwrap and operate over typed data signatures with a defensive
  * rehashing mechanism that includes the app's xref:api:utils/cryptography#TIP712-_domainSeparatorV4[TIP-712]
- * and preserves readability of the signed content using an TIP-712 nested approach.
+ * and preserves readability of the signed content using a TIP-712 nested approach.
  *
  * A smart contract domain can validate a signature for a typed data structure in two ways:
  *
@@ -27,7 +27,7 @@ import {Hashes} from "./Hashes.sol";
  */
 library TRC7739Utils {
     /**
-     * @dev An TIP-712 type to represent "personal" signatures
+     * @dev A TIP-712 type to represent "personal" signatures
      * (i.e. mimic of `personal_sign` for smart contracts).
      */
     bytes32 private constant PERSONAL_SIGN_TYPEHASH = keccak256("PersonalSign(bytes prefixed)");

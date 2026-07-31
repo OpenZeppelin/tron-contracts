@@ -33,7 +33,7 @@ abstract contract TRC7739 is AbstractSigner, TIP712, ITRC1271 {
      * A nested TIP-712 type might be presented in 2 different ways:
      *
      * - As a nested TIP-712 typed data
-     * - As a _personal_ signature (an TIP-712 mimic of the `eth_personalSign` for a smart contract)
+     * - As a _personal_ signature (a TIP-712 mimic of the `eth_personalSign` for a smart contract)
      */
     function isValidSignature(bytes32 hash, bytes calldata signature) public view virtual returns (bytes4 result) {
         // For the hash `0x7739773977397739773977397739773977397739773977397739773977397739` and an empty signature,

@@ -92,7 +92,7 @@ abstract contract UUPSUpgradeable is ITRC1822Proxiable {
 
     /**
      * @dev Reverts if the execution is not performed via delegatecall or the execution
-     * context is not of a proxy with an TRC-1967 compliant implementation pointing to self.
+     * context is not of a proxy with a TRC-1967 compliant implementation pointing to self.
      */
     function _checkProxy() internal view virtual {
         if (

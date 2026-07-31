@@ -22,12 +22,12 @@ abstract contract BridgeTRC7802 is BridgeFungible {
         return _token;
     }
 
-    /// @dev "Locking" tokens using an TRC-7802 crosschain burn
+    /// @dev "Locking" tokens using a TRC-7802 crosschain burn
     function _onSend(address from, uint256 amount) internal virtual override {
         token().crosschainBurn(from, amount);
     }
 
-    /// @dev "Unlocking" tokens using an TRC-7802 crosschain mint
+    /// @dev "Unlocking" tokens using a TRC-7802 crosschain mint
     function _onReceive(address to, uint256 amount) internal virtual override {
         token().crosschainMint(to, amount);
     }

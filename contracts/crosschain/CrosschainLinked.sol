@@ -66,7 +66,7 @@ abstract contract CrosschainLinked is TRC7786Recipient {
      * Note: The `counterpart` parameter is the full InteroperableAddress (chain ref + address).
      */
     function _setLink(address gateway, bytes memory counterpart, bool allowOverride) internal virtual {
-        // Sanity check, this should revert if gateway is not an TRC-7786 implementation. Note that since
+        // Sanity check, this should revert if gateway is not a TRC-7786 implementation. Note that since
         // supportsAttribute returns data, an EOA would fail that test (nothing returned).
         ITRC7786GatewaySource(gateway).supportsAttribute(bytes4(0));
 

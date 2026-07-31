@@ -20,7 +20,7 @@ library InteroperableAddress {
     error InteroperableAddressEmptyReferenceAndAddress();
 
     /**
-     * @dev Format an TRC-7930 interoperable address (version 1) from its components `chainType`, `chainReference`
+     * @dev Format a TRC-7930 interoperable address (version 1) from its components `chainType`, `chainReference`
      * and `addr`. This is a generic function that supports any chain type, chain reference and address supported by
      * TRC-7930, including interoperable addresses with empty chain reference or empty address.
      */

@@ -12,7 +12,7 @@ Additionally there are multiple bridge constructions:
 
 * {BridgeFungible}: Core bridging logic for crosschain TRC-20 transfer. Used by {BridgeTRC20}, {BridgeTRC7802} and {TRC20Crosschain},
 * {BridgeTRC20}: Standalone bridge contract to connect a TRC-20 token contract with counterparts on remote chains,
-* {BridgeTRC7802}: Standalone bridge contract to connect an TRC-7802 token contract with counterparts on remote chains.
+* {BridgeTRC7802}: Standalone bridge contract to connect a TRC-7802 token contract with counterparts on remote chains.
 
 == Helpers
 

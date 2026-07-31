@@ -6,7 +6,7 @@ pragma solidity ^0.8.20;
 import {ITRC7786Recipient} from "../interfaces/draft-ITRC7786.sol";
 
 /**
- * @dev Base implementation of an TRC-7786 compliant cross-chain message receiver.
+ * @dev Base implementation of a TRC-7786 compliant cross-chain message receiver.
  *
  * This abstract contract exposes the `receiveMessage` function that is used for communication with (one or multiple)
  * destination gateways. This contract leaves two functions unimplemented:

@@ -85,7 +85,7 @@ library MessageHashUtils {
     }
 
     /**
-     * @dev Returns the keccak256 digest of an TIP-712 typed data (TIP-191 version `0x01`).
+     * @dev Returns the keccak256 digest of a TIP-712 typed data (TIP-191 version `0x01`).
      *
      * The digest is calculated from a `domainSeparator` and a `structHash`, by prefixing them with
      * `\x19\x01` and hashing the result. It corresponds to the hash signed by the
