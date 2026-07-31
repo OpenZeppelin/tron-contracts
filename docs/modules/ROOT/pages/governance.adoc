@@ -72,7 +72,9 @@ votingDelay: How long after a proposal is created should voting power be fixed. 
 
 votingPeriod: How long does a proposal remain open to votes.
 
-These parameters are specified in the unit defined in the token's clock. Assuming the token uses block numbers, and assuming block time of around 12 seconds, we will have set votingDelay = 1 day = 7200 blocks, and votingPeriod = 1 week = 50400 blocks.
+These parameters are specified in the unit defined in the token's clock. Assuming the token uses block numbers, and assuming TRON's block time of around 3 seconds, we will have set votingDelay = 1 day = 28800 blocks, and votingPeriod = 1 week = 201600 blocks.
+
+NOTE: Derive block-denominated windows from TRON's ~3 second block time (28800 blocks per day, 201600 per week). Values taken from a deployment on a chain with a different block time cover a different wall-clock duration here — parameters written for Ethereum's ~12 second blocks elapse in about a quarter of the intended time. This applies to `votingDelay`, `votingPeriod` and, when using `GovernorPreventLateQuorum`, `lateQuorumVoteExtension`. Timelock delays, `VestingWallet` and signature expiries such as `permit` are denominated in seconds and are unaffected. To express governance windows in seconds and remove the dependency on block time entirely, see <<timestamp-based-governance>>.
 
 We can optionally set a proposal threshold as well. This restricts proposal creation to accounts that have enough voting power.
 
@@ -177,6 +179,7 @@ await governor.execute(
 
 Executing the proposal will transfer the TRC-20 tokens to the chosen recipient. To wrap up: we set up a system where a treasury is controlled by the collective decision of the token holders of a project, and all actions are executed via proposals enforced by on-chain votes.
 
+[[timestamp-based-governance]]
 == Timestamp based governance
 
 === Motivation

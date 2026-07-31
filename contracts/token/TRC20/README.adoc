@@ -16,15 +16,15 @@ There are a few core contracts that implement the behavior specified in the TRC-
 Additionally there are multiple custom extensions, including:
 
 * {TRC20Permit}: gasless approval of tokens (standardized as TIP-2612 / EIP-2612).
-* {TRC20Bridgeable}: compatibility with crosschain bridges through ERC-7802.
+* {TRC20Bridgeable}: compatibility with crosschain bridges through TRC-7802.
 * {TRC20Burnable}: destruction of own tokens.
 * {TRC20Capped}: enforcement of a cap to the total supply when minting tokens.
-* {TRC20Crosschain}: embedded {BridgeFungible} bridge, making the token crosschain through the use of ERC-7786 gateways.
+* {TRC20Crosschain}: embedded {BridgeFungible} bridge, making the token crosschain through the use of TRC-7786 gateways.
 * {TRC20Pausable}: ability to pause token transfers.
-* {TRC20FlashMint}: token level support for flash loans through the minting and burning of ephemeral tokens (standardized as ERC-3156).
+* {TRC20FlashMint}: token level support for flash loans through the minting and burning of ephemeral tokens (standardized as TIP-3156 / EIP-3156).
 * {TRC20Votes}: support for voting and vote delegation. xref:governance.adoc#token[See the governance guide for a minimal example (with the required overrides when combining TRC20 + TRC20Permit + TRC20Votes)].
 * {TRC20Wrapper}: wrapper to create a TRC-20 backed by another TRC-20, with deposit and withdraw methods. Useful in conjunction with {TRC20Votes}.
-* {TRC20TemporaryApproval}: support for approvals lasting for only one transaction, as defined in ERC-7674.
+* {TRC20TemporaryApproval}: support for approvals lasting for only one transaction, as defined in TRC-7674.
 * {TRC1363}: support for calling the target of a transfer or approval, enabling code execution on the receiver within a single transaction.
 * {TRC4626}: tokenized vault that manages shares (represented as TRC-20) that are backed by assets (another TRC-20).
 
