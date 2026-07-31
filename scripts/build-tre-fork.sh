@@ -20,7 +20,8 @@
 # the patch against the stock jar's classpath inside a throwaway tre:dev
 # container and repacks the .class files. No java-tron-from-source build.
 #
-# Requires: docker (daemon running) + the `tronbox/tre:dev` image, git, python3.
+# Requires: docker (daemon running), git, python3. The `tronbox/tre:dev` image is
+# pinned to a known-good digest by scripts/pin-tre-image.sh, invoked below.
 #
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -89,6 +90,12 @@ except Exception:
     pass
 PY
 export PYTHONPATH="$SITEDIR${PYTHONPATH:+:$PYTHONPATH}"
+
+# build-jar.sh compiles inside a throwaway container from `tronbox/tre:dev` and
+# needs that image's javac. The tag is mutable and has shipped without a JDK, so
+# resolve it to a known-good digest first (retagged locally — build-jar.sh
+# hardcodes the plain tag).
+bash "$REPO_ROOT/scripts/pin-tre-image.sh"
 
 echo "→ Building patched jar (compiles 5 patch classes against stock tre:dev jar)..."
 bash "$WORK/docker/build-jar.sh"   # writes "$WORK/tre/FullNode.jar"
