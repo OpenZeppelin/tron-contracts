@@ -7,7 +7,7 @@ import {RSA} from "../RSA.sol";
 import {ITRC7913SignatureVerifier} from "../../../interfaces/ITRC7913.sol";
 
 /**
- * @dev TRC-7913 signature verifier that support RSA keys.
+ * @dev ERC-7913 signature verifier that support RSA keys.
  *
  * @custom:stateless
  */

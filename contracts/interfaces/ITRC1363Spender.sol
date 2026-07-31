@@ -6,11 +6,11 @@ pragma solidity >=0.5.0;
 /**
  * @title ITRC1363Spender
  * @dev Interface for any contract that wants to support `approveAndCall`
- * from TRC-1363 token contracts.
+ * from ERC-1363 token contracts.
  */
 interface ITRC1363Spender {
     /**
-     * @dev Whenever a TRC-1363 token `owner` approves this contract via `approveAndCall`
+     * @dev Whenever an ERC-1363 token `owner` approves this contract via `approveAndCall`
      * to spend their tokens, this function is called.
      *
      * NOTE: To accept the approval, this must return

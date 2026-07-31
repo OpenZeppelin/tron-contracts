@@ -7,8 +7,7 @@ import {Create2} from "../utils/Create2.sol";
 import {Errors} from "../utils/Errors.sol";
 
 /**
- * @dev https://github.com/tronprotocol/tips/blob/master/tip-1167.md[TIP-1167] (the TRON-side analogue
- * of https://eips.ethereum.org/EIPS/eip-1167[EIP-1167]) is a standard for
+ * @dev https://eips.ethereum.org/EIPS/eip-1167[ERC-1167] is a standard for
  * deploying minimal proxy contracts, also known as "clones".
  *
  * > To simply and cheaply clone contract functionality in an immutable way, this standard specifies

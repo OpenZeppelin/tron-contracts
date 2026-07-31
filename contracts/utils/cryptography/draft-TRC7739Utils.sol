@@ -7,12 +7,12 @@ import {Calldata} from "../Calldata.sol";
 import {Hashes} from "./Hashes.sol";
 
 /**
- * @dev Utilities to process https://ercs.ethereum.org/ERCS/erc-7739[TRC-7739] typed data signatures
- * that are specific to a TIP-712 domain.
+ * @dev Utilities to process https://ercs.ethereum.org/ERCS/erc-7739[ERC-7739] typed data signatures
+ * that are specific to an EIP-712 domain.
  *
  * This library provides methods to wrap, unwrap and operate over typed data signatures with a defensive
- * rehashing mechanism that includes the app's xref:api:utils/cryptography#TIP712-_domainSeparatorV4[TIP-712]
- * and preserves readability of the signed content using a TIP-712 nested approach.
+ * rehashing mechanism that includes the app's xref:api:utils/cryptography#TIP712-_domainSeparatorV4[EIP-712]
+ * and preserves readability of the signed content using an EIP-712 nested approach.
  *
  * A smart contract domain can validate a signature for a typed data structure in two ways:
  *
@@ -23,17 +23,17 @@ import {Hashes} from "./Hashes.sol";
  * result of a call to `personal_sign` or `eth_signTypedData`, and this may be unsupported by
  * API clients that expect a return value of 129 bytes, or specifically the `r,s,v` parameters
  * of an xref:api:utils/cryptography#ECDSA[ECDSA] signature, as is for example specified for
- * xref:api:utils/cryptography#TIP712[TIP-712].
+ * xref:api:utils/cryptography#TIP712[EIP-712].
  */
 library TRC7739Utils {
     /**
-     * @dev A TIP-712 type to represent "personal" signatures
+     * @dev An EIP-712 type to represent "personal" signatures
      * (i.e. mimic of `personal_sign` for smart contracts).
      */
     bytes32 private constant PERSONAL_SIGN_TYPEHASH = keccak256("PersonalSign(bytes prefixed)");
 
     /**
-     * @dev Nest a signature for a given TIP-712 type into a nested signature for the domain of the app.
+     * @dev Nest a signature for a given EIP-712 type into a nested signature for the domain of the app.
      *
      * Counterpart of {decodeTypedDataSig} to extract the original signature and the nested components.
      */
@@ -54,12 +54,12 @@ library TRC7739Utils {
      *
      * `signature ‖ APP_DOMAIN_SEPARATOR ‖ contentsHash ‖ contentsDescr ‖ uint16(contentsDescr.length)`
      *
-     * - `signature` is the signature for the (TRC-7739) nested struct hash. This signature indirectly signs over the
+     * - `signature` is the signature for the (ERC-7739) nested struct hash. This signature indirectly signs over the
      *   original "contents" hash (from the app) and the account's domain separator.
-     * - `APP_DOMAIN_SEPARATOR` is the TIP-712 {TIP712-_domainSeparatorV4} of the application smart contract that is
+     * - `APP_DOMAIN_SEPARATOR` is the EIP-712 {TIP712-_domainSeparatorV4} of the application smart contract that is
      *   requesting the signature verification (through TRC-1271).
      * - `contentsHash` is the hash of the underlying data structure or message.
-     * - `contentsDescr` is a descriptor of the "contents" part of the TIP-712 type of the nested signature.
+     * - `contentsDescr` is a descriptor of the "contents" part of the EIP-712 type of the nested signature.
      *
      * NOTE: This function returns empty if the input format is invalid instead of reverting.
      */
@@ -94,7 +94,7 @@ library TRC7739Utils {
     }
 
     /**
-     * @dev Nests a `TIP-191` digest into a `PersonalSign` TIP-712 struct, and returns the corresponding struct hash.
+     * @dev Nests a `TIP-191` digest into a `PersonalSign` EIP-712 struct, and returns the corresponding struct hash.
      * This struct hash must be combined with a domain separator, using {MessageHashUtils-toTypedDataHash} before
      * being verified/recovered.
      *
@@ -105,7 +105,7 @@ library TRC7739Utils {
     }
 
     /**
-     * @dev Nests an `TIP-712` hash (`contents`) into a `TypedDataSign` TIP-712 struct, and returns the corresponding
+     * @dev Nests an `EIP-712` hash (`contents`) into a `TypedDataSign` EIP-712 struct, and returns the corresponding
      * struct hash. This struct hash must be combined with a domain separator, using {MessageHashUtils-toTypedDataHash}
      * before being verified/recovered.
      */
@@ -138,7 +138,7 @@ library TRC7739Utils {
     }
 
     /**
-     * @dev Compute the TIP-712 typehash of the `TypedDataSign` structure for a given type (and typename).
+     * @dev Compute the EIP-712 typehash of the `TypedDataSign` structure for a given type (and typename).
      */
     function typedDataSignTypehash(
         string calldata contentsName,
@@ -156,10 +156,10 @@ library TRC7739Utils {
     }
 
     /**
-     * @dev Parse the type name out of the TRC-7739 contents type description. Supports both the implicit and explicit
+     * @dev Parse the type name out of the ERC-7739 contents type description. Supports both the implicit and explicit
      * modes.
      *
-     * Following TRC-7739 specifications, a `contentsName` is considered invalid if it's empty or it contains
+     * Following ERC-7739 specifications, a `contentsName` is considered invalid if it's empty or it contains
      * any of the following bytes , )\x00
      *
      * If the `contentsType` is invalid, this returns an empty string. Otherwise, the return string has non-zero

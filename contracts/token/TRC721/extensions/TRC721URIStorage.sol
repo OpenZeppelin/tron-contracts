@@ -12,7 +12,7 @@ import {ITRC165} from "../../../interfaces/ITRC165.sol";
  * @dev TRC-721 token with storage based token URI management.
  */
 abstract contract TRC721URIStorage is ITRC4906, TRC721 {
-    // Interface ID as defined in TRC-4906. This does not correspond to a traditional interface ID as TRC-4906 only
+    // Interface ID as defined in ERC-4906. This does not correspond to a traditional interface ID as ERC-4906 only
     // defines events and does not include any external function.
     bytes4 private constant TRC4906_INTERFACE_ID = bytes4(0x49064906);
 

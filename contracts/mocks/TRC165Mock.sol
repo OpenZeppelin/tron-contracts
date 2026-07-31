@@ -27,7 +27,7 @@ contract SupportsInterfaceWithLookupMock is ITRC165 {
 
     /**
      * @dev A contract implementing SupportsInterfaceWithLookup
-     * implement TRC-165 itself.
+     * implement ERC-165 itself.
      */
     constructor() {
         _registerInterface(INTERFACE_ID_TRC165);
