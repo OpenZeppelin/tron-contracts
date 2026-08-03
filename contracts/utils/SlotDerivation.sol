@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.5.0) (utils/SlotDerivation.sol)
+// Tron Contracts (last updated v5.5.0) (utils/SlotDerivation.sol)
 // This file was procedurally generated from scripts/generate/templates/SlotDerivation.js.
 
 pragma solidity ^0.8.20;
@@ -22,11 +22,11 @@ pragma solidity ^0.8.20;
  *     string private constant _NAMESPACE = "<namespace>"; // eg. OpenZeppelin.Slot
  *
  *     function setValueInNamespace(uint256 key, address newValue) internal {
- *         _NAMESPACE.erc7201Slot().deriveMapping(key).getAddressSlot().value = newValue;
+ *         _NAMESPACE.trc7201Slot().deriveMapping(key).getAddressSlot().value = newValue;
  *     }
  *
  *     function getValueInNamespace(uint256 key) internal view returns (address) {
- *         return _NAMESPACE.erc7201Slot().deriveMapping(key).getAddressSlot().value;
+ *         return _NAMESPACE.trc7201Slot().deriveMapping(key).getAddressSlot().value;
  *     }
  * }
  * ```
@@ -42,7 +42,7 @@ library SlotDerivation {
     /**
      * @dev Derive a TIP-7201 (ERC-7201) slot from a string (namespace).
      */
-    function erc7201Slot(string memory namespace) internal pure returns (bytes32 slot) {
+    function trc7201Slot(string memory namespace) internal pure returns (bytes32 slot) {
         assembly ("memory-safe") {
             mstore(0x00, sub(keccak256(add(namespace, 0x20), mload(namespace)), 1))
             slot := and(keccak256(0x00, 0x20), not(0xff))

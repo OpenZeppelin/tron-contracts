@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.6.0) (utils/cryptography/MessageHashUtils.sol)
+// Tron Contracts (last updated v5.6.0) (utils/cryptography/MessageHashUtils.sol)
 
 pragma solidity ^0.8.24;
 
@@ -10,8 +10,9 @@ import {Strings} from "../Strings.sol";
  *
  * The library provides methods for generating a hash of a message that conforms to the
  * https://github.com/tronprotocol/tips/blob/master/tip-191.md[TIP-191] (the TRON-side analogue of
- * https://eips.ethereum.org/EIPS/eip-191[ERC-191]) and https://eips.ethereum.org/EIPS/eip-712[EIP-712]
- * specifications.
+ * https://eips.ethereum.org/EIPS/eip-191[ERC-191]) and
+ * https://github.com/tronprotocol/tips/blob/master/tip-712.md[TIP-712] (the TRON-side analogue of
+ * https://eips.ethereum.org/EIPS/eip-712[EIP-712]) specifications.
  */
 library MessageHashUtils {
     error TRC5267ExtensionsNotSupported();
@@ -85,7 +86,7 @@ library MessageHashUtils {
     }
 
     /**
-     * @dev Returns the keccak256 digest of an EIP-712 typed data (TIP-191 version `0x01`).
+     * @dev Returns the keccak256 digest of a TIP-712 typed data (TIP-191 version `0x01`).
      *
      * The digest is calculated from a `domainSeparator` and a `structHash`, by prefixing them with
      * `\x19\x01` and hashing the result. It corresponds to the hash signed by the
@@ -104,7 +105,7 @@ library MessageHashUtils {
     }
 
     /**
-     * @dev Returns the EIP-712 domain separator constructed from an `eip712Domain`. See {ITRC5267-eip712Domain}
+     * @dev Returns the TIP-712 domain separator constructed from an `eip712Domain`. See {ITRC5267-eip712Domain}
      *
      * This function dynamically constructs the domain separator based on which fields are present in the
      * `fields` parameter. It contains flags that indicate which domain fields are present:
@@ -182,7 +183,7 @@ library MessageHashUtils {
         }
     }
 
-    /// @dev Builds an EIP-712 domain type hash depending on the `fields` provided, following https://eips.ethereum.org/EIPS/eip-5267[ERC-5267]
+    /// @dev Builds a TIP-712 domain type hash depending on the `fields` provided, following TRC-5267 (see https://eips.ethereum.org/EIPS/eip-5267[ERC-5267])
     function toDomainTypeHash(bytes1 fields) internal pure returns (bytes32 hash) {
         if (fields & 0x20 == 0x20) revert TRC5267ExtensionsNotSupported();
 

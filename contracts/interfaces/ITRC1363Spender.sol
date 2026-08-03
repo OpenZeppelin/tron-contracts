@@ -1,16 +1,16 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.4.0) (interfaces/ITRC1363Spender.sol)
+// Tron Contracts (last updated v5.4.0) (interfaces/ITRC1363Spender.sol)
 
 pragma solidity >=0.5.0;
 
 /**
  * @title ITRC1363Spender
  * @dev Interface for any contract that wants to support `approveAndCall`
- * from ERC-1363 token contracts.
+ * from TRC-1363 token contracts.
  */
 interface ITRC1363Spender {
     /**
-     * @dev Whenever an ERC-1363 token `owner` approves this contract via `approveAndCall`
+     * @dev Whenever a TRC-1363 token `owner` approves this contract via `approveAndCall`
      * to spend their tokens, this function is called.
      *
      * NOTE: To accept the approval, this must return

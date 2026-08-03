@@ -22,10 +22,10 @@ OpenZeppelin Contracts provides implementations of all four interfaces:
 
 Additionally there are a few of other extensions:
 
-* {TRC721Consecutive}: An implementation of https://eips.ethereum.org/EIPS/eip-2309[ERC-2309] for minting batches of tokens during construction, in accordance with TRC-721.
+* {TRC721Consecutive}: An implementation of TRC-2309 (see https://eips.ethereum.org/EIPS/eip-2309[ERC-2309]) for minting batches of tokens during construction, in accordance with TRC-721.
 * {TRC721URIStorage}: A more flexible but more expensive way of storing metadata.
 * {TRC721Votes}: Support for voting and vote delegation.
-* {TRC721Royalty}: A way to signal royalty information following ERC-2981.
+* {TRC721Royalty}: A way to signal royalty information following TRC-2981.
 * {TRC721Pausable}: A primitive to pause contract operation.
 * {TRC721Burnable}: A way for token holders to burn their own tokens.
 * {TRC721Wrapper}: Wrapper to create a TRC-721 backed by another TRC-721, with deposit and withdraw methods. Useful in conjunction with {TRC721Votes}.
