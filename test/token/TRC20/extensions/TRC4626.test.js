@@ -885,4 +885,34 @@ describe('TRC4626', function () {
     expect(await vault.totalSupply()).to.equal(0n);
     expect(await vault.totalAssets()).to.equal(1n); // used to be 0
   });
+
+  // _transferOut pays out with safeTransferChecked (balance-delta verified), not safeTransfer. An underlying that
+  // returns `false` from a *successful* transfer — TRON USDT — is read as a failure by safeTransfer, which would
+  // revert every withdraw/redeem and leave shares permanently unredeemable.
+  describe('withdraws a USDT-like underlying (transfer returns false on success)', function () {
+    const assets = 100n;
+
+    beforeEach(async function () {
+      this.usdt = await ethers.deployContract('$TRC20USDTMock', ['Tether USD', 'USDT']);
+      this.vault = await ethers.deployContract('$TRC4626', ['Vault', 'V', this.usdt]);
+      await this.usdt.$_mint(this.holder, assets);
+      await this.usdt.connect(this.holder).approve(this.vault, ethers.MaxUint256);
+      await this.vault.connect(this.holder).deposit(assets, this.holder);
+    });
+
+    it('withdraw delivers the assets instead of reverting', async function () {
+      await expect(
+        this.vault.connect(this.holder).withdraw(assets, this.recipient, this.holder),
+      ).to.changeTokenBalances(this.usdt, [this.vault, this.recipient], [-assets, assets]);
+    });
+
+    it('redeem delivers the assets instead of reverting', async function () {
+      const shares = await this.vault.balanceOf(this.holder);
+      await expect(this.vault.connect(this.holder).redeem(shares, this.recipient, this.holder)).to.changeTokenBalances(
+        this.usdt,
+        [this.vault, this.recipient],
+        [-assets, assets],
+      );
+    });
+  });
 });

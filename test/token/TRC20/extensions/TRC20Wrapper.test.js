@@ -200,4 +200,23 @@ describe('TRC20Wrapper', function () {
 
     shouldBehaveLikeTRC20(initialSupply);
   });
+
+  // withdrawTo pays out with safeTransferChecked (balance-delta verified), not safeTransfer. An underlying that
+  // returns `false` from a *successful* transfer — TRON USDT — is read as a failure by safeTransfer, which would
+  // revert every unwrap and trap the underlying behind the wrapper.
+  describe('unwraps a USDT-like underlying (transfer returns false on success)', function () {
+    beforeEach(async function () {
+      this.usdt = await ethers.deployContract('$TRC20USDTMock', ['Tether USD', 'USDT']);
+      this.usdtWrapper = await ethers.deployContract('$TRC20Wrapper', ['Wrapped USDT', 'WUSDT', this.usdt]);
+      await this.usdt.$_mint(this.holder, initialSupply);
+      await this.usdt.connect(this.holder).approve(this.usdtWrapper, ethers.MaxUint256);
+      await this.usdtWrapper.connect(this.holder).depositFor(this.holder, initialSupply);
+    });
+
+    it('withdrawTo delivers the underlying instead of reverting', async function () {
+      await expect(
+        this.usdtWrapper.connect(this.holder).withdrawTo(this.recipient, initialSupply),
+      ).to.changeTokenBalances(this.usdt, [this.usdtWrapper, this.recipient], [-initialSupply, initialSupply]);
+    });
+  });
 });
