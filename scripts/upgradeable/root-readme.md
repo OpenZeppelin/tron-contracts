@@ -4,7 +4,7 @@
 
 This package is the upgradeable build of [`@openzeppelin/tron-contracts`](https://github.com/OpenZeppelin/tron-contracts): the same OpenZeppelin component library, ported to Tron's TVM and the TRC token standards, with every stateful contract rewritten to be safe to deploy behind a proxy.
 
-- Implementations of Tron token standards — [TRC-20](docs/modules/ROOT/pages/trc20.adoc), TRC-721, TRC-1155, [TRC-4626](docs/modules/ROOT/pages/trc4626.adoc) — and [ERC-6909](docs/modules/ROOT/pages/erc6909.adoc).
+- Implementations of Tron token standards — [TRC-20](docs/modules/ROOT/pages/trc20.adoc), TRC-721, TRC-1155, [TRC-4626](docs/modules/ROOT/pages/trc4626.adoc) — and [TRC-6909](docs/modules/ROOT/pages/trc6909.adoc).
 - Flexible role-based [access control](docs/modules/ROOT/pages/access-control.adoc) and on-chain [governance](docs/modules/ROOT/pages/governance.adoc).
 - Reusable [utilities](docs/modules/ROOT/pages/utilities.adoc): safe math, cryptography/signature verification, data structures, and more.
 
@@ -86,7 +86,7 @@ The guides under [`docs/`](docs/modules/ROOT/pages/) cover the concepts and cont
 
 - [Using with Upgrades](docs/modules/ROOT/pages/upgradeable.adoc) — initializers, multiple inheritance, namespaced storage, proxy deployment.
 - [Access Control](docs/modules/ROOT/pages/access-control.adoc) — decide who can perform each action.
-- [Tokens](docs/modules/ROOT/pages/tokens.adoc) — TRC-20, TRC-721, TRC-1155, TRC-4626, ERC-6909.
+- [Tokens](docs/modules/ROOT/pages/tokens.adoc) — TRC-20, TRC-721, TRC-1155, TRC-4626, TRC-6909.
 - [Governance](docs/modules/ROOT/pages/governance.adoc) and [Utilities](docs/modules/ROOT/pages/utilities.adoc).
 - [Backwards Compatibility](docs/modules/ROOT/pages/backwards-compatibility.adoc) and the [FAQ](docs/modules/ROOT/pages/faq.adoc).
 
