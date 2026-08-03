@@ -47,7 +47,7 @@ CAUTION: Use with multiple inheritance requires special attention. See the secti
 Once this contract is set up and compiled, deploy it *behind a proxy* and call your `initialize` function exactly once. The implementation contract is never used directly. The flow is:
 
 . Deploy the implementation contract (`MyCollectible`).
-. Deploy a proxy — for example an `ERC1967Proxy` from `@openzeppelin/tron-contracts` — pointing at the implementation, passing the ABI-encoded `initialize(...)` call as its initialization data. This runs `initialize` in the proxy's storage context, atomically with deployment.
+. Deploy a proxy — for example a `TRC1967Proxy` from `@openzeppelin/tron-contracts` — pointing at the implementation, passing the ABI-encoded `initialize(...)` call as its initialization data. This runs `initialize` in the proxy's storage context, atomically with deployment.
 . Interact with the *proxy* address using the implementation's ABI.
 
 Because the EVM Upgrades Plugins do not support Tron, perform these steps with a Tron deployment toolchain such as https://github.com/tronprotocol/tronbox[TronBox] or https://github.com/OpenZeppelin/hardhat-tron[`@openzeppelin/hardhat-tron`] (which routes deploys through TronWeb). For UUPS proxies, the upgrade authorization (`_authorizeUpgrade`) lives in the implementation, so wire up its access control inside `initialize`.

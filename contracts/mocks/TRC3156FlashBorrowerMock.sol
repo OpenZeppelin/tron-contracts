@@ -14,7 +14,7 @@ import {Address} from "../utils/Address.sol";
  * live networks.
  */
 contract TRC3156FlashBorrowerMock is ITRC3156FlashBorrower {
-    bytes32 internal constant _RETURN_VALUE = keccak256("ERC3156FlashBorrower.onFlashLoan");
+    bytes32 internal constant _RETURN_VALUE = keccak256("TRC3156FlashBorrower.onFlashLoan");
 
     bool immutable _enableApprove;
     bool immutable _enableReturn;

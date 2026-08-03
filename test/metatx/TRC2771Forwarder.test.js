@@ -248,6 +248,20 @@ describe('TRC2771Forwarder', function () {
           expect(await this.forwarder.nonces(request.from)).to.equal(request.nonce + 1n);
         }
       });
+
+      it('reverts the whole batch when a value-bearing request fails and there is no refund receiver', async function () {
+        // Add extra reverting request
+        await this.forgeRequest(
+          { value: 10n, data: this.receiver.interface.encodeFunctionData('mockFunctionRevertsNoReason') },
+          this.accounts[requestCount],
+        ).then(extraRequest => this.requests.push(extraRequest));
+        // recompute total value with the extra request
+        this.value = requestsValue(this.requests);
+
+        await expect(
+          this.forwarder.executeBatch(this.requests, ethers.ZeroAddress, { value: this.value }),
+        ).to.be.revertedWithCustomError(this.forwarder, 'TRC2771ForwarderNoRefundReceiver');
+      });
     });
 
     describe('with tampered requests', function () {

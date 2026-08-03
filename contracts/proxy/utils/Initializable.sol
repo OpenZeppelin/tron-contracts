@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.3.0) (proxy/utils/Initializable.sol)
+// Tron Contracts (last updated v5.3.0) (proxy/utils/Initializable.sol)
 
 pragma solidity ^0.8.20;
 
@@ -60,6 +60,12 @@ abstract contract Initializable {
      * It's implemented on a custom https://github.com/tronprotocol/tips/blob/master/tip-7201.md[TIP-7201]
      * (the TRON-side analogue of https://eips.ethereum.org/EIPS/eip-7201[ERC-7201]) namespace to reduce the
      * risk of storage collisions when using with upgradeable contracts.
+     *
+     * NOTE: The `@custom:storage-location` tag intentionally keeps the `erc7201:` prefix rather than `trc7201:`.
+     * The OpenZeppelin upgrades tooling (`@openzeppelin/upgrades-core` and `@openzeppelin/upgrade-safe-transpiler`,
+     * used to build and validate the upgradeable variant) recognizes that exact literal to locate namespaced storage;
+     * a `trc7201:` prefix would not be detected. The prefix has no on-chain effect — the slot is derived from the
+     * namespace string `openzeppelin.storage.Initializable` alone (TIP-7201 and ERC-7201 use the same formula).
      *
      * @custom:storage-location erc7201:openzeppelin.storage.Initializable
      */

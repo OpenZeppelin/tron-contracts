@@ -22,11 +22,11 @@ contract MyGovernor is
     ) Governor("MyGovernor") GovernorVotes(_token) GovernorVotesQuorumFraction(4) GovernorTimelockControl(_timelock) {}
 
     function votingDelay() public pure override returns (uint256) {
-        return 7200; // 1 day
+        return 28800; // 1 day (TRON ~3s blocks)
     }
 
     function votingPeriod() public pure override returns (uint256) {
-        return 50400; // 1 week
+        return 201600; // 1 week (TRON ~3s blocks)
     }
 
     function proposalThreshold() public pure override returns (uint256) {

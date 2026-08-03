@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.5.0) (utils/cryptography/verifiers/TRC7913RSAVerifier.sol)
+// Tron Contracts (last updated v5.5.0) (utils/cryptography/verifiers/TRC7913RSAVerifier.sol)
 
 pragma solidity ^0.8.20;
 
@@ -7,7 +7,7 @@ import {RSA} from "../RSA.sol";
 import {ITRC7913SignatureVerifier} from "../../../interfaces/ITRC7913.sol";
 
 /**
- * @dev ERC-7913 signature verifier that support RSA keys.
+ * @dev TRC-7913 signature verifier that support RSA keys.
  *
  * @custom:stateless
  */
