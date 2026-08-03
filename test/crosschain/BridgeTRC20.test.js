@@ -84,7 +84,7 @@ describe('CrosschainBridgeTRC20', function () {
   // Regression test for the audit finding: BridgeTRC20._onReceive previously used SafeTRC20.safeTransfer, which
   // reverts for TRON USDT (whose `transfer` returns `false` on a successful transfer). Because locking
   // (_onSend -> safeTransferFrom) keeps working for USDT, that asymmetry let deposits through while permanently
-  // trapping every withdrawal in the bridge. _onReceive now uses safeTransferUSDT (balance-delta verification).
+  // trapping every withdrawal in the bridge. _onReceive now uses safeTransferChecked (balance-delta verification).
   describe('releases custody of USDT-like tokens (transfer returns false on success)', function () {
     const amount = 100n;
 

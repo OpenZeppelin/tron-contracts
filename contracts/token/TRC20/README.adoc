@@ -32,6 +32,17 @@ Finally, there are some utilities to interact with TRC-20 contracts in various w
 
 * {SafeTRC20}: a wrapper around the interface that eliminates the need to handle boolean return values.
 
+[IMPORTANT]
+====
+**Pay tokens out with `SafeTRC20.safeTransferChecked`, not `safeTransfer`.**
+
+TRON USDT (`TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t`) returns `false` from a `transfer` that succeeded. `safeTransfer` reads that as a failure and reverts, so a contract paying USDT out through it can accept deposits and never release them. `safeTransferChecked` confirms success from the caller's balance delta instead of the boolean, needs no hardcoded token address, and works whether a token returns `true`, `false`, or nothing.
+
+This is the convention these contracts follow: {TRC4626} (`_transferOut`, used by `withdraw`/`redeem`), {VestingWallet} (`release`), {TRC20Wrapper} (`withdrawTo`) and {BridgeTRC20} (`_onReceive`) all pay out through it, because none of them can know at deployment time which token they will hold. Apply the same rule in your own contracts.
+
+Only `transfer` is affected — USDT's `transferFrom` returns `true`, so `safeTransferFrom` needs no variant. `safeTransferChecked` must not be used for rebasing or reflection tokens that can increase the caller's balance mid-transfer; see its documentation.
+====
+
 Other utilities that support TRC-20 assets can be found in the codebase:
 
 * TRC-20 tokens can be timelocked (held for a beneficiary until a specified time) or vested (released following a given schedule) using a {VestingWallet}.

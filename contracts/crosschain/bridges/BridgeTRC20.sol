@@ -33,17 +33,19 @@ abstract contract BridgeTRC20 is BridgeFungible {
     /**
      * @dev "Unlocking" tokens is done by releasing custody.
      *
-     * Uses {SafeTRC20-safeTransferUSDT} rather than {SafeTRC20-safeTransfer} so the release path also works for
-     * tokens such as TRON USDT (`TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t`) whose `transfer` returns `false` on a
+     * Uses {SafeTRC20-safeTransferChecked} rather than {SafeTRC20-safeTransfer} so the release path also works
+     * for tokens such as TRON USDT (`TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t`) whose `transfer` returns `false` on a
      * *successful* transfer. {safeTransfer} reverts on such a token; because locking via {_onSend}
      * (`transferFrom`, which USDT returns `true` for) still succeeds, that would let deposits through while
-     * permanently trapping every withdrawal in the bridge. {safeTransferUSDT} verifies success by the calling
+     * permanently trapping every withdrawal in the bridge. {safeTransferChecked} verifies success by the calling
      * contract's (sender's) balance delta and works whether the token returns `true`, `false`, or nothing.
      *
-     * NOTE: As documented on {SafeTRC20-safeTransferUSDT}, this assumes a token that is neither rebasing nor
-     * fee-on-transfer; such tokens must not be bridged through this custodial contract.
+     * NOTE: This custodial bridge assumes a token that is neither rebasing nor fee-on-transfer — not because of
+     * {safeTransferChecked} (which tolerates fee-on-transfer), but because taking custody in {_onSend} credits
+     * the full `amount` while the contract would actually receive less, breaking release accounting. Such tokens
+     * must not be bridged through this contract.
      */
     function _onReceive(address to, uint256 amount) internal virtual override {
-        token().safeTransferUSDT(to, amount);
+        token().safeTransferChecked(to, amount);
     }
 }

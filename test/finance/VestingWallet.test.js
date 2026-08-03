@@ -86,4 +86,29 @@ describe('VestingWallet', function () {
       shouldBehaveLikeVesting();
     });
   });
+
+  // release(token) pays out with safeTransferChecked (balance-delta verified), not safeTransfer. A token that
+  // returns `false` from a *successful* transfer — TRON USDT — is read as a failure by safeTransfer, which would
+  // revert every release. VestingWallet has no rescue path and is not upgradeable, so the funds would be lost.
+  describe('releases a USDT-like token (transfer returns false on success)', function () {
+    const amount = 1000n;
+
+    beforeEach(async function () {
+      // Start the schedule in the past so the whole balance is vested and releasable immediately.
+      const start = (await time.clock.timestamp()) - this.duration;
+      this.usdtWallet = await ethers.deployContract('VestingWallet', [this.beneficiary, start, this.duration]);
+      this.usdt = await ethers.deployContract('$TRC20USDTMock', ['Tether USD', 'USDT']);
+      await this.usdt.$_mint(this.usdtWallet, amount);
+    });
+
+    it('delivers the vested tokens to the beneficiary instead of reverting', async function () {
+      expect(await this.usdtWallet.releasable(this.usdt)).to.equal(amount);
+
+      await expect(this.usdtWallet.release(this.usdt)).to.changeTokenBalances(
+        this.usdt,
+        [this.usdtWallet, this.beneficiary],
+        [-amount, amount],
+      );
+    });
+  });
 });
