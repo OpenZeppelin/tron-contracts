@@ -18,10 +18,10 @@ import {MessageHashUtils} from "../MessageHashUtils.sol";
  * This contract requires implementing the {_rawSignatureValidation} function, which passes the wrapped message hash,
  * which may be either an typed data or a personal sign nested type.
  *
- * NOTE: xref:api:utils/cryptography#TIP712[TIP-712] uses xref:api:utils/cryptography#ShortStrings[ShortStrings] to
- * optimize gas costs for short strings (up to 31 characters). Consider that strings longer than that will use storage,
- * which may limit the ability of the signer to be used within the ERC-4337 validation phase (due to
- * https://eips.ethereum.org/EIPS/eip-7562#storage-rules[ERC-7562 storage access rules]).
+ * NOTE: Validating a nested typed-data signature reads the TIP-712 domain fields through {eip712Domain}. In the
+ * constructor-based xref:api:utils/cryptography#TIP712[TIP712], `name` and `version` are held as
+ * xref:api:utils/cryptography#ShortStrings[ShortStrings] when they fit in 31 bytes and in a storage fallback
+ * otherwise, so longer values make that read more expensive. The upgradeable variant always reads both from storage.
  */
 abstract contract TRC7739 is AbstractSigner, TIP712, ITRC1271 {
     using TRC7739Utils for *;

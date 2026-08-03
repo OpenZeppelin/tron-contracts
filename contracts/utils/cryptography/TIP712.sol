@@ -72,13 +72,15 @@ abstract contract TIP712 is ITRC5267 {
      * NOTE: These parameters cannot be changed except through a xref:learn::upgrading-smart-contracts.adoc[smart
      * contract upgrade].
      *
-     * WARNING: When `name` or `version` does not fit in a `ShortString` (i.e. is 32 bytes or longer), it is written
-     * to the `_nameFallback`/`_versionFallback` storage variables in the constructor. Under a `delegatecall`-based
-     * deployment (minimal proxy/clone), that constructor never runs in the proxy's storage context, so the fallbacks
-     * stay empty while {_domainSeparatorV4} still uses the implementation's immutable `_hashedName`/`_hashedVersion`.
-     * As a result {eip712Domain} reports an empty `name`/`version` that does not match the separator used for
-     * verification, breaking off-chain domain discovery. Keep `name` and `version` within 31 bytes when this contract
-     * is used behind a proxy/clone.
+     * WARNING: This concerns the constructor-based variant of this contract. When `name` or `version` does not fit in
+     * a `ShortString` (i.e. is 32 bytes or longer), the constructor writes it to the `_nameFallback`/`_versionFallback`
+     * storage variables. Under a `delegatecall`-based deployment (minimal proxy/clone) that constructor never runs in
+     * the proxy's storage context, so the fallbacks stay empty while {_domainSeparatorV4} still uses the
+     * implementation's immutable `_hashedName`/`_hashedVersion`. As a result {eip712Domain} reports an empty
+     * `name`/`version` that does not match the separator used for verification, breaking off-chain domain discovery.
+     * Keep `name` and `version` within 31 bytes in that case. The upgradeable variant is not affected: it stores
+     * `name` and `version` as plain strings in namespaced storage, written by its initializer and read back by both
+     * {_domainSeparatorV4} and {eip712Domain}.
      */
     constructor(string memory name, string memory version) {
         _name = name.toShortStringWithFallback(_nameFallback);
