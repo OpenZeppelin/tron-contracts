@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.4.0) (interfaces/draft-ITRC1822.sol)
+// Tron Contracts (last updated v5.4.0) (interfaces/draft-ITRC1822.sol)
 
 pragma solidity >=0.4.16;
 
 /**
- * @dev ERC-1822: Universal Upgradeable Proxy Standard (UUPS) documents a method for upgradeability through a simplified
+ * @dev TRC-1822: Universal Upgradeable Proxy Standard (UUPS) documents a method for upgradeability through a simplified
  * proxy whose upgrades are fully controlled by the current implementation.
  */
 interface ITRC1822Proxiable {

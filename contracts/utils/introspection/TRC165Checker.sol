@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.6.0) (utils/introspection/TRC165Checker.sol)
+// Tron Contracts (last updated v5.6.0) (utils/introspection/TRC165Checker.sol)
 
 pragma solidity ^0.8.20;
 

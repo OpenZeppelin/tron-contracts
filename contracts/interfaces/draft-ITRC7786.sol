@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.5.0) (interfaces/draft-ITRC7786.sol)
+// Tron Contracts (last updated v5.5.0) (interfaces/draft-ITRC7786.sol)
 
 pragma solidity >=0.8.4;
 
 /**
- * @dev Interface for ERC-7786 source gateways.
+ * @dev Interface for TRC-7786 source gateways.
  *
- * See ERC-7786 for more details
+ * See TRC-7786 for more details
  */
 interface ITRC7786GatewaySource {
     /**
@@ -36,7 +36,7 @@ interface ITRC7786GatewaySource {
      * * MUST emit a {MessageSent} event.
      *
      * If any of the `attributes` is not supported, this function SHOULD revert with an {UnsupportedAttribute} error.
-     * Other errors SHOULD revert with errors not specified in ERC-7786.
+     * Other errors SHOULD revert with errors not specified in TRC-7786.
      */
     function sendMessage(
         bytes calldata recipient, // Binary Interoperable Address
@@ -46,9 +46,9 @@ interface ITRC7786GatewaySource {
 }
 
 /**
- * @dev Interface for the ERC-7786 client contract (receiver).
+ * @dev Interface for the TRC-7786 client contract (receiver).
  *
- * See ERC-7786 for more details
+ * See TRC-7786 for more details
  */
 interface ITRC7786Recipient {
     /**
