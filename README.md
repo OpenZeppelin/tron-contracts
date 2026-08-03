@@ -81,6 +81,9 @@ Moving a TRC-10 requires the TVM's token-aware call — `address.transferToken(a
 
 Hold assets that contracts need to move as TRC-20 — either natively or by wrapping the TRC-10.
 
+> [!IMPORTANT]
+> **Addresses embedded inside `bytes` payloads MUST use the 20-byte EVM form.** During execution the TVM represents every address as the low 20 bytes, so `msg.sender`, `address(this)`, and `address`-typed arguments are identical to the EVM. The 21-byte `0x41`-prefixed and Base58Check (`T…`) forms that TRON tooling (TronWeb, node APIs) works with are off-chain encodings only — they never appear on-chain. When an address is carried inside a `bytes` argument — an ERC-7930 interoperable address, a crosschain bridge message, an ERC-7913 signer (`verifier || key`), or any packed calldata — it must be the raw 20-byte value. The 21-byte form is rejected where the format is self-describing (`InteroperableAddress.parseEvmV1` and `BridgeFungible` revert on a non-20-byte address) and would otherwise be silently mis-parsed into the wrong address. Strip the `0x41` prefix at the encoding boundary (e.g. in your TronWeb integration) before placing an address in a `bytes` payload.
+
 ## Security
 
 This code is **unaudited** and under active development; use it at your own risk. Please report any security issues responsibly via the repository's security policy rather than opening a public issue.

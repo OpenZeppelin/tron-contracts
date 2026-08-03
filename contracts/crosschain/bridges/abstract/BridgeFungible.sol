@@ -25,6 +25,9 @@ abstract contract BridgeFungible is Context, CrosschainLinked {
     event CrosschainFungibleTransferSent(bytes32 indexed sendId, address indexed from, bytes to, uint256 amount);
     event CrosschainFungibleTransferReceived(bytes32 indexed receiveId, bytes from, address indexed to, uint256 amount);
 
+    /// @dev The `recipient` of the crosschain transfer is not a valid address.
+    error BridgeInvalidRecipient(bytes recipient);
+
     /**
      * @dev Transfer `amount` tokens to a crosschain receiver.
      *
@@ -65,6 +68,8 @@ abstract contract BridgeFungible is Context, CrosschainLinked {
     ) internal virtual override {
         // split payload
         (bytes memory from, bytes memory toBinary, uint256 amount) = abi.decode(payload, (bytes, bytes, uint256));
+        // An address is 20 bytes; reject any other length instead of letting `bytes20` truncate or zero-pad it.
+        if (toBinary.length != 20) revert BridgeInvalidRecipient(toBinary);
         address to = address(bytes20(toBinary));
 
         _onReceive(to, amount);
