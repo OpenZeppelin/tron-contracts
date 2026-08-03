@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.5.0) (governance/extensions/GovernorTimelockCompound.sol)
+// Tron Contracts (last updated v5.5.0) (governance/extensions/GovernorTimelockCompound.sol)
 
 pragma solidity ^0.8.24;
 
@@ -94,9 +94,6 @@ abstract contract GovernorTimelockCompound is Governor {
         bytes32 /*descriptionHash*/
     ) internal virtual override {
         uint256 etaSeconds = proposalEta(proposalId);
-        if (etaSeconds == 0) {
-            revert GovernorNotQueuedProposal(proposalId);
-        }
         Address.sendValue(payable(_timelock), msg.value);
         for (uint256 i = 0; i < targets.length; ++i) {
             _timelock.executeTransaction(targets[i], values[i], "", calldatas[i], etaSeconds);

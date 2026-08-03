@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.5.0) (token/TRC721/extensions/TRC721Consecutive.sol)
+// Tron Contracts (last updated v5.5.0) (token/TRC721/extensions/TRC721Consecutive.sol)
 
 pragma solidity ^0.8.24;
 
@@ -9,8 +9,8 @@ import {BitMaps} from "../../../utils/structs/BitMaps.sol";
 import {Checkpoints} from "../../../utils/structs/Checkpoints.sol";
 
 /**
- * @dev Implementation of the ERC-2309 "Consecutive Transfer Extension" as defined in
- * https://eips.ethereum.org/EIPS/eip-2309[ERC-2309].
+ * @dev Implementation of the TRC-2309 "Consecutive Transfer Extension" (see
+ * https://eips.ethereum.org/EIPS/eip-2309[ERC-2309]).
  *
  * This extension allows the minting of large batches of tokens, during contract construction only. For upgradeable
  * contracts this implies that batch minting is only available during proxy deployment, and not in subsequent upgrades.

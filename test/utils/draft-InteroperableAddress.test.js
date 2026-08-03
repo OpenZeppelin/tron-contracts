@@ -153,6 +153,9 @@ describe('ERC7390', function () {
       'not an evm format: chainid too long':
         '0x00010000212dc7f03c13ad47809e88339107c33a612043d704c1c9693a74996e7f9c6bee8f2314d8da6bf26964af9d7eed9e03e53415d37aa96045',
       'not an evm format: address in not 20 bytes': '0x00010000010112d8da6bf26964af9d7eed9e03e53415d37aa9',
+      // Longer than 20 bytes, here the 21-byte 0x41-prefixed form TRON tooling surfaces for an account.
+      'not an evm format: address is longer than 20 bytes':
+        '0x0001000001011541d8da6bf26964af9d7eed9e03e53415d37aa96045',
     })) {
       it(title, async function () {
         await expect(this.mock.$parseEvmV1(binary))

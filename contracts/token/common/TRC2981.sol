@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.4.0) (token/common/TRC2981.sol)
+// Tron Contracts (last updated v5.4.0) (token/common/TRC2981.sol)
 
 pragma solidity ^0.8.20;
 
@@ -15,7 +15,7 @@ import {ITRC165, TRC165} from "../../utils/introspection/TRC165.sol";
  * Royalty is specified as a fraction of sale price. {_feeDenominator} is overridable but defaults to 10000, meaning the
  * fee is specified in basis points by default.
  *
- * IMPORTANT: ERC-2981 only specifies a way to signal royalty information and does not enforce its payment. See
+ * IMPORTANT: TRC-2981 only specifies a way to signal royalty information and does not enforce its payment. See
  * https://eips.ethereum.org/EIPS/eip-2981#optional-royalty-payments[Rationale] in the ERC. Marketplaces are expected to
  * voluntarily pay royalties together with sales, but note that this standard is not yet widely supported.
  */
