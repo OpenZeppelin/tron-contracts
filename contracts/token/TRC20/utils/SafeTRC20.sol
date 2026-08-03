@@ -20,6 +20,11 @@ import {ITRC1363} from "../../../interfaces/ITRC1363.sol";
  * `0x...01` for a TRC-20-shaped call can be reported as a successful operation even though no balance or allowance
  * was modified. Do not treat a `SafeTRC20` "success" as proof of a transfer when the `token` address is untrusted or
  * user-supplied; vet the token first.
+ *
+ * NOTE: {safeTransfer} decides success from the returned boolean, and TRON USDT returns `false` from a `transfer`
+ * that succeeded, so paying it out that way reverts every time. Use {safeTransferChecked} to send a token that is not
+ * known ahead of time: it confirms success from the caller's balance delta instead. Only `transfer` is affected —
+ * USDT returns `true` from `transferFrom`, so {safeTransferFrom} needs no variant.
  */
 library SafeTRC20 {
     /**
@@ -35,6 +40,9 @@ library SafeTRC20 {
     /**
      * @dev Transfer `value` amount of `token` from the calling contract to `to`. If `token` returns no value,
      * non-reverting calls are assumed to be successful.
+     *
+     * NOTE: A `false` return is treated as a failure, which rejects a token that returns `false` from a `transfer`
+     * that actually succeeded — notably TRON USDT. Use {safeTransferChecked} for those.
      */
     function safeTransfer(ITRC20 token, address to, uint256 value) internal {
         if (!_safeTransfer(token, to, value, true)) {
@@ -95,11 +103,10 @@ library SafeTRC20 {
      * (`to == address(this)`) leaves the balance unchanged and is skipped from the check, so it succeeds as long
      * as the call does not revert.
      *
-     * WARNING: This is NOT correct for rebasing or reflection tokens that can *increase* the caller's balance
-     * during the transfer (e.g. a positive rebase, or a redistribution token that credits part of the fee back
-     * to holders). There the caller's net debit can fall below `value`, causing a spurious revert — or, if the
-     * credited amount exceeds `value`, an arithmetic underflow panic. Such tokens must not be paid out through
-     * this helper.
+     * WARNING: This assumes the caller's balance only decreases over the call. A token that credits the caller
+     * mid-transfer leaves a net debit below `value`, so a transfer that succeeded is rejected — or panics on the
+     * underflow if the credit exceeds `value`. That rules out rebasing and reflection tokens, and tokens whose
+     * `transfer` hands control to a hook (TRC-777 invokes `tokensToSend`/`tokensReceived`). It fails closed.
      */
     function safeTransferChecked(ITRC20 token, address to, uint256 value) internal {
         uint256 balanceBefore = token.balanceOf(address(this));
