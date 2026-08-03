@@ -249,7 +249,7 @@ describe('TRC2771Forwarder', function () {
         }
       });
 
-      it('atomic batch with reverting request reverts the whole batch', async function () {
+      it('reverts the whole batch when a value-bearing request fails and there is no refund receiver', async function () {
         // Add extra reverting request
         await this.forgeRequest(
           { value: 10n, data: this.receiver.interface.encodeFunctionData('mockFunctionRevertsNoReason') },
@@ -260,7 +260,7 @@ describe('TRC2771Forwarder', function () {
 
         await expect(
           this.forwarder.executeBatch(this.requests, ethers.ZeroAddress, { value: this.value }),
-        ).to.be.revertedWithCustomError(this.forwarder, 'TRC2771ForwarderFailureInAtomicBatch');
+        ).to.be.revertedWithCustomError(this.forwarder, 'TRC2771ForwarderNoRefundReceiver');
       });
     });
 
