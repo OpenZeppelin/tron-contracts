@@ -73,6 +73,14 @@ The TVM is EVM-compatible, but TRON standardizes many interfaces under its own [
 
 This port adapts non-obvious differences between the TVM and the EVM, including `CREATE2` / plain `CREATE` address derivation, the `block.chainid` value used in TIP-712 domain separators, the TRC-721 receiver-hook magic value, and the handling of tokens that return `false` on a successful `transfer`. Each adaptation is documented in the affected contract's NatSpec.
 
+### Native TRC-10 assets
+
+This library works with contract-based tokens: TRC-20, TRC-721, TRC-1155 and the other TRC standards listed above. Native TRC-10 assets, which a TRON account can hold alongside TRX, are outside its scope.
+
+Moving a TRC-10 requires the TVM's token-aware call — `address.transferToken(amount, id)`, compiling to `CALLTOKEN`. Every value-bearing path here uses an ordinary `call`, which carries TRX only. A TRC-10 credited to a contract built on this library therefore stays with that contract, and no supplied path forwards or withdraws it. This includes the governance executors: `Governor.relay`, `Governor.execute` and `TimelockController.execute`/`executeBatch` accept TRX through `value`, and their proposal and operation hashes bind targets, TRX values and calldata, with no field for a token identifier or amount.
+
+Hold assets that contracts need to move as TRC-20 — either natively or by wrapping the TRC-10.
+
 > [!IMPORTANT]
 > **Addresses embedded inside `bytes` payloads MUST use the 20-byte EVM form.** During execution the TVM represents every address as the low 20 bytes, so `msg.sender`, `address(this)`, and `address`-typed arguments are identical to the EVM. The 21-byte `0x41`-prefixed and Base58Check (`T…`) forms that TRON tooling (TronWeb, node APIs) works with are off-chain encodings only — they never appear on-chain. When an address is carried inside a `bytes` argument — an ERC-7930 interoperable address, a crosschain bridge message, an ERC-7913 signer (`verifier || key`), or any packed calldata — it must be the raw 20-byte value. The 21-byte form is rejected where the format is self-describing (`InteroperableAddress.parseEvmV1` and `BridgeFungible` revert on a non-20-byte address) and would otherwise be silently mis-parsed into the wrong address. Strip the `0x41` prefix at the encoding boundary (e.g. in your TronWeb integration) before placing an address in a `bytes` payload.
 

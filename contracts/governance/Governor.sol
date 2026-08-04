@@ -656,8 +656,13 @@ abstract contract Governor is Context, TRC165, TIP712, Nonces, IGovernor, ITRC72
     /**
      * @dev Relays a transaction or function call to an arbitrary target. In cases where the governance executor
      * is some contract other than the governor itself, like when using a timelock, this function can be invoked
-     * in a governance proposal to recover tokens or TRX that was sent to the governor contract by mistake.
+     * in a governance proposal to recover TRX or contract-based tokens (TRC-20, TRC-721, TRC-1155) that were sent
+     * to the governor contract by mistake: TRX through `value`, tokens by calling the token contract through `data`.
      * Note that if the executor is simply the governor itself, use of `relay` is redundant.
+     *
+     * NOTE: Native TRC-10 assets are outside the reach of this function. Moving them requires the TVM's token-aware
+     * call (`address.transferToken`), whereas the call performed here carries TRX only, so a TRC-10 credited to the
+     * governor remains there.
      */
     function relay(address target, uint256 value, bytes calldata data) public payable virtual onlyGovernance {
         (bool success, bytes memory returndata) = target.call{value: value}(data);
