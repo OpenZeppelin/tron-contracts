@@ -19,7 +19,7 @@ There are two alternative ways to add upgradeability to a TRC-1967 proxy. Their 
 - {TransparentUpgradeableProxy}: A proxy with a built-in immutable admin and upgrade interface.
 - {UUPSUpgradeable}: An upgradeability mechanism to be included in the implementation contract.
 
-CAUTION: Using upgradeable proxies correctly and securely is a difficult task that requires deep knowledge of the proxy pattern, Solidity, and the EVM. Unless you want a lot of low level control, we recommend using the xref:upgrades-plugins::index.adoc[OpenZeppelin Upgrades Plugins] for Hardhat and Foundry.
+CAUTION: Using upgradeable proxies correctly and securely is a difficult task that requires deep knowledge of the proxy pattern, Solidity, and the TVM. Unless you want a lot of low level control, we recommend using the Tron Upgrades plugins: https://github.com/OpenZeppelin/tron-upgrades[`@openzeppelin/hardhat-tron-upgrades` and `@openzeppelin/tronbox-upgrades`], or https://github.com/OpenZeppelin/openzeppelin-foundry-upgrades-tron[`@openzeppelin/foundry-upgrades-tron`] for Foundry. The OpenZeppelin Upgrades Plugins for Ethereum are not compatible with Tron.
 
 A different family of proxies is beacon proxies. This pattern, popularized by Dharma, allows multiple proxies to be upgraded to a different implementation in a single transaction.
 
