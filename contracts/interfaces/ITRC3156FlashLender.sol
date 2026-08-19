@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Tron Contracts (last updated v5.5.0) (interfaces/ITRC3156FlashLender.sol)
+// OpenZeppelin Tron Contracts (last updated v5.5.0) (interfaces/ITRC3156FlashLender.sol)
 
 pragma solidity >=0.5.0;
 

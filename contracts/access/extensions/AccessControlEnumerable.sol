@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Tron Contracts (last updated v5.5.0) (access/extensions/AccessControlEnumerable.sol)
+// OpenZeppelin Tron Contracts (last updated v5.5.0) (access/extensions/AccessControlEnumerable.sol)
 
 pragma solidity ^0.8.24;
 

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Tron Contracts (last updated v5.5.0) (governance/extensions/GovernorTimelockControl.sol)
+// OpenZeppelin Tron Contracts (last updated v5.5.0) (governance/extensions/GovernorTimelockControl.sol)
 
 pragma solidity ^0.8.24;
 

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Tron Contracts (last updated v5.2.0) (utils/NoncesKeyed.sol)
+// OpenZeppelin Tron Contracts (last updated v5.2.0) (utils/NoncesKeyed.sol)
 pragma solidity ^0.8.20;
 
 import {Nonces} from "./Nonces.sol";

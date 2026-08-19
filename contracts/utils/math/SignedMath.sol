@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Tron Contracts (last updated v5.1.0) (utils/math/SignedMath.sol)
+// OpenZeppelin Tron Contracts (last updated v5.1.0) (utils/math/SignedMath.sol)
 
 pragma solidity ^0.8.20;
 
