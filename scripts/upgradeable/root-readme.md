@@ -76,6 +76,21 @@ A contract deployed behind a proxy never runs its constructor in the proxy's con
 
 Every stateful contract keeps its state in a struct annotated with `@custom:storage-location erc7201:...`, following [ERC-7201: Namespaced Storage Layout](https://eips.ethereum.org/EIPS/eip-7201). This isolates each contract's storage so new state variables can be added — and inheritance reordered — without shifting the layout of existing deployments.
 
+## TVM differences
+
+This port adapts non-obvious differences between the TVM and the EVM, including `CREATE2` / plain `CREATE` address derivation, the `block.chainid` value used in TIP-712 domain separators, the TRC-721 receiver-hook magic value, and the handling of tokens that return `false` on a successful `transfer`. Each adaptation is documented in the affected contract's NatSpec.
+
+### Native TRC-10 assets
+
+This library works with contract-based tokens: TRC-20, TRC-721, TRC-1155 and the other TRC standards. Native TRC-10 assets, which a TRON account can hold alongside TRX, are outside its scope.
+
+Moving a TRC-10 requires the TVM's token-aware call — `address.transferToken(amount, id)`, compiling to `CALLTOKEN`. Every value-bearing path here uses an ordinary `call`, which carries TRX only. A TRC-10 credited to a contract built on this library therefore stays with that contract, and no supplied path forwards or withdraws it. This includes the governance executors: `GovernorUpgradeable.relay`, `GovernorUpgradeable.execute` and `TimelockControllerUpgradeable.execute`/`executeBatch` accept TRX through `value`, and their proposal and operation hashes bind targets, TRX values and calldata, with no field for a token identifier or amount.
+
+Hold assets that contracts need to move as TRC-20 — either natively or by wrapping the TRC-10.
+
+> [!IMPORTANT]
+> **Addresses embedded inside `bytes` payloads MUST use the 20-byte EVM form.** During execution the TVM represents every address as the low 20 bytes, so `msg.sender`, `address(this)`, and `address`-typed arguments are identical to the EVM. The 21-byte `0x41`-prefixed and Base58Check (`T…`) forms that TRON tooling (TronWeb, node APIs) works with are off-chain encodings only — they never appear on-chain. When an address is carried inside a `bytes` argument — an ERC-7930 interoperable address, a crosschain bridge message, an ERC-7913 signer (`verifier || key`), or any packed calldata — it must be the raw 20-byte value. The 21-byte form is rejected where the format is self-describing (`InteroperableAddress.parseEvmV1` and `BridgeFungible` revert on a non-20-byte address) and would otherwise be silently mis-parsed into the wrong address. Strip the `0x41` prefix at the encoding boundary (e.g. in your TronWeb integration) before placing an address in a `bytes` payload.
+
 ## How this package is generated
 
 This repository is produced by transpiling `@openzeppelin/tron-contracts`. The process — applying the upgradeable patches, compiling, and running the transpiler with the Tron-specific flags (peer-import mode, namespaced storage, excluded proxy contracts) — is documented in [`scripts/upgradeable/README.md`](scripts/upgradeable/README.md). The exact non-upgradeable source each build was generated from is pinned as the `lib/tron-contracts` submodule.
