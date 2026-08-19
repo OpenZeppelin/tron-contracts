@@ -48,7 +48,8 @@ import {MultiSignerTRC7913} from "./MultiSignerTRC7913.sol";
 abstract contract MultiSignerTRC7913Weighted is MultiSignerTRC7913 {
     using SafeCast for *;
 
-    // Sum of all the extra weights of all signers. Storage packed with `MultiSignerTRC7913._threshold`
+    // Sum of all the extra weights of all signers. Packed with `MultiSignerTRC7913._threshold` in the
+    // constructor-based variant; the upgradeable variant holds the two in separate namespaces.
     uint64 private _totalExtraWeight;
 
     // Mapping from signer to extraWeight (in addition to all authorized signers having weight 1)
