@@ -2,4 +2,4 @@
 'openzeppelin-tron-solidity': patch
 ---
 
-`BridgeFungible`: Reject an empty recipient on the send path of `_crosschainTransfer` with `BridgeInvalidRecipient`, rather than forwarding a chain-only interoperable address to the counterpart.
+`BridgeFungible`: Reject an interoperable address whose address part is empty in `_crosschainTransfer` with `CrosschainFungibleEmptyAddress`, rather than forwarding it to the counterpart.
