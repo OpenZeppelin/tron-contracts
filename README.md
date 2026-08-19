@@ -9,12 +9,16 @@
 
 ## Overview
 
-`@openzeppelin/tron-contracts` is based on [OpenZeppelin Contracts **v5.6.1**](https://github.com/OpenZeppelin/openzeppelin-contracts) and keeps its battle-tested implementations, while:
+`@openzeppelin/tron-contracts` is based on [OpenZeppelin Contracts](https://github.com/OpenZeppelin/openzeppelin-contracts) — versions match upstream by major and minor (see [Versioning](#versioning)) — and keeps its battle-tested implementations, while:
 
 - **Renaming** the standards that TRON publishes under its own identifiers — for example `ERC20` → `TRC20`, `ERC165` → `TRC165`, `EIP712` → `TIP712` — and dual-citing both the TRON (TIP / TRC) and Ethereum (EIP / ERC) specifications in the documentation.
 - **Adapting** the implementations where the TVM diverges from the EVM (e.g. `CREATE2` address derivation, the `block.chainid` used in EIP-712 domain separators, the TRC-721 receiver hook, and tokens such as TRON USDT whose `transfer` returns `false` on success).
 
 Where TRON only publishes a signing or utility spec (rather than a renamable contract standard), the contract keeps its descriptive name (e.g. `ECDSA`, `MessageHashUtils`, `P256`) and simply references the relevant TIP.
+
+## Versioning
+
+Versions track [OpenZeppelin Contracts](https://github.com/OpenZeppelin/openzeppelin-contracts) by major and minor: each `@openzeppelin/tron-contracts` minor ports the feature set of the same-numbered upstream release, and new upstream features arrive only with a new matching minor. Patch numbers are independent — each library patches on its own schedule, so a given patch number does not refer to the same-numbered upstream patch (for example, this library may release a 5.6.0 while OpenZeppelin Contracts is already at 5.6.1). Upstream fixes that affect ported code are backported regardless of which upstream release carried them.
 
 ## Installation
 

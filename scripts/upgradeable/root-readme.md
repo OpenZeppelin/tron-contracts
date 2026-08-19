@@ -2,7 +2,7 @@
 
 **A library of secure, community-vetted smart contracts for the [Tron](https://tron.network) network (TVM) — the upgradeable variant.**
 
-This package is the upgradeable build of [`@openzeppelin/tron-contracts`](https://github.com/OpenZeppelin/tron-contracts): the same OpenZeppelin component library, ported to Tron's TVM and the TRC token standards, with every stateful contract rewritten to be safe to deploy behind a proxy.
+This package is the upgradeable build of [`@openzeppelin/tron-contracts`](https://github.com/OpenZeppelin/tron-contracts): the same OpenZeppelin component library, ported to Tron's TVM and the TRC token standards, with every stateful contract rewritten to be safe to deploy behind a proxy. It is the Tron counterpart of [OpenZeppelin Contracts Upgradeable](https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable).
 
 - Implementations of Tron token standards — [TRC-20](docs/modules/ROOT/pages/trc20.adoc), TRC-721, TRC-1155, [TRC-4626](docs/modules/ROOT/pages/trc4626.adoc) — and [TRC-6909](docs/modules/ROOT/pages/trc6909.adoc).
 - Flexible role-based [access control](docs/modules/ROOT/pages/access-control.adoc) and on-chain [governance](docs/modules/ROOT/pages/governance.adoc).
@@ -65,6 +65,10 @@ Compared to the non-upgradeable version:
 You then deploy the implementation behind a proxy (e.g. an ERC-1967 / UUPS / transparent proxy) using your Tron toolchain — [TronBox](https://github.com/tronprotocol/tronbox) or [`@openzeppelin/hardhat-tron`](https://github.com/OpenZeppelin/hardhat-tron) — and call `initialize` exactly once. See [Using with Upgrades](docs/modules/ROOT/pages/upgradeable.adoc) for proxy patterns and the initializer rules.
 
 To keep your system secure, **always** use the installed code as-is; do not copy-paste from online sources or modify it yourself.
+
+## Versioning
+
+Versions track [OpenZeppelin Contracts Upgradeable](https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable) by major and minor: each `@openzeppelin/tron-contracts-upgradeable` minor ports the feature set of the same-numbered upstream release. Patch numbers are independent — they follow the Tron port's own fixes, so a given patch number does not refer to the same-numbered upstream patch. Each release is generated from the same-versioned `@openzeppelin/tron-contracts`, which it pins as an exact peer dependency.
 
 ## Key concepts
 
