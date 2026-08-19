@@ -46,6 +46,9 @@ abstract contract BridgeFungible is Context, CrosschainLinked {
         _onSend(from, amount);
 
         (bytes2 chainType, bytes memory chainReference, bytes memory addr) = to.parseV1();
+        // The destination chain determines the address width, so non-empty is the only bound valid for every chain.
+        // The receive path, where the address is known to be a TVM account, requires exactly 20 bytes.
+        if (addr.length == 0) revert BridgeInvalidRecipient(addr);
         bytes memory chainAddr = InteroperableAddress.formatV1(chainType, chainReference, hex"");
 
         bytes32 sendId = _sendMessageToCounterpart(
