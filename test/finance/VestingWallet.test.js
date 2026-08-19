@@ -102,9 +102,9 @@ describe('VestingWallet', function () {
     });
 
     it('delivers the vested tokens to the beneficiary instead of reverting', async function () {
-      expect(await this.usdtWallet.releasable(this.usdt)).to.equal(amount);
+      expect(await this.usdtWallet.releasable(ethers.Typed.address(this.usdt))).to.equal(amount);
 
-      await expect(this.usdtWallet.release(this.usdt)).to.changeTokenBalances(
+      await expect(this.usdtWallet.release(ethers.Typed.address(this.usdt))).to.changeTokenBalances(
         this.usdt,
         [this.usdtWallet, this.beneficiary],
         [-amount, amount],
