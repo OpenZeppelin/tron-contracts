@@ -1,5 +1,5 @@
 ---
-'openzeppelin-tron-solidity': major
+'openzeppelin-tron-solidity': minor
 ---
 
 Port EIP-712 to TIP-712.

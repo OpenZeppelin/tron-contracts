@@ -153,6 +153,7 @@ jobs:
         env:
           TARBALL: ${{ steps.pack.outputs.tarball }}
           TAG: ${{ steps.pack.outputs.tag }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Create Github Release
         uses: actions/github-script@v8
         env:

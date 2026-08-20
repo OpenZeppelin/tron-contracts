@@ -15,7 +15,7 @@ This package is the upgradeable build of [`@openzeppelin/tron-contracts`](https:
 > For upgradeable contracts, the storage layout of different **major** versions must be assumed incompatible (e.g. it is unsafe to upgrade across a major bump). See [Backwards Compatibility](docs/modules/ROOT/pages/backwards-compatibility.adoc).
 
 > [!WARNING]
-> This Tron port is under active development and is **not yet audited**. Treat it as pre-release software, pin exact versions, and do not use it in production without your own review.
+> This Tron port is under active development. Pin exact versions, and do not use it in production without your own review.
 
 ## Overview
 
@@ -113,7 +113,7 @@ Because this is the upgradeable variant of OpenZeppelin Contracts, the upstream 
 
 ## Security
 
-This project is maintained by [OpenZeppelin](https://openzeppelin.com). The underlying components are derived from the audited [OpenZeppelin Contracts](https://github.com/OpenZeppelin/openzeppelin-contracts) library; however, **this Tron port has not been independently audited and is not yet covered by a bug bounty.** Using it is not a substitute for a security review of your own system.
+This project is maintained by [OpenZeppelin](https://openzeppelin.com). The underlying components are derived from the audited [OpenZeppelin Contracts](https://github.com/OpenZeppelin/openzeppelin-contracts) library. Please report any security issues responsibly via the [security policy](SECURITY.md) rather than opening a public issue. Using this library is not a substitute for a security review of your own system.
 
 The engineering guidelines we follow are in [`GUIDELINES.md`](GUIDELINES.md), and community standards in [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md). Smart contracts are a nascent technology and carry a high level of technical risk and uncertainty.
 

@@ -1,7 +1,7 @@
 {
   "name": "openzeppelin-tron-solidity",
   "description": "Secure Smart Contract library for Solidity for Tron",
-  "version": "0.0.1",
+  "version": "5.5.0",
   "private": true,
   "files": [
     "/contracts/**/*.sol",
