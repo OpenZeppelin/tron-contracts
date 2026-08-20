@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Tron Contracts (last updated v5.6.0) (utils/cryptography/MerkleProof.sol)
+// OpenZeppelin Tron Contracts (last updated v5.6.0) (utils/cryptography/MerkleProof.sol)
 // This file was procedurally generated from scripts/generate/templates/MerkleProof.js.
 
 pragma solidity ^0.8.20;

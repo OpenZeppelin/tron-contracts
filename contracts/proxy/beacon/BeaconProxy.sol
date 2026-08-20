@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Tron Contracts (last updated v5.2.0) (proxy/beacon/BeaconProxy.sol)
+// OpenZeppelin Tron Contracts (last updated v5.2.0) (proxy/beacon/BeaconProxy.sol)
 
 pragma solidity ^0.8.22;
 

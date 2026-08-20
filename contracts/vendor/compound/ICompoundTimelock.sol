@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Tron Contracts (last updated v5.4.0) (vendor/compound/ICompoundTimelock.sol)
+// OpenZeppelin Tron Contracts (last updated v5.4.0) (vendor/compound/ICompoundTimelock.sol)
 
 pragma solidity >=0.6.9;
 

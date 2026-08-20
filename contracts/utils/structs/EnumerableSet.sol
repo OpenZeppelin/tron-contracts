@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Tron Contracts (last updated v5.6.0) (utils/structs/EnumerableSet.sol)
+// OpenZeppelin Tron Contracts (last updated v5.6.0) (utils/structs/EnumerableSet.sol)
 // This file was procedurally generated from scripts/generate/templates/EnumerableSet.js.
 
 pragma solidity ^0.8.24;

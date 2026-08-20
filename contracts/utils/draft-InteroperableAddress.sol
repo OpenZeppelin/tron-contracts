@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Tron Contracts (last updated v5.6.1) (utils/draft-InteroperableAddress.sol)
+// OpenZeppelin Tron Contracts (last updated v5.6.1) (utils/draft-InteroperableAddress.sol)
 
 pragma solidity ^0.8.26;
 

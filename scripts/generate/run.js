@@ -7,7 +7,7 @@ const format = require('./format-lines');
 
 function getVersion(path) {
   try {
-    return fs.readFileSync(path, 'utf8').match(/\/\/ Tron Contracts \(last updated v[^)]+\)/)[0];
+    return fs.readFileSync(path, 'utf8').match(/\/\/ OpenZeppelin Tron Contracts \(last updated v[^)]+\)/)[0];
   } catch {
     return null;
   }

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Tron Contracts (last updated v5.5.0) (interfaces/draft-IERC6093.sol)
+// OpenZeppelin Tron Contracts (last updated v5.5.0) (interfaces/draft-IERC6093.sol)
 // NOTE: The filename keeps the upstream `IERC6093` name to ease diffing against OpenZeppelin Contracts;
 // the interfaces and errors defined within are TRON-namespaced (ITRC20Errors, TRC20InsufficientBalance, etc.).
 

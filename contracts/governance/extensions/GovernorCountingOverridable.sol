@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Tron Contracts (last updated v5.4.0) (governance/extensions/GovernorCountingOverridable.sol)
+// OpenZeppelin Tron Contracts (last updated v5.4.0) (governance/extensions/GovernorCountingOverridable.sol)
 
 pragma solidity ^0.8.24;
 

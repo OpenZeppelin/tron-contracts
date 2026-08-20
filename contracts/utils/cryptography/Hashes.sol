@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Tron Contracts (last updated v5.3.0) (utils/cryptography/Hashes.sol)
+// OpenZeppelin Tron Contracts (last updated v5.3.0) (utils/cryptography/Hashes.sol)
 
 pragma solidity ^0.8.20;
 

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Tron Contracts (last updated v5.6.0) (utils/structs/DoubleEndedQueue.sol)
+// OpenZeppelin Tron Contracts (last updated v5.6.0) (utils/structs/DoubleEndedQueue.sol)
 pragma solidity ^0.8.20;
 
 import {Panic} from "../Panic.sol";

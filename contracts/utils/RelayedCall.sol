@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Tron Contracts (last updated v5.6.0) (utils/RelayedCall.sol)
+// OpenZeppelin Tron Contracts (last updated v5.6.0) (utils/RelayedCall.sol)
 
 pragma solidity ^0.8.20;
 

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Tron Contracts (last updated v5.4.0) (token/TRC1155/extensions/ITRC1155MetadataURI.sol)
+// OpenZeppelin Tron Contracts (last updated v5.4.0) (token/TRC1155/extensions/ITRC1155MetadataURI.sol)
 
 pragma solidity >=0.6.2;
 
