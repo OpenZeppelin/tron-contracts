@@ -5,7 +5,7 @@
 **A library for secure smart contract development on TRON.** A port of [OpenZeppelin Contracts](https://github.com/OpenZeppelin/openzeppelin-contracts) to the TRON Virtual Machine (TVM), adapted to TRON's standards (TIPs / TRCs) and to the ways the TVM differs from the EVM.
 
 > [!WARNING]
-> **This project is under active development and has NOT been audited.** Contract names, APIs, and behavior may still change. Do not use in production without an independent security review.
+> **This project is under active development.** Contract names, APIs, and behavior may still change. Do not use in production without an independent security review.
 
 ## Overview
 
@@ -90,7 +90,7 @@ Hold assets that contracts need to move as TRC-20 — either natively or by wrap
 
 ## Security
 
-This code is **unaudited** and under active development; use it at your own risk. Please report any security issues responsibly via the repository's security policy rather than opening a public issue.
+Please report any security issues responsibly via the [security policy](SECURITY.md) rather than opening a public issue.
 
 ## License
 

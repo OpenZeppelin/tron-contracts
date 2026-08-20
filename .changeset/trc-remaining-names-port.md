@@ -1,5 +1,5 @@
 ---
-'openzeppelin-tron-solidity': major
+'openzeppelin-tron-solidity': minor
 ---
 
 Port the remaining ERC names to TRC (same-number convention).

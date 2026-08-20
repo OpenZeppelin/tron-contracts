@@ -19,6 +19,9 @@ const [tag] = run('git', 'tag')
   .filter(v => semver.satisfies(v, `< ${version}`)) // ignores prereleases unless currently a prerelease
   .sort(semver.rcompare);
 
+// First release: no qualifying tag exists yet, keep the per-file versions inherited from upstream.
+if (tag === undefined) process.exit(0);
+
 // Ordering tag → HEAD is important here.
 const files = run('git', 'diff', tag, 'HEAD', '--name-only', 'contracts/**/*.sol')
   .split(/\r?\n/)

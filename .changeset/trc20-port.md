@@ -1,5 +1,5 @@
 ---
-'openzeppelin-tron-solidity': major
+'openzeppelin-tron-solidity': minor
 ---
 
 Port ERC20 to TRC20.

@@ -20,11 +20,18 @@ on:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
+env:
+  NODE_OPTIONS: --max_old_space_size=8192
+
 jobs:
   state:
     name: Check state
     permissions:
       pull-requests: read
+    # The transpiled -upgradeable mirror carries this workflow too, but its releases are
+    # published by release-upgradeable.yml dispatched from the source repository. Skipping
+    # `state` here skips every downstream job in the mirror.
+    if: ${{ !endsWith(github.repository, '-upgradeable') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -153,6 +160,7 @@ jobs:
         env:
           TARBALL: ${{ steps.pack.outputs.tarball }}
           TAG: ${{ steps.pack.outputs.tag }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Create Github Release
         uses: actions/github-script@v8
         env:

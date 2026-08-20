@@ -1,5 +1,5 @@
 ---
-'openzeppelin-tron-solidity': major
+'openzeppelin-tron-solidity': minor
 ---
 
 Port ERC-2771 to TRC-2771.

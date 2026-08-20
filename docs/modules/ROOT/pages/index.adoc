@@ -23,11 +23,11 @@ We use NPM tags to clearly distinguish between audited and non-audited versions 
 
 | *latest*
 | ✅ Audited releases
-| Stable, audited versions of the package. This is the *default* version installed when users run `npm install @openzeppelin/contracts`.
+| Stable, audited versions of the package. This is the *default* version installed when users run `npm install @openzeppelin/tron-contracts`.
 
 | *dev*
 | 🧪 Final but not audited
-| Versions that are finalized and feature-complete but have *not yet been audited*. This version is fully tested, can be used in production and is covered by the bug bounty.
+| Versions that are finalized and feature-complete but have *not yet been audited*. This version is fully tested and can be used in production.
 
 | *next*
 | 🚧 Release candidates
@@ -40,12 +40,12 @@ We use NPM tags to clearly distinguish between audited and non-audited versions 
 ==== Hardhat (npm)
 
 ```console
-$ npm install @openzeppelin/contracts
+$ npm install @openzeppelin/tron-contracts
 ```
 → Installs the latest audited release (`latest`).
 
 ```
-$ npm install @openzeppelin/contracts@dev
+$ npm install @openzeppelin/tron-contracts@dev
 ```
 → Installs the latest unaudited release (`dev`).
 
@@ -56,10 +56,10 @@ WARNING: When installing via git, it is a common error to use the `master` branc
 WARNING: Foundry installs the latest version initially, but subsequent `forge update` commands will use the `master` branch.
 
 ```console
-$ forge install OpenZeppelin/openzeppelin-contracts
+$ forge install OpenZeppelin/tron-contracts
 ```
 
-Add `@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/` in `remappings.txt.` 
+Add `@openzeppelin/tron-contracts/=lib/tron-contracts/contracts/` in `remappings.txt.`
 
 [[usage]]
 === Usage
@@ -78,7 +78,7 @@ To keep your system secure, you should **always** use the installed code as-is, 
 [[security]]
 == Security
 
-Please report any security issues you find via our https://www.immunefi.com/bounty/openzeppelin[bug bounty program on Immunefi] or directly to security@openzeppelin.org.
+Please report any security issues you find privately via https://github.com/OpenZeppelin/tron-contracts/security/advisories/new[GitHub security advisories].
 
 The https://contracts.openzeppelin.com/security[Security Center] contains more details about the secure development process.
 
