@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # Get commit hash (short) of the reference commit (non-upgradeable version)
-cd lib/openzeppelin-contracts
+cd lib/tron-contracts
 REFERENCE_COMMIT="$(git rev-parse --short HEAD)"
 
 # Check that the commit message of the local commit (upgradeable version) matches the reference commit
