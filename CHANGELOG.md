@@ -1,6 +1,10 @@
 # openzeppelin-tron-solidity
 
 
+## 5.6.0-rc.1 (2026-08-21)
+
+- Remove the pre-release development warning from the package README. ([#148](https://github.com/OpenZeppelin/tron-contracts/pull/148))
+
 ## 5.6.0-rc.0 (2026-08-20)
 
 - `AccessManager`: treat `setAuthority` differently in `canCall` to prevent bypassing the `updateAuthority` security using an `execute`. ([#120](https://github.com/OpenZeppelin/tron-contracts/pull/120))
@@ -93,7 +97,7 @@
 - Fix `BridgeTRC20` release path for false-on-success tokens (e.g. TRON USDT). ([#108](https://github.com/OpenZeppelin/tron-contracts/pull/108))
 
 `BridgeTRC20._onReceive` released custody with `SafeTRC20.safeTransfer`, which reverts for tokens such as TRON USDT (`TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t`) whose `transfer` returns `false` on a _successful_ transfer. Because locking (`_onSend` -> `safeTransferFrom`) keeps working for USDT (its `transferFrom` returns `true`), the asymmetry let deposits through while permanently trapping every withdrawal in the bridge.
- `_onReceive` now uses `SafeTRC20.safeTransferChecked`, which verifies success via the caller's balance delta and works whether the token returns `true`, `false`, or nothing. This custodial bridge still assumes a token that is neither rebasing nor fee-on-transfer, which it requires for release accounting regardless of the transfer helper.
+`_onReceive` now uses `SafeTRC20.safeTransferChecked`, which verifies success via the caller's balance delta and works whether the token returns `true`, `false`, or nothing. This custodial bridge still assumes a token that is neither rebasing nor fee-on-transfer, which it requires for release accounting regardless of the transfer helper.
 
 - `GovernorPreventLateQuorum`: Bound `lateQuorumVoteExtension` by a new internal virtual `_maxLateQuorumVoteExtension` (default `votingPeriod()`) to cap the total voting duration to twice the voting period, thus preventing a large extension from bricking governance. Integrators can override `_maxLateQuorumVoteExtension` to enforce a different bound. ([#137](https://github.com/OpenZeppelin/tron-contracts/pull/137))
 - Make VestingWallet tests robust to TRE's no-clock-rollback snapshot/revert. ([#57](https://github.com/OpenZeppelin/tron-contracts/pull/57))
@@ -115,15 +119,15 @@
   prior token-port PRs; no contract changes are needed.
 
 - Skip ERC2771Forwarder OOG-bubbling tests on TVM where the contract ([#58](https://github.com/OpenZeppelin/tron-contracts/pull/58)) defence works but the assertion can't observe it.
- The four `bubbles out of gas` cases probe `_checkForwardedGas`'s `invalid()` reaction to an under-funded forward. The defence itself is robust on TVM — the chain burns all forwarded energy before returning — but the existing assertions read `gasUsed` from a mined-but-failed receipt, which is an EVM-only artefact. TVM rejects under-provisioned txs at the broadcast layer with `OTHER_ERROR` (verified via `OZ_TRACE_BROADCAST=1`: `usedEnergy[100000]` reported in the reject message) rather than mining a failed receipt to read later. The skips are documented rather than faked; the same defence is still exercised on EVM-targeted runs.
+  The four `bubbles out of gas` cases probe `_checkForwardedGas`'s `invalid()` reaction to an under-funded forward. The defence itself is robust on TVM — the chain burns all forwarded energy before returning — but the existing assertions read `gasUsed` from a mined-but-failed receipt, which is an EVM-only artefact. TVM rejects under-provisioned txs at the broadcast layer with `OTHER_ERROR` (verified via `OZ_TRACE_BROADCAST=1`: `usedEnergy[100000]` reported in the reject message) rather than mining a failed receipt to read later. The skips are documented rather than faked; the same defence is still exercised on EVM-targeted runs.
 
 - Drop the RIP-7212 native path from `P256` (no precompile on TVM). ([#63](https://github.com/OpenZeppelin/tron-contracts/pull/63))
-TRON-TVM does not ship the RIP-7212 secp256r1 precompile at `address(0x100)`, so the native fast-path can never succeed there. Remove `verifyNative`, `_tryVerifyNative`, `_rip7212` and the `Errors` import from `contracts/utils/cryptography/P256.sol`; `verify(...)` now delegates straight to `verifySolidity(...)`. Callers (`WebAuthn`, `ERC7913P256Verifier`, `SignerP256`) keep using `verify(...)` unchanged. `P256.test.js` is updated to exercise `$verifySolidity` (the `$verify` / `$verifyNative` exposed wrappers no longer exist) and batches the wycheproof vectors through a single concurrent `it()` to keep wall time reasonable on TRE while preserving every per-vector assertion.
+  TRON-TVM does not ship the RIP-7212 secp256r1 precompile at `address(0x100)`, so the native fast-path can never succeed there. Remove `verifyNative`, `_tryVerifyNative`, `_rip7212` and the `Errors` import from `contracts/utils/cryptography/P256.sol`; `verify(...)` now delegates straight to `verifySolidity(...)`. Callers (`WebAuthn`, `ERC7913P256Verifier`, `SignerP256`) keep using `verify(...)` unchanged. `P256.test.js` is updated to exercise `$verifySolidity` (the `$verify` / `$verifyNative` exposed wrappers no longer exist) and batches the wycheproof vectors through a single concurrent `it()` to keep wall time reasonable on TRE while preserving every per-vector assertion.
 
 - Accept 0x41-byte signatures in `TRC7913P256Verifier`. ([#109](https://github.com/OpenZeppelin/tron-contracts/pull/109))
-`TRC7913P256Verifier.verify` required signatures to be exactly `0x40` bytes, rejecting a `0x41`-byte signature that carries a trailing recovery byte. This diverged from upstream OZ ERC-7913 (which uses `signature.
+  `TRC7913P256Verifier.verify` required signatures to be exactly `0x40` bytes, rejecting a `0x41`-byte signature that carries a trailing recovery byte. This diverged from upstream OZ ERC-7913 (which uses `signature.
 length >= 0x40`) and from the port's own `SignerP256` (which reads only the first `0x40` bytes), so a valid secp256r1 signature accepted by one P256 path was rejected by the other.
-Relax the check to `signature.length >= 0x40`. Only `r || s` (the first `0x40` bytes) is read, and malleability is already prevented by `P256.verify`'s low-s check, so the trailing byte cannot change the verification result — the strict length was an interop regression with no security benefit.
+  Relax the check to `signature.length >= 0x40`. Only `r || s` (the first `0x40` bytes) is read, and malleability is already prevented by `P256.verify`'s low-s check, so the trailing byte cannot change the verification result — the strict length was an interop regression with no security benefit.
 
 - Align proxy CREATE2 address prediction with TIP-26. ([#55](https://github.com/OpenZeppelin/tron-contracts/pull/55))
 
@@ -139,10 +143,10 @@ Relax the check to `signature.length >= 0x40`. Only `r || s` (the first `0x40` b
   - `test/helpers/governance.js`'s `GovernorHelper.delegate(...)` serialises its three sub-calls instead of running them in parallel via `Promise.all`. TVM's instamine + single-witness setup already orders tx execution per block; firing the three calls in parallel just queues concurrent HTTP requests at the FullNode and stacks per-tx receipt-poll deadlines until the later broadcasts time out. Sequential awaits stay inside the suite's time budget and stop back-pressuring the witness.
 
 - Reference TIP-120 in `ECDSA`. ([#89](https://github.com/OpenZeppelin/tron-contracts/pull/89))
-`ECDSA`'s NatSpec now cites https://github.com/tronprotocol/tips/blob/master/tip-120.md[TIP-120], TRON's ECDSA signature-encoding specification (the `(r, s, v)` layout with `v` in `{27, 28}` that this library produces and accepts). Documentation only — no behavior change.
+  `ECDSA`'s NatSpec now cites https://github.com/tronprotocol/tips/blob/master/tip-120.md[TIP-120], TRON's ECDSA signature-encoding specification (the `(r, s, v)` layout with `v` in `{27, 28}` that this library produces and accepts). Documentation only — no behavior change.
 
 - Reference TIP-191 in `MessageHashUtils`. ([#87](https://github.com/OpenZeppelin/tron-contracts/pull/87))
-`MessageHashUtils` produces ERC-191 / EIP-712 signed-data digests; its NatSpec now cites https://github.com/tronprotocol/tips/blob/master/tip-191.md[TIP-191] (the TRON-side analogue of ERC-191, with the same `0x19`-prefixed version-byte format) alongside ERC-191. Documentation only — no behavior change.
+  `MessageHashUtils` produces ERC-191 / EIP-712 signed-data digests; its NatSpec now cites https://github.com/tronprotocol/tips/blob/master/tip-191.md[TIP-191] (the TRON-side analogue of ERC-191, with the same `0x19`-prefixed version-byte format) alongside ERC-191. Documentation only — no behavior change.
 
 - `ITRC20`: Reference TIP-20 (https://github.com/tronprotocol/tips/blob/master/tip-20.md) alongside EIP-20 in the interface documentation, aligning `ITRC20` with the dual-citation convention already used by the other TRON token standards. ([#80](https://github.com/OpenZeppelin/tron-contracts/pull/80))
 - Align CREATE2 address derivation with TVM's TIP-26 hash prefix. ([#62](https://github.com/OpenZeppelin/tron-contracts/pull/62))
@@ -151,11 +155,11 @@ Relax the check to `signature.length >= 0x40`. Only `r || s` (the first `0x40` b
   - `RelayedCall.getRelayer` applies the same `0x41` prefix when predicting the relay contract address, fixing a mismatch where the predicted address (used for the `extcodesize` redeploy guard) diverged from the address the `create2` opcode actually produces.
 
 - Reference TIP-7951 in `P256`. ([#90](https://github.com/OpenZeppelin/tron-contracts/pull/90))
-`P256`'s NatSpec now cites https://github.com/tronprotocol/tips/blob/master/tip-7951.md[TIP-7951], which specifies a native secp256r1 precompile for the TVM at `0x100` (following EIP-7951, superseding RIP-7212). The library continues to verify in pure Solidity until the precompile is enabled on the target network. Documentation only — no behavior change.
+  `P256`'s NatSpec now cites https://github.com/tronprotocol/tips/blob/master/tip-7951.md[TIP-7951], which specifies a native secp256r1 precompile for the TVM at `0x100` (following EIP-7951, superseding RIP-7212). The library continues to verify in pure Solidity until the precompile is enabled on the target network. Documentation only — no behavior change.
 
 - Complete the TRX/TRC terminology localization for residual references. ([#110](https://github.com/OpenZeppelin/tron-contracts/pull/110))
-Localize residual Ethereum-standard mentions in NatSpec to the TRON convention for standards TRON has republished: `TRC-165`, `TRC-1967`, `TRC-1271` (bare inline mentions) and `TIP-721` (linked citation). Native currency terms in `VestingWallet` and the `TRC20.decimals` docstring now use TRX. References to standards TRON has not republished as a TIP (e.g. ERC-1167, ERC-1822, ERC-6372, ERC-3156, ERC-2981, ERC-777) keep citing the real ERC.
-Rename the `VestingWallet` native-currency event `EtherReleased` to `TRXReleased` for consistency with `TRC20Released`. This changes the emitted log topic; off-chain consumers must update to the new event name. Also add a note explaining the retained `draft-IERC6093.sol` filename.
+  Localize residual Ethereum-standard mentions in NatSpec to the TRON convention for standards TRON has republished: `TRC-165`, `TRC-1967`, `TRC-1271` (bare inline mentions) and `TIP-721` (linked citation). Native currency terms in `VestingWallet` and the `TRC20.decimals` docstring now use TRX. References to standards TRON has not republished as a TIP (e.g. ERC-1167, ERC-1822, ERC-6372, ERC-3156, ERC-2981, ERC-777) keep citing the real ERC.
+  Rename the `VestingWallet` native-currency event `EtherReleased` to `TRXReleased` for consistency with `TRC20Released`. This changes the emitted log topic; off-chain consumers must update to the new event name. Also add a note explaining the retained `draft-IERC6093.sol` filename.
 
 - `TRC1155Burnable`: use `_checkAuthorized` to correctly apply authorization overrides. ([#122](https://github.com/OpenZeppelin/tron-contracts/pull/122))
 - Reference TIP-7201 in `Initializable` and `SlotDerivation`. ([#91](https://github.com/OpenZeppelin/tron-contracts/pull/91))
