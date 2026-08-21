@@ -24,6 +24,9 @@
     "zeppelin"
   ],
   "author": "OpenZeppelin Community <maintainers@openzeppelin.org>",
+  "publishConfig": {
+    "access": "public"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/OpenZeppelin/tron-contracts/issues"
