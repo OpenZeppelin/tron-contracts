@@ -54,6 +54,7 @@
     "tvm-test-helpers",
     "tvm-test-skips",
     "tvm-utils-hardening",
+    "upgradeable-peer-import-paths",
     "upgradeable-tooling-reconcile",
     "upgradeable-transpile-ci",
     "utils-tip26-create2"
