@@ -1,6 +1,10 @@
 # openzeppelin-tron-solidity
 
 
+## 5.6.0-rc.2 (2026-08-24)
+
+- `tron-contracts-upgradeable`: Fix the generated peer imports to match the published `@openzeppelin/tron-contracts` package layout (no `contracts/` directory segment), so the upgradeable package compiles against the npm release without remappings. ([#154](https://github.com/OpenZeppelin/tron-contracts/pull/154))
+
 ## 5.6.0-rc.1 (2026-08-21)
 
 - Remove the pre-release development warning from the package README. ([#148](https://github.com/OpenZeppelin/tron-contracts/pull/148))
