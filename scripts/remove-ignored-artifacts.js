@@ -35,8 +35,13 @@ for (const filename of filenames) {
     const ignore = match.any(sourcePath, ignorePatternsSubtrees);
     if (ignore) {
       for (const contract in solcOutput.contracts[sourcePath]) {
-        fs.unlinkSync(path.join(artifactsDir, contract + '.json'));
-        n += 1;
+        // The batched compile produces one build-info per batch, so a shared source can appear in
+        // several of them and its artifact may already have been removed by an earlier iteration.
+        const artifact = path.join(artifactsDir, contract + '.json');
+        if (fs.existsSync(artifact)) {
+          fs.unlinkSync(artifact);
+          n += 1;
+        }
       }
     }
   }

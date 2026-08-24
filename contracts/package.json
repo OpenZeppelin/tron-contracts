@@ -1,7 +1,7 @@
 {
   "name": "@openzeppelin/tron-contracts",
   "description": "Secure Smart Contract library for Solidity for Tron",
-  "version": "5.5.0",
+  "version": "5.6.0-rc.1",
   "files": [
     "**/*.sol",
     "/build/contracts/*.json",
@@ -24,6 +24,9 @@
     "zeppelin"
   ],
   "author": "OpenZeppelin Community <maintainers@openzeppelin.org>",
+  "publishConfig": {
+    "access": "public"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/OpenZeppelin/tron-contracts/issues"

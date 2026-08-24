@@ -14,9 +14,6 @@ This package is the upgradeable build of [`@openzeppelin/tron-contracts`](https:
 > [!IMPORTANT]
 > For upgradeable contracts, the storage layout of different **major** versions must be assumed incompatible (e.g. it is unsafe to upgrade across a major bump). See [Backwards Compatibility](docs/modules/ROOT/pages/backwards-compatibility.adoc).
 
-> [!WARNING]
-> This Tron port is under active development. Pin exact versions, and do not use it in production without your own review.
-
 ## Overview
 
 ### Installation
