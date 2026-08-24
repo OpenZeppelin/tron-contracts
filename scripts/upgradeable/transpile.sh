@@ -49,11 +49,14 @@ fi
 #     output structurally identical to openzeppelin-contracts-upgradeable: only
 #     STATEFUL contracts get the `Upgradeable` suffix, so the unmodified test
 #     suite (which deploys e.g. `$Checkpoints`) still resolves via the
-#     hardhat/env-artifacts.js suffix shim. The value is a path prefix
-#     prepended to each peer source's solc path (e.g. contracts/utils/Math.sol
-#     -> @openzeppelin/tron-contracts/contracts/utils/Math.sol); it does NOT
-#     depend on how our contracts import each other (relative imports to peer
-#     files are rewritten to peer imports automatically).
+#     hardhat/env-artifacts.js suffix shim. The value is a path prefix the
+#     transpiler JOINS with each peer source's solc path (contracts/utils/Math.sol
+#     -> @openzeppelin/tron-contracts/contracts/utils/Math.sol); relative imports
+#     to peer files are rewritten to peer imports automatically. Upstream passes
+#     just '@openzeppelin/' and relies on its source dir doubling as the package
+#     basename ('@openzeppelin/contracts'); ours is 'tron-contracts', so the
+#     joined paths keep the contracts/ source dir and the rewrite step below
+#     maps them onto the published package layout.
 npx @openzeppelin/upgrade-safe-transpiler -D \
   -b "$build_info" \
   -i contracts/proxy/utils/Initializable.sol \
@@ -68,6 +71,14 @@ npx @openzeppelin/upgrade-safe-transpiler -D \
   -n \
   -N 'contracts/mocks/**/*' \
   -q '@openzeppelin/tron-contracts/'
+
+# Map the peer imports onto the published package layout: the joined paths
+# carry the repo's contracts/ source dir, while the @openzeppelin/tron-contracts
+# tarball is packed from contracts/ — its root is that directory's contents,
+# exactly like @openzeppelin/contracts — so the package has no contracts/
+# segment. The mirror repo resolves these imports through remappings.txt
+# (@openzeppelin/tron-contracts/=lib/tron-contracts/contracts/).
+find contracts -name '*.sol' -exec perl -pi -e 's{\@openzeppelin/tron-contracts/contracts/}{\@openzeppelin/tron-contracts/}g' {} +
 
 # In peer mode the transpiler does NOT emit a local Initializable.sol /
 # UUPSUpgradeable.sol (it references them from the peer). Copy the alias stubs,
