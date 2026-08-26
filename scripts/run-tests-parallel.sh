@@ -127,6 +127,25 @@ fi
 
 # ----- 4. Bring up all containers in parallel ----------------------------
 
+# Stage a per-worker fullnode.conf with fast proposal processing. The P256
+# library requires the TIP-7951 secp256r1 precompile (ALLOW_TVM_OSAKA, chain
+# parameter 96), and java-tron only activates it through an on-chain
+# proposal (there is no committee-config mapping for it). The image's conf
+# uses 5-minute maintenance/proposal intervals; 30 s intervals bound the
+# activation pre-flight (step 5.7) to ~1 min. The image's conf ends inside
+# the committee block on purpose: the quickstart entrypoint appends the
+# `preapprove` lines and the closing brace at startup, so each worker needs
+# ITS OWN WRITABLE copy (a shared mount would collect one closing brace per
+# worker and break HOCON parsing).
+echo "→ Staging per-worker fullnode.conf (30s proposal/maintenance intervals)..."
+docker run --rm --entrypoint cat tronbox/tre:dev /tron/FullNode/fullnode.conf \
+  | sed -e 's/maintenanceTimeInterval = 300000/maintenanceTimeInterval = 30000/' \
+        -e 's/proposalExpireTime = 300000/proposalExpireTime = 30000/' \
+  > tre/fullnode-base.conf
+for ((i=0; i<WORKERS; i++)); do
+  cp tre/fullnode-base.conf "tre/fullnode-worker${i}.conf"
+done
+
 WORKER_PIDS=()
 WORKER_LOGS=()
 WORKER_EXIT=()
@@ -193,6 +212,7 @@ for ((i=0; i<WORKERS; i++)); do
       -e quiet=true \
       -e JAVA_TOOL_OPTIONS="-XX:+UseG1GC -XX:MaxGCPauseMillis=20 -Xmx2g -Xms512m -XX:+AlwaysPreTouch -XX:+TieredCompilation" \
       -v "${JAR_HOST_PATH}:/tron/FullNode/FullNode.jar:ro" \
+      -v "$PWD/tre/fullnode-worker${i}.conf:/tron/FullNode/fullnode.conf" \
       --restart no \
       tronbox/tre:dev >/dev/null
   ) &
@@ -295,6 +315,30 @@ for ((i=0; i<WORKERS; i++)); do
   prime_pids+=("$!")
 done
 for pid in "${prime_pids[@]}"; do wait "$pid" 2>/dev/null || true; done
+
+# ----- 5.7. Activate the TIP-7951 precompile on every worker -------------
+#
+# P256.verify tries the secp256r1 precompile at address(0x100) and falls
+# back to the Solidity implementation, so tests pass either way. Activating
+# ALLOW_TVM_OSAKA lets the P256 suite exercise the native path on TRE.
+# scripts/tre-activate-osaka.js creates and approves the committee proposal
+# from the genesis witness and instamines blocks until the (30 s, see
+# step 4) maintenance period tallies it. Failure is a warning, not fatal:
+# java-tron < 4.8.2 (the current pinned image) rejects the proposal, and
+# the native-path tests then show as pending.
+echo "→ Activating ALLOW_TVM_OSAKA (TIP-7951 P256 precompile) on all workers..."
+osaka_pids=()
+for ((i=0; i<WORKERS; i++)); do
+  port=$((BASE_PORT + i))
+  TRE_HTTP="http://127.0.0.1:${port}" node scripts/tre-activate-osaka.js &
+  osaka_pids+=("$!")
+done
+for pid in "${osaka_pids[@]}"; do
+  if ! wait "$pid"; then
+    echo "  WARN: ALLOW_TVM_OSAKA activation failed on a worker (java-tron >= 4.8.2 required);" >&2
+    echo "        P256 native-path tests will be skipped there." >&2
+  fi
+done
 
 # ----- 6. Spawn one hardhat-test process per bucket ----------------------
 
