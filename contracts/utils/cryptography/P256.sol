@@ -3,6 +3,7 @@
 pragma solidity ^0.8.20;
 
 import {Math} from "../math/Math.sol";
+import {Errors} from "../Errors.sol";
 
 /**
  * @dev Implementation of secp256r1 verification and recovery functions.
@@ -44,11 +45,15 @@ library P256 {
     uint256 private constant HALF_N = 0x7fffffff800000007fffffffffffffffde737d56d38bcf4279dce5617e3192a8;
 
     /**
-     * @dev Verifies a secp256r1 signature using the pure-Solidity implementation.
-     * NOTE: A native secp256r1 precompile for the TVM is specified by
-     * https://github.com/tronprotocol/tips/blob/master/tip-7951.md[TIP-7951] (at address `0x100`, following
-     * https://eips.ethereum.org/EIPS/eip-7951[EIP-7951], which supersedes RIP-7212). Until it is enabled on the
-     * target network, this function (unlike the EVM version in `openzeppelin-contracts`) verifies directly in Solidity.
+     * @dev Verifies a secp256r1 signature using the native precompile and falls back to the Solidity implementation
+     * if the precompile is not available. This version should work on all chains, but requires the deployment of more
+     * bytecode.
+     *
+     * NOTE: The TVM ships a native secp256r1 precompile at `address(0x100)`, specified by
+     * https://github.com/tronprotocol/tips/blob/master/tip-7951.md[TIP-7951] (following
+     * https://eips.ethereum.org/EIPS/eip-7951[EIP-7951], which supersedes RIP-7212 with the same
+     * call interface). It activates per network through the `ALLOW_TVM_OSAKA` committee proposal,
+     * so the Solidity fallback keeps this function working on networks that have not voted it in yet.
      *
      * @param h - hashed message
      * @param r - signature half R
@@ -60,11 +65,84 @@ library P256 {
      * To flip the `s` value, compute `s = N - s`.
      */
     function verify(bytes32 h, bytes32 r, bytes32 s, bytes32 qx, bytes32 qy) internal view returns (bool) {
-        return verifySolidity(h, r, s, qx, qy);
+        (bool valid, bool supported) = _tryVerifyNative(h, r, s, qx, qy);
+        return supported ? valid : verifySolidity(h, r, s, qx, qy);
     }
 
     /**
-     * @dev Same as {verify}: only the Solidity implementation is used.
+     * @dev Same as {verify}, but it will revert if the required precompile is not available.
+     *
+     * Make sure any logic (code or precompile) deployed at that address is the expected one,
+     * otherwise the returned value may be misinterpreted as a positive boolean.
+     */
+    function verifyNative(bytes32 h, bytes32 r, bytes32 s, bytes32 qx, bytes32 qy) internal view returns (bool) {
+        (bool valid, bool supported) = _tryVerifyNative(h, r, s, qx, qy);
+        if (supported) {
+            return valid;
+        } else {
+            revert Errors.MissingPrecompile(address(0x100));
+        }
+    }
+
+    /**
+     * @dev Same as {verify}, but it will return false if the required precompile is not available.
+     */
+    function _tryVerifyNative(
+        bytes32 h,
+        bytes32 r,
+        bytes32 s,
+        bytes32 qx,
+        bytes32 qy
+    ) private view returns (bool valid, bool supported) {
+        if (!_isProperSignature(r, s) || !isValidPublicKey(qx, qy)) {
+            return (false, true); // signature is invalid, and its not because the precompile is missing
+        } else if (_rip7212(h, r, s, qx, qy)) {
+            return (true, true); // precompile is present, signature is valid
+        } else if (
+            // Given precompiles have no bytecode (i.e. `address(0x100).code.length == 0`), we use
+            // a valid signature with small `r` and `s` values to check if the precompile is present. Taken from
+            // https://github.com/C2SP/wycheproof/blob/4672ff74d68766e7785c2cac4c597effccef2c5c/testvectors/ecdsa_secp256r1_sha256_p1363_test.json#L1173-L1204
+            _rip7212(
+                0xbb5a52f42f9c9261ed4361f59422a1e30036e7c32b270c8807a419feca605023, // sha256("123400")
+                0x0000000000000000000000000000000000000000000000000000000000000005,
+                0x0000000000000000000000000000000000000000000000000000000000000001,
+                0xa71af64de5126a4a4e02b7922d66ce9415ce88a4c9d25514d91082c8725ac957,
+                0x5d47723c8fbe580bb369fec9c2665d8e30a435b9932645482e7c9f11e872296b
+            )
+        ) {
+            return (false, true); // precompile is present, signature is invalid
+        } else {
+            return (false, false); // precompile is absent
+        }
+    }
+
+    /**
+     * @dev Low level helper for {_tryVerifyNative}. Calls the precompile and checks if there is a return value.
+     * The TIP-7951 precompile keeps the RIP-7212 call interface, so the upstream helper name is kept.
+     */
+    function _rip7212(bytes32 h, bytes32 r, bytes32 s, bytes32 qx, bytes32 qy) private view returns (bool isValid) {
+        assembly ("memory-safe") {
+            // Use the free memory pointer without updating it at the end of the function
+            let ptr := mload(0x40)
+            mstore(ptr, h)
+            mstore(add(ptr, 0x20), r)
+            mstore(add(ptr, 0x40), s)
+            mstore(add(ptr, 0x60), qx)
+            mstore(add(ptr, 0x80), qy)
+            // RIP-7212 precompiles return empty bytes when an invalid signature is passed, making it impossible
+            // to distinguish the presence of the precompile. Custom precompile implementations may decide to
+            // return `bytes32(0)` (i.e. false) without developers noticing, so we decide to evaluate the return value
+            // without expanding memory using scratch space.
+            mstore(0x00, 0) // zero out scratch space in case the precompile doesn't return anything
+            if iszero(staticcall(gas(), 0x100, ptr, 0xa0, 0x00, 0x20)) {
+                invalid()
+            }
+            isValid := mload(0x00)
+        }
+    }
+
+    /**
+     * @dev Same as {verify}, but only the Solidity implementation is used.
      */
     function verifySolidity(bytes32 h, bytes32 r, bytes32 s, bytes32 qx, bytes32 qy) internal view returns (bool) {
         if (!_isProperSignature(r, s) || !isValidPublicKey(qx, qy)) {
