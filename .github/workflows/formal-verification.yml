@@ -11,6 +11,9 @@ on:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
+permissions:
+  contents: read
+
 jobs:
   apply-diff:
     # FV patches/specs target the non-upgradeable source contracts; the
