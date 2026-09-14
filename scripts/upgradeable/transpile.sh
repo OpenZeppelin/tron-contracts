@@ -49,11 +49,10 @@ fi
 #     output structurally identical to openzeppelin-contracts-upgradeable: only
 #     STATEFUL contracts get the `Upgradeable` suffix, so the unmodified test
 #     suite (which deploys e.g. `$Checkpoints`) still resolves via the
-#     hardhat/env-artifacts.js suffix shim. The value is a path prefix
-#     prepended to each peer source's solc path (e.g. contracts/utils/Math.sol
-#     -> @openzeppelin/tron-contracts/contracts/utils/Math.sol); it does NOT
-#     depend on how our contracts import each other (relative imports to peer
-#     files are rewritten to peer imports automatically).
+#     hardhat/env-artifacts.js suffix shim. Relative imports to peer files are
+#     rewritten to peer imports automatically and, after the rewrite step below,
+#     match the published package layout (contracts/utils/math/Math.sol ->
+#     @openzeppelin/tron-contracts/utils/math/Math.sol).
 npx @openzeppelin/upgrade-safe-transpiler -D \
   -b "$build_info" \
   -i contracts/proxy/utils/Initializable.sol \
@@ -68,6 +67,13 @@ npx @openzeppelin/upgrade-safe-transpiler -D \
   -n \
   -N 'contracts/mocks/**/*' \
   -q '@openzeppelin/tron-contracts/'
+
+# Drop the contracts/ source dir from the peer imports: the transpiler joins
+# the -q prefix with each source's full solc path, but the published package is
+# packed from contracts/ (its root is that directory's contents, exactly like
+# @openzeppelin/contracts). The mirror resolves these imports via remappings.txt
+# (@openzeppelin/tron-contracts/=lib/tron-contracts/contracts/).
+find contracts -name '*.sol' -exec perl -pi -e 's{\@openzeppelin/tron-contracts/contracts/}{\@openzeppelin/tron-contracts/}g' {} +
 
 # In peer mode the transpiler does NOT emit a local Initializable.sol /
 # UUPSUpgradeable.sol (it references them from the peer). Copy the alias stubs,

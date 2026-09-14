@@ -4,9 +4,6 @@
 
 **A library for secure smart contract development on TRON.** A port of [OpenZeppelin Contracts](https://github.com/OpenZeppelin/openzeppelin-contracts) to the TRON Virtual Machine (TVM), adapted to TRON's standards (TIPs / TRCs) and to the ways the TVM differs from the EVM.
 
-> [!WARNING]
-> **This project is under active development.** Contract names, APIs, and behavior may still change. Do not use in production without an independent security review.
-
 ## Overview
 
 `@openzeppelin/tron-contracts` is based on [OpenZeppelin Contracts](https://github.com/OpenZeppelin/openzeppelin-contracts) — versions match upstream by major and minor (see [Versioning](#versioning)) — and keeps its battle-tested implementations, while:
