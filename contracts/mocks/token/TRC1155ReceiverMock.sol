@@ -22,10 +22,10 @@ contract TRC1155ReceiverMock is TRC165, ITRC1155Receiver {
     event BatchReceived(address operator, address from, uint256[] ids, uint256[] values, bytes data, uint256 gas);
     error CustomError(bytes4);
 
-    constructor(bytes4 recRetval, bytes4 batRetval, RevertType error) {
+    constructor(bytes4 recRetval, bytes4 batRetval, RevertType err) {
         _recRetval = recRetval;
         _batRetval = batRetval;
-        _error = error;
+        _error = err;
     }
 
     function onERC1155Received(
