@@ -112,8 +112,12 @@ describe('RSA', function () {
       // Oversized exponent: makes the modexp gas cost tens of millions, exceeding the forwarded gas below.
       const exp = '0x' + 'ff'.repeat(20000);
 
-      await expect(this.mock.$pkcs1Sha256(bytes32(digest), sig, exp, mod, { gasLimit: 16_000_000n })).to.eventually.be
-        .false;
+      // hardhat-tron's overload resolver counts a plain overrides object as an ABI argument, so wrap the
+      // `gasLimit` with `ethers.Typed.overrides` (which the bridge strips explicitly), as this file already does
+      // with `Typed.bytes32` to disambiguate the digest overload.
+      await expect(
+        this.mock.$pkcs1Sha256(bytes32(digest), sig, exp, mod, ethers.Typed.overrides({ gasLimit: 16_000_000n })),
+      ).to.eventually.be.false;
     });
   });
 });
