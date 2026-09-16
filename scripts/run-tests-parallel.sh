@@ -191,6 +191,7 @@ for ((i=0; i<WORKERS; i++)); do
       -e mnemonic="test test test test test test test test test test test junk" \
       -e hdPath="m/44'/60'/0'/0" \
       -e quiet=true \
+      -e preapprove="allowTvmPrague:1,allowTvmOsaka:1" \
       -e JAVA_TOOL_OPTIONS="-XX:+UseG1GC -XX:MaxGCPauseMillis=20 -Xmx2g -Xms512m -XX:+AlwaysPreTouch -XX:+TieredCompilation" \
       -v "${JAR_HOST_PATH}:/tron/FullNode/FullNode.jar:ro" \
       --restart no \
