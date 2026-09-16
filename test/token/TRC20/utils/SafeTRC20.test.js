@@ -17,6 +17,8 @@ async function fixture() {
   const trc20ForceApproveMock = await ethers.deployContract('$TRC20ForceApproveMock', [name, symbol]);
   const trc20UsdtMock = await ethers.deployContract('$TRC20USDTMock', [name, symbol]);
   const trc20UsdtFeeMock = await ethers.deployContract('$TRC20USDTFeeMock', [name, symbol]);
+  const trc20DecimalsMock = await ethers.deployContract('$TRC20DecimalsMock', [name, symbol, 6]);
+  const trc20ExcessDecimalsMock = await ethers.deployContract('$TRC20ExcessDecimalsMock');
   const erc1363Mock = await ethers.deployContract('$TRC1363', [name, symbol]);
   const erc1363ReturnFalseOnErc20Mock = await ethers.deployContract('$TRC1363ReturnFalseOnTRC20Mock', [name, symbol]);
   const erc1363ReturnFalseMock = await ethers.deployContract('$TRC1363ReturnFalseMock', [name, symbol]);
@@ -38,6 +40,8 @@ async function fixture() {
     trc20ForceApproveMock,
     trc20UsdtMock,
     trc20UsdtFeeMock,
+    trc20DecimalsMock,
+    trc20ExcessDecimalsMock,
     erc1363Mock,
     erc1363ReturnFalseOnErc20Mock,
     erc1363ReturnFalseMock,
@@ -397,6 +401,32 @@ describe('SafeTRC20', function () {
       await expect(
         this.mock.$approveAndCallRelaxed(this.token, this.erc1363Spender, 0n, data),
       ).to.be.revertedWithoutReason();
+    });
+  });
+
+  describe('tryGetDecimals', function () {
+    it('returns decimals when token has standard 18 decimals', async function () {
+      const result = await this.mock.$tryGetDecimals(this.trc20ReturnTrueMock);
+      expect(result.success).to.be.true;
+      expect(result.decimals).to.equal(18n);
+    });
+
+    it('returns decimals when token has non-standard decimals', async function () {
+      const result = await this.mock.$tryGetDecimals(this.trc20DecimalsMock);
+      expect(result.success).to.be.true;
+      expect(result.decimals).to.equal(6n);
+    });
+
+    it('returns false when address has no code', async function () {
+      const result = await this.mock.$tryGetDecimals(this.hasNoCode);
+      expect(result.success).to.be.false;
+      expect(result.decimals).to.equal(0n);
+    });
+
+    it('returns false when token returns a value that does not fit in uint8', async function () {
+      const result = await this.mock.$tryGetDecimals(this.trc20ExcessDecimalsMock);
+      expect(result.success).to.be.false;
+      expect(result.decimals).to.equal(0n);
     });
   });
 

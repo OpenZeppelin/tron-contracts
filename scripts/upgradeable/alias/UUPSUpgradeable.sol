@@ -2,4 +2,4 @@
 
 pragma solidity ^0.8.22;
 
-import {UUPSUpgradeable} from "@openzeppelin/tron-contracts/contracts/proxy/utils/UUPSUpgradeable.sol";
+import {UUPSUpgradeable} from "@openzeppelin/tron-contracts/proxy/utils/UUPSUpgradeable.sol";

@@ -5,6 +5,7 @@ pragma solidity ^0.8.20;
 
 import {ITRC20} from "../ITRC20.sol";
 import {ITRC1363} from "../../../interfaces/ITRC1363.sol";
+import {ITRC20Metadata} from "../../../interfaces/ITRC20Metadata.sol";
 
 /**
  * @title SafeTRC20
@@ -334,6 +335,17 @@ library SafeTRC20 {
                 success := and(success, and(iszero(returndatasize()), gt(extcodesize(token), 0)))
             }
             mstore(0x40, fmp)
+        }
+    }
+
+    /// @dev Attempts to fetch the token decimals. A return value of false indicates that the attempt failed in some way.
+    function tryGetDecimals(ITRC20 token) internal view returns (bool success, uint8 decimals) {
+        bytes4 selector = ITRC20Metadata.decimals.selector;
+        assembly ("memory-safe") {
+            mstore(0x00, selector)
+            success := staticcall(gas(), token, 0x00, 4, 0x00, 0x20)
+            success := and(and(success, gt(returndatasize(), 0x1f)), lt(mload(0x00), 0x100))
+            decimals := mul(success, mload(0x00))
         }
     }
 }

@@ -1,13 +1,14 @@
 {
   "name": "openzeppelin-tron-solidity",
   "description": "Secure Smart Contract library for Solidity for Tron",
-  "version": "5.5.0",
+  "version": "5.6.0",
   "private": true,
   "files": [
     "/contracts/**/*.sol",
     "!/contracts/mocks/**/*"
   ],
   "scripts": {
+    "clean": "hardhat clean && rimraf build contracts/build",
     "compile": "SKIP_EXPOSED=1 hardhat tron:compile-batches --network tre",
     "compile:single": "SKIP_EXPOSED=1 hardhat compile --network tre",
     "compile:harnesses": "env SRC=./fv/harnesses BATCHES=./fv/harness-batches.config.cjs SKIP_EXPOSED=1 hardhat tron:compile-batches --network tre",
