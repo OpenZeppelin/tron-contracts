@@ -177,6 +177,25 @@ describe('Arrays', function () {
               },
             );
           }
+
+          // The sort recurses only on the smaller partition and iterates on the
+          // larger one, bounding recursion depth to O(log n) so large arrays sort
+          // without a stack overflow. A random array exercises the iterative path
+          // at scale; a pre-sorted array is the worst case for recursion depth,
+          // since a first-element pivot yields maximally unbalanced partitions
+          // (its O(n^2) comparison count keeps this length below the random one).
+          describe('[skip-on-coverage] large array', function () {
+            it('sorts a large random array', async function () {
+              const array = Array.from({ length: 2048 }, generators[name]);
+              const expected = Array.from(array).sort(comparator);
+              await expect(this.instance.sort(array)).to.eventually.deep.equal(expected);
+            });
+
+            it('sorts a large pre-sorted array', async function () {
+              const array = Array.from({ length: 512 }, generators[name]).sort(comparator);
+              await expect(this.instance.sort(array)).to.eventually.deep.equal(array);
+            });
+          });
         });
 
         for (const fn of ['slice', 'splice']) {
