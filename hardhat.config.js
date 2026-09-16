@@ -180,6 +180,9 @@ module.exports = {
     // surfaces). The path is host-relative.
     jarPath: './tre/FullNode.jar',
 
+    // Enable the Prague/Osaka TVM proposals for the auto-spawned node.
+    startupEnv: { preapprove: 'allowTvmPrague:1,allowTvmOsaka:1' },
+
     compiler: {
       // `tron-when-network-tron` activates the tron-solc pipeline
       // ONLY when the active network has `tron: true` (i.e. `tre`).
