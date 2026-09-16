@@ -1,5 +1,5 @@
 diff --git a/contracts/package.json b/contracts/package.json
-index 9432b1b..ea1db09 100644
+index 1ab1a77..d5a6afe 100644
 --- a/contracts/package.json
 +++ b/contracts/package.json
 @@ -1,5 +1,5 @@
@@ -7,7 +7,7 @@ index 9432b1b..ea1db09 100644
 -  "name": "@openzeppelin/tron-contracts",
 +  "name": "@openzeppelin/tron-contracts-upgradeable",
    "description": "Secure Smart Contract library for Solidity for Tron",
-   "version": "0.0.1",
+   "version": "5.5.0",
    "files": [
 @@ -13,7 +13,7 @@
    },
@@ -28,7 +28,7 @@ index 9432b1b..ea1db09 100644
    }
  }
 diff --git a/contracts/utils/ReentrancyGuard.sol b/contracts/utils/ReentrancyGuard.sol
-index c156fa1..895e393 100644
+index 3d8bc81..4dae6f2 100644
 --- a/contracts/utils/ReentrancyGuard.sol
 +++ b/contracts/utils/ReentrancyGuard.sol
 @@ -36,6 +36,11 @@ abstract contract ReentrancyGuard {
@@ -55,7 +55,7 @@ index c156fa1..895e393 100644
       * @dev Prevents a contract from calling itself, directly or indirectly.
       * Calling a `nonReentrant` function from another `nonReentrant`
 diff --git a/contracts/utils/cryptography/TIP712.sol b/contracts/utils/cryptography/TIP712.sol
-index 5446d00..13b4175 100644
+index 89b0afa..f26da77 100644
 --- a/contracts/utils/cryptography/TIP712.sol
 +++ b/contracts/utils/cryptography/TIP712.sol
 @@ -4,7 +4,6 @@
@@ -66,13 +66,17 @@ index 5446d00..13b4175 100644
  import {ITRC5267} from "../../interfaces/ITRC5267.sol";
  
  /**
-@@ -32,33 +31,15 @@ import {ITRC5267} from "../../interfaces/ITRC5267.sol";
+@@ -32,43 +31,15 @@ import {ITRC5267} from "../../interfaces/ITRC5267.sol";
   * NOTE: This contract implements the version of the encoding known as "v4", as implemented by the JSON RPC method
   * https://docs.metamask.io/guide/signing-data.html[`eth_signTypedDataV4` in MetaMask].
   *
 - * NOTE: In the upgradeable version of this contract, the cached values will correspond to the address, and the domain
 - * separator of the implementation contract. This will cause the {_domainSeparatorV4} function to always rebuild the
 - * separator from the immutable values, which is cheaper than accessing a cached version in cold storage.
+- *
+- * IMPORTANT: The `name` and `version` must each fit in a `ShortString` (at most 31 bytes). Longer values cause the
+- * constructor to revert with a `ShortStrings.StringTooLong` error. Because the values are stored exclusively in
+- * immutables, the domain is preserved when the contract is used behind a proxy or clone without an initializer.
 - *
 - * @custom:oz-upgrades-unsafe-allow state-variable-immutable
 + * NOTE: The upgradeable version of this contract does not use an immutable cache and recomputes the domain separator
@@ -95,8 +99,14 @@ index 5446d00..13b4175 100644
 -
 -    ShortString private immutable _name;
 -    ShortString private immutable _version;
+-
+-    // IMPORTANT: Deprecated. Kept to preserve the storage layout of inheriting contracts used as an
+-    // implementation behind a proxy.
 -    // slither-disable-next-line constable-states
 -    string private _nameFallback;
+-
+-    // IMPORTANT: Deprecated. Kept to preserve the storage layout of inheriting contracts used as an
+-    // implementation behind a proxy.
 -    // slither-disable-next-line constable-states
 -    string private _versionFallback;
 +    string private _name;
@@ -104,12 +114,12 @@ index 5446d00..13b4175 100644
  
      /**
       * @dev Initializes the domain separator and parameter caches.
-@@ -73,32 +54,22 @@ abstract contract TIP712 is ITRC5267 {
+@@ -83,32 +54,22 @@ abstract contract TIP712 is ITRC5267 {
       * contract upgrade].
       */
      constructor(string memory name, string memory version) {
--        _name = name.toShortStringWithFallback(_nameFallback);
--        _version = version.toShortStringWithFallback(_versionFallback);
+-        _name = name.toShortString();
+-        _version = version.toShortString();
 -        _hashedName = keccak256(bytes(name));
 -        _hashedVersion = keccak256(bytes(version));
 -
@@ -141,18 +151,17 @@ index 5446d00..13b4175 100644
      }
  
      /**
-@@ -149,22 +120,38 @@ abstract contract TIP712 is ITRC5267 {
+@@ -159,20 +120,38 @@ abstract contract TIP712 is ITRC5267 {
      /**
       * @dev The name parameter for the TIP712 domain.
       *
--     * NOTE: By default this function reads _name which is an immutable value.
--     * It only reads from storage if necessary (in case the value is too large to fit in a ShortString).
+-     * NOTE: This function reads `_name`, which is an immutable value.
 +     * NOTE: This function reads from storage by default, but can be redefined to return a constant value if gas costs
 +     * are a concern.
       */
 -    // solhint-disable-next-line func-name-mixedcase
 -    function _TIP712Name() internal view returns (string memory) {
--        return _name.toStringWithFallback(_nameFallback);
+-        return _name.toString();
 +    function _TIP712Name() internal view virtual returns (string memory) {
 +        return _name;
      }
@@ -160,8 +169,7 @@ index 5446d00..13b4175 100644
      /**
       * @dev The version parameter for the TIP712 domain.
       *
--     * NOTE: By default this function reads _version which is an immutable value.
--     * It only reads from storage if necessary (in case the value is too large to fit in a ShortString).
+-     * NOTE: This function reads `_version`, which is an immutable value.
 +     * NOTE: This function reads from storage by default, but can be redefined to return a constant value if gas costs
 +     * are a concern.
 +     */
@@ -185,7 +193,7 @@ index 5446d00..13b4175 100644
       */
 -    // solhint-disable-next-line func-name-mixedcase
 -    function _TIP712Version() internal view returns (string memory) {
--        return _version.toStringWithFallback(_versionFallback);
+-        return _version.toString();
 +    function _TIP712VersionHash() internal view returns (bytes32) {
 +        return keccak256(bytes(_TIP712Version()));
      }
