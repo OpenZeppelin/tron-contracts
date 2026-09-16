@@ -6,8 +6,6 @@ pragma solidity ^0.8.24;
 import {ITRC20, ITRC20Metadata, TRC20} from "../TRC20.sol";
 import {SafeTRC20} from "../utils/SafeTRC20.sol";
 import {ITRC4626} from "../../../interfaces/ITRC4626.sol";
-import {LowLevelCall} from "../../../utils/LowLevelCall.sol";
-import {Memory} from "../../../utils/Memory.sol";
 import {Math} from "../../../utils/math/Math.sol";
 
 /**
@@ -98,26 +96,9 @@ abstract contract TRC4626 is TRC20, ITRC4626 {
      * @dev Set the underlying asset contract. This must be a TRC20-compatible contract (TRC-20 or TRC-777).
      */
     constructor(ITRC20 asset_) {
-        (bool success, uint8 assetDecimals) = _tryGetAssetDecimals(asset_);
+        (bool success, uint8 assetDecimals) = SafeTRC20.tryGetDecimals(asset_);
         _underlyingDecimals = success ? assetDecimals : 18;
         _asset = asset_;
-    }
-
-    /**
-     * @dev Attempts to fetch the asset decimals. A return value of false indicates that the attempt failed in some way.
-     */
-    function _tryGetAssetDecimals(ITRC20 asset_) private view returns (bool ok, uint8 assetDecimals) {
-        Memory.Pointer ptr = Memory.getFreeMemoryPointer();
-        (bool success, bytes32 returnedDecimals, ) = LowLevelCall.staticcallReturn64Bytes(
-            address(asset_),
-            abi.encodeCall(ITRC20Metadata.decimals, ())
-        );
-        Memory.unsafeSetFreeMemoryPointer(ptr);
-
-        return
-            (success && LowLevelCall.returnDataSize() >= 32 && uint256(returnedDecimals) <= type(uint8).max)
-                ? (true, uint8(uint256(returnedDecimals)))
-                : (false, 0);
     }
 
     /**

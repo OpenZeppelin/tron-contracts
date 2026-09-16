@@ -3,8 +3,9 @@
 
 pragma solidity ^0.8.20;
 
-import {ITRC20, ITRC20Metadata, TRC20} from "../TRC20.sol";
+import {ITRC20, TRC20} from "../TRC20.sol";
 import {SafeTRC20} from "../utils/SafeTRC20.sol";
+import {Math} from "../../../utils/math/Math.sol";
 
 /**
  * @dev Extension of the TRC-20 token contract to support token wrapping.
@@ -33,13 +34,16 @@ abstract contract TRC20Wrapper is TRC20 {
         _underlying = underlyingToken;
     }
 
-    /// @inheritdoc ITRC20Metadata
+    /**
+     * @dev See {ITRC20Metadata}. Uses {Math-ternary} for branchless selection, which evaluates both branches. This is safe
+     * because the default {TRC20-decimals} is commonly a constant.
+     *
+     * NOTE: If a derived contract overrides `super.decimals()` to read from
+     * storage, it should also override this function and use a conditional ternary instead.
+     */
     function decimals() public view virtual override returns (uint8) {
-        try ITRC20Metadata(address(_underlying)).decimals() returns (uint8 value) {
-            return value;
-        } catch {
-            return super.decimals();
-        }
+        (bool success, uint8 decimals_) = SafeTRC20.tryGetDecimals(_underlying);
+        return uint8(Math.ternary(success, decimals_, super.decimals())); // Safe cast. Both are uint8.
     }
 
     /**
