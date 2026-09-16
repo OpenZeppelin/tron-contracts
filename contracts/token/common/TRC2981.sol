@@ -5,6 +5,7 @@ pragma solidity ^0.8.20;
 
 import {ITRC2981} from "../../interfaces/ITRC2981.sol";
 import {ITRC165, TRC165} from "../../utils/introspection/TRC165.sol";
+import {Math} from "../../utils/math/Math.sol";
 
 /**
  * @dev Implementation of the NFT Royalty Standard, a standardized way to retrieve royalty payment information.
@@ -67,7 +68,7 @@ abstract contract TRC2981 is ITRC2981, TRC165 {
             royaltyFraction = _defaultRoyaltyInfo.royaltyFraction;
         }
 
-        uint256 royaltyAmount = (salePrice * royaltyFraction) / _feeDenominator();
+        uint256 royaltyAmount = Math.mulDiv(salePrice, royaltyFraction, _feeDenominator());
 
         return (royaltyReceiver, royaltyAmount);
     }
