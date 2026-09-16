@@ -115,9 +115,25 @@ describe('RSA', function () {
       // hardhat-tron's overload resolver counts a plain overrides object as an ABI argument, so wrap the
       // `gasLimit` with `ethers.Typed.overrides` (which the bridge strips explicitly), as this file already does
       // with `Typed.bytes32` to disambiguate the digest overload.
-      await expect(
-        this.mock.$pkcs1Sha256(bytes32(digest), sig, exp, mod, ethers.Typed.overrides({ gasLimit: 16_000_000n })),
-      ).to.eventually.be.false;
+      const promise = this.mock.$pkcs1Sha256(
+        bytes32(digest),
+        sig,
+        exp,
+        mod,
+        ethers.Typed.overrides({ gasLimit: 16_000_000n }),
+      );
+
+      // On the EVM the oversized exponent makes the modexp precompile exceed the forwarded gas; the low-level
+      // staticcall in `Math.tryModExp` returns 0 (failure), so `pkcs1Sha256` fails closed and returns `false`.
+      // On the TVM, java-tron's modexp precompile reverts the whole call on that input instead of letting the
+      // staticcall return 0 (a precompile out-of-energy / oversized-exponent failure bubbles up as a revert),
+      // so the call reverts with no reason. Both are safe failures; assert whichever the active VM produces.
+      // Detect the VM by the network's `tron` flag (true only on the TRE network; absent on the coverage EVM).
+      if (require('hardhat').network.config.tron) {
+        await expect(promise).to.be.reverted;
+      } else {
+        await expect(promise).to.eventually.be.false;
+      }
     });
   });
 });
