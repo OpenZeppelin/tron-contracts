@@ -1,5 +1,5 @@
 diff --git a/contracts/package.json b/contracts/package.json
-index 1ab1a77..d5a6afe 100644
+index bdacfb6..c12f2ea 100644
 --- a/contracts/package.json
 +++ b/contracts/package.json
 @@ -1,5 +1,5 @@
@@ -7,7 +7,7 @@ index 1ab1a77..d5a6afe 100644
 -  "name": "@openzeppelin/tron-contracts",
 +  "name": "@openzeppelin/tron-contracts-upgradeable",
    "description": "Secure Smart Contract library for Solidity for Tron",
-   "version": "5.5.0",
+   "version": "5.6.0",
    "files": [
 @@ -13,7 +13,7 @@
    },
@@ -18,7 +18,7 @@ index 1ab1a77..d5a6afe 100644
    },
    "keywords": [
      "solidity",
-@@ -27,5 +27,8 @@
+@@ -30,5 +30,8 @@
    "license": "MIT",
    "bugs": {
      "url": "https://github.com/OpenZeppelin/tron-contracts/issues"
@@ -199,7 +199,7 @@ index 89b0afa..f26da77 100644
      }
  }
 diff --git a/remappings.txt b/remappings.txt
-index 304d138..0ae9093 100644
+index 304d138..7246f36 100644
 --- a/remappings.txt
 +++ b/remappings.txt
 @@ -1 +1,2 @@
@@ -207,34 +207,68 @@ index 304d138..0ae9093 100644
 +@openzeppelin/tron-contracts-upgradeable/=contracts/
 +@openzeppelin/tron-contracts/=lib/tron-contracts/contracts/
 diff --git a/test/utils/cryptography/TIP712.test.js b/test/utils/cryptography/TIP712.test.js
-index a445b9b..6f7fa7a 100644
+index abb2d3c..27cb6f2 100644
 --- a/test/utils/cryptography/TIP712.test.js
 +++ b/test/utils/cryptography/TIP712.test.js
-@@ -47,27 +47,6 @@ describe('TIP712', function () {
-           const rebuildDomain = await getDomain(this.eip712);
-           expect(rebuildDomain).to.be.deep.equal(this.domain);
-         });
--
--        if (shortOrLong === 'short') {
--          // Long strings are in storage, and the proxy will not be properly initialized unless
--          // the upgradeable contract variant is used and the initializer is invoked.
--
--          it('adjusts when behind proxy', async function () {
--            const factory = await ethers.deployContract('$Clones');
--
--            const clone = await factory
--              .$clone(this.eip712)
--              .then(tx => tx.wait())
--              .then(receipt => receipt.logs.find(ev => ev.fragment.name == 'return$clone_address').args.instance)
--              .then(address => ethers.getContractAt('$TIP712Verifier', address));
--
--            const expectedDomain = { ...this.domain, verifyingContract: clone.target };
--            expect(await getDomain(clone)).to.be.deep.equal(expectedDomain);
--
--            const expectedSeparator = await domainSeparator(expectedDomain);
--            expect(await clone.$_domainSeparatorV4()).to.equal(expectedSeparator);
--          });
--        }
+@@ -39,22 +39,6 @@ describe('TIP712', function () {
+         const rebuildDomain = await getDomain(this.eip712);
+         expect(rebuildDomain).to.be.deep.equal(this.domain);
        });
+-
+-      it('adjusts when behind proxy', async function () {
+-        const factory = await ethers.deployContract('$Clones');
+-
+-        const clone = await factory
+-          .$clone(this.eip712)
+-          .then(tx => tx.wait())
+-          .then(receipt => receipt.logs.find(ev => ev.fragment.name == 'return$clone_address').args.instance)
+-          .then(address => ethers.getContractAt('$TIP712Verifier', address));
+-
+-        const expectedDomain = { ...this.domain, verifyingContract: clone.target };
+-        expect(await getDomain(clone)).to.be.deep.equal(expectedDomain);
+-
+-        const expectedSeparator = await domainSeparator(expectedDomain);
+-        expect(await clone.$_domainSeparatorV4()).to.equal(expectedSeparator);
+-      });
+     });
  
-       it('hash digest', async function () {
+     it('hash digest', async function () {
+@@ -90,18 +74,30 @@ describe('TIP712', function () {
+   });
+ 
+   describe('with long name and version', function () {
+-    it('deployment fails with long name', async function () {
++    it('upgradeable version supports long name', async function () {
+       const longName = 'A'.repeat(32);
+-      await expect(ethers.deployContract('$TIP712Verifier', [longName, version]))
+-        .to.be.revertedWithCustomError(this.eip712, 'StringTooLong')
+-        .withArgs(longName);
++      const instance = await ethers.deployContract('$TIP712Verifier', [longName, version]);
++
++      expect(await instance.$_TIP712Name()).to.equal(longName);
++      expect(await instance.$_TIP712Version()).to.equal(version);
++      expect(await getDomain(instance)).to.be.deep.equal({
++        ...this.domain,
++        name: longName,
++        verifyingContract: instance.target,
++      });
+     });
+ 
+-    it('deployment fails with long version', async function () {
++    it('upgradeable version supports long version', async function () {
+       const longVersion = 'B'.repeat(32);
+-      await expect(ethers.deployContract('$TIP712Verifier', [name, longVersion]))
+-        .to.be.revertedWithCustomError(this.eip712, 'StringTooLong')
+-        .withArgs(longVersion);
++      const instance = await ethers.deployContract('$TIP712Verifier', [name, longVersion]);
++
++      expect(await instance.$_TIP712Name()).to.equal(name);
++      expect(await instance.$_TIP712Version()).to.equal(longVersion);
++      expect(await getDomain(instance)).to.be.deep.equal({
++        ...this.domain,
++        version: longVersion,
++        verifyingContract: instance.target,
++      });
+     });
+   });
+ });
