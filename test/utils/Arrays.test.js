@@ -178,12 +178,8 @@ describe('Arrays', function () {
             );
           }
 
-          // The sort recurses only on the smaller partition and iterates on the
-          // larger one, bounding recursion depth to O(log n) so large arrays sort
-          // without a stack overflow. A random array exercises the iterative path
-          // at scale; a pre-sorted array is the worst case for recursion depth,
-          // since a first-element pivot yields maximally unbalanced partitions
-          // (its O(n^2) comparison count keeps this length below the random one).
+          // Large arrays that a naive recursive quicksort would overflow. Pre-sorted is the
+          // recursion worst case, so it stays smaller (its O(n^2) comparisons bound the length).
           describe('[skip-on-coverage] large array', function () {
             it('sorts a large random array', async function () {
               const array = Array.from({ length: 2048 }, generators[name]);
