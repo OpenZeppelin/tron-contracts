@@ -210,6 +210,7 @@ for ((i=0; i<WORKERS; i++)); do
       -e mnemonic="test test test test test test test test test test test junk" \
       -e hdPath="m/44'/60'/0'/0" \
       -e quiet=true \
+      -e preapprove="allowTvmPrague:1,allowTvmOsaka:1" \
       -e JAVA_TOOL_OPTIONS="-XX:+UseG1GC -XX:MaxGCPauseMillis=20 -Xmx2g -Xms512m -XX:+AlwaysPreTouch -XX:+TieredCompilation" \
       -v "${JAR_HOST_PATH}:/tron/FullNode/FullNode.jar:ro" \
       -v "$PWD/tre/fullnode-worker${i}.conf:/tron/FullNode/fullnode.conf" \
@@ -324,7 +325,7 @@ for pid in "${prime_pids[@]}"; do wait "$pid" 2>/dev/null || true; done
 # scripts/tre-activate-osaka.js creates and approves the committee proposal
 # from the genesis witness and instamines blocks until the (30 s, see
 # step 4) maintenance period tallies it. Failure is a warning, not fatal:
-# java-tron < 4.8.2 (the current pinned image) rejects the proposal, and
+# On java-tron < 4.8.2 the proposal is rejected, and
 # the native-path tests then show as pending.
 echo "→ Activating ALLOW_TVM_OSAKA (TIP-7951 P256 precompile) on all workers..."
 osaka_pids=()

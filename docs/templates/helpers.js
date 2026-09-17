@@ -2,6 +2,11 @@ const { version } = require('../../package.json');
 
 module.exports['oz-version'] = () => version;
 
+// The npm package is packed from `contracts/`, so a source at
+// `contracts/token/TRC20/TRC20.sol` is imported as
+// `@openzeppelin/tron-contracts/token/TRC20/TRC20.sol`.
+module.exports['strip-contracts-prefix'] = p => (typeof p === 'string' ? p.replace(/^contracts\//, '') : p);
+
 module.exports['readme-path'] = opts => {
   return 'contracts/' + opts.data.root.id.replace(/\.adoc$/, '') + '/README.adoc';
 };
