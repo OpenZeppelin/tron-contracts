@@ -6,6 +6,9 @@ on:
       - master
       - release-v*
 
+permissions:
+  contents: write
+
 jobs:
   transpile:
     environment: push-upgradeable
