@@ -29,6 +29,27 @@ const prepareSignature = (
   return { privateKey, publicKey, signature, recovery, messageHash };
 };
 
+// The TIP-7951 secp256r1 precompile at address(0x100) activates per network
+// (ALLOW_TVM_OSAKA committee proposal), so its presence is probed at runtime:
+// a known-valid signature with small r/s values (the same wycheproof vector
+// P256._tryVerifyNative uses) either verifies natively or reverts with
+// MissingPrecompile. Native-path assertions are skipped when it is absent;
+// the fallback and the MissingPrecompile revert are covered by P256.t.sol.
+let precompilePresent;
+const probePrecompile = mock =>
+  mock
+    .$verifyNative(
+      '0xbb5a52f42f9c9261ed4361f59422a1e30036e7c32b270c8807a419feca605023', // sha256("123400")
+      ethers.toBeHex(5n, 32),
+      ethers.toBeHex(1n, 32),
+      '0xa71af64de5126a4a4e02b7922d66ce9415ce88a4c9d25514d91082c8725ac957',
+      '0x5d47723c8fbe580bb369fec9c2665d8e30a435b9932645482e7c9f11e872296b',
+    )
+    .then(
+      valid => valid,
+      () => false,
+    );
+
 describe('P256', function () {
   async function fixture() {
     return { mock: await ethers.deployContract('$P256') };
@@ -36,6 +57,7 @@ describe('P256', function () {
 
   beforeEach(async function () {
     Object.assign(this, await loadFixture(fixture));
+    precompilePresent ??= await probePrecompile(this.mock);
   });
 
   describe('with signature', function () {
@@ -43,12 +65,12 @@ describe('P256', function () {
       Object.assign(this, prepareSignature());
     });
 
-    // TVM note: P256 has been stripped to the pure-Solidity path
-    // (no RIP-7212 precompile on TVM). Only `verifyNative` was removed;
-    // `verify` and `verifySolidity` still exist and are asserted.
     it('verify valid signature', async function () {
       await expect(this.mock.$verify(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be.true;
       await expect(this.mock.$verifySolidity(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be
+        .true;
+      if (!precompilePresent) this.skip();
+      await expect(this.mock.$verifyNative(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be
         .true;
     });
 
@@ -57,6 +79,8 @@ describe('P256', function () {
       this.signature[0] = ethers.toBeHex(N, 0x20); // r = N
       await expect(this.mock.$verify(this.messageHash, ...signature, ...this.publicKey)).to.eventually.be.false;
       await expect(this.mock.$verifySolidity(this.messageHash, ...signature, ...this.publicKey)).to.eventually.be.false;
+      if (!precompilePresent) this.skip();
+      await expect(this.mock.$verifyNative(this.messageHash, ...signature, ...this.publicKey)).to.eventually.be.false;
     });
 
     it('recover public key', async function () {
@@ -88,6 +112,9 @@ describe('P256', function () {
       await expect(this.mock.$verify(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be.false;
       await expect(this.mock.$verifySolidity(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be
         .false;
+      if (!precompilePresent) this.skip();
+      await expect(this.mock.$verifyNative(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be
+        .false;
     });
 
     it('reject signature with flipped signature values ([r,s] >> [s,r])', async function () {
@@ -113,6 +140,10 @@ describe('P256', function () {
       await expect(this.mock.$verify(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be.false;
       await expect(this.mock.$verifySolidity(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be
         .false;
+      if (precompilePresent) {
+        await expect(this.mock.$verifyNative(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be
+          .false;
+      }
       await expect(
         this.mock.$recovery(this.messageHash, this.recovery, ...this.signature),
       ).to.eventually.not.deep.equal(this.publicKey);
@@ -125,6 +156,10 @@ describe('P256', function () {
       await expect(this.mock.$verify(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be.false;
       await expect(this.mock.$verifySolidity(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be
         .false;
+      if (precompilePresent) {
+        await expect(this.mock.$verifyNative(this.messageHash, ...this.signature, ...this.publicKey)).to.eventually.be
+          .false;
+      }
       await expect(
         this.mock.$recovery(this.messageHash, this.recovery, ...this.signature),
       ).to.eventually.not.deep.equal(this.publicKey);
