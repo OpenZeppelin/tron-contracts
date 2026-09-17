@@ -133,47 +133,65 @@ describe('Arrays', function () {
 
       if (isValueType) {
         describe('sort', function () {
-          for (const length of [0, 1, 2, 8, 32, 128]) {
-            describe(`${name}[] of length ${length}`, function () {
-              beforeEach(async function () {
-                this.array = Array.from({ length }, generators[name]);
-              });
-
-              afterEach(async function () {
-                const expected = Array.from(this.array).sort(comparator);
-                const reversed = Array.from(expected).reverse();
-                await expect(this.instance.sort(this.array)).to.eventually.deep.equal(expected);
-                await expect(this.instance.sortReverse(this.array)).to.eventually.deep.equal(reversed);
-              });
-
-              it('sort array', async function () {
-                // nothing to do here, beforeEach and afterEach already take care of everything.
-              });
-
-              if (length > 1) {
-                it('sort array for identical elements', async function () {
-                  // duplicate the first value to all elements
-                  this.array.fill(this.array.at(0));
+          for (const length of [0, 1, 2, 8, 32, 128, 384]) {
+            describe(
+              [length > 32 && '[skip-on-coverage]', `${name}[] of length ${length}`].filter(Boolean).join(' '),
+              function () {
+                beforeEach(async function () {
+                  this.array = Array.from({ length }, generators[name]);
                 });
 
-                it('sort already sorted array', async function () {
-                  // pre-sort the elements
-                  this.array.sort(comparator);
+                afterEach(async function () {
+                  const expected = Array.from(this.array).sort(comparator);
+                  const reversed = Array.from(expected).reverse();
+                  await expect(this.instance.sort(this.array)).to.eventually.deep.equal(expected);
+                  await expect(this.instance.sortReverse(this.array)).to.eventually.deep.equal(reversed);
                 });
 
-                it('sort reversed array', async function () {
-                  // pre-sort in reverse order
-                  this.array.sort(comparator).reverse();
+                it('sort array', async function () {
+                  // nothing to do here, beforeEach and afterEach already take care of everything.
                 });
 
-                it('sort almost sorted array', async function () {
-                  // pre-sort + rotate (move the last element to the front) for an almost sorted effect
-                  this.array.sort(comparator);
-                  this.array.unshift(this.array.pop());
-                });
-              }
-            });
+                if (length > 1) {
+                  it('sort array for identical elements', async function () {
+                    // duplicate the first value to all elements
+                    this.array.fill(this.array.at(0));
+                  });
+
+                  it('sort already sorted array', async function () {
+                    // pre-sort the elements
+                    this.array.sort(comparator);
+                  });
+
+                  it('sort reversed array', async function () {
+                    // pre-sort in reverse order
+                    this.array.sort(comparator).reverse();
+                  });
+
+                  it('sort almost sorted array', async function () {
+                    // pre-sort + rotate (move the last element to the front) for an almost sorted effect
+                    this.array.sort(comparator);
+                    this.array.unshift(this.array.pop());
+                  });
+                }
+              },
+            );
           }
+
+          // Large arrays that a naive recursive quicksort would overflow. Pre-sorted is the
+          // recursion worst case, so it stays smaller (its O(n^2) comparisons bound the length).
+          describe('[skip-on-coverage] large array', function () {
+            it('sorts a large random array', async function () {
+              const array = Array.from({ length: 2048 }, generators[name]);
+              const expected = Array.from(array).sort(comparator);
+              await expect(this.instance.sort(array)).to.eventually.deep.equal(expected);
+            });
+
+            it('sorts a large pre-sorted array', async function () {
+              const array = Array.from({ length: 512 }, generators[name]).sort(comparator);
+              await expect(this.instance.sort(array)).to.eventually.deep.equal(array);
+            });
+          });
         });
 
         for (const fn of ['slice', 'splice']) {
