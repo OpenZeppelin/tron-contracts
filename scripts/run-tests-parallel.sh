@@ -297,6 +297,33 @@ for ((i=0; i<WORKERS; i++)); do
 done
 for pid in "${prime_pids[@]}"; do wait "$pid" 2>/dev/null || true; done
 
+# ----- 5.7. Activate the Pyrrho TVM proposals on every worker ------------
+#
+# TRON mainnet has ALLOW_TVM_PRAGUE (TIP-2935 block-hash history, used by
+# {Blockhash}) and ALLOW_TVM_OSAKA (TIP-7951 secp256r1 precompile at 0x100,
+# used by {P256}) active, but a fresh node defaults them OFF and java-tron has
+# no committee-config mapping for them (the image's `preapprove` entries are
+# accepted into fullnode.conf but never applied on-chain). Without this step the
+# TVM suites would silently exercise only the Solidity fallbacks instead of the
+# real mainnet behaviour. scripts/tre-activate-pyrrho.js creates + approves the
+# committee proposal from the genesis witness and warps the block clock past its
+# maintenance period (instant, via the TRE cheatcodes) so the chain mirrors
+# mainnet. Best-effort: a node that rejects the proposal (java-tron < 4.8.2) is a
+# warning, and the native-path assertions then show as pending rather than fail.
+echo "→ Activating Pyrrho TVM proposals (TIP-2935 + TIP-7951) on all workers..."
+pyrrho_pids=()
+for ((i=0; i<WORKERS; i++)); do
+  port=$((BASE_PORT + i))
+  TRE_HTTP="http://127.0.0.1:${port}" node scripts/tre-activate-pyrrho.js &
+  pyrrho_pids+=("$!")
+done
+for pid in "${pyrrho_pids[@]}"; do
+  if ! wait "$pid"; then
+    echo "  WARN: Pyrrho activation failed on a worker (needs java-tron >= 4.8.2);" >&2
+    echo "        native-path tests (P256 precompile, TIP-2935 history) will be skipped there." >&2
+  fi
+done
+
 # ----- 6. Spawn one hardhat-test process per bucket ----------------------
 
 echo "→ Launching test workers..."
