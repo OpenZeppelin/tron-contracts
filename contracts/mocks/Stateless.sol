@@ -18,6 +18,7 @@ import {CAIP10} from "../utils/CAIP10.sol";
 import {Checkpoints} from "../utils/structs/Checkpoints.sol";
 import {CircularBuffer} from "../utils/structs/CircularBuffer.sol";
 import {Clones} from "../proxy/Clones.sol";
+import {TRC1967Clones} from "../proxy/TRC1967/TRC1967Clones.sol";
 import {Create2} from "../utils/Create2.sol";
 import {DoubleEndedQueue} from "../utils/structs/DoubleEndedQueue.sol";
 import {ECDSA} from "../utils/cryptography/ECDSA.sol";
