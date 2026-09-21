@@ -7,6 +7,7 @@ import {Governor} from "../Governor.sol";
 import {IVotes} from "../utils/IVotes.sol";
 import {ITRC5805} from "../../interfaces/ITRC5805.sol";
 import {Time} from "../../utils/types/Time.sol";
+import {TRC6372Utils} from "../../utils/TRC6372Utils.sol";
 
 /**
  * @dev Extension of {Governor} for voting weight extraction from an {TRC20Votes} token, or since v4.5 an {TRC721Votes}
@@ -46,7 +47,7 @@ abstract contract GovernorVotes is Governor {
         try token().CLOCK_MODE() returns (string memory clockmode) {
             return clockmode;
         } catch {
-            return "mode=blocknumber&from=default";
+            return TRC6372Utils.blockNumberClockMode(clock);
         }
     }
 

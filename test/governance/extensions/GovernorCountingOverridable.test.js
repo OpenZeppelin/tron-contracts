@@ -7,7 +7,7 @@ const { getDomain, OverrideBallot } = require('../../helpers/eip712');
 const { VoteType } = require('../../helpers/enums');
 
 const TOKENS = [
-  { Token: '$TRC20VotesExtendedMock', mode: 'blocknumber' },
+  { Token: '$TRC20VotesExtendedMock', mode: 'blockNumber' },
   { Token: '$TRC20VotesExtendedTimestampMock', mode: 'timestamp' },
 ];
 

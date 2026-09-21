@@ -7,7 +7,7 @@ const time = require('../../../helpers/time');
 const { shouldBehaveLikeVotes } = require('../../../governance/utils/Votes.behavior');
 
 const TOKENS = [
-  { Token: '$TRC721Votes', mode: 'blocknumber' },
+  { Token: '$TRC721Votes', mode: 'blockNumber' },
   // no timestamp mode for TRC721Votes yet
 ];
 
