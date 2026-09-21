@@ -2,7 +2,7 @@
 'openzeppelin-tron-solidity': minor
 ---
 
-`TRC20TransferAuthorization`: Add a TRC-20 extension implementing ERC-3009's transfer with authorization using parallel nonces.
+`TRC20TransferAuthorization`: Add a TRC-20 extension implementing TIP-3009 (the TRON-side analogue of ERC-3009) transfer with authorization using parallel nonces.
 
 Ports `ERC20TransferAuthorization` and `draft-ERC3009` from OpenZeppelin
 Contracts (OpenZeppelin/openzeppelin-contracts#6354) with the usual TRON
