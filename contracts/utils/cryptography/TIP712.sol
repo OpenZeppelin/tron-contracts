@@ -36,6 +36,10 @@ import {ITRC5267} from "../../interfaces/ITRC5267.sol";
  * separator of the implementation contract. This will cause the {_domainSeparatorV4} function to always rebuild the
  * separator from the immutable values, which is cheaper than accessing a cached version in cold storage.
  *
+ * IMPORTANT: The `name` and `version` must each fit in a `ShortString` (at most 31 bytes). Longer values cause the
+ * constructor to revert with a `ShortStrings.StringTooLong` error. Because the values are stored exclusively in
+ * immutables, the domain is preserved when the contract is used behind a proxy or clone without an initializer.
+ *
  * @custom:oz-upgrades-unsafe-allow state-variable-immutable
  */
 abstract contract TIP712 is ITRC5267 {
@@ -55,8 +59,14 @@ abstract contract TIP712 is ITRC5267 {
 
     ShortString private immutable _name;
     ShortString private immutable _version;
+
+    // IMPORTANT: Deprecated. Kept to preserve the storage layout of inheriting contracts used as an
+    // implementation behind a proxy.
     // slither-disable-next-line constable-states
     string private _nameFallback;
+
+    // IMPORTANT: Deprecated. Kept to preserve the storage layout of inheriting contracts used as an
+    // implementation behind a proxy.
     // slither-disable-next-line constable-states
     string private _versionFallback;
 
@@ -71,20 +81,10 @@ abstract contract TIP712 is ITRC5267 {
      *
      * NOTE: These parameters cannot be changed except through a xref:learn::upgrading-smart-contracts.adoc[smart
      * contract upgrade].
-     *
-     * WARNING: This concerns the constructor-based variant of this contract. When `name` or `version` does not fit in
-     * a `ShortString` (i.e. is 32 bytes or longer), the constructor writes it to the `_nameFallback`/`_versionFallback`
-     * storage variables. Under a `delegatecall`-based deployment (minimal proxy/clone) that constructor never runs in
-     * the proxy's storage context, so the fallbacks stay empty while {_domainSeparatorV4} still uses the
-     * implementation's immutable `_hashedName`/`_hashedVersion`. As a result {eip712Domain} reports an empty
-     * `name`/`version` that does not match the separator used for verification, breaking off-chain domain discovery.
-     * Keep `name` and `version` within 31 bytes in that case. The upgradeable variant is not affected: it stores
-     * `name` and `version` as plain strings in namespaced storage, written by its initializer and read back by both
-     * {_domainSeparatorV4} and {eip712Domain}.
      */
     constructor(string memory name, string memory version) {
-        _name = name.toShortStringWithFallback(_nameFallback);
-        _version = version.toShortStringWithFallback(_versionFallback);
+        _name = name.toShortString();
+        _version = version.toShortString();
         _hashedName = keccak256(bytes(name));
         _hashedVersion = keccak256(bytes(version));
 
@@ -159,22 +159,20 @@ abstract contract TIP712 is ITRC5267 {
     /**
      * @dev The name parameter for the TIP712 domain.
      *
-     * NOTE: By default this function reads _name which is an immutable value.
-     * It only reads from storage if necessary (in case the value is too large to fit in a ShortString).
+     * NOTE: This function reads `_name`, which is an immutable value.
      */
     // solhint-disable-next-line func-name-mixedcase
     function _TIP712Name() internal view returns (string memory) {
-        return _name.toStringWithFallback(_nameFallback);
+        return _name.toString();
     }
 
     /**
      * @dev The version parameter for the TIP712 domain.
      *
-     * NOTE: By default this function reads _version which is an immutable value.
-     * It only reads from storage if necessary (in case the value is too large to fit in a ShortString).
+     * NOTE: This function reads `_version`, which is an immutable value.
      */
     // solhint-disable-next-line func-name-mixedcase
     function _TIP712Version() internal view returns (string memory) {
-        return _version.toStringWithFallback(_versionFallback);
+        return _version.toString();
     }
 }
