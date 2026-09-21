@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: MIT
+// OpenZeppelin Tron Contracts (last updated v5.7.0) (token/TRC20/extensions/draft-TRC3009.sol)
 pragma solidity ^0.8.26;
 
 import {TRC20} from "../TRC20.sol";
@@ -8,9 +9,9 @@ import {ITRC3009, ITRC3009Cancel} from "../../../interfaces/draft-ITRC3009.sol";
 import {Time} from "../../../utils/types/Time.sol";
 
 /**
- * @dev Implementation of the ERC-3009 Transfer With Authorization extension allowing
- * transfers to be made via signatures, as defined in https://eips.ethereum.org/EIPS/eip-3009[ERC-3009]
- * (TRON-namespaced as TRC-3009).
+ * @dev Implementation of the TRC-3009 Transfer With Authorization extension allowing transfers to be made via
+ * signatures, as defined in https://github.com/tronprotocol/tips/blob/master/tip-3009.md[TIP-3009] (the TRON-side
+ * analogue of https://eips.ethereum.org/EIPS/eip-3009[ERC-3009]).
  *
  * Adds the {transferWithAuthorization} and {receiveWithAuthorization} methods, which
  * can be used to change an account's TRC-20 balance by presenting a message signed
@@ -22,7 +23,7 @@ import {Time} from "../../../utils/types/Time.sol";
  * `validBefore` use a dual-clock encoding mirroring ERC-4337's validation-data time ranges. Bit 47
  * ({BLOCK_RANGE_FLAG}) acts as a clock selector: when *both* `validAfter` and `validBefore` have this bit
  * set, the values are interpreted as block numbers; otherwise they are interpreted as Unix timestamps (the
- * default, matching the ERC-3009 specification). Since the current clock fits in 48 bits, any bit set at
+ * default, matching the TIP-3009 specification). Since the current clock fits in 48 bits, any bit set at
  * position 47 or above (other than the active clock-mode flag) makes the value point to an unreachable
  * future. See {_checkValidity}.
  */
@@ -139,7 +140,7 @@ abstract contract TRC3009 is TRC20, TIP712, ITRC3009, ITRC3009Cancel {
      *
      * Following the ERC-4337-style dual-clock encoding, the clock is interpreted as block number only when
      * *both* `validAfter` and `validBefore` carry the {BLOCK_RANGE_FLAG}; otherwise it falls back to
-     * timestamp (matching the ERC-3009 specification's default). Mixed-flag inputs therefore fall back to
+     * timestamp (matching the TIP-3009 specification's default). Mixed-flag inputs therefore fall back to
      * the timestamp clock rather than reverting, mirroring ERC-4337's `parseValidationData`. The flag bit
      * is masked off the values only when block-mode is engaged; in timestamp mode the full 256-bit value
      * participates in the comparison.

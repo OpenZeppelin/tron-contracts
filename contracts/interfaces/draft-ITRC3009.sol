@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: MIT
+// OpenZeppelin Tron Contracts (last updated v5.7.0) (interfaces/draft-ITRC3009.sol)
 
 pragma solidity >=0.4.16;
 
 /**
- * @dev Interface of the ERC-3009 standard as defined in https://eips.ethereum.org/EIPS/eip-3009[ERC-3009],
- * TRON-namespaced as TRC-3009.
+ * @dev Interface of the TRC-3009 standard as defined in
+ * https://github.com/tronprotocol/tips/blob/master/tip-3009.md[TIP-3009] (the TRON-side analogue of
+ * https://eips.ethereum.org/EIPS/eip-3009[ERC-3009]).
  */
 interface ITRC3009 {
     /// @dev Emitted when an authorization is used.

@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: MIT
+// OpenZeppelin Tron Contracts (last updated v5.7.0) (token/TRC20/extensions/TRC20TransferAuthorization.sol)
 pragma solidity ^0.8.26;
 
 import {TRC3009} from "./draft-TRC3009.sol";
