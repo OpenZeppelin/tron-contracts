@@ -3,7 +3,6 @@ const { expect } = require('chai');
 const { loadFixture } = require('@nomicfoundation/hardhat-network-helpers');
 
 const { MAX_UINT48 } = require('../helpers/constants');
-const { batchInBlock } = require('../helpers/txpool');
 const time = require('../helpers/time');
 
 const WINDOW = 3_600n; // 1 hour
@@ -255,18 +254,22 @@ describe('RateLimiter', function () {
         await expect(this.mock.available()).to.eventually.equal(CAPACITY);
       });
 
-      // TVM/coverage: skipped. Staging several ops into one block relies on batchInBlock
-      // (tre_blockTime + pending-pool poll), whose forced-mine path leaks state on the TRE
-      // ("node is already manual mining") and needs a private key the coverage network lacks.
-      // The same-block behavior itself is correct (every tx in a block shares block.timestamp);
-      // only the scenario cannot be staged. Re-enable once batchInBlock is deterministic (see the
-      // matching skip in TRC20Votes.test.js).
-      it.skip('multiple consumes in the same block accumulate', async function () {
-        await batchInBlock([
-          () => this.mock.consume(100n),
-          () => this.mock.consume(200n),
-          () => this.mock.consume(50n),
-        ]);
+      // Rather than staging three consumes into one block via batchInBlock (unsupported on the TVM
+      // node and under coverage), route them through BatchCaller so they run in a single transaction:
+      // every call in one transaction shares block.timestamp, which is exactly the property under test.
+      it('multiple consumes in the same block accumulate', async function () {
+        const batch = await ethers.deployContract('BatchCaller');
+        await batch.execute(
+          [100n, 200n, 50n].map(quantity => ({
+            target: this.mock,
+            value: 0n,
+            data: this.mock.interface.encodeFunctionData('$consume_RateLimiter_RefillingBucket', [
+              0n,
+              defaultKey,
+              quantity,
+            ]),
+          })),
+        );
 
         // no time elapses between the three consumes; the entry's lastUsed accumulates to 350n
         await expect(this.mock.state()).to.eventually.deep.equal([350n, CAPACITY - 350n]);
@@ -304,21 +307,36 @@ describe('RateLimiter', function () {
         await expect(this.mock.available()).to.eventually.equal(CAPACITY + refill(d1 + d2, CAPACITY * 2n, WINDOW));
       });
 
-      // TVM/coverage: skipped. Staging several ops into one block relies on batchInBlock
-      // (tre_blockTime + pending-pool poll), whose forced-mine path leaks state on the TRE
-      // ("node is already manual mining") and needs a private key the coverage network lacks.
-      // The same-block behavior itself is correct (every tx in a block shares block.timestamp);
-      // only the scenario cannot be staged. Re-enable once batchInBlock is deterministic (see the
-      // matching skip in TRC20Votes.test.js).
-      it.skip('using sync to mitigate updateSettings side effect', async function () {
+      // sync and updateSettings must land in the same block. Instead of batchInBlock (unsupported on
+      // the TVM node and under coverage), route both through BatchCaller so they run in a single
+      // transaction: the refill up to this point is then captured under the old settings before the
+      // new capacity/window take effect.
+      it('using sync to mitigate updateSettings side effect', async function () {
         const d1 = 3n;
         const d2 = 4n;
+
+        const batch = await ethers.deployContract('BatchCaller');
 
         // consume the whole bucket
         await this.mock.consume(CAPACITY);
 
         await time.increaseBy.timestamp(d1, false);
-        await batchInBlock([() => this.mock.sync(), () => this.mock.updateSettings(WINDOW, CAPACITY * 2n)]);
+        await batch.execute([
+          {
+            target: this.mock,
+            value: 0n,
+            data: this.mock.interface.encodeFunctionData('$sync', [0n, defaultKey]),
+          },
+          {
+            target: this.mock,
+            value: 0n,
+            data: this.mock.interface.encodeFunctionData('$updateSettings_RateLimiter_RefillingBucket', [
+              0n,
+              WINDOW,
+              CAPACITY * 2n,
+            ]),
+          },
+        ]);
         await time.increaseBy.timestamp(d2);
 
         await expect(this.mock.state()).to.eventually.deep.equal([
@@ -543,18 +561,21 @@ describe('RateLimiter', function () {
         await expect(this.mock.available()).to.eventually.equal(CAPACITY);
       });
 
-      // TVM/coverage: skipped. Staging several ops into one block relies on batchInBlock
-      // (tre_blockTime + pending-pool poll), whose forced-mine path leaks state on the TRE
-      // ("node is already manual mining") and needs a private key the coverage network lacks.
-      // The same-block behavior itself is correct (every tx in a block shares block.timestamp);
-      // only the scenario cannot be staged. Re-enable once batchInBlock is deterministic (see the
-      // matching skip in TRC20Votes.test.js).
-      it.skip('multiple consumes in the same block overwrite the checkpoint in place', async function () {
-        await batchInBlock([
-          () => this.mock.consume(100n),
-          () => this.mock.consume(200n),
-          () => this.mock.consume(50n),
-        ]);
+      // Route the three consumes through BatchCaller so they run in a single transaction (same block)
+      // instead of batchInBlock (unsupported on the TVM node and under coverage).
+      it('multiple consumes in the same block overwrite the checkpoint in place', async function () {
+        const batch = await ethers.deployContract('BatchCaller');
+        await batch.execute(
+          [100n, 200n, 50n].map(quantity => ({
+            target: this.mock,
+            value: 0n,
+            data: this.mock.interface.encodeFunctionData('$consume_RateLimiter_SlidingWindow', [
+              0n,
+              defaultKey,
+              quantity,
+            ]),
+          })),
+        );
 
         // three pushes at the same timestamp collapse to a single checkpoint with cumulative 350n
         await expect(this.mock.state()).to.eventually.deep.equal([350n, CAPACITY - 350n]);
