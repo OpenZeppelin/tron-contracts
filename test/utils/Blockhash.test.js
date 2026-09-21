@@ -49,10 +49,8 @@ describe('Blockhash', function () {
     );
   });
 
-  // Beyond the 8191-block history window the library returns zero. The single-witness TVM has no fast
-  // block-number jump, so advancing 8191 blocks costs minutes; and while the history contract is inactive (as on
-  // both CI networks) this is anyway identical to the beyond-native-window case above. Run it on the EVM only,
-  // where mining is instant, to cover the upper bound of the window.
+  // Beyond the 8191-block history window the library returns zero. EVM-only: mining 8191 blocks is prohibitively
+  // slow on the single-witness TVM, and with the history contract inactive it is identical to the case above.
   (network.config.tron ? it.skip : it)('block beyond the history window', async function () {
     // fast forward (more than history serve window): even an active history contract no longer holds the hash,
     // so the library returns zero.
