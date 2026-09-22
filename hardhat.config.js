@@ -304,6 +304,10 @@ module.exports = {
   mocha: {
     timeout: 600_000,
     reporter: require.resolve('./scripts/mocha-file-timings-reporter.js'),
+    // Root hook: on a serial `hardhat test --network tre`, warn (or, with
+    // TRE_ACTIVATE_PYRRHO=1, activate) when the Pyrrho proposals are inactive, so the
+    // Blockhash/P256 native paths don't silently fall back. See test/helpers/pyrrho-setup.js.
+    rootHooks: require('./test/helpers/pyrrho-setup').mochaHooks,
   },
   docgen: require('./docs/config'),
 };
