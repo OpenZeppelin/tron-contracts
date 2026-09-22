@@ -19,7 +19,7 @@ function prepareOperation({ sender, target, value = 0n, data = '0x' }) {
 }
 
 const TOKENS = [
-  { Token: '$TRC20Votes', mode: 'blocknumber' },
+  { Token: '$TRC20Votes', mode: 'blockNumber' },
   { Token: '$TRC20VotesTimestampMock', mode: 'timestamp' },
 ];
 

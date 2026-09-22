@@ -7,7 +7,7 @@ const { GovernorHelper } = require('../../helpers/governance');
 const { ProposalState } = require('../../helpers/enums');
 
 const TOKENS = [
-  { Token: '$TRC20Votes', mode: 'blocknumber' },
+  { Token: '$TRC20Votes', mode: 'blockNumber' },
   { Token: '$TRC20VotesTimestampMock', mode: 'timestamp' },
 ];
 const name = 'Proposal Guardian Governor';

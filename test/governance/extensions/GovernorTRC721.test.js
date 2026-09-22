@@ -6,7 +6,7 @@ const { GovernorHelper } = require('../../helpers/governance');
 const { VoteType } = require('../../helpers/enums');
 
 const TOKENS = [
-  { Token: '$TRC721Votes', mode: 'blocknumber' },
+  { Token: '$TRC721Votes', mode: 'blockNumber' },
   { Token: '$TRC721VotesTimestampMock', mode: 'timestamp' },
 ];
 

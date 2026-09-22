@@ -8,7 +8,7 @@ const { zip } = require('../../helpers/iterate');
 const { sum } = require('../../helpers/math');
 
 const TOKENS = [
-  { Token: '$TRC20Votes', mode: 'blocknumber' },
+  { Token: '$TRC20Votes', mode: 'blockNumber' },
   { Token: '$TRC20VotesTimestampMock', mode: 'timestamp' },
 ];
 

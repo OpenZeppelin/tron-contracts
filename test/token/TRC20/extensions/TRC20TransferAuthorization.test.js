@@ -19,7 +19,7 @@ const packNonce = (key, seq = 0n) => ethers.toBeHex((BigInt(key) << 64n) | BigIn
 const withFlag = (value, mode) => value + (mode === 'timestamp' ? 0n : 0x800000000000n);
 
 describe('TRC20TransferAuthorization', function () {
-  for (const mode of ['timestamp', 'blocknumber']) {
+  for (const mode of ['timestamp', 'blockNumber']) {
     const fixture = async () => {
       const [holder, recipient, other] = await ethers.getSigners();
 
@@ -226,8 +226,8 @@ describe('TRC20TransferAuthorization', function () {
           // validAfter has the block flag, validBefore does not. Per the AND-of-flags rule the contract
           // falls back to the timestamp clock. validBefore = blockNumber + 10 is then a tiny number compared
           // to block.timestamp, so the authorization is considered expired.
-          const validAfter = withFlag(0n, 'blocknumber');
-          const validBefore = withFlag((await time.clock.blocknumber()) + 10n, 'timestamp');
+          const validAfter = withFlag(0n, 'blockNumber');
+          const validBefore = withFlag((await time.clock.blockNumber()) + 10n, 'timestamp');
 
           const { v, r, s } = await getDomain(this.token)
             .then(domain =>

@@ -11,6 +11,7 @@ import {Checkpoints} from "../../utils/structs/Checkpoints.sol";
 import {SafeCast} from "../../utils/math/SafeCast.sol";
 import {ECDSA} from "../../utils/cryptography/ECDSA.sol";
 import {Time} from "../../utils/types/Time.sol";
+import {TRC6372Utils} from "../../utils/TRC6372Utils.sol";
 
 /**
  * @dev This is a base abstract contract that tracks voting units, which are a measure of voting power that can be
@@ -43,11 +44,6 @@ abstract contract Votes is Context, TIP712, Nonces, ITRC5805 {
     Checkpoints.Trace208 private _totalCheckpoints;
 
     /**
-     * @dev The clock was incorrectly modified.
-     */
-    error TRC6372InconsistentClock();
-
-    /**
      * @dev Lookup to future votes is not available.
      */
     error TRC5805FutureLookup(uint256 timepoint, uint48 clock);
@@ -65,11 +61,7 @@ abstract contract Votes is Context, TIP712, Nonces, ITRC5805 {
      */
     // solhint-disable-next-line func-name-mixedcase
     function CLOCK_MODE() public view virtual returns (string memory) {
-        // Check that the clock was not modified
-        if (clock() != Time.blockNumber()) {
-            revert TRC6372InconsistentClock();
-        }
-        return "mode=blocknumber&from=default";
+        return TRC6372Utils.blockNumberClockMode(clock);
     }
 
     /**
