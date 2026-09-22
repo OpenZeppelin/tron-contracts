@@ -368,6 +368,26 @@ function shouldBehaveLikeBridgeTRC1155({ chainAIsCustodial = false, chainBIsCust
           ), // No address
         ).to.be.revertedWithCustomError(this.bridgeA, 'CrosschainMultiTokenEmptyAddress');
       });
+
+      it('reverts if the received recipient is not a valid 20-byte address', async function () {
+        const [alice] = this.accounts;
+
+        // A TVM address body is 20 bytes; a 21-byte recipient (e.g. a 0x41-prefixed address that was not
+        // stripped) must be rejected rather than silently truncated by `bytes20` into a wrong address.
+        const invalidRecipient = ethers.concat(['0x41', alice.address]);
+
+        await expect(
+          this.bridgeA
+            .connect(this.gatewayAsEOA)
+            .receiveMessage(
+              ethers.ZeroHash,
+              this.chain.toErc7930(this.bridgeB),
+              this.encodePayload(alice, invalidRecipient, ids, values),
+            ),
+        )
+          .to.be.revertedWithCustomError(this.bridgeA, 'CrosschainMultiTokenInvalidRecipient')
+          .withArgs(invalidRecipient);
+      });
     });
 
     describe('restrictions', function () {

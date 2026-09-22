@@ -45,6 +45,18 @@ abstract contract BridgeMultiToken is Context, CrosschainLinked {
     error CrosschainMultiTokenEmptyAddress();
 
     /**
+     * @dev Revert reason when the received recipient is not a valid 20-byte address.
+     *
+     * NOTE: This guard has no upstream (openzeppelin-contracts) equivalent. It is added for the TVM: TRON addresses
+     * are 21 bytes (a `0x41` prefix followed by a 20-byte body), one byte more than an EVM address. A counterpart that
+     * forgets to strip the `0x41` prefix would relay a 21-byte recipient, and the naive `bytes20(...)` cast would
+     * silently truncate it to `0x41` plus the first 19 bytes of the real address — a valid-looking but wrong address
+     * that the tokens would be delivered to. Rejecting any non-20-byte recipient turns that TVM-specific encoding
+     * mistake into a clean revert instead of lost tokens.
+     */
+    error CrosschainMultiTokenInvalidRecipient(bytes recipient);
+
+    /**
      * @dev Internal crosschain transfer function. `data` is forwarded through the TRC-7786 payload to
      * {_onReceive} on the destination chain.
      *
@@ -84,6 +96,9 @@ abstract contract BridgeMultiToken is Context, CrosschainLinked {
         // split payload
         (bytes memory from, bytes memory toEvm, uint256[] memory ids, uint256[] memory values, bytes memory data) = abi
             .decode(payload, (bytes, bytes, uint256[], uint256[], bytes));
+        // A TVM address body is 20 bytes; reject any other length instead of letting `bytes20` truncate a
+        // 0x41-prefixed (21-byte) recipient or zero-pad a short one. See {CrosschainMultiTokenInvalidRecipient}.
+        if (toEvm.length != 20) revert CrosschainMultiTokenInvalidRecipient(toEvm);
         address to = address(bytes20(toEvm));
 
         _onReceive(to, ids, values, data);
