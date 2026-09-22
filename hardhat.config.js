@@ -304,6 +304,9 @@ module.exports = {
   mocha: {
     timeout: 600_000,
     reporter: require.resolve('./scripts/mocha-file-timings-reporter.js'),
+    // Root hook: surfaces the Pyrrho node capabilities on serial `--network tre` runs
+    // (see test/helpers/pyrrho-setup.js).
+    rootHooks: require('./test/helpers/pyrrho-setup').mochaHooks,
   },
   docgen: require('./docs/config'),
 };
