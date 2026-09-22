@@ -13,6 +13,7 @@ In order to avoid clashes with the storage variables of the implementation contr
 
 - {TRC1967Utils}: Internal functions to get and set the storage slots defined in TRC-1967.
 - {TRC1967Proxy}: A proxy using TRC-1967 storage slots. Not upgradeable by default.
+- {TRC1967Clones}: A library that can deploy minimal TRC-1967 proxies that replicate the behavior of {TRC1967Proxy} with a bytecode optimized for cheap deployment and usage. Unlike {TRC1967Proxy}, the clones do not accept initialization data at construction, so the deployer is expected to initialize the proxy in the same transaction as the deployment.
 
 There are two alternative ways to add upgradeability to a TRC-1967 proxy. Their differences are explained below in <<transparent-vs-uups>>.
 
@@ -59,6 +60,8 @@ The current implementation of this security mechanism uses TRC-1822, as defined 
 {{ITRC1967}}
 
 {{TRC1967Proxy}}
+
+{{TRC1967Clones}}
 
 {{TRC1967Utils}}
 

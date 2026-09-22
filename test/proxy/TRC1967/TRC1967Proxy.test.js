@@ -22,7 +22,7 @@ describe('TRC1967Proxy', function () {
         ethers.deployContract('TRC1967Proxy', [implementation, initData], opts);
     });
 
-    shouldBehaveLikeProxy(false);
+    shouldBehaveLikeProxy({ allowUninitialized: false });
   });
 
   describe('(unsafe) allowUninitialized is true', function () {
@@ -31,6 +31,6 @@ describe('TRC1967Proxy', function () {
         ethers.deployContract('TRC1967ProxyUnsafe', [implementation, initData], opts);
     });
 
-    shouldBehaveLikeProxy(true);
+    shouldBehaveLikeProxy({ allowUninitialized: true });
   });
 });
