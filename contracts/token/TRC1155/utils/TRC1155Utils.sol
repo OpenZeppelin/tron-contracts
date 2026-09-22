@@ -55,7 +55,7 @@ library TRC1155Utils {
      * on the `to` address. The `operator` is generally the address that initiated the token transfer (i.e. `msg.sender`).
      *
      * The acceptance call is not executed and treated as a no-op if the target address doesn't contain code (i.e. an EOA).
-     * Otherwise, the recipient must implement {ITRC1155Receiver-onERC1155Received} and return the acceptance magic value to accept
+     * Otherwise, the recipient must implement {ITRC1155Receiver-onERC1155BatchReceived} and return the acceptance magic value to accept
      * the transfer.
      */
     function checkOnTRC1155BatchReceived(
