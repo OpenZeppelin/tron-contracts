@@ -13,6 +13,7 @@ Additionally there are multiple custom extensions, including:
 
 * designation of addresses that can pause token transfers for all users ({TRC1155Pausable}).
 * destruction of own tokens ({TRC1155Burnable}).
+* crosschain bridging of tokens through TRC-7786 gateways ({TRC1155Crosschain}).
 
 NOTE: This core set of contracts is designed to be unopinionated, allowing developers to access the internal functions in TRC-1155 (such as <<TRC1155-_mint-address-uint256-uint256-bytes-,`_mint`>>) and expose them as external functions in the way they prefer.
 
@@ -31,6 +32,8 @@ NOTE: This core set of contracts is designed to be unopinionated, allowing devel
 {{TRC1155Pausable}}
 
 {{TRC1155Burnable}}
+
+{{TRC1155Crosschain}}
 
 {{TRC1155Supply}}
 
