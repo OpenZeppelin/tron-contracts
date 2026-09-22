@@ -9,7 +9,7 @@ const { OperationState, ProposalState, VoteType } = require('../../helpers/enums
 const time = require('../../helpers/time');
 
 const TOKENS = [
-  { Token: '$TRC20Votes', mode: 'blocknumber' },
+  { Token: '$TRC20Votes', mode: 'blockNumber' },
   { Token: '$TRC20VotesTimestampMock', mode: 'timestamp' },
 ];
 

@@ -28,7 +28,7 @@ const fixture = async () => {
 };
 
 describe('TRC3009', function () {
-  for (const mode of ['timestamp', 'blocknumber']) {
+  for (const mode of ['timestamp', 'blockNumber']) {
     describe(`using ${mode} clock`, function () {
       beforeEach(async function () {
         Object.assign(this, await loadFixture(fixture));
@@ -403,8 +403,8 @@ describe('TRC3009', function () {
 
         it('rejects at the validAfter boundary (current == validAfter)', async function () {
           const target = (await time.clock[mode]()) + 5n;
-          if (mode === 'blocknumber') {
-            await time.increaseTo.blocknumber(target - 1n);
+          if (mode === 'blockNumber') {
+            await time.increaseTo.blockNumber(target - 1n);
           } else {
             await time.increaseTo.timestamp(target, false);
           }
@@ -446,8 +446,8 @@ describe('TRC3009', function () {
 
         it('rejects at the validBefore boundary (current == validBefore)', async function () {
           const target = (await time.clock[mode]()) + 5n;
-          if (mode === 'blocknumber') {
-            await time.increaseTo.blocknumber(target - 1n);
+          if (mode === 'blockNumber') {
+            await time.increaseTo.blockNumber(target - 1n);
           } else {
             await time.increaseTo.timestamp(target, false);
           }
@@ -736,8 +736,8 @@ describe('TRC3009', function () {
       // tiny number compared to block.timestamp, so the authorization is considered expired.
       const nonce = generators.bytes32();
       const value = 42n;
-      const validAfter = withFlag(0n, 'blocknumber');
-      const validBefore = await time.clock.blocknumber().then(clock => withFlag(clock + 10n, 'timestamp'));
+      const validAfter = withFlag(0n, 'blockNumber');
+      const validBefore = await time.clock.blockNumber().then(clock => withFlag(clock + 10n, 'timestamp'));
 
       const { v, r, s } = await getDomain(this.token)
         .then(domain =>

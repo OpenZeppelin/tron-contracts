@@ -11,9 +11,9 @@ const { shouldSupportInterfaces } = require('../utils/introspection/SupportsInte
 const { shouldBehaveLikeTRC6372 } = require('./utils/TRC6372.behavior');
 
 const TOKENS = [
-  { Token: '$TRC20Votes', mode: 'blocknumber' },
+  { Token: '$TRC20Votes', mode: 'blockNumber' },
   { Token: '$TRC20VotesTimestampMock', mode: 'timestamp' },
-  { Token: '$TRC20VotesLegacyMock', mode: 'blocknumber' },
+  { Token: '$TRC20VotesLegacyMock', mode: 'blockNumber' },
 ];
 
 const name = 'OZ-Governor';
