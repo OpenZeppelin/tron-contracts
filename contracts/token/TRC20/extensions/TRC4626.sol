@@ -65,6 +65,14 @@ import {Math} from "../../../utils/math/Math.sol";
  * * If {previewRedeem} is overridden to revert, {maxWithdraw} must be overridden as necessary to ensure it
  * always return successfully.
  * ====
+ *
+ * [CAUTION]
+ * ====
+ * Any mechanism that mints shares without a corresponding increase in the vault's assets (collateral) will alter the
+ * exchange rate and may open the door to vulnerabilities. In particular, this contract
+ * must NOT be combined with {TRC20FlashMint}: flash-minting shares temporarily inflates the total supply without
+ * increasing collateral, corrupting the exchange rate applied during the flash loan.
+ * ====
  */
 abstract contract TRC4626 is TRC20, ITRC4626 {
     using Math for uint256;
