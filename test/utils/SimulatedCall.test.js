@@ -118,5 +118,32 @@ describe('SimulateCall', function () {
         .to.emit(this.mock, 'return$simulateCall_address_uint256_bytes')
         .withArgs(false, this.target.interface.encodeErrorResult('Error', ['CallReceiverMock: reverting']));
     });
+
+    it('rolls back target state changes', async function () {
+      const storageSlot = ethers.id('simulate-call.rollback'); // arbitrary storage slot
+      const storageValue = ethers.zeroPadValue('0x2a', 32); // arbitrary non-zero value
+
+      // baseline the slot to a non-zero value with a real (non-simulated) write
+      await this.target.mockFunctionWritesStorage(storageSlot, storageValue);
+      await expect(ethers.provider.getStorage(this.target, storageSlot)).to.eventually.equal(storageValue);
+
+      // simulate overwriting the slot with a different value: the call runs (returns "0x1234") ...
+      await expect(
+        this.mock.$simulateCall(
+          ethers.Typed.address(this.target),
+          ethers.Typed.bytes(
+            this.target.interface.encodeFunctionData('mockFunctionWritesStorage', [
+              storageSlot,
+              ethers.zeroPadValue('0x99', 32),
+            ]),
+          ),
+        ),
+      )
+        .to.emit(this.mock, 'return$simulateCall_address_bytes')
+        .withArgs(true, this.target.interface.encodeFunctionResult('mockFunctionWritesStorage', ['0x1234']));
+
+      // ... but the write is rolled back: the slot still holds the pre-simulation value
+      await expect(ethers.provider.getStorage(this.target, storageSlot)).to.eventually.equal(storageValue);
+    });
   });
 });
