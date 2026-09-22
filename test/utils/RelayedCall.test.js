@@ -138,7 +138,7 @@ describe('RelayedCall', function () {
       ).to.be.revertedWithoutReason();
     });
 
-    it('input format', async function () {
+    it('relayer input format', async function () {
       // deploy relayer
       await this.mock.$getRelayer();
 
@@ -258,7 +258,7 @@ describe('RelayedCall', function () {
       ).to.be.revertedWithoutReason();
     });
 
-    it('input format', async function () {
+    it('relayer input format', async function () {
       // deploy relayer
       await this.mock.$getRelayer(ethers.Typed.bytes32(this.salt));
 
