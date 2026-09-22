@@ -28,6 +28,7 @@ Additionally there are a few of other extensions:
 * {TRC721Royalty}: A way to signal royalty information following TRC-2981.
 * {TRC721Pausable}: A primitive to pause contract operation.
 * {TRC721Burnable}: A way for token holders to burn their own tokens.
+* {TRC721Crosschain}: Embedded {BridgeNonFungible} bridge, making the token crosschain through the use of TRC-7786 gateways.
 * {TRC721Wrapper}: Wrapper to create a TRC-721 backed by another TRC-721, with deposit and withdraw methods. Useful in conjunction with {TRC721Votes}.
 
 NOTE: This core set of contracts is designed to be unopinionated, allowing developers to access the internal functions in TRC-721 (such as <<TRC721-_mint-address-uint256-,`_mint`>>) and expose them as external functions in the way they prefer.
@@ -47,6 +48,8 @@ NOTE: This core set of contracts is designed to be unopinionated, allowing devel
 {{ITRC721Receiver}}
 
 == Extensions
+
+{{TRC721Crosschain}}
 
 {{TRC721Pausable}}
 

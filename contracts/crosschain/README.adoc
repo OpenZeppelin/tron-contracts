@@ -11,7 +11,9 @@ This directory contains contracts for sending and receiving cross chain messages
 Additionally there are multiple bridge constructions:
 
 * {BridgeFungible}: Core bridging logic for crosschain TRC-20 transfer. Used by {BridgeTRC20}, {BridgeTRC7802} and {TRC20Crosschain},
+* {BridgeNonFungible}: Core bridging logic for crosschain TRC-721 transfer. Used by {BridgeTRC721} and {TRC721Crosschain},
 * {BridgeTRC20}: Standalone bridge contract to connect a TRC-20 token contract with counterparts on remote chains,
+* {BridgeTRC721}: Standalone bridge contract to connect a TRC-721 token contract with counterparts on remote chains,
 * {BridgeTRC7802}: Standalone bridge contract to connect a TRC-7802 token contract with counterparts on remote chains.
 
 == Helpers
@@ -24,6 +26,10 @@ Additionally there are multiple bridge constructions:
 
 {{BridgeFungible}}
 
+{{BridgeNonFungible}}
+
 {{BridgeTRC20}}
+
+{{BridgeTRC721}}
 
 {{BridgeTRC7802}}
