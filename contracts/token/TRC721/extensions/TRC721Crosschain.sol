@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Tron Contracts (last updated v5.7.0) (token/TRC721/extensions/TRC721Crosschain.sol)
+// OpenZeppelin Tron Contracts (last updated v5.7.0-rc.0) (token/TRC721/extensions/TRC721Crosschain.sol)
 
 pragma solidity ^0.8.26;
 

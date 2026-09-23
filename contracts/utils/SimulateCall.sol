@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Tron Contracts (last updated v5.7.0) (utils/SimulateCall.sol)
+// OpenZeppelin Tron Contracts (last updated v5.7.0-rc.0) (utils/SimulateCall.sol)
 
 pragma solidity ^0.8.20;
 

@@ -4,5 +4,31 @@
   "initialVersions": {
     "openzeppelin-tron-solidity": "5.6.0"
   },
-  "changesets": []
+  "changesets": [
+    "arrays-larger-sort",
+    "blockhash-tip2935",
+    "bridge-trc1155",
+    "bridge-trc721",
+    "crosschain-linked-calldata-parse",
+    "deque-values-slice",
+    "drop-signer-eip7702",
+    "enumerable-at-to-pos",
+    "fix-docs-build",
+    "memory-slice-equal-shortcircuit",
+    "multisigner-trc7913-calldata-decode",
+    "p256-restore-tip7951-native",
+    "rate-limiter-library",
+    "rsa-fail-closed-modexp",
+    "safetrc20-try-get-decimals",
+    "signaturechecker-pad-1271-calldata",
+    "simulate-call",
+    "tip712-drop-storage-fallback",
+    "trc1155-crosschain",
+    "trc1967-clones",
+    "trc20-transfer-authorization",
+    "trc6372-utils",
+    "trc721-crosschain",
+    "tre-2-0-bump",
+    "webauthn-verifier-require-uv"
+  ]
 }

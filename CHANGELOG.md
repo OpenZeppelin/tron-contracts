@@ -1,5 +1,43 @@
 # openzeppelin-tron-solidity
 
+
+## 5.7.0-rc.0 (2026-09-23)
+
+- `Arrays`: Reduce reliance on recursion to prevent stack overflow and support larger arrays. ([#171](https://github.com/OpenZeppelin/tron-contracts/pull/171))
+- `Blockhash`: Restore the TIP-2935 history-storage lookup so `blockHash` serves block hashes beyond the native 256-block window (between 257 and 8191 blocks ago). TIP-2935 (java-tron 4.8.2, `ALLOW_TVM_PRAGUE`) reuses the same history-storage address and bytecode as EIP-2935, so the library matches upstream; on networks where TIP-2935 is not active the lookup gracefully returns zero. ([#178](https://github.com/OpenZeppelin/tron-contracts/pull/178))
+- `BridgeMultiToken` and `BridgeTRC1155`: Add bridge contracts to handle crosschain movements of TRC-1155 tokens. Unlike the upstream `BridgeERC1155`, a received recipient that is not exactly 20 bytes is rejected with `CrosschainMultiTokenInvalidRecipient`: TVM addresses carry an extra leading `0x41` byte, so a non-stripped 21-byte recipient must be rejected rather than silently truncated by `bytes20` into a wrong address. ([#183](https://github.com/OpenZeppelin/tron-contracts/pull/183))
+- `BridgeNonFungible` and `BridgeTRC721`: Add bridge contracts to handle crosschain movements of TRC-721 tokens. Unlike the upstream `BridgeERC721`, a received recipient that is not exactly 20 bytes is rejected with `CrosschainNonFungibleInvalidRecipient`: TVM addresses carry an extra leading `0x41` byte, so a non-stripped 21-byte recipient must be rejected rather than silently truncated by `bytes20` into a wrong address. ([#182](https://github.com/OpenZeppelin/tron-contracts/pull/182))
+- `DoubleEndedQueue`: Add `values(deque, start, end)` to return a slice of the queue as an array, mirroring the paginated `values` accessor in `EnumerableSet`. Out-of-bound values for `start` and `end` are clamped to the queue length. ([#167](https://github.com/OpenZeppelin/tron-contracts/pull/167))
+- `SignerEIP7702`: Remove the signer. EIP-7702 has no TRON analogue, so its "the account validates a signature recovering to its own address" path is unreachable on the TVM and the contract cannot fulfill its purpose. Same rationale as not porting `Create3`. ([#189](https://github.com/OpenZeppelin/tron-contracts/pull/189))
+- `Checkpoints`, `DoubleEndedQueue`, `EnumerableMap` and `EnumerableSet`: Deprecate the `at` function for accessing a specific index of the structure. We introduce new `pos` functions to replace them. ([#173](https://github.com/OpenZeppelin/tron-contracts/pull/173))
+- `P256`: Restore the native secp256r1 precompile path for TIP-7951, matching upstream. `verify` now tries the precompile at `address(0x100)` and falls back to `verifySolidity` on networks that have not activated it (`ALLOW_TVM_OSAKA`). Callers (`WebAuthn`, `TRC7913P256Verifier`, `SignerP256`) are unchanged. ([#150](https://github.com/OpenZeppelin/tron-contracts/pull/150))
+- `RateLimiter`: Add a library that provides primitives for limiting the rate at which an action can be performed, with two complementary strategies: a refilling token bucket and a sliding window counter. ([#176](https://github.com/OpenZeppelin/tron-contracts/pull/176))
+- `SafeTRC20`: Add `tryGetDecimals` helper that safely queries a token's `decimals()` without reverting. ([#166](https://github.com/OpenZeppelin/tron-contracts/pull/166))
+- `SimulateCall`: Add a new call simulation utilities that allow inspecting return data from contract calls by executing them in a non-mutating, revert-based context. ([#184](https://github.com/OpenZeppelin/tron-contracts/pull/184))
+- `TIP712`: Drop the storage fallback for long `name`/`version` values. Both parameters must now fit in a `ShortString` (at most 31 bytes) or the constructor reverts with `ShortStrings.StringTooLong`. Storing the domain exclusively in immutables keeps the domain (and downstream `TRC7739` verification) consistent when the contract is used behind a proxy or clone without an initializer. ([#174](https://github.com/OpenZeppelin/tron-contracts/pull/174))
+- `TRC1155Crosschain`: Add a TRC-1155 extension to embed a TRC-7786 based crosschain bridge directly in the token contract. ([#183](https://github.com/OpenZeppelin/tron-contracts/pull/183))
+- `TRC1967Clones`: Add a library to deploy minimal TRC-1967 proxies (via `create` or `create2`), with address prediction for the deterministic variant. ([#181](https://github.com/OpenZeppelin/tron-contracts/pull/181))
+- `TRC20TransferAuthorization`: Add a TRC-20 extension implementing TIP-3009 (the TRON-side analogue of ERC-3009) transfer with authorization using parallel nonces. ([#177](https://github.com/OpenZeppelin/tron-contracts/pull/177))
+
+  Ports `ERC20TransferAuthorization` and `draft-ERC3009` from OpenZeppelin
+  Contracts (OpenZeppelin/openzeppelin-contracts#6354) with the usual TRON
+  adaptations: TRC/TIP naming (`TRC3009`, `ITRC3009`, `ITRC3009Cancel`,
+  `TRC20TransferAuthorization`), `TIP712` domain separation instead of
+  `EIP712`, TRC-1271 signature support in the bytes-signature variants, and a
+  locally defined `BLOCK_RANGE_FLAG` (this repository does not ship the
+  account-abstraction utilities the upstream implementation imports it from).
+
+- `TRC6372Utils`: Add utility library for TRC-6372 clock mode validation, supporting block number and timestamp modes with consistency checks. ([#180](https://github.com/OpenZeppelin/tron-contracts/pull/180))
+- `TRC721Crosschain`: Add a TRC-721 extension to embed a TRC-7786 based crosschain bridge directly in the token contract. ([#182](https://github.com/OpenZeppelin/tron-contracts/pull/182))
+- `CrosschainLinked`: Parse the counterpart chain from calldata in `_isAuthorizedGateway`, avoiding an unnecessary memory copy of `sender`. ([#170](https://github.com/OpenZeppelin/tron-contracts/pull/170))
+- Fix the API docs build: run `hardhat docgen` under the stock-solc pipeline (the batched tron-solc corpus exhausts the wasm memory in one pass) and target `@openzeppelin/tron-contracts` in the generated imports and source links. ([#172](https://github.com/OpenZeppelin/tron-contracts/pull/172))
+- `Memory`: Return early from `Slice` equality when the two slices have different lengths, skipping the `keccak256` comparison. ([#169](https://github.com/OpenZeppelin/tron-contracts/pull/169))
+- `MultiSignerTRC7913`: Decode the multisignature payload directly from calldata and return `false` on malformed encoding instead of reverting during `abi.decode`. The `_validateSignatures` and `_validateThreshold` override parameters change from `bytes[] memory` to `bytes[] calldata`. ([#164](https://github.com/OpenZeppelin/tron-contracts/pull/164))
+- `RSA`: Return `false` from `pkcs1Sha256` instead of reverting when modular exponentiation fails. ([#160](https://github.com/OpenZeppelin/tron-contracts/pull/160))
+- `SignatureChecker`: Zero-pad the TRC-1271 signature calldata to a 32-byte boundary when performing the TRC-1271 static call, so the encoded `bytes` argument conforms to the ABI spec. ([#163](https://github.com/OpenZeppelin/tron-contracts/pull/163))
+- Run the test suite against `tronbox/tre` 2.0 (java-tron 4.8.2): pin the 2.0 image digest, refresh the `@openzeppelin/hardhat-tron` FullNode.jar patch that targets it, and pre-approve the `allowTvmPrague` / `allowTvmOsaka` proposals in the test containers. ([#165](https://github.com/OpenZeppelin/tron-contracts/pull/165))
+- `TRC7913WebAuthnVerifier`: Add an internal `_requireUV` function that can be overridden to disable the UV check. ([#168](https://github.com/OpenZeppelin/tron-contracts/pull/168))
+
 ## 5.6.0 (2026-09-01)
 
 - `AccessManager`: treat `setAuthority` differently in `canCall` to prevent bypassing the `updateAuthority` security using an `execute`. ([#120](https://github.com/OpenZeppelin/tron-contracts/pull/120))
