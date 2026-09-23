@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Tron Contracts (last updated v5.5.0) (governance/extensions/GovernorVotesSuperQuorumFraction.sol)
+// OpenZeppelin Tron Contracts (last updated v5.7.0-rc.0) (governance/extensions/GovernorVotesSuperQuorumFraction.sol)
 
 pragma solidity ^0.8.24;
 

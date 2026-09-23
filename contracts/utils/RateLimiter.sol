@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Tron Contracts (last updated v5.7.0) (utils/RateLimiter.sol)
+// OpenZeppelin Tron Contracts (last updated v5.7.0-rc.0) (utils/RateLimiter.sol)
 pragma solidity ^0.8.26;
 
 import {Math} from "./math/Math.sol";
