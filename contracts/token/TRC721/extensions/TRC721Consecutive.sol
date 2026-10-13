@@ -16,6 +16,13 @@ import {Checkpoints} from "../../../utils/structs/Checkpoints.sol";
  * contracts this implies that batch minting is only available during proxy deployment, and not in subsequent upgrades.
  * These batches are limited to 5000 tokens at a time by default to accommodate off-chain indexers.
  *
+ * WARNING: For upgradeable contracts, batch minting in the initializer only works when the initializer executes
+ * during the proxy's construction. Deployment must therefore pass the initialization data through the proxy
+ * constructor (for example `TRC1967Proxy(implementation, initData)`). A two-step deployment that deploys the proxy
+ * first and then calls the initializer in a separate transaction reverts with {TRC721ForbiddenBatchMint}, because the
+ * proxy already has a non-zero code size by then. This is fail-safe (the deployment reverts and no partial state is
+ * produced), but it makes this extension incompatible with deploy-then-initialize factory patterns.
+ *
  * Using this extension removes the ability to mint single tokens during contract construction. This ability is
  * regained after construction. During construction, only batch minting is allowed.
  *
