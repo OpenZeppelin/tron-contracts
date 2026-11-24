@@ -1,0 +1,75 @@
+*.swp
+*.swo
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+allFiredEvents
+scTopics
+
+# Coverage directory used by tools like istanbul
+coverage
+coverage.json
+coverageEnv
+
+# node-waf configuration
+.lock-wscript
+
+# Dependency directory
+node_modules
+
+# Debug log from npm
+npm-debug.log
+
+# local env variables
+.env
+
+# macOS
+.DS_Store
+
+# IntelliJ IDE
+.idea
+
+# docs artifacts
+docs/modules/api
+build/site
+
+# only used to package @openzeppelin/contracts
+contracts/build/
+contracts/README.md
+
+# temporary artifact from solidity-coverage
+allFiredEvents
+.coverage_artifacts
+.coverage_cache
+.coverage_contracts
+
+# hardhat-exposed output (default outDir is /contracts-exposed; we override
+# to /contracts/exposed in hardhat.config.js `exposed.outDir`).
+/contracts-exposed
+/contracts/exposed
+
+# Hardhat
+/cache
+/artifacts
+
+# TRE patched FullNode.jar (built locally via hardhat-tron/docker/build-jar.sh)
+/tre/FullNode.jar
+
+# Foundry
+/out
+/cache_forge
+
+# parallel test cache
+/.parallel-cache
+
+# Certora
+.certora*
+.last_confs
+certora_*
+.zip-output-url.txt

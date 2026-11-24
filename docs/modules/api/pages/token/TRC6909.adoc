@@ -1,0 +1,937 @@
+:github-icon: pass:[<svg class="icon"><use href="#github-icon"/></svg>]
+:ITRC6909: pass:normal[xref:interfaces.adoc#ITRC6909[`ITRC6909`]]
+:ITRC6909ContentURI: pass:normal[xref:interfaces.adoc#ITRC6909ContentURI[`ITRC6909ContentURI`]]
+:ITRC6909Metadata: pass:normal[xref:interfaces.adoc#ITRC6909Metadata[`ITRC6909Metadata`]]
+:ITRC6909TokenSupply: pass:normal[xref:interfaces.adoc#ITRC6909TokenSupply[`ITRC6909TokenSupply`]]
+:xref-TRC6909-supportsInterface-bytes4-: xref:token/TRC6909.adoc#TRC6909-supportsInterface-bytes4-
+:xref-TRC6909-balanceOf-address-uint256-: xref:token/TRC6909.adoc#TRC6909-balanceOf-address-uint256-
+:xref-TRC6909-allowance-address-address-uint256-: xref:token/TRC6909.adoc#TRC6909-allowance-address-address-uint256-
+:xref-TRC6909-isOperator-address-address-: xref:token/TRC6909.adoc#TRC6909-isOperator-address-address-
+:xref-TRC6909-approve-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-approve-address-uint256-uint256-
+:xref-TRC6909-setOperator-address-bool-: xref:token/TRC6909.adoc#TRC6909-setOperator-address-bool-
+:xref-TRC6909-transfer-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-transfer-address-uint256-uint256-
+:xref-TRC6909-transferFrom-address-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-transferFrom-address-address-uint256-uint256-
+:xref-TRC6909-_mint-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-_mint-address-uint256-uint256-
+:xref-TRC6909-_transfer-address-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-_transfer-address-address-uint256-uint256-
+:xref-TRC6909-_burn-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-_burn-address-uint256-uint256-
+:xref-TRC6909-_update-address-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-_update-address-address-uint256-uint256-
+:xref-TRC6909-_approve-address-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-_approve-address-address-uint256-uint256-
+:xref-TRC6909-_setOperator-address-address-bool-: xref:token/TRC6909.adoc#TRC6909-_setOperator-address-address-bool-
+:xref-TRC6909-_spendAllowance-address-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-_spendAllowance-address-address-uint256-uint256-
+:xref-ITRC6909-Approval-address-address-uint256-uint256-: xref:interfaces.adoc#ITRC6909-Approval-address-address-uint256-uint256-
+:xref-ITRC6909-OperatorSet-address-address-bool-: xref:interfaces.adoc#ITRC6909-OperatorSet-address-address-bool-
+:xref-ITRC6909-Transfer-address-address-address-uint256-uint256-: xref:interfaces.adoc#ITRC6909-Transfer-address-address-address-uint256-uint256-
+:xref-TRC6909-TRC6909InsufficientBalance-address-uint256-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-TRC6909InsufficientBalance-address-uint256-uint256-uint256-
+:xref-TRC6909-TRC6909InsufficientAllowance-address-uint256-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-TRC6909InsufficientAllowance-address-uint256-uint256-uint256-
+:xref-TRC6909-TRC6909InvalidApprover-address-: xref:token/TRC6909.adoc#TRC6909-TRC6909InvalidApprover-address-
+:xref-TRC6909-TRC6909InvalidReceiver-address-: xref:token/TRC6909.adoc#TRC6909-TRC6909InvalidReceiver-address-
+:xref-TRC6909-TRC6909InvalidSender-address-: xref:token/TRC6909.adoc#TRC6909-TRC6909InvalidSender-address-
+:xref-TRC6909-TRC6909InvalidSpender-address-: xref:token/TRC6909.adoc#TRC6909-TRC6909InvalidSpender-address-
+:ITRC20-approve: pass:normal[xref:token/TRC20.adoc#ITRC20-approve-address-uint256-[`ITRC20.approve`]]
+:xref-TRC6909ContentURI-supportsInterface-bytes4-: xref:token/TRC6909.adoc#TRC6909ContentURI-supportsInterface-bytes4-
+:xref-TRC6909ContentURI-contractURI--: xref:token/TRC6909.adoc#TRC6909ContentURI-contractURI--
+:xref-TRC6909ContentURI-tokenURI-uint256-: xref:token/TRC6909.adoc#TRC6909ContentURI-tokenURI-uint256-
+:xref-TRC6909ContentURI-_setContractURI-string-: xref:token/TRC6909.adoc#TRC6909ContentURI-_setContractURI-string-
+:xref-TRC6909ContentURI-_setTokenURI-uint256-string-: xref:token/TRC6909.adoc#TRC6909ContentURI-_setTokenURI-uint256-string-
+:xref-TRC6909-balanceOf-address-uint256-: xref:token/TRC6909.adoc#TRC6909-balanceOf-address-uint256-
+:xref-TRC6909-allowance-address-address-uint256-: xref:token/TRC6909.adoc#TRC6909-allowance-address-address-uint256-
+:xref-TRC6909-isOperator-address-address-: xref:token/TRC6909.adoc#TRC6909-isOperator-address-address-
+:xref-TRC6909-approve-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-approve-address-uint256-uint256-
+:xref-TRC6909-setOperator-address-bool-: xref:token/TRC6909.adoc#TRC6909-setOperator-address-bool-
+:xref-TRC6909-transfer-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-transfer-address-uint256-uint256-
+:xref-TRC6909-transferFrom-address-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-transferFrom-address-address-uint256-uint256-
+:xref-TRC6909-_mint-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-_mint-address-uint256-uint256-
+:xref-TRC6909-_transfer-address-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-_transfer-address-address-uint256-uint256-
+:xref-TRC6909-_burn-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-_burn-address-uint256-uint256-
+:xref-TRC6909-_update-address-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-_update-address-address-uint256-uint256-
+:xref-TRC6909-_approve-address-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-_approve-address-address-uint256-uint256-
+:xref-TRC6909-_setOperator-address-address-bool-: xref:token/TRC6909.adoc#TRC6909-_setOperator-address-address-bool-
+:xref-TRC6909-_spendAllowance-address-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-_spendAllowance-address-address-uint256-uint256-
+:xref-TRC6909ContentURI-ContractURIUpdated--: xref:token/TRC6909.adoc#TRC6909ContentURI-ContractURIUpdated--
+:xref-TRC6909ContentURI-URI-string-uint256-: xref:token/TRC6909.adoc#TRC6909ContentURI-URI-string-uint256-
+:xref-ITRC6909-Approval-address-address-uint256-uint256-: xref:interfaces.adoc#ITRC6909-Approval-address-address-uint256-uint256-
+:xref-ITRC6909-OperatorSet-address-address-bool-: xref:interfaces.adoc#ITRC6909-OperatorSet-address-address-bool-
+:xref-ITRC6909-Transfer-address-address-address-uint256-uint256-: xref:interfaces.adoc#ITRC6909-Transfer-address-address-address-uint256-uint256-
+:xref-TRC6909-TRC6909InsufficientBalance-address-uint256-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-TRC6909InsufficientBalance-address-uint256-uint256-uint256-
+:xref-TRC6909-TRC6909InsufficientAllowance-address-uint256-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-TRC6909InsufficientAllowance-address-uint256-uint256-uint256-
+:xref-TRC6909-TRC6909InvalidApprover-address-: xref:token/TRC6909.adoc#TRC6909-TRC6909InvalidApprover-address-
+:xref-TRC6909-TRC6909InvalidReceiver-address-: xref:token/TRC6909.adoc#TRC6909-TRC6909InvalidReceiver-address-
+:xref-TRC6909-TRC6909InvalidSender-address-: xref:token/TRC6909.adoc#TRC6909-TRC6909InvalidSender-address-
+:xref-TRC6909-TRC6909InvalidSpender-address-: xref:token/TRC6909.adoc#TRC6909-TRC6909InvalidSpender-address-
+:ITRC1155-URI: pass:normal[xref:token/TRC1155.adoc#ITRC1155-URI-string-uint256-[`ITRC1155.URI`]]
+:xref-TRC6909Metadata-name-uint256-: xref:token/TRC6909.adoc#TRC6909Metadata-name-uint256-
+:xref-TRC6909Metadata-symbol-uint256-: xref:token/TRC6909.adoc#TRC6909Metadata-symbol-uint256-
+:xref-TRC6909Metadata-decimals-uint256-: xref:token/TRC6909.adoc#TRC6909Metadata-decimals-uint256-
+:xref-TRC6909Metadata-supportsInterface-bytes4-: xref:token/TRC6909.adoc#TRC6909Metadata-supportsInterface-bytes4-
+:xref-TRC6909Metadata-_setName-uint256-string-: xref:token/TRC6909.adoc#TRC6909Metadata-_setName-uint256-string-
+:xref-TRC6909Metadata-_setSymbol-uint256-string-: xref:token/TRC6909.adoc#TRC6909Metadata-_setSymbol-uint256-string-
+:xref-TRC6909Metadata-_setDecimals-uint256-uint8-: xref:token/TRC6909.adoc#TRC6909Metadata-_setDecimals-uint256-uint8-
+:xref-TRC6909-balanceOf-address-uint256-: xref:token/TRC6909.adoc#TRC6909-balanceOf-address-uint256-
+:xref-TRC6909-allowance-address-address-uint256-: xref:token/TRC6909.adoc#TRC6909-allowance-address-address-uint256-
+:xref-TRC6909-isOperator-address-address-: xref:token/TRC6909.adoc#TRC6909-isOperator-address-address-
+:xref-TRC6909-approve-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-approve-address-uint256-uint256-
+:xref-TRC6909-setOperator-address-bool-: xref:token/TRC6909.adoc#TRC6909-setOperator-address-bool-
+:xref-TRC6909-transfer-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-transfer-address-uint256-uint256-
+:xref-TRC6909-transferFrom-address-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-transferFrom-address-address-uint256-uint256-
+:xref-TRC6909-_mint-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-_mint-address-uint256-uint256-
+:xref-TRC6909-_transfer-address-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-_transfer-address-address-uint256-uint256-
+:xref-TRC6909-_burn-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-_burn-address-uint256-uint256-
+:xref-TRC6909-_update-address-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-_update-address-address-uint256-uint256-
+:xref-TRC6909-_approve-address-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-_approve-address-address-uint256-uint256-
+:xref-TRC6909-_setOperator-address-address-bool-: xref:token/TRC6909.adoc#TRC6909-_setOperator-address-address-bool-
+:xref-TRC6909-_spendAllowance-address-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-_spendAllowance-address-address-uint256-uint256-
+:xref-TRC6909Metadata-TRC6909NameUpdated-uint256-string-: xref:token/TRC6909.adoc#TRC6909Metadata-TRC6909NameUpdated-uint256-string-
+:xref-TRC6909Metadata-TRC6909SymbolUpdated-uint256-string-: xref:token/TRC6909.adoc#TRC6909Metadata-TRC6909SymbolUpdated-uint256-string-
+:xref-TRC6909Metadata-TRC6909DecimalsUpdated-uint256-uint8-: xref:token/TRC6909.adoc#TRC6909Metadata-TRC6909DecimalsUpdated-uint256-uint8-
+:xref-ITRC6909-Approval-address-address-uint256-uint256-: xref:interfaces.adoc#ITRC6909-Approval-address-address-uint256-uint256-
+:xref-ITRC6909-OperatorSet-address-address-bool-: xref:interfaces.adoc#ITRC6909-OperatorSet-address-address-bool-
+:xref-ITRC6909-Transfer-address-address-address-uint256-uint256-: xref:interfaces.adoc#ITRC6909-Transfer-address-address-address-uint256-uint256-
+:xref-TRC6909-TRC6909InsufficientBalance-address-uint256-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-TRC6909InsufficientBalance-address-uint256-uint256-uint256-
+:xref-TRC6909-TRC6909InsufficientAllowance-address-uint256-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-TRC6909InsufficientAllowance-address-uint256-uint256-uint256-
+:xref-TRC6909-TRC6909InvalidApprover-address-: xref:token/TRC6909.adoc#TRC6909-TRC6909InvalidApprover-address-
+:xref-TRC6909-TRC6909InvalidReceiver-address-: xref:token/TRC6909.adoc#TRC6909-TRC6909InvalidReceiver-address-
+:xref-TRC6909-TRC6909InvalidSender-address-: xref:token/TRC6909.adoc#TRC6909-TRC6909InvalidSender-address-
+:xref-TRC6909-TRC6909InvalidSpender-address-: xref:token/TRC6909.adoc#TRC6909-TRC6909InvalidSpender-address-
+:xref-TRC6909TokenSupply-totalSupply-uint256-: xref:token/TRC6909.adoc#TRC6909TokenSupply-totalSupply-uint256-
+:xref-TRC6909TokenSupply-supportsInterface-bytes4-: xref:token/TRC6909.adoc#TRC6909TokenSupply-supportsInterface-bytes4-
+:xref-TRC6909TokenSupply-_update-address-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909TokenSupply-_update-address-address-uint256-uint256-
+:xref-TRC6909-balanceOf-address-uint256-: xref:token/TRC6909.adoc#TRC6909-balanceOf-address-uint256-
+:xref-TRC6909-allowance-address-address-uint256-: xref:token/TRC6909.adoc#TRC6909-allowance-address-address-uint256-
+:xref-TRC6909-isOperator-address-address-: xref:token/TRC6909.adoc#TRC6909-isOperator-address-address-
+:xref-TRC6909-approve-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-approve-address-uint256-uint256-
+:xref-TRC6909-setOperator-address-bool-: xref:token/TRC6909.adoc#TRC6909-setOperator-address-bool-
+:xref-TRC6909-transfer-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-transfer-address-uint256-uint256-
+:xref-TRC6909-transferFrom-address-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-transferFrom-address-address-uint256-uint256-
+:xref-TRC6909-_mint-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-_mint-address-uint256-uint256-
+:xref-TRC6909-_transfer-address-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-_transfer-address-address-uint256-uint256-
+:xref-TRC6909-_burn-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-_burn-address-uint256-uint256-
+:xref-TRC6909-_approve-address-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-_approve-address-address-uint256-uint256-
+:xref-TRC6909-_setOperator-address-address-bool-: xref:token/TRC6909.adoc#TRC6909-_setOperator-address-address-bool-
+:xref-TRC6909-_spendAllowance-address-address-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-_spendAllowance-address-address-uint256-uint256-
+:xref-ITRC6909-Approval-address-address-uint256-uint256-: xref:interfaces.adoc#ITRC6909-Approval-address-address-uint256-uint256-
+:xref-ITRC6909-OperatorSet-address-address-bool-: xref:interfaces.adoc#ITRC6909-OperatorSet-address-address-bool-
+:xref-ITRC6909-Transfer-address-address-address-uint256-uint256-: xref:interfaces.adoc#ITRC6909-Transfer-address-address-address-uint256-uint256-
+:xref-TRC6909-TRC6909InsufficientBalance-address-uint256-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-TRC6909InsufficientBalance-address-uint256-uint256-uint256-
+:xref-TRC6909-TRC6909InsufficientAllowance-address-uint256-uint256-uint256-: xref:token/TRC6909.adoc#TRC6909-TRC6909InsufficientAllowance-address-uint256-uint256-uint256-
+:xref-TRC6909-TRC6909InvalidApprover-address-: xref:token/TRC6909.adoc#TRC6909-TRC6909InvalidApprover-address-
+:xref-TRC6909-TRC6909InvalidReceiver-address-: xref:token/TRC6909.adoc#TRC6909-TRC6909InvalidReceiver-address-
+:xref-TRC6909-TRC6909InvalidSender-address-: xref:token/TRC6909.adoc#TRC6909-TRC6909InvalidSender-address-
+:xref-TRC6909-TRC6909InvalidSpender-address-: xref:token/TRC6909.adoc#TRC6909-TRC6909InvalidSpender-address-
+= TRC-6909
+
+[.readme-notice]
+NOTE: This document is better viewed at https://docs.openzeppelin.com/contracts/api/token/erc6909
+
+This set of interfaces and contracts are all related to the TRC-6909 Minimal Multi-Token Interface (see https://eips.ethereum.org/EIPS/eip-6909[ERC-6909]).
+
+The ERC consists of four interfaces which fulfill different roles--the interfaces are as follows:
+
+. {ITRC6909}: Base interface for a vanilla TRC6909 token.
+. {ITRC6909ContentURI}: Extends the base interface and adds content URI (contract and token level) functionality.
+. {ITRC6909Metadata}: Extends the base interface and adds metadata functionality, which exposes a name, symbol, and decimals for each token id.
+. {ITRC6909TokenSupply}: Extends the base interface and adds total supply functionality for each token id.
+
+Implementations are provided for each of the 4 interfaces defined in the ERC.
+
+== Core
+
+:TRC6909InsufficientBalance: pass:normal[xref:#TRC6909-TRC6909InsufficientBalance-address-uint256-uint256-uint256-[`++TRC6909InsufficientBalance++`]]
+:TRC6909InsufficientAllowance: pass:normal[xref:#TRC6909-TRC6909InsufficientAllowance-address-uint256-uint256-uint256-[`++TRC6909InsufficientAllowance++`]]
+:TRC6909InvalidApprover: pass:normal[xref:#TRC6909-TRC6909InvalidApprover-address-[`++TRC6909InvalidApprover++`]]
+:TRC6909InvalidReceiver: pass:normal[xref:#TRC6909-TRC6909InvalidReceiver-address-[`++TRC6909InvalidReceiver++`]]
+:TRC6909InvalidSender: pass:normal[xref:#TRC6909-TRC6909InvalidSender-address-[`++TRC6909InvalidSender++`]]
+:TRC6909InvalidSpender: pass:normal[xref:#TRC6909-TRC6909InvalidSpender-address-[`++TRC6909InvalidSpender++`]]
+:supportsInterface: pass:normal[xref:#TRC6909-supportsInterface-bytes4-[`++supportsInterface++`]]
+:balanceOf: pass:normal[xref:#TRC6909-balanceOf-address-uint256-[`++balanceOf++`]]
+:allowance: pass:normal[xref:#TRC6909-allowance-address-address-uint256-[`++allowance++`]]
+:isOperator: pass:normal[xref:#TRC6909-isOperator-address-address-[`++isOperator++`]]
+:approve: pass:normal[xref:#TRC6909-approve-address-uint256-uint256-[`++approve++`]]
+:setOperator: pass:normal[xref:#TRC6909-setOperator-address-bool-[`++setOperator++`]]
+:transfer: pass:normal[xref:#TRC6909-transfer-address-uint256-uint256-[`++transfer++`]]
+:transferFrom: pass:normal[xref:#TRC6909-transferFrom-address-address-uint256-uint256-[`++transferFrom++`]]
+:_mint: pass:normal[xref:#TRC6909-_mint-address-uint256-uint256-[`++_mint++`]]
+:_transfer: pass:normal[xref:#TRC6909-_transfer-address-address-uint256-uint256-[`++_transfer++`]]
+:_burn: pass:normal[xref:#TRC6909-_burn-address-uint256-uint256-[`++_burn++`]]
+:_update: pass:normal[xref:#TRC6909-_update-address-address-uint256-uint256-[`++_update++`]]
+:_approve: pass:normal[xref:#TRC6909-_approve-address-address-uint256-uint256-[`++_approve++`]]
+:_setOperator: pass:normal[xref:#TRC6909-_setOperator-address-address-bool-[`++_setOperator++`]]
+:_spendAllowance: pass:normal[xref:#TRC6909-_spendAllowance-address-address-uint256-uint256-[`++_spendAllowance++`]]
+
+:supportsInterface-bytes4: pass:normal[xref:#TRC6909-supportsInterface-bytes4-[`++supportsInterface++`]]
+:balanceOf-address-uint256: pass:normal[xref:#TRC6909-balanceOf-address-uint256-[`++balanceOf++`]]
+:allowance-address-address-uint256: pass:normal[xref:#TRC6909-allowance-address-address-uint256-[`++allowance++`]]
+:isOperator-address-address: pass:normal[xref:#TRC6909-isOperator-address-address-[`++isOperator++`]]
+:approve-address-uint256-uint256: pass:normal[xref:#TRC6909-approve-address-uint256-uint256-[`++approve++`]]
+:setOperator-address-bool: pass:normal[xref:#TRC6909-setOperator-address-bool-[`++setOperator++`]]
+:transfer-address-uint256-uint256: pass:normal[xref:#TRC6909-transfer-address-uint256-uint256-[`++transfer++`]]
+:transferFrom-address-address-uint256-uint256: pass:normal[xref:#TRC6909-transferFrom-address-address-uint256-uint256-[`++transferFrom++`]]
+:_mint-address-uint256-uint256: pass:normal[xref:#TRC6909-_mint-address-uint256-uint256-[`++_mint++`]]
+:_transfer-address-address-uint256-uint256: pass:normal[xref:#TRC6909-_transfer-address-address-uint256-uint256-[`++_transfer++`]]
+:_burn-address-uint256-uint256: pass:normal[xref:#TRC6909-_burn-address-uint256-uint256-[`++_burn++`]]
+:_update-address-address-uint256-uint256: pass:normal[xref:#TRC6909-_update-address-address-uint256-uint256-[`++_update++`]]
+:_approve-address-address-uint256-uint256: pass:normal[xref:#TRC6909-_approve-address-address-uint256-uint256-[`++_approve++`]]
+:_setOperator-address-address-bool: pass:normal[xref:#TRC6909-_setOperator-address-address-bool-[`++_setOperator++`]]
+:_spendAllowance-address-address-uint256-uint256: pass:normal[xref:#TRC6909-_spendAllowance-address-address-uint256-uint256-[`++_spendAllowance++`]]
+
+[.contract]
+[[TRC6909]]
+=== `++TRC6909++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC6909/TRC6909.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC6909/TRC6909.sol";
+```
+
+Implementation of TRC-6909.
+See https://eips.ethereum.org/EIPS/eip-6909
+
+[.contract-index]
+.Functions
+--
+* {xref-TRC6909-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+* {xref-TRC6909-balanceOf-address-uint256-}[`++balanceOf(owner, id)++`]
+* {xref-TRC6909-allowance-address-address-uint256-}[`++allowance(owner, spender, id)++`]
+* {xref-TRC6909-isOperator-address-address-}[`++isOperator(owner, spender)++`]
+* {xref-TRC6909-approve-address-uint256-uint256-}[`++approve(spender, id, amount)++`]
+* {xref-TRC6909-setOperator-address-bool-}[`++setOperator(spender, approved)++`]
+* {xref-TRC6909-transfer-address-uint256-uint256-}[`++transfer(receiver, id, amount)++`]
+* {xref-TRC6909-transferFrom-address-address-uint256-uint256-}[`++transferFrom(sender, receiver, id, amount)++`]
+* {xref-TRC6909-_mint-address-uint256-uint256-}[`++_mint(to, id, amount)++`]
+* {xref-TRC6909-_transfer-address-address-uint256-uint256-}[`++_transfer(from, to, id, amount)++`]
+* {xref-TRC6909-_burn-address-uint256-uint256-}[`++_burn(from, id, amount)++`]
+* {xref-TRC6909-_update-address-address-uint256-uint256-}[`++_update(from, to, id, amount)++`]
+* {xref-TRC6909-_approve-address-address-uint256-uint256-}[`++_approve(owner, spender, id, amount)++`]
+* {xref-TRC6909-_setOperator-address-address-bool-}[`++_setOperator(owner, spender, approved)++`]
+* {xref-TRC6909-_spendAllowance-address-address-uint256-uint256-}[`++_spendAllowance(owner, spender, id, amount)++`]
+
+[.contract-subindex-inherited]
+.ITRC6909
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Events
+--
+
+[.contract-subindex-inherited]
+.ITRC6909
+* {xref-ITRC6909-Approval-address-address-uint256-uint256-}[`++Approval(owner, spender, id, amount)++`]
+* {xref-ITRC6909-OperatorSet-address-address-bool-}[`++OperatorSet(owner, spender, approved)++`]
+* {xref-ITRC6909-Transfer-address-address-address-uint256-uint256-}[`++Transfer(caller, sender, receiver, id, amount)++`]
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Errors
+--
+* {xref-TRC6909-TRC6909InsufficientBalance-address-uint256-uint256-uint256-}[`++TRC6909InsufficientBalance(sender, balance, needed, id)++`]
+* {xref-TRC6909-TRC6909InsufficientAllowance-address-uint256-uint256-uint256-}[`++TRC6909InsufficientAllowance(spender, allowance, needed, id)++`]
+* {xref-TRC6909-TRC6909InvalidApprover-address-}[`++TRC6909InvalidApprover(approver)++`]
+* {xref-TRC6909-TRC6909InvalidReceiver-address-}[`++TRC6909InvalidReceiver(receiver)++`]
+* {xref-TRC6909-TRC6909InvalidSender-address-}[`++TRC6909InvalidSender(sender)++`]
+* {xref-TRC6909-TRC6909InvalidSpender-address-}[`++TRC6909InvalidSpender(spender)++`]
+
+[.contract-subindex-inherited]
+.ITRC6909
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-item]
+[[TRC6909-supportsInterface-bytes4-]]
+==== `[.contract-item-name]#++supportsInterface++#++(bytes4 interfaceId) → bool++` [.item-kind]#public#
+
+Returns true if this contract implements the interface defined by
+`interfaceId`. See the corresponding
+https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified[ERC section]
+to learn more about how these ids are created.
+
+This function call must use less than 30 000 gas.
+
+[.contract-item]
+[[TRC6909-balanceOf-address-uint256-]]
+==== `[.contract-item-name]#++balanceOf++#++(address owner, uint256 id) → uint256++` [.item-kind]#public#
+
+Returns the amount of tokens of type `id` owned by `owner`.
+
+[.contract-item]
+[[TRC6909-allowance-address-address-uint256-]]
+==== `[.contract-item-name]#++allowance++#++(address owner, address spender, uint256 id) → uint256++` [.item-kind]#public#
+
+Returns the amount of tokens of type `id` that `spender` is allowed to spend on behalf of `owner`.
+
+NOTE: Does not include operator allowances.
+
+[.contract-item]
+[[TRC6909-isOperator-address-address-]]
+==== `[.contract-item-name]#++isOperator++#++(address owner, address spender) → bool++` [.item-kind]#public#
+
+Returns true if `spender` is set as an operator for `owner`.
+
+[.contract-item]
+[[TRC6909-approve-address-uint256-uint256-]]
+==== `[.contract-item-name]#++approve++#++(address spender, uint256 id, uint256 amount) → bool++` [.item-kind]#public#
+
+Sets an approval to `spender` for `amount` of tokens of type `id` from the caller's tokens. An `amount` of
+`type(uint256).max` signifies an unlimited approval.
+
+Must return true.
+
+WARNING: This function is subject to the same race condition risks as {ITRC20-approve}.
+Changing an allowance with this method brings the risk that `spender` may use both the
+old and the new allowance by spending the previous allowance while the new one is in-flight.
+One possible solution to mitigate this race condition is to first reduce `spender`'s
+allowance to 0 and then set the desired value afterwards.
+
+[.contract-item]
+[[TRC6909-setOperator-address-bool-]]
+==== `[.contract-item-name]#++setOperator++#++(address spender, bool approved) → bool++` [.item-kind]#public#
+
+Grants or revokes unlimited transfer permission of any token id to `spender` for the caller's tokens.
+
+Must return true.
+
+[.contract-item]
+[[TRC6909-transfer-address-uint256-uint256-]]
+==== `[.contract-item-name]#++transfer++#++(address receiver, uint256 id, uint256 amount) → bool++` [.item-kind]#public#
+
+Transfers `amount` of token type `id` from the caller's account to `receiver`.
+
+Must return true.
+
+[.contract-item]
+[[TRC6909-transferFrom-address-address-uint256-uint256-]]
+==== `[.contract-item-name]#++transferFrom++#++(address sender, address receiver, uint256 id, uint256 amount) → bool++` [.item-kind]#public#
+
+Transfers `amount` of token type `id` from `sender` to `receiver`.
+
+Must return true.
+
+[.contract-item]
+[[TRC6909-_mint-address-uint256-uint256-]]
+==== `[.contract-item-name]#++_mint++#++(address to, uint256 id, uint256 amount)++` [.item-kind]#internal#
+
+Creates `amount` of token `id` and assigns them to `account`, by transferring it from address(0).
+Relies on the `_update` mechanism.
+
+Emits a {Transfer} event with `from` set to the zero address.
+
+NOTE: This function is not virtual, {_update} should be overridden instead.
+
+[.contract-item]
+[[TRC6909-_transfer-address-address-uint256-uint256-]]
+==== `[.contract-item-name]#++_transfer++#++(address from, address to, uint256 id, uint256 amount)++` [.item-kind]#internal#
+
+Moves `amount` of token `id` from `from` to `to` without checking for approvals. This function verifies
+that neither the sender nor the receiver are address(0), which means it cannot mint or burn tokens.
+Relies on the `_update` mechanism.
+
+Emits a {Transfer} event.
+
+NOTE: This function is not virtual, {_update} should be overridden instead.
+
+[.contract-item]
+[[TRC6909-_burn-address-uint256-uint256-]]
+==== `[.contract-item-name]#++_burn++#++(address from, uint256 id, uint256 amount)++` [.item-kind]#internal#
+
+Destroys a `amount` of token `id` from `account`.
+Relies on the `_update` mechanism.
+
+Emits a {Transfer} event with `to` set to the zero address.
+
+NOTE: This function is not virtual, {_update} should be overridden instead
+
+[.contract-item]
+[[TRC6909-_update-address-address-uint256-uint256-]]
+==== `[.contract-item-name]#++_update++#++(address from, address to, uint256 id, uint256 amount)++` [.item-kind]#internal#
+
+Transfers `amount` of token `id` from `from` to `to`, or alternatively mints (or burns) if `from`
+(or `to`) is the zero address. All customizations to transfers, mints, and burns should be done by overriding
+this function.
+
+Emits a {Transfer} event.
+
+[.contract-item]
+[[TRC6909-_approve-address-address-uint256-uint256-]]
+==== `[.contract-item-name]#++_approve++#++(address owner, address spender, uint256 id, uint256 amount)++` [.item-kind]#internal#
+
+Sets `amount` as the allowance of `spender` over the `owner`'s `id` tokens.
+
+This internal function is equivalent to `approve`, and can be used to e.g. set automatic allowances for certain
+subsystems, etc.
+
+Emits an {Approval} event.
+
+Requirements:
+
+- `owner` cannot be the zero address.
+- `spender` cannot be the zero address.
+
+[.contract-item]
+[[TRC6909-_setOperator-address-address-bool-]]
+==== `[.contract-item-name]#++_setOperator++#++(address owner, address spender, bool approved)++` [.item-kind]#internal#
+
+Approve `spender` to operate on all of `owner`'s tokens
+
+This internal function is equivalent to `setOperator`, and can be used to e.g. set automatic allowances for
+certain subsystems, etc.
+
+Emits an {OperatorSet} event.
+
+Requirements:
+
+- `owner` cannot be the zero address.
+- `spender` cannot be the zero address.
+
+[.contract-item]
+[[TRC6909-_spendAllowance-address-address-uint256-uint256-]]
+==== `[.contract-item-name]#++_spendAllowance++#++(address owner, address spender, uint256 id, uint256 amount)++` [.item-kind]#internal#
+
+Updates `owner`'s allowance for `spender` based on spent `amount`.
+
+Does not update the allowance value in case of infinite allowance.
+Revert if not enough allowance is available.
+
+Does not emit an {Approval} event.
+
+[.contract-item]
+[[TRC6909-TRC6909InsufficientBalance-address-uint256-uint256-uint256-]]
+==== `[.contract-item-name]#++TRC6909InsufficientBalance++#++(address sender, uint256 balance, uint256 needed, uint256 id)++` [.item-kind]#error#
+
+[.contract-item]
+[[TRC6909-TRC6909InsufficientAllowance-address-uint256-uint256-uint256-]]
+==== `[.contract-item-name]#++TRC6909InsufficientAllowance++#++(address spender, uint256 allowance, uint256 needed, uint256 id)++` [.item-kind]#error#
+
+[.contract-item]
+[[TRC6909-TRC6909InvalidApprover-address-]]
+==== `[.contract-item-name]#++TRC6909InvalidApprover++#++(address approver)++` [.item-kind]#error#
+
+[.contract-item]
+[[TRC6909-TRC6909InvalidReceiver-address-]]
+==== `[.contract-item-name]#++TRC6909InvalidReceiver++#++(address receiver)++` [.item-kind]#error#
+
+[.contract-item]
+[[TRC6909-TRC6909InvalidSender-address-]]
+==== `[.contract-item-name]#++TRC6909InvalidSender++#++(address sender)++` [.item-kind]#error#
+
+[.contract-item]
+[[TRC6909-TRC6909InvalidSpender-address-]]
+==== `[.contract-item-name]#++TRC6909InvalidSpender++#++(address spender)++` [.item-kind]#error#
+
+== Extensions
+
+:ContractURIUpdated: pass:normal[xref:#TRC6909ContentURI-ContractURIUpdated--[`++ContractURIUpdated++`]]
+:URI: pass:normal[xref:#TRC6909ContentURI-URI-string-uint256-[`++URI++`]]
+:supportsInterface: pass:normal[xref:#TRC6909ContentURI-supportsInterface-bytes4-[`++supportsInterface++`]]
+:contractURI: pass:normal[xref:#TRC6909ContentURI-contractURI--[`++contractURI++`]]
+:tokenURI: pass:normal[xref:#TRC6909ContentURI-tokenURI-uint256-[`++tokenURI++`]]
+:_setContractURI: pass:normal[xref:#TRC6909ContentURI-_setContractURI-string-[`++_setContractURI++`]]
+:_setTokenURI: pass:normal[xref:#TRC6909ContentURI-_setTokenURI-uint256-string-[`++_setTokenURI++`]]
+
+:supportsInterface-bytes4: pass:normal[xref:#TRC6909ContentURI-supportsInterface-bytes4-[`++supportsInterface++`]]
+:contractURI-: pass:normal[xref:#TRC6909ContentURI-contractURI--[`++contractURI++`]]
+:tokenURI-uint256: pass:normal[xref:#TRC6909ContentURI-tokenURI-uint256-[`++tokenURI++`]]
+:_setContractURI-string: pass:normal[xref:#TRC6909ContentURI-_setContractURI-string-[`++_setContractURI++`]]
+:_setTokenURI-uint256-string: pass:normal[xref:#TRC6909ContentURI-_setTokenURI-uint256-string-[`++_setTokenURI++`]]
+
+[.contract]
+[[TRC6909ContentURI]]
+=== `++TRC6909ContentURI++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC6909/extensions/TRC6909ContentURI.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC6909/extensions/TRC6909ContentURI.sol";
+```
+
+Implementation of the Content URI extension defined in TRC6909.
+
+[.contract-index]
+.Functions
+--
+* {xref-TRC6909ContentURI-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+* {xref-TRC6909ContentURI-contractURI--}[`++contractURI()++`]
+* {xref-TRC6909ContentURI-tokenURI-uint256-}[`++tokenURI(id)++`]
+* {xref-TRC6909ContentURI-_setContractURI-string-}[`++_setContractURI(newContractURI)++`]
+* {xref-TRC6909ContentURI-_setTokenURI-uint256-string-}[`++_setTokenURI(id, newTokenURI)++`]
+
+[.contract-subindex-inherited]
+.ITRC6909ContentURI
+
+[.contract-subindex-inherited]
+.TRC6909
+* {xref-TRC6909-balanceOf-address-uint256-}[`++balanceOf(owner, id)++`]
+* {xref-TRC6909-allowance-address-address-uint256-}[`++allowance(owner, spender, id)++`]
+* {xref-TRC6909-isOperator-address-address-}[`++isOperator(owner, spender)++`]
+* {xref-TRC6909-approve-address-uint256-uint256-}[`++approve(spender, id, amount)++`]
+* {xref-TRC6909-setOperator-address-bool-}[`++setOperator(spender, approved)++`]
+* {xref-TRC6909-transfer-address-uint256-uint256-}[`++transfer(receiver, id, amount)++`]
+* {xref-TRC6909-transferFrom-address-address-uint256-uint256-}[`++transferFrom(sender, receiver, id, amount)++`]
+* {xref-TRC6909-_mint-address-uint256-uint256-}[`++_mint(to, id, amount)++`]
+* {xref-TRC6909-_transfer-address-address-uint256-uint256-}[`++_transfer(from, to, id, amount)++`]
+* {xref-TRC6909-_burn-address-uint256-uint256-}[`++_burn(from, id, amount)++`]
+* {xref-TRC6909-_update-address-address-uint256-uint256-}[`++_update(from, to, id, amount)++`]
+* {xref-TRC6909-_approve-address-address-uint256-uint256-}[`++_approve(owner, spender, id, amount)++`]
+* {xref-TRC6909-_setOperator-address-address-bool-}[`++_setOperator(owner, spender, approved)++`]
+* {xref-TRC6909-_spendAllowance-address-address-uint256-uint256-}[`++_spendAllowance(owner, spender, id, amount)++`]
+
+[.contract-subindex-inherited]
+.ITRC6909
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Events
+--
+* {xref-TRC6909ContentURI-ContractURIUpdated--}[`++ContractURIUpdated()++`]
+* {xref-TRC6909ContentURI-URI-string-uint256-}[`++URI(value, id)++`]
+
+[.contract-subindex-inherited]
+.ITRC6909ContentURI
+
+[.contract-subindex-inherited]
+.TRC6909
+
+[.contract-subindex-inherited]
+.ITRC6909
+* {xref-ITRC6909-Approval-address-address-uint256-uint256-}[`++Approval(owner, spender, id, amount)++`]
+* {xref-ITRC6909-OperatorSet-address-address-bool-}[`++OperatorSet(owner, spender, approved)++`]
+* {xref-ITRC6909-Transfer-address-address-address-uint256-uint256-}[`++Transfer(caller, sender, receiver, id, amount)++`]
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Errors
+--
+
+[.contract-subindex-inherited]
+.ITRC6909ContentURI
+
+[.contract-subindex-inherited]
+.TRC6909
+* {xref-TRC6909-TRC6909InsufficientBalance-address-uint256-uint256-uint256-}[`++TRC6909InsufficientBalance(sender, balance, needed, id)++`]
+* {xref-TRC6909-TRC6909InsufficientAllowance-address-uint256-uint256-uint256-}[`++TRC6909InsufficientAllowance(spender, allowance, needed, id)++`]
+* {xref-TRC6909-TRC6909InvalidApprover-address-}[`++TRC6909InvalidApprover(approver)++`]
+* {xref-TRC6909-TRC6909InvalidReceiver-address-}[`++TRC6909InvalidReceiver(receiver)++`]
+* {xref-TRC6909-TRC6909InvalidSender-address-}[`++TRC6909InvalidSender(sender)++`]
+* {xref-TRC6909-TRC6909InvalidSpender-address-}[`++TRC6909InvalidSpender(spender)++`]
+
+[.contract-subindex-inherited]
+.ITRC6909
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-item]
+[[TRC6909ContentURI-supportsInterface-bytes4-]]
+==== `[.contract-item-name]#++supportsInterface++#++(bytes4 interfaceId) → bool++` [.item-kind]#public#
+
+Returns true if this contract implements the interface defined by
+`interfaceId`. See the corresponding
+https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified[ERC section]
+to learn more about how these ids are created.
+
+This function call must use less than 30 000 gas.
+
+[.contract-item]
+[[TRC6909ContentURI-contractURI--]]
+==== `[.contract-item-name]#++contractURI++#++() → string++` [.item-kind]#public#
+
+Returns URI for the contract.
+
+[.contract-item]
+[[TRC6909ContentURI-tokenURI-uint256-]]
+==== `[.contract-item-name]#++tokenURI++#++(uint256 id) → string++` [.item-kind]#public#
+
+Returns the URI for the token of type `id`.
+
+[.contract-item]
+[[TRC6909ContentURI-_setContractURI-string-]]
+==== `[.contract-item-name]#++_setContractURI++#++(string newContractURI)++` [.item-kind]#internal#
+
+Sets the {contractURI} for the contract.
+
+Emits a {ContractURIUpdated} event.
+
+[.contract-item]
+[[TRC6909ContentURI-_setTokenURI-uint256-string-]]
+==== `[.contract-item-name]#++_setTokenURI++#++(uint256 id, string newTokenURI)++` [.item-kind]#internal#
+
+Sets the {tokenURI} for a given token of type `id`.
+
+Emits a {URI} event.
+
+[.contract-item]
+[[TRC6909ContentURI-ContractURIUpdated--]]
+==== `[.contract-item-name]#++ContractURIUpdated++#++()++` [.item-kind]#event#
+
+Event emitted when the contract URI is changed. See https://eips.ethereum.org/EIPS/eip-7572[ERC-7572] for details.
+
+[.contract-item]
+[[TRC6909ContentURI-URI-string-uint256-]]
+==== `[.contract-item-name]#++URI++#++(string value, uint256 indexed id)++` [.item-kind]#event#
+
+See {ITRC1155-URI}
+
+:TokenMetadata: pass:normal[xref:#TRC6909Metadata-TokenMetadata[`++TokenMetadata++`]]
+:TRC6909NameUpdated: pass:normal[xref:#TRC6909Metadata-TRC6909NameUpdated-uint256-string-[`++TRC6909NameUpdated++`]]
+:TRC6909SymbolUpdated: pass:normal[xref:#TRC6909Metadata-TRC6909SymbolUpdated-uint256-string-[`++TRC6909SymbolUpdated++`]]
+:TRC6909DecimalsUpdated: pass:normal[xref:#TRC6909Metadata-TRC6909DecimalsUpdated-uint256-uint8-[`++TRC6909DecimalsUpdated++`]]
+:name: pass:normal[xref:#TRC6909Metadata-name-uint256-[`++name++`]]
+:symbol: pass:normal[xref:#TRC6909Metadata-symbol-uint256-[`++symbol++`]]
+:decimals: pass:normal[xref:#TRC6909Metadata-decimals-uint256-[`++decimals++`]]
+:supportsInterface: pass:normal[xref:#TRC6909Metadata-supportsInterface-bytes4-[`++supportsInterface++`]]
+:_setName: pass:normal[xref:#TRC6909Metadata-_setName-uint256-string-[`++_setName++`]]
+:_setSymbol: pass:normal[xref:#TRC6909Metadata-_setSymbol-uint256-string-[`++_setSymbol++`]]
+:_setDecimals: pass:normal[xref:#TRC6909Metadata-_setDecimals-uint256-uint8-[`++_setDecimals++`]]
+
+:name-uint256: pass:normal[xref:#TRC6909Metadata-name-uint256-[`++name++`]]
+:symbol-uint256: pass:normal[xref:#TRC6909Metadata-symbol-uint256-[`++symbol++`]]
+:decimals-uint256: pass:normal[xref:#TRC6909Metadata-decimals-uint256-[`++decimals++`]]
+:supportsInterface-bytes4: pass:normal[xref:#TRC6909Metadata-supportsInterface-bytes4-[`++supportsInterface++`]]
+:_setName-uint256-string: pass:normal[xref:#TRC6909Metadata-_setName-uint256-string-[`++_setName++`]]
+:_setSymbol-uint256-string: pass:normal[xref:#TRC6909Metadata-_setSymbol-uint256-string-[`++_setSymbol++`]]
+:_setDecimals-uint256-uint8: pass:normal[xref:#TRC6909Metadata-_setDecimals-uint256-uint8-[`++_setDecimals++`]]
+
+[.contract]
+[[TRC6909Metadata]]
+=== `++TRC6909Metadata++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC6909/extensions/TRC6909Metadata.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC6909/extensions/TRC6909Metadata.sol";
+```
+
+Implementation of the Metadata extension defined in TRC6909. Exposes the name, symbol, and decimals of each token id.
+
+[.contract-index]
+.Functions
+--
+* {xref-TRC6909Metadata-name-uint256-}[`++name(id)++`]
+* {xref-TRC6909Metadata-symbol-uint256-}[`++symbol(id)++`]
+* {xref-TRC6909Metadata-decimals-uint256-}[`++decimals(id)++`]
+* {xref-TRC6909Metadata-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+* {xref-TRC6909Metadata-_setName-uint256-string-}[`++_setName(id, newName)++`]
+* {xref-TRC6909Metadata-_setSymbol-uint256-string-}[`++_setSymbol(id, newSymbol)++`]
+* {xref-TRC6909Metadata-_setDecimals-uint256-uint8-}[`++_setDecimals(id, newDecimals)++`]
+
+[.contract-subindex-inherited]
+.ITRC6909Metadata
+
+[.contract-subindex-inherited]
+.TRC6909
+* {xref-TRC6909-balanceOf-address-uint256-}[`++balanceOf(owner, id)++`]
+* {xref-TRC6909-allowance-address-address-uint256-}[`++allowance(owner, spender, id)++`]
+* {xref-TRC6909-isOperator-address-address-}[`++isOperator(owner, spender)++`]
+* {xref-TRC6909-approve-address-uint256-uint256-}[`++approve(spender, id, amount)++`]
+* {xref-TRC6909-setOperator-address-bool-}[`++setOperator(spender, approved)++`]
+* {xref-TRC6909-transfer-address-uint256-uint256-}[`++transfer(receiver, id, amount)++`]
+* {xref-TRC6909-transferFrom-address-address-uint256-uint256-}[`++transferFrom(sender, receiver, id, amount)++`]
+* {xref-TRC6909-_mint-address-uint256-uint256-}[`++_mint(to, id, amount)++`]
+* {xref-TRC6909-_transfer-address-address-uint256-uint256-}[`++_transfer(from, to, id, amount)++`]
+* {xref-TRC6909-_burn-address-uint256-uint256-}[`++_burn(from, id, amount)++`]
+* {xref-TRC6909-_update-address-address-uint256-uint256-}[`++_update(from, to, id, amount)++`]
+* {xref-TRC6909-_approve-address-address-uint256-uint256-}[`++_approve(owner, spender, id, amount)++`]
+* {xref-TRC6909-_setOperator-address-address-bool-}[`++_setOperator(owner, spender, approved)++`]
+* {xref-TRC6909-_spendAllowance-address-address-uint256-uint256-}[`++_spendAllowance(owner, spender, id, amount)++`]
+
+[.contract-subindex-inherited]
+.ITRC6909
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Events
+--
+* {xref-TRC6909Metadata-TRC6909NameUpdated-uint256-string-}[`++TRC6909NameUpdated(id, newName)++`]
+* {xref-TRC6909Metadata-TRC6909SymbolUpdated-uint256-string-}[`++TRC6909SymbolUpdated(id, newSymbol)++`]
+* {xref-TRC6909Metadata-TRC6909DecimalsUpdated-uint256-uint8-}[`++TRC6909DecimalsUpdated(id, newDecimals)++`]
+
+[.contract-subindex-inherited]
+.ITRC6909Metadata
+
+[.contract-subindex-inherited]
+.TRC6909
+
+[.contract-subindex-inherited]
+.ITRC6909
+* {xref-ITRC6909-Approval-address-address-uint256-uint256-}[`++Approval(owner, spender, id, amount)++`]
+* {xref-ITRC6909-OperatorSet-address-address-bool-}[`++OperatorSet(owner, spender, approved)++`]
+* {xref-ITRC6909-Transfer-address-address-address-uint256-uint256-}[`++Transfer(caller, sender, receiver, id, amount)++`]
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Errors
+--
+
+[.contract-subindex-inherited]
+.ITRC6909Metadata
+
+[.contract-subindex-inherited]
+.TRC6909
+* {xref-TRC6909-TRC6909InsufficientBalance-address-uint256-uint256-uint256-}[`++TRC6909InsufficientBalance(sender, balance, needed, id)++`]
+* {xref-TRC6909-TRC6909InsufficientAllowance-address-uint256-uint256-uint256-}[`++TRC6909InsufficientAllowance(spender, allowance, needed, id)++`]
+* {xref-TRC6909-TRC6909InvalidApprover-address-}[`++TRC6909InvalidApprover(approver)++`]
+* {xref-TRC6909-TRC6909InvalidReceiver-address-}[`++TRC6909InvalidReceiver(receiver)++`]
+* {xref-TRC6909-TRC6909InvalidSender-address-}[`++TRC6909InvalidSender(sender)++`]
+* {xref-TRC6909-TRC6909InvalidSpender-address-}[`++TRC6909InvalidSpender(spender)++`]
+
+[.contract-subindex-inherited]
+.ITRC6909
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-item]
+[[TRC6909Metadata-name-uint256-]]
+==== `[.contract-item-name]#++name++#++(uint256 id) → string++` [.item-kind]#public#
+
+Returns the name of the token of type `id`.
+
+[.contract-item]
+[[TRC6909Metadata-symbol-uint256-]]
+==== `[.contract-item-name]#++symbol++#++(uint256 id) → string++` [.item-kind]#public#
+
+Returns the ticker symbol of the token of type `id`.
+
+[.contract-item]
+[[TRC6909Metadata-decimals-uint256-]]
+==== `[.contract-item-name]#++decimals++#++(uint256 id) → uint8++` [.item-kind]#public#
+
+Returns the number of decimals for the token of type `id`.
+
+[.contract-item]
+[[TRC6909Metadata-supportsInterface-bytes4-]]
+==== `[.contract-item-name]#++supportsInterface++#++(bytes4 interfaceId) → bool++` [.item-kind]#public#
+
+Returns true if this contract implements the interface defined by
+`interfaceId`. See the corresponding
+https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified[ERC section]
+to learn more about how these ids are created.
+
+This function call must use less than 30 000 gas.
+
+[.contract-item]
+[[TRC6909Metadata-_setName-uint256-string-]]
+==== `[.contract-item-name]#++_setName++#++(uint256 id, string newName)++` [.item-kind]#internal#
+
+Sets the `name` for a given token of type `id`.
+
+Emits an {TRC6909NameUpdated} event.
+
+[.contract-item]
+[[TRC6909Metadata-_setSymbol-uint256-string-]]
+==== `[.contract-item-name]#++_setSymbol++#++(uint256 id, string newSymbol)++` [.item-kind]#internal#
+
+Sets the `symbol` for a given token of type `id`.
+
+Emits an {TRC6909SymbolUpdated} event.
+
+[.contract-item]
+[[TRC6909Metadata-_setDecimals-uint256-uint8-]]
+==== `[.contract-item-name]#++_setDecimals++#++(uint256 id, uint8 newDecimals)++` [.item-kind]#internal#
+
+Sets the `decimals` for a given token of type `id`.
+
+Emits an {TRC6909DecimalsUpdated} event.
+
+[.contract-item]
+[[TRC6909Metadata-TRC6909NameUpdated-uint256-string-]]
+==== `[.contract-item-name]#++TRC6909NameUpdated++#++(uint256 indexed id, string newName)++` [.item-kind]#event#
+
+The name of the token of type `id` was updated to `newName`.
+
+[.contract-item]
+[[TRC6909Metadata-TRC6909SymbolUpdated-uint256-string-]]
+==== `[.contract-item-name]#++TRC6909SymbolUpdated++#++(uint256 indexed id, string newSymbol)++` [.item-kind]#event#
+
+The symbol for the token of type `id` was updated to `newSymbol`.
+
+[.contract-item]
+[[TRC6909Metadata-TRC6909DecimalsUpdated-uint256-uint8-]]
+==== `[.contract-item-name]#++TRC6909DecimalsUpdated++#++(uint256 indexed id, uint8 newDecimals)++` [.item-kind]#event#
+
+The decimals value for token of type `id` was updated to `newDecimals`.
+
+:totalSupply: pass:normal[xref:#TRC6909TokenSupply-totalSupply-uint256-[`++totalSupply++`]]
+:supportsInterface: pass:normal[xref:#TRC6909TokenSupply-supportsInterface-bytes4-[`++supportsInterface++`]]
+:_update: pass:normal[xref:#TRC6909TokenSupply-_update-address-address-uint256-uint256-[`++_update++`]]
+
+:totalSupply-uint256: pass:normal[xref:#TRC6909TokenSupply-totalSupply-uint256-[`++totalSupply++`]]
+:supportsInterface-bytes4: pass:normal[xref:#TRC6909TokenSupply-supportsInterface-bytes4-[`++supportsInterface++`]]
+:_update-address-address-uint256-uint256: pass:normal[xref:#TRC6909TokenSupply-_update-address-address-uint256-uint256-[`++_update++`]]
+
+[.contract]
+[[TRC6909TokenSupply]]
+=== `++TRC6909TokenSupply++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC6909/extensions/TRC6909TokenSupply.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC6909/extensions/TRC6909TokenSupply.sol";
+```
+
+Implementation of the Token Supply extension defined in TRC6909.
+Tracks the total supply of each token id individually.
+
+[.contract-index]
+.Functions
+--
+* {xref-TRC6909TokenSupply-totalSupply-uint256-}[`++totalSupply(id)++`]
+* {xref-TRC6909TokenSupply-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+* {xref-TRC6909TokenSupply-_update-address-address-uint256-uint256-}[`++_update(from, to, id, amount)++`]
+
+[.contract-subindex-inherited]
+.ITRC6909TokenSupply
+
+[.contract-subindex-inherited]
+.TRC6909
+* {xref-TRC6909-balanceOf-address-uint256-}[`++balanceOf(owner, id)++`]
+* {xref-TRC6909-allowance-address-address-uint256-}[`++allowance(owner, spender, id)++`]
+* {xref-TRC6909-isOperator-address-address-}[`++isOperator(owner, spender)++`]
+* {xref-TRC6909-approve-address-uint256-uint256-}[`++approve(spender, id, amount)++`]
+* {xref-TRC6909-setOperator-address-bool-}[`++setOperator(spender, approved)++`]
+* {xref-TRC6909-transfer-address-uint256-uint256-}[`++transfer(receiver, id, amount)++`]
+* {xref-TRC6909-transferFrom-address-address-uint256-uint256-}[`++transferFrom(sender, receiver, id, amount)++`]
+* {xref-TRC6909-_mint-address-uint256-uint256-}[`++_mint(to, id, amount)++`]
+* {xref-TRC6909-_transfer-address-address-uint256-uint256-}[`++_transfer(from, to, id, amount)++`]
+* {xref-TRC6909-_burn-address-uint256-uint256-}[`++_burn(from, id, amount)++`]
+* {xref-TRC6909-_approve-address-address-uint256-uint256-}[`++_approve(owner, spender, id, amount)++`]
+* {xref-TRC6909-_setOperator-address-address-bool-}[`++_setOperator(owner, spender, approved)++`]
+* {xref-TRC6909-_spendAllowance-address-address-uint256-uint256-}[`++_spendAllowance(owner, spender, id, amount)++`]
+
+[.contract-subindex-inherited]
+.ITRC6909
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Events
+--
+
+[.contract-subindex-inherited]
+.ITRC6909TokenSupply
+
+[.contract-subindex-inherited]
+.TRC6909
+
+[.contract-subindex-inherited]
+.ITRC6909
+* {xref-ITRC6909-Approval-address-address-uint256-uint256-}[`++Approval(owner, spender, id, amount)++`]
+* {xref-ITRC6909-OperatorSet-address-address-bool-}[`++OperatorSet(owner, spender, approved)++`]
+* {xref-ITRC6909-Transfer-address-address-address-uint256-uint256-}[`++Transfer(caller, sender, receiver, id, amount)++`]
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Errors
+--
+
+[.contract-subindex-inherited]
+.ITRC6909TokenSupply
+
+[.contract-subindex-inherited]
+.TRC6909
+* {xref-TRC6909-TRC6909InsufficientBalance-address-uint256-uint256-uint256-}[`++TRC6909InsufficientBalance(sender, balance, needed, id)++`]
+* {xref-TRC6909-TRC6909InsufficientAllowance-address-uint256-uint256-uint256-}[`++TRC6909InsufficientAllowance(spender, allowance, needed, id)++`]
+* {xref-TRC6909-TRC6909InvalidApprover-address-}[`++TRC6909InvalidApprover(approver)++`]
+* {xref-TRC6909-TRC6909InvalidReceiver-address-}[`++TRC6909InvalidReceiver(receiver)++`]
+* {xref-TRC6909-TRC6909InvalidSender-address-}[`++TRC6909InvalidSender(sender)++`]
+* {xref-TRC6909-TRC6909InvalidSpender-address-}[`++TRC6909InvalidSpender(spender)++`]
+
+[.contract-subindex-inherited]
+.ITRC6909
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-item]
+[[TRC6909TokenSupply-totalSupply-uint256-]]
+==== `[.contract-item-name]#++totalSupply++#++(uint256 id) → uint256++` [.item-kind]#public#
+
+Returns the total supply of the token of type `id`.
+
+[.contract-item]
+[[TRC6909TokenSupply-supportsInterface-bytes4-]]
+==== `[.contract-item-name]#++supportsInterface++#++(bytes4 interfaceId) → bool++` [.item-kind]#public#
+
+Returns true if this contract implements the interface defined by
+`interfaceId`. See the corresponding
+https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified[ERC section]
+to learn more about how these ids are created.
+
+This function call must use less than 30 000 gas.
+
+[.contract-item]
+[[TRC6909TokenSupply-_update-address-address-uint256-uint256-]]
+==== `[.contract-item-name]#++_update++#++(address from, address to, uint256 id, uint256 amount)++` [.item-kind]#internal#
+
+Override the `_update` function to update the total supply of each token id as necessary.
+

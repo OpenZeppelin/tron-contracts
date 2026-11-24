@@ -1,0 +1,10 @@
+= Common (Tokens)
+
+Functionality that is common to multiple token standards.
+
+* {TRC2981}: NFT Royalties compatible with both TRC-721 and TRC-1155.
+** For TRC-721 consider {TRC721Royalty} which clears the royalty information from storage on burn.
+
+== Contracts
+
+{{TRC2981}}

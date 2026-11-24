@@ -1,0 +1,32 @@
+name: Set npm dist-tag
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to tag (e.g. 5.6.0-rc.1)'
+        required: true
+        type: string
+      tag:
+        description: 'dist-tag to set'
+        required: true
+        default: latest
+        type: string
+
+jobs:
+  dist-tag:
+    name: Tag ${{ inputs.version }} as ${{ inputs.tag }}
+    environment: npm
+    runs-on: ubuntu-latest
+    steps:
+      - name: Authenticate to npm
+        # Intentionally escape $ to avoid interpolation and writing the token to disk
+        run: echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
+      - name: Set dist-tag on both packages
+        run: |
+          npm dist-tag add "@openzeppelin/tron-contracts@$VERSION" "$TAG"
+          npm dist-tag add "@openzeppelin/tron-contracts-upgradeable@$VERSION" "$TAG"
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          VERSION: ${{ inputs.version }}
+          TAG: ${{ inputs.tag }}

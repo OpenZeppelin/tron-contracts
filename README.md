@@ -1,0 +1,94 @@
+# OpenZeppelin Contracts for TRON
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
+**A library for secure smart contract development on TRON.** A port of [OpenZeppelin Contracts](https://github.com/OpenZeppelin/openzeppelin-contracts) to the TRON Virtual Machine (TVM), adapted to TRON's standards (TIPs / TRCs) and to the ways the TVM differs from the EVM.
+
+## Overview
+
+`@openzeppelin/tron-contracts` is based on [OpenZeppelin Contracts](https://github.com/OpenZeppelin/openzeppelin-contracts) — versions match upstream by major and minor (see [Versioning](#versioning)) — and keeps its battle-tested implementations, while:
+
+- **Renaming** the standards that TRON publishes under its own identifiers — for example `ERC20` → `TRC20`, `ERC165` → `TRC165`, `EIP712` → `TIP712` — and dual-citing both the TRON (TIP / TRC) and Ethereum (EIP / ERC) specifications in the documentation.
+- **Adapting** the implementations where the TVM diverges from the EVM (e.g. `CREATE2` address derivation, the `block.chainid` used in EIP-712 domain separators, the TRC-721 receiver hook, and tokens such as TRON USDT whose `transfer` returns `false` on success).
+
+Where TRON only publishes a signing or utility spec (rather than a renamable contract standard), the contract keeps its descriptive name (e.g. `ECDSA`, `MessageHashUtils`, `P256`) and simply references the relevant TIP.
+
+## Versioning
+
+Versions track [OpenZeppelin Contracts](https://github.com/OpenZeppelin/openzeppelin-contracts) by major and minor: each `@openzeppelin/tron-contracts` minor ports the feature set of the same-numbered upstream release, and new upstream features arrive only with a new matching minor. Patch numbers are independent — each library patches on its own schedule, so a given patch number does not refer to the same-numbered upstream patch (for example, this library may release a 5.6.0 while OpenZeppelin Contracts is already at 5.6.1). Upstream fixes that affect ported code are backported regardless of which upstream release carried them.
+
+## Installation
+
+```sh
+npm install @openzeppelin/tron-contracts
+```
+
+## Usage
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import {TRC20} from "@openzeppelin/tron-contracts/token/TRC20/TRC20.sol";
+
+contract MyToken is TRC20 {
+    constructor() TRC20("MyToken", "MTK") {
+        _mint(msg.sender, 1000 * 10 ** decimals());
+    }
+}
+```
+
+## TRON ↔ Ethereum standards
+
+The TVM is EVM-compatible, but TRON standardizes many interfaces under its own [TIP](https://github.com/tronprotocol/tips) (TRON Improvement Proposal) and TRC numbers. This library references the TRON standard and dual-cites the Ethereum equivalent where one exists.
+
+### Ported (renamed to the TRON identifier)
+
+| Domain | TRON | Ethereum | Contracts |
+| --- | --- | --- | --- |
+| Fungible token | [TRC-20](https://github.com/tronprotocol/tips/blob/master/tip-20.md) | ERC-20 | `TRC20` (+ extensions) |
+| Non-fungible token | [TRC-721](https://github.com/tronprotocol/tips/blob/master/tip-721.md) | ERC-721 | `TRC721` (+ extensions) |
+| Multi-token | [TRC-1155](https://github.com/tronprotocol/tips/blob/master/tip-1155.md) | ERC-1155 | `TRC1155` (+ extensions) |
+| Tokenized vault | [TRC-4626](https://github.com/tronprotocol/tips/blob/master/tip-4626.md) | ERC-4626 | `TRC4626` |
+| Permit (gasless approval) | [TIP-2612](https://github.com/tronprotocol/tips/blob/master/tip-2612.md) | ERC-2612 | `TRC20Permit`, `ITRC20Permit` |
+| Interface introspection | [TRC-165](https://github.com/tronprotocol/tips/blob/master/tip-165.md) | ERC-165 | `TRC165`, `TRC165Checker`, `ITRC165` |
+| Proxy storage slots | [TRC-1967](https://github.com/tronprotocol/tips/blob/master/tip-1967.md) | ERC-1967 | `TRC1967Proxy`, `TRC1967Utils`, `ITRC1967` |
+| Meta-transactions | [TRC-2771](https://github.com/tronprotocol/tips/blob/master/tip-2771.md) | ERC-2771 | `TRC2771Context`, `TRC2771Forwarder` |
+| Contract signature validation | [TRC-1271](https://github.com/tronprotocol/tips/blob/master/tip-1271.md) | ERC-1271 | `ITRC1271`, `SignatureChecker` |
+| Typed structured data | [TIP-712](https://github.com/tronprotocol/tips/blob/master/tip-712.md) | EIP-712 | `TIP712` |
+
+### Referenced (descriptive name kept; TIP cited)
+
+| Domain | TRON | Ethereum | Contracts |
+| --- | --- | --- | --- |
+| Signed data (`0x19` prefix) | [TIP-191](https://github.com/tronprotocol/tips/blob/master/tip-191.md) | ERC-191 | `MessageHashUtils` |
+| ECDSA signature encoding | [TIP-120](https://github.com/tronprotocol/tips/blob/master/tip-120.md) | — | `ECDSA` |
+| secp256r1 (P256) precompile | [TIP-7951](https://github.com/tronprotocol/tips/blob/master/tip-7951.md) | EIP-7951 / RIP-7212 | `P256` |
+| Namespaced storage layout | [TIP-7201](https://github.com/tronprotocol/tips/blob/master/tip-7201.md) | ERC-7201 | `Initializable`, `SlotDerivation` |
+| `CREATE2` address derivation | [TIP-26](https://github.com/tronprotocol/tips/blob/master/tip-26.md) | EIP-1014 | `Create2`, `Clones` |
+
+> [!NOTE]
+> Several of these carry TVM-specific behavior documented in the affected contract's NatSpec — for example: the TIP-712 domain separator masks `chainId` to its low four bytes (the value TRON exposes via `eth_chainId`); `CREATE2` derives addresses with a `0x41` prefix; and TRON USDT's `transfer` returns `false` even on a successful transfer, which `SafeTRC20.safeTransferChecked` handles by verifying the caller's balance delta (the sender's debit).
+
+## TVM differences
+
+This port adapts non-obvious differences between the TVM and the EVM, including `CREATE2` / plain `CREATE` address derivation, the `block.chainid` value used in TIP-712 domain separators, the TRC-721 receiver-hook magic value, and the handling of tokens that return `false` on a successful `transfer`. Each adaptation is documented in the affected contract's NatSpec.
+
+### Native TRC-10 assets
+
+This library works with contract-based tokens: TRC-20, TRC-721, TRC-1155 and the other TRC standards listed above. Native TRC-10 assets, which a TRON account can hold alongside TRX, are outside its scope.
+
+Moving a TRC-10 requires the TVM's token-aware call — `address.transferToken(amount, id)`, compiling to `CALLTOKEN`. Every value-bearing path here uses an ordinary `call`, which carries TRX only. A TRC-10 credited to a contract built on this library therefore stays with that contract, and no supplied path forwards or withdraws it. This includes the governance executors: `Governor.relay`, `Governor.execute` and `TimelockController.execute`/`executeBatch` accept TRX through `value`, and their proposal and operation hashes bind targets, TRX values and calldata, with no field for a token identifier or amount.
+
+Hold assets that contracts need to move as TRC-20 — either natively or by wrapping the TRC-10.
+
+> [!IMPORTANT]
+> **Addresses embedded inside `bytes` payloads MUST use the 20-byte EVM form.** During execution the TVM represents every address as the low 20 bytes, so `msg.sender`, `address(this)`, and `address`-typed arguments are identical to the EVM. The 21-byte `0x41`-prefixed and Base58Check (`T…`) forms that TRON tooling (TronWeb, node APIs) works with are off-chain encodings only — they never appear on-chain. When an address is carried inside a `bytes` argument — an ERC-7930 interoperable address, a crosschain bridge message, an ERC-7913 signer (`verifier || key`), or any packed calldata — it must be the raw 20-byte value. The 21-byte form is rejected where the format is self-describing (`InteroperableAddress.parseEvmV1` and `BridgeFungible` revert on a non-20-byte address) and would otherwise be silently mis-parsed into the wrong address. Strip the `0x41` prefix at the encoding boundary (e.g. in your TronWeb integration) before placing an address in a `bytes` payload.
+
+## Security
+
+Please report any security issues responsibly via the [security policy](SECURITY.md) rather than opening a public issue.
+
+## License
+
+OpenZeppelin Contracts for TRON is released under the [MIT License](LICENSE).

@@ -1,0 +1,87 @@
+// SPDX-License-Identifier: MIT
+// OpenZeppelin Tron Contracts (last updated v5.7.0) (token/TRC1155/extensions/TRC1155Crosschain.sol)
+
+pragma solidity ^0.8.26;
+
+import {TRC1155} from "../TRC1155.sol";
+import {BridgeMultiToken} from "../../../crosschain/bridges/abstract/BridgeMultiToken.sol";
+
+/**
+ * @dev Extension of {TRC1155} that makes it natively cross-chain using the TRC-7786 based {BridgeMultiToken}.
+ *
+ * This extension makes the token compatible with:
+ * * {TRC1155Crosschain} instances on other chains,
+ * * {TRC1155} instances on other chains that are bridged using {BridgeTRC1155},
+ */
+// slither-disable-next-line locked-ether
+abstract contract TRC1155Crosschain is BridgeMultiToken, TRC1155 {
+    /// @dev Equivalent to `crosschainTransferFrom(from, to, id, value, "")`.
+    function crosschainTransferFrom(
+        address from,
+        bytes memory to,
+        uint256 id,
+        uint256 value
+    ) public virtual returns (bytes32) {
+        return crosschainTransferFrom(from, to, id, value, "");
+    }
+
+    /**
+     * @dev TransferFrom variant of {crosschainTransferFrom}, using TRC1155 allowance from the sender to the caller.
+     * `data` is forwarded to the destination-chain TRC-1155 receiver's acceptance hook.
+     */
+    function crosschainTransferFrom(
+        address from,
+        bytes memory to,
+        uint256 id,
+        uint256 value,
+        bytes memory data
+    ) public virtual returns (bytes32) {
+        _checkAuthorized(_msgSender(), from);
+
+        uint256[] memory ids = new uint256[](1);
+        uint256[] memory values = new uint256[](1);
+        ids[0] = id;
+        values[0] = value;
+        return _crosschainTransfer(from, to, ids, values, data);
+    }
+
+    /// @dev Equivalent to `crosschainTransferFrom(from, to, ids, values, "")`.
+    function crosschainTransferFrom(
+        address from,
+        bytes memory to,
+        uint256[] memory ids,
+        uint256[] memory values
+    ) public virtual returns (bytes32) {
+        return crosschainTransferFrom(from, to, ids, values, "");
+    }
+
+    /**
+     * @dev TransferFrom variant of {crosschainTransferFrom}, using TRC1155 allowance from the sender to the caller.
+     * `data` is forwarded to the destination-chain TRC-1155 receiver's acceptance hook.
+     */
+    function crosschainTransferFrom(
+        address from,
+        bytes memory to,
+        uint256[] memory ids,
+        uint256[] memory values,
+        bytes memory data
+    ) public virtual returns (bytes32) {
+        _checkAuthorized(_msgSender(), from);
+        return _crosschainTransfer(from, to, ids, values, data);
+    }
+
+    /// @dev "Locking" tokens is achieved through burning.
+    function _onSend(address from, uint256[] memory ids, uint256[] memory values) internal virtual override {
+        _burnBatch(from, ids, values);
+    }
+
+    /// @dev "Unlocking" tokens is achieved through minting.
+    function _onReceive(
+        address to,
+        uint256[] memory ids,
+        uint256[] memory values,
+        bytes memory data
+    ) internal virtual override {
+        _mintBatch(to, ids, values, data);
+    }
+}

@@ -1,0 +1,3482 @@
+:github-icon: pass:[<svg class="icon"><use href="#github-icon"/></svg>]
+:ITRC721: pass:normal[xref:token/TRC721.adoc#ITRC721[`ITRC721`]]
+:ITRC721Metadata: pass:normal[xref:token/TRC721.adoc#ITRC721Metadata[`ITRC721Metadata`]]
+:ITRC721Enumerable: pass:normal[xref:token/TRC721.adoc#ITRC721Enumerable[`ITRC721Enumerable`]]
+:ITRC721Receiver: pass:normal[xref:token/TRC721.adoc#ITRC721Receiver[`ITRC721Receiver`]]
+:TRC721: pass:normal[xref:token/TRC721.adoc#TRC721[`TRC721`]]
+:TRC721Enumerable: pass:normal[xref:token/TRC721.adoc#TRC721Enumerable[`TRC721Enumerable`]]
+:TRC721Holder: pass:normal[xref:token/TRC721.adoc#TRC721Holder[`TRC721Holder`]]
+:TRC721Consecutive: pass:normal[xref:token/TRC721.adoc#TRC721Consecutive[`TRC721Consecutive`]]
+:TRC721URIStorage: pass:normal[xref:token/TRC721.adoc#TRC721URIStorage[`TRC721URIStorage`]]
+:TRC721Votes: pass:normal[xref:token/TRC721.adoc#TRC721Votes[`TRC721Votes`]]
+:TRC721Royalty: pass:normal[xref:token/TRC721.adoc#TRC721Royalty[`TRC721Royalty`]]
+:TRC721Pausable: pass:normal[xref:token/TRC721.adoc#TRC721Pausable[`TRC721Pausable`]]
+:TRC721Burnable: pass:normal[xref:token/TRC721.adoc#TRC721Burnable[`TRC721Burnable`]]
+:TRC721Crosschain: pass:normal[xref:token/TRC721.adoc#TRC721Crosschain[`TRC721Crosschain`]]
+:BridgeNonFungible: pass:normal[xref:crosschain.adoc#BridgeNonFungible[`BridgeNonFungible`]]
+:TRC721Wrapper: pass:normal[xref:token/TRC721.adoc#TRC721Wrapper[`TRC721Wrapper`]]
+:TRC721Votes: pass:normal[xref:token/TRC721.adoc#TRC721Votes[`TRC721Votes`]]
+:xref-ITRC721-balanceOf-address-: xref:token/TRC721.adoc#ITRC721-balanceOf-address-
+:xref-ITRC721-ownerOf-uint256-: xref:token/TRC721.adoc#ITRC721-ownerOf-uint256-
+:xref-ITRC721-safeTransferFrom-address-address-uint256-bytes-: xref:token/TRC721.adoc#ITRC721-safeTransferFrom-address-address-uint256-bytes-
+:xref-ITRC721-safeTransferFrom-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-safeTransferFrom-address-address-uint256-
+:xref-ITRC721-transferFrom-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-transferFrom-address-address-uint256-
+:xref-ITRC721-approve-address-uint256-: xref:token/TRC721.adoc#ITRC721-approve-address-uint256-
+:xref-ITRC721-setApprovalForAll-address-bool-: xref:token/TRC721.adoc#ITRC721-setApprovalForAll-address-bool-
+:xref-ITRC721-getApproved-uint256-: xref:token/TRC721.adoc#ITRC721-getApproved-uint256-
+:xref-ITRC721-isApprovedForAll-address-address-: xref:token/TRC721.adoc#ITRC721-isApprovedForAll-address-address-
+:xref-ITRC165-supportsInterface-bytes4-: xref:utils.adoc#ITRC165-supportsInterface-bytes4-
+:xref-ITRC721-Transfer-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Transfer-address-address-uint256-
+:xref-ITRC721-Approval-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Approval-address-address-uint256-
+:xref-ITRC721-ApprovalForAll-address-address-bool-: xref:token/TRC721.adoc#ITRC721-ApprovalForAll-address-address-bool-
+:ITRC721Receiver-onTRC721Received: pass:normal[xref:token/TRC721.adoc#ITRC721Receiver-onTRC721Received-address-address-uint256-bytes-[`ITRC721Receiver.onTRC721Received`]]
+:ITRC721Receiver-onTRC721Received: pass:normal[xref:token/TRC721.adoc#ITRC721Receiver-onTRC721Received-address-address-uint256-bytes-[`ITRC721Receiver.onTRC721Received`]]
+:xref-ITRC721Metadata-name--: xref:token/TRC721.adoc#ITRC721Metadata-name--
+:xref-ITRC721Metadata-symbol--: xref:token/TRC721.adoc#ITRC721Metadata-symbol--
+:xref-ITRC721Metadata-tokenURI-uint256-: xref:token/TRC721.adoc#ITRC721Metadata-tokenURI-uint256-
+:xref-ITRC721-balanceOf-address-: xref:token/TRC721.adoc#ITRC721-balanceOf-address-
+:xref-ITRC721-ownerOf-uint256-: xref:token/TRC721.adoc#ITRC721-ownerOf-uint256-
+:xref-ITRC721-safeTransferFrom-address-address-uint256-bytes-: xref:token/TRC721.adoc#ITRC721-safeTransferFrom-address-address-uint256-bytes-
+:xref-ITRC721-safeTransferFrom-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-safeTransferFrom-address-address-uint256-
+:xref-ITRC721-transferFrom-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-transferFrom-address-address-uint256-
+:xref-ITRC721-approve-address-uint256-: xref:token/TRC721.adoc#ITRC721-approve-address-uint256-
+:xref-ITRC721-setApprovalForAll-address-bool-: xref:token/TRC721.adoc#ITRC721-setApprovalForAll-address-bool-
+:xref-ITRC721-getApproved-uint256-: xref:token/TRC721.adoc#ITRC721-getApproved-uint256-
+:xref-ITRC721-isApprovedForAll-address-address-: xref:token/TRC721.adoc#ITRC721-isApprovedForAll-address-address-
+:xref-ITRC165-supportsInterface-bytes4-: xref:utils.adoc#ITRC165-supportsInterface-bytes4-
+:xref-ITRC721-Transfer-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Transfer-address-address-uint256-
+:xref-ITRC721-Approval-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Approval-address-address-uint256-
+:xref-ITRC721-ApprovalForAll-address-address-bool-: xref:token/TRC721.adoc#ITRC721-ApprovalForAll-address-address-bool-
+:xref-ITRC721Enumerable-totalSupply--: xref:token/TRC721.adoc#ITRC721Enumerable-totalSupply--
+:xref-ITRC721Enumerable-tokenOfOwnerByIndex-address-uint256-: xref:token/TRC721.adoc#ITRC721Enumerable-tokenOfOwnerByIndex-address-uint256-
+:xref-ITRC721Enumerable-tokenByIndex-uint256-: xref:token/TRC721.adoc#ITRC721Enumerable-tokenByIndex-uint256-
+:xref-ITRC721-balanceOf-address-: xref:token/TRC721.adoc#ITRC721-balanceOf-address-
+:xref-ITRC721-ownerOf-uint256-: xref:token/TRC721.adoc#ITRC721-ownerOf-uint256-
+:xref-ITRC721-safeTransferFrom-address-address-uint256-bytes-: xref:token/TRC721.adoc#ITRC721-safeTransferFrom-address-address-uint256-bytes-
+:xref-ITRC721-safeTransferFrom-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-safeTransferFrom-address-address-uint256-
+:xref-ITRC721-transferFrom-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-transferFrom-address-address-uint256-
+:xref-ITRC721-approve-address-uint256-: xref:token/TRC721.adoc#ITRC721-approve-address-uint256-
+:xref-ITRC721-setApprovalForAll-address-bool-: xref:token/TRC721.adoc#ITRC721-setApprovalForAll-address-bool-
+:xref-ITRC721-getApproved-uint256-: xref:token/TRC721.adoc#ITRC721-getApproved-uint256-
+:xref-ITRC721-isApprovedForAll-address-address-: xref:token/TRC721.adoc#ITRC721-isApprovedForAll-address-address-
+:xref-ITRC165-supportsInterface-bytes4-: xref:utils.adoc#ITRC165-supportsInterface-bytes4-
+:xref-ITRC721-Transfer-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Transfer-address-address-uint256-
+:xref-ITRC721-Approval-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Approval-address-address-uint256-
+:xref-ITRC721-ApprovalForAll-address-address-bool-: xref:token/TRC721.adoc#ITRC721-ApprovalForAll-address-address-bool-
+:TRC721Enumerable: pass:normal[xref:token/TRC721.adoc#TRC721Enumerable[`TRC721Enumerable`]]
+:xref-TRC721-constructor-string-string-: xref:token/TRC721.adoc#TRC721-constructor-string-string-
+:xref-TRC721-supportsInterface-bytes4-: xref:token/TRC721.adoc#TRC721-supportsInterface-bytes4-
+:xref-TRC721-balanceOf-address-: xref:token/TRC721.adoc#TRC721-balanceOf-address-
+:xref-TRC721-ownerOf-uint256-: xref:token/TRC721.adoc#TRC721-ownerOf-uint256-
+:xref-TRC721-name--: xref:token/TRC721.adoc#TRC721-name--
+:xref-TRC721-symbol--: xref:token/TRC721.adoc#TRC721-symbol--
+:xref-TRC721-tokenURI-uint256-: xref:token/TRC721.adoc#TRC721-tokenURI-uint256-
+:xref-TRC721-_baseURI--: xref:token/TRC721.adoc#TRC721-_baseURI--
+:xref-TRC721-approve-address-uint256-: xref:token/TRC721.adoc#TRC721-approve-address-uint256-
+:xref-TRC721-getApproved-uint256-: xref:token/TRC721.adoc#TRC721-getApproved-uint256-
+:xref-TRC721-setApprovalForAll-address-bool-: xref:token/TRC721.adoc#TRC721-setApprovalForAll-address-bool-
+:xref-TRC721-isApprovedForAll-address-address-: xref:token/TRC721.adoc#TRC721-isApprovedForAll-address-address-
+:xref-TRC721-transferFrom-address-address-uint256-: xref:token/TRC721.adoc#TRC721-transferFrom-address-address-uint256-
+:xref-TRC721-safeTransferFrom-address-address-uint256-: xref:token/TRC721.adoc#TRC721-safeTransferFrom-address-address-uint256-
+:xref-TRC721-safeTransferFrom-address-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-safeTransferFrom-address-address-uint256-bytes-
+:xref-TRC721-_ownerOf-uint256-: xref:token/TRC721.adoc#TRC721-_ownerOf-uint256-
+:xref-TRC721-_getApproved-uint256-: xref:token/TRC721.adoc#TRC721-_getApproved-uint256-
+:xref-TRC721-_isAuthorized-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_isAuthorized-address-address-uint256-
+:xref-TRC721-_checkAuthorized-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_checkAuthorized-address-address-uint256-
+:xref-TRC721-_increaseBalance-address-uint128-: xref:token/TRC721.adoc#TRC721-_increaseBalance-address-uint128-
+:xref-TRC721-_update-address-uint256-address-: xref:token/TRC721.adoc#TRC721-_update-address-uint256-address-
+:xref-TRC721-_mint-address-uint256-: xref:token/TRC721.adoc#TRC721-_mint-address-uint256-
+:xref-TRC721-_safeMint-address-uint256-: xref:token/TRC721.adoc#TRC721-_safeMint-address-uint256-
+:xref-TRC721-_safeMint-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-_safeMint-address-uint256-bytes-
+:xref-TRC721-_burn-uint256-: xref:token/TRC721.adoc#TRC721-_burn-uint256-
+:xref-TRC721-_transfer-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_transfer-address-address-uint256-
+:xref-TRC721-_safeTransfer-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_safeTransfer-address-address-uint256-
+:xref-TRC721-_safeTransfer-address-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-_safeTransfer-address-address-uint256-bytes-
+:xref-TRC721-_approve-address-uint256-address-: xref:token/TRC721.adoc#TRC721-_approve-address-uint256-address-
+:xref-TRC721-_approve-address-uint256-address-bool-: xref:token/TRC721.adoc#TRC721-_approve-address-uint256-address-bool-
+:xref-TRC721-_setApprovalForAll-address-address-bool-: xref:token/TRC721.adoc#TRC721-_setApprovalForAll-address-address-bool-
+:xref-TRC721-_requireOwned-uint256-: xref:token/TRC721.adoc#TRC721-_requireOwned-uint256-
+:xref-ITRC721-Transfer-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Transfer-address-address-uint256-
+:xref-ITRC721-Approval-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Approval-address-address-uint256-
+:xref-ITRC721-ApprovalForAll-address-address-bool-: xref:token/TRC721.adoc#ITRC721-ApprovalForAll-address-address-bool-
+:xref-ITRC721Errors-TRC721InvalidOwner-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidOwner-address-
+:xref-ITRC721Errors-TRC721NonexistentToken-uint256-: xref:interfaces.adoc#ITRC721Errors-TRC721NonexistentToken-uint256-
+:xref-ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-: xref:interfaces.adoc#ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-
+:xref-ITRC721Errors-TRC721InvalidSender-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidSender-address-
+:xref-ITRC721Errors-TRC721InvalidReceiver-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidReceiver-address-
+:xref-ITRC721Errors-TRC721InsufficientApproval-address-uint256-: xref:interfaces.adoc#ITRC721Errors-TRC721InsufficientApproval-address-uint256-
+:xref-ITRC721Errors-TRC721InvalidApprover-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidApprover-address-
+:xref-ITRC721Errors-TRC721InvalidOperator-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidOperator-address-
+:ITRC721Receiver-onTRC721Received: pass:normal[xref:token/TRC721.adoc#ITRC721Receiver-onTRC721Received-address-address-uint256-bytes-[`ITRC721Receiver.onTRC721Received`]]
+:ITRC721Receiver-onTRC721Received: pass:normal[xref:token/TRC721.adoc#ITRC721Receiver-onTRC721Received-address-address-uint256-bytes-[`ITRC721Receiver.onTRC721Received`]]
+:ITRC721Receiver-onTRC721Received: pass:normal[xref:token/TRC721.adoc#ITRC721Receiver-onTRC721Received-address-address-uint256-bytes-[`ITRC721Receiver.onTRC721Received`]]
+:xref-TRC721-_safeMint-address-uint256-: xref:token/TRC721.adoc#TRC721-_safeMint-address-uint256-
+:ITRC721Receiver-onTRC721Received: pass:normal[xref:token/TRC721.adoc#ITRC721Receiver-onTRC721Received-address-address-uint256-bytes-[`ITRC721Receiver.onTRC721Received`]]
+:ITRC721Receiver-onTRC721Received: pass:normal[xref:token/TRC721.adoc#ITRC721Receiver-onTRC721Received-address-address-uint256-bytes-[`ITRC721Receiver.onTRC721Received`]]
+:ITRC721Receiver-onTRC721Received: pass:normal[xref:token/TRC721.adoc#ITRC721Receiver-onTRC721Received-address-address-uint256-bytes-[`ITRC721Receiver.onTRC721Received`]]
+:xref-TRC721-_safeTransfer-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_safeTransfer-address-address-uint256-
+:ITRC721Receiver-onTRC721Received: pass:normal[xref:token/TRC721.adoc#ITRC721Receiver-onTRC721Received-address-address-uint256-bytes-[`ITRC721Receiver.onTRC721Received`]]
+:TRC721: pass:normal[xref:token/TRC721.adoc#TRC721[`TRC721`]]
+:TRC721: pass:normal[xref:token/TRC721.adoc#TRC721[`TRC721`]]
+:TRC721Consecutive: pass:normal[xref:token/TRC721.adoc#TRC721Consecutive[`TRC721Consecutive`]]
+:TRC721Enumerable: pass:normal[xref:token/TRC721.adoc#TRC721Enumerable[`TRC721Enumerable`]]
+:xref-TRC721Enumerable-supportsInterface-bytes4-: xref:token/TRC721.adoc#TRC721Enumerable-supportsInterface-bytes4-
+:xref-TRC721Enumerable-tokenOfOwnerByIndex-address-uint256-: xref:token/TRC721.adoc#TRC721Enumerable-tokenOfOwnerByIndex-address-uint256-
+:xref-TRC721Enumerable-totalSupply--: xref:token/TRC721.adoc#TRC721Enumerable-totalSupply--
+:xref-TRC721Enumerable-tokenByIndex-uint256-: xref:token/TRC721.adoc#TRC721Enumerable-tokenByIndex-uint256-
+:xref-TRC721Enumerable-_update-address-uint256-address-: xref:token/TRC721.adoc#TRC721Enumerable-_update-address-uint256-address-
+:xref-TRC721Enumerable-_increaseBalance-address-uint128-: xref:token/TRC721.adoc#TRC721Enumerable-_increaseBalance-address-uint128-
+:xref-TRC721-balanceOf-address-: xref:token/TRC721.adoc#TRC721-balanceOf-address-
+:xref-TRC721-ownerOf-uint256-: xref:token/TRC721.adoc#TRC721-ownerOf-uint256-
+:xref-TRC721-name--: xref:token/TRC721.adoc#TRC721-name--
+:xref-TRC721-symbol--: xref:token/TRC721.adoc#TRC721-symbol--
+:xref-TRC721-tokenURI-uint256-: xref:token/TRC721.adoc#TRC721-tokenURI-uint256-
+:xref-TRC721-_baseURI--: xref:token/TRC721.adoc#TRC721-_baseURI--
+:xref-TRC721-approve-address-uint256-: xref:token/TRC721.adoc#TRC721-approve-address-uint256-
+:xref-TRC721-getApproved-uint256-: xref:token/TRC721.adoc#TRC721-getApproved-uint256-
+:xref-TRC721-setApprovalForAll-address-bool-: xref:token/TRC721.adoc#TRC721-setApprovalForAll-address-bool-
+:xref-TRC721-isApprovedForAll-address-address-: xref:token/TRC721.adoc#TRC721-isApprovedForAll-address-address-
+:xref-TRC721-transferFrom-address-address-uint256-: xref:token/TRC721.adoc#TRC721-transferFrom-address-address-uint256-
+:xref-TRC721-safeTransferFrom-address-address-uint256-: xref:token/TRC721.adoc#TRC721-safeTransferFrom-address-address-uint256-
+:xref-TRC721-safeTransferFrom-address-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-safeTransferFrom-address-address-uint256-bytes-
+:xref-TRC721-_ownerOf-uint256-: xref:token/TRC721.adoc#TRC721-_ownerOf-uint256-
+:xref-TRC721-_getApproved-uint256-: xref:token/TRC721.adoc#TRC721-_getApproved-uint256-
+:xref-TRC721-_isAuthorized-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_isAuthorized-address-address-uint256-
+:xref-TRC721-_checkAuthorized-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_checkAuthorized-address-address-uint256-
+:xref-TRC721-_mint-address-uint256-: xref:token/TRC721.adoc#TRC721-_mint-address-uint256-
+:xref-TRC721-_safeMint-address-uint256-: xref:token/TRC721.adoc#TRC721-_safeMint-address-uint256-
+:xref-TRC721-_safeMint-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-_safeMint-address-uint256-bytes-
+:xref-TRC721-_burn-uint256-: xref:token/TRC721.adoc#TRC721-_burn-uint256-
+:xref-TRC721-_transfer-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_transfer-address-address-uint256-
+:xref-TRC721-_safeTransfer-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_safeTransfer-address-address-uint256-
+:xref-TRC721-_safeTransfer-address-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-_safeTransfer-address-address-uint256-bytes-
+:xref-TRC721-_approve-address-uint256-address-: xref:token/TRC721.adoc#TRC721-_approve-address-uint256-address-
+:xref-TRC721-_approve-address-uint256-address-bool-: xref:token/TRC721.adoc#TRC721-_approve-address-uint256-address-bool-
+:xref-TRC721-_setApprovalForAll-address-address-bool-: xref:token/TRC721.adoc#TRC721-_setApprovalForAll-address-address-bool-
+:xref-TRC721-_requireOwned-uint256-: xref:token/TRC721.adoc#TRC721-_requireOwned-uint256-
+:xref-ITRC721-Transfer-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Transfer-address-address-uint256-
+:xref-ITRC721-Approval-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Approval-address-address-uint256-
+:xref-ITRC721-ApprovalForAll-address-address-bool-: xref:token/TRC721.adoc#ITRC721-ApprovalForAll-address-address-bool-
+:xref-TRC721Enumerable-TRC721OutOfBoundsIndex-address-uint256-: xref:token/TRC721.adoc#TRC721Enumerable-TRC721OutOfBoundsIndex-address-uint256-
+:xref-TRC721Enumerable-TRC721EnumerableForbiddenBatchMint--: xref:token/TRC721.adoc#TRC721Enumerable-TRC721EnumerableForbiddenBatchMint--
+:xref-ITRC721Errors-TRC721InvalidOwner-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidOwner-address-
+:xref-ITRC721Errors-TRC721NonexistentToken-uint256-: xref:interfaces.adoc#ITRC721Errors-TRC721NonexistentToken-uint256-
+:xref-ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-: xref:interfaces.adoc#ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-
+:xref-ITRC721Errors-TRC721InvalidSender-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidSender-address-
+:xref-ITRC721Errors-TRC721InvalidReceiver-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidReceiver-address-
+:xref-ITRC721Errors-TRC721InsufficientApproval-address-uint256-: xref:interfaces.adoc#ITRC721Errors-TRC721InsufficientApproval-address-uint256-
+:xref-ITRC721Errors-TRC721InvalidApprover-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidApprover-address-
+:xref-ITRC721Errors-TRC721InvalidOperator-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidOperator-address-
+:xref-ITRC721Receiver-onTRC721Received-address-address-uint256-bytes-: xref:token/TRC721.adoc#ITRC721Receiver-onTRC721Received-address-address-uint256-bytes-
+:ITRC721: pass:normal[xref:token/TRC721.adoc#ITRC721[`ITRC721`]]
+:ITRC721-safeTransferFrom: pass:normal[xref:token/TRC721.adoc#ITRC721-safeTransferFrom-address-address-uint256-[`ITRC721.safeTransferFrom`]]
+:TRC721: pass:normal[xref:token/TRC721.adoc#TRC721[`TRC721`]]
+:BridgeNonFungible: pass:normal[xref:crosschain.adoc#BridgeNonFungible[`BridgeNonFungible`]]
+:TRC721Crosschain: pass:normal[xref:token/TRC721.adoc#TRC721Crosschain[`TRC721Crosschain`]]
+:TRC721: pass:normal[xref:token/TRC721.adoc#TRC721[`TRC721`]]
+:BridgeTRC721: pass:normal[xref:crosschain.adoc#BridgeTRC721[`BridgeTRC721`]]
+:xref-TRC721Crosschain-crosschainTransferFrom-address-bytes-uint256-: xref:token/TRC721.adoc#TRC721Crosschain-crosschainTransferFrom-address-bytes-uint256-
+:xref-TRC721Crosschain-_onSend-address-uint256-: xref:token/TRC721.adoc#TRC721Crosschain-_onSend-address-uint256-
+:xref-TRC721Crosschain-_onReceive-address-uint256-: xref:token/TRC721.adoc#TRC721Crosschain-_onReceive-address-uint256-
+:xref-TRC721-supportsInterface-bytes4-: xref:token/TRC721.adoc#TRC721-supportsInterface-bytes4-
+:xref-TRC721-balanceOf-address-: xref:token/TRC721.adoc#TRC721-balanceOf-address-
+:xref-TRC721-ownerOf-uint256-: xref:token/TRC721.adoc#TRC721-ownerOf-uint256-
+:xref-TRC721-name--: xref:token/TRC721.adoc#TRC721-name--
+:xref-TRC721-symbol--: xref:token/TRC721.adoc#TRC721-symbol--
+:xref-TRC721-tokenURI-uint256-: xref:token/TRC721.adoc#TRC721-tokenURI-uint256-
+:xref-TRC721-_baseURI--: xref:token/TRC721.adoc#TRC721-_baseURI--
+:xref-TRC721-approve-address-uint256-: xref:token/TRC721.adoc#TRC721-approve-address-uint256-
+:xref-TRC721-getApproved-uint256-: xref:token/TRC721.adoc#TRC721-getApproved-uint256-
+:xref-TRC721-setApprovalForAll-address-bool-: xref:token/TRC721.adoc#TRC721-setApprovalForAll-address-bool-
+:xref-TRC721-isApprovedForAll-address-address-: xref:token/TRC721.adoc#TRC721-isApprovedForAll-address-address-
+:xref-TRC721-transferFrom-address-address-uint256-: xref:token/TRC721.adoc#TRC721-transferFrom-address-address-uint256-
+:xref-TRC721-safeTransferFrom-address-address-uint256-: xref:token/TRC721.adoc#TRC721-safeTransferFrom-address-address-uint256-
+:xref-TRC721-safeTransferFrom-address-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-safeTransferFrom-address-address-uint256-bytes-
+:xref-TRC721-_ownerOf-uint256-: xref:token/TRC721.adoc#TRC721-_ownerOf-uint256-
+:xref-TRC721-_getApproved-uint256-: xref:token/TRC721.adoc#TRC721-_getApproved-uint256-
+:xref-TRC721-_isAuthorized-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_isAuthorized-address-address-uint256-
+:xref-TRC721-_checkAuthorized-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_checkAuthorized-address-address-uint256-
+:xref-TRC721-_increaseBalance-address-uint128-: xref:token/TRC721.adoc#TRC721-_increaseBalance-address-uint128-
+:xref-TRC721-_update-address-uint256-address-: xref:token/TRC721.adoc#TRC721-_update-address-uint256-address-
+:xref-TRC721-_mint-address-uint256-: xref:token/TRC721.adoc#TRC721-_mint-address-uint256-
+:xref-TRC721-_safeMint-address-uint256-: xref:token/TRC721.adoc#TRC721-_safeMint-address-uint256-
+:xref-TRC721-_safeMint-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-_safeMint-address-uint256-bytes-
+:xref-TRC721-_burn-uint256-: xref:token/TRC721.adoc#TRC721-_burn-uint256-
+:xref-TRC721-_transfer-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_transfer-address-address-uint256-
+:xref-TRC721-_safeTransfer-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_safeTransfer-address-address-uint256-
+:xref-TRC721-_safeTransfer-address-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-_safeTransfer-address-address-uint256-bytes-
+:xref-TRC721-_approve-address-uint256-address-: xref:token/TRC721.adoc#TRC721-_approve-address-uint256-address-
+:xref-TRC721-_approve-address-uint256-address-bool-: xref:token/TRC721.adoc#TRC721-_approve-address-uint256-address-bool-
+:xref-TRC721-_setApprovalForAll-address-address-bool-: xref:token/TRC721.adoc#TRC721-_setApprovalForAll-address-address-bool-
+:xref-TRC721-_requireOwned-uint256-: xref:token/TRC721.adoc#TRC721-_requireOwned-uint256-
+:xref-BridgeNonFungible-_crosschainTransfer-address-bytes-uint256-: xref:crosschain.adoc#BridgeNonFungible-_crosschainTransfer-address-bytes-uint256-
+:xref-BridgeNonFungible-_processMessage-address-bytes32-bytes-bytes-: xref:crosschain.adoc#BridgeNonFungible-_processMessage-address-bytes32-bytes-bytes-
+:xref-CrosschainLinked-getLink-bytes-: xref:crosschain.adoc#CrosschainLinked-getLink-bytes-
+:xref-CrosschainLinked-_setLink-address-bytes-bool-: xref:crosschain.adoc#CrosschainLinked-_setLink-address-bytes-bool-
+:xref-CrosschainLinked-_sendMessageToCounterpart-bytes-bytes-bytes---: xref:crosschain.adoc#CrosschainLinked-_sendMessageToCounterpart-bytes-bytes-bytes---
+:xref-CrosschainLinked-_isAuthorizedGateway-address-bytes-: xref:crosschain.adoc#CrosschainLinked-_isAuthorizedGateway-address-bytes-
+:xref-TRC7786Recipient-receiveMessage-bytes32-bytes-bytes-: xref:crosschain.adoc#TRC7786Recipient-receiveMessage-bytes32-bytes-bytes-
+:xref-ITRC721-Transfer-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Transfer-address-address-uint256-
+:xref-ITRC721-Approval-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Approval-address-address-uint256-
+:xref-ITRC721-ApprovalForAll-address-address-bool-: xref:token/TRC721.adoc#ITRC721-ApprovalForAll-address-address-bool-
+:xref-BridgeNonFungible-CrosschainNonFungibleTransferSent-bytes32-address-bytes-uint256-: xref:crosschain.adoc#BridgeNonFungible-CrosschainNonFungibleTransferSent-bytes32-address-bytes-uint256-
+:xref-BridgeNonFungible-CrosschainNonFungibleTransferReceived-bytes32-bytes-address-uint256-: xref:crosschain.adoc#BridgeNonFungible-CrosschainNonFungibleTransferReceived-bytes32-bytes-address-uint256-
+:xref-CrosschainLinked-LinkRegistered-address-bytes-: xref:crosschain.adoc#CrosschainLinked-LinkRegistered-address-bytes-
+:xref-ITRC721Errors-TRC721InvalidOwner-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidOwner-address-
+:xref-ITRC721Errors-TRC721NonexistentToken-uint256-: xref:interfaces.adoc#ITRC721Errors-TRC721NonexistentToken-uint256-
+:xref-ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-: xref:interfaces.adoc#ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-
+:xref-ITRC721Errors-TRC721InvalidSender-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidSender-address-
+:xref-ITRC721Errors-TRC721InvalidReceiver-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidReceiver-address-
+:xref-ITRC721Errors-TRC721InsufficientApproval-address-uint256-: xref:interfaces.adoc#ITRC721Errors-TRC721InsufficientApproval-address-uint256-
+:xref-ITRC721Errors-TRC721InvalidApprover-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidApprover-address-
+:xref-ITRC721Errors-TRC721InvalidOperator-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidOperator-address-
+:xref-BridgeNonFungible-CrosschainNonFungibleEmptyAddress--: xref:crosschain.adoc#BridgeNonFungible-CrosschainNonFungibleEmptyAddress--
+:xref-BridgeNonFungible-CrosschainNonFungibleInvalidRecipient-bytes-: xref:crosschain.adoc#BridgeNonFungible-CrosschainNonFungibleInvalidRecipient-bytes-
+:xref-CrosschainLinked-LinkAlreadyRegistered-bytes-: xref:crosschain.adoc#CrosschainLinked-LinkAlreadyRegistered-bytes-
+:xref-TRC7786Recipient-TRC7786RecipientUnauthorizedGateway-address-bytes-: xref:crosschain.adoc#TRC7786Recipient-TRC7786RecipientUnauthorizedGateway-address-bytes-
+:Pausable-_pause: pass:normal[xref:utils.adoc#Pausable-_pause--[`Pausable._pause`]]
+:Pausable-_unpause: pass:normal[xref:utils.adoc#Pausable-_unpause--[`Pausable._unpause`]]
+:AccessControl: pass:normal[xref:access.adoc#AccessControl[`AccessControl`]]
+:Ownable: pass:normal[xref:access.adoc#Ownable[`Ownable`]]
+:xref-TRC721Pausable-_update-address-uint256-address-: xref:token/TRC721.adoc#TRC721Pausable-_update-address-uint256-address-
+:xref-Pausable-paused--: xref:utils.adoc#Pausable-paused--
+:xref-Pausable-_requireNotPaused--: xref:utils.adoc#Pausable-_requireNotPaused--
+:xref-Pausable-_requirePaused--: xref:utils.adoc#Pausable-_requirePaused--
+:xref-Pausable-_pause--: xref:utils.adoc#Pausable-_pause--
+:xref-Pausable-_unpause--: xref:utils.adoc#Pausable-_unpause--
+:xref-TRC721-supportsInterface-bytes4-: xref:token/TRC721.adoc#TRC721-supportsInterface-bytes4-
+:xref-TRC721-balanceOf-address-: xref:token/TRC721.adoc#TRC721-balanceOf-address-
+:xref-TRC721-ownerOf-uint256-: xref:token/TRC721.adoc#TRC721-ownerOf-uint256-
+:xref-TRC721-name--: xref:token/TRC721.adoc#TRC721-name--
+:xref-TRC721-symbol--: xref:token/TRC721.adoc#TRC721-symbol--
+:xref-TRC721-tokenURI-uint256-: xref:token/TRC721.adoc#TRC721-tokenURI-uint256-
+:xref-TRC721-_baseURI--: xref:token/TRC721.adoc#TRC721-_baseURI--
+:xref-TRC721-approve-address-uint256-: xref:token/TRC721.adoc#TRC721-approve-address-uint256-
+:xref-TRC721-getApproved-uint256-: xref:token/TRC721.adoc#TRC721-getApproved-uint256-
+:xref-TRC721-setApprovalForAll-address-bool-: xref:token/TRC721.adoc#TRC721-setApprovalForAll-address-bool-
+:xref-TRC721-isApprovedForAll-address-address-: xref:token/TRC721.adoc#TRC721-isApprovedForAll-address-address-
+:xref-TRC721-transferFrom-address-address-uint256-: xref:token/TRC721.adoc#TRC721-transferFrom-address-address-uint256-
+:xref-TRC721-safeTransferFrom-address-address-uint256-: xref:token/TRC721.adoc#TRC721-safeTransferFrom-address-address-uint256-
+:xref-TRC721-safeTransferFrom-address-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-safeTransferFrom-address-address-uint256-bytes-
+:xref-TRC721-_ownerOf-uint256-: xref:token/TRC721.adoc#TRC721-_ownerOf-uint256-
+:xref-TRC721-_getApproved-uint256-: xref:token/TRC721.adoc#TRC721-_getApproved-uint256-
+:xref-TRC721-_isAuthorized-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_isAuthorized-address-address-uint256-
+:xref-TRC721-_checkAuthorized-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_checkAuthorized-address-address-uint256-
+:xref-TRC721-_increaseBalance-address-uint128-: xref:token/TRC721.adoc#TRC721-_increaseBalance-address-uint128-
+:xref-TRC721-_mint-address-uint256-: xref:token/TRC721.adoc#TRC721-_mint-address-uint256-
+:xref-TRC721-_safeMint-address-uint256-: xref:token/TRC721.adoc#TRC721-_safeMint-address-uint256-
+:xref-TRC721-_safeMint-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-_safeMint-address-uint256-bytes-
+:xref-TRC721-_burn-uint256-: xref:token/TRC721.adoc#TRC721-_burn-uint256-
+:xref-TRC721-_transfer-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_transfer-address-address-uint256-
+:xref-TRC721-_safeTransfer-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_safeTransfer-address-address-uint256-
+:xref-TRC721-_safeTransfer-address-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-_safeTransfer-address-address-uint256-bytes-
+:xref-TRC721-_approve-address-uint256-address-: xref:token/TRC721.adoc#TRC721-_approve-address-uint256-address-
+:xref-TRC721-_approve-address-uint256-address-bool-: xref:token/TRC721.adoc#TRC721-_approve-address-uint256-address-bool-
+:xref-TRC721-_setApprovalForAll-address-address-bool-: xref:token/TRC721.adoc#TRC721-_setApprovalForAll-address-address-bool-
+:xref-TRC721-_requireOwned-uint256-: xref:token/TRC721.adoc#TRC721-_requireOwned-uint256-
+:xref-Pausable-Paused-address-: xref:utils.adoc#Pausable-Paused-address-
+:xref-Pausable-Unpaused-address-: xref:utils.adoc#Pausable-Unpaused-address-
+:xref-ITRC721-Transfer-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Transfer-address-address-uint256-
+:xref-ITRC721-Approval-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Approval-address-address-uint256-
+:xref-ITRC721-ApprovalForAll-address-address-bool-: xref:token/TRC721.adoc#ITRC721-ApprovalForAll-address-address-bool-
+:xref-Pausable-EnforcedPause--: xref:utils.adoc#Pausable-EnforcedPause--
+:xref-Pausable-ExpectedPause--: xref:utils.adoc#Pausable-ExpectedPause--
+:xref-ITRC721Errors-TRC721InvalidOwner-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidOwner-address-
+:xref-ITRC721Errors-TRC721NonexistentToken-uint256-: xref:interfaces.adoc#ITRC721Errors-TRC721NonexistentToken-uint256-
+:xref-ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-: xref:interfaces.adoc#ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-
+:xref-ITRC721Errors-TRC721InvalidSender-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidSender-address-
+:xref-ITRC721Errors-TRC721InvalidReceiver-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidReceiver-address-
+:xref-ITRC721Errors-TRC721InsufficientApproval-address-uint256-: xref:interfaces.adoc#ITRC721Errors-TRC721InsufficientApproval-address-uint256-
+:xref-ITRC721Errors-TRC721InvalidApprover-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidApprover-address-
+:xref-ITRC721Errors-TRC721InvalidOperator-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidOperator-address-
+:TRC721-_update: pass:normal[xref:token/TRC721.adoc#TRC721-_update-address-uint256-address-[`TRC721._update`]]
+:xref-TRC721Burnable-burn-uint256-: xref:token/TRC721.adoc#TRC721Burnable-burn-uint256-
+:xref-TRC721-supportsInterface-bytes4-: xref:token/TRC721.adoc#TRC721-supportsInterface-bytes4-
+:xref-TRC721-balanceOf-address-: xref:token/TRC721.adoc#TRC721-balanceOf-address-
+:xref-TRC721-ownerOf-uint256-: xref:token/TRC721.adoc#TRC721-ownerOf-uint256-
+:xref-TRC721-name--: xref:token/TRC721.adoc#TRC721-name--
+:xref-TRC721-symbol--: xref:token/TRC721.adoc#TRC721-symbol--
+:xref-TRC721-tokenURI-uint256-: xref:token/TRC721.adoc#TRC721-tokenURI-uint256-
+:xref-TRC721-_baseURI--: xref:token/TRC721.adoc#TRC721-_baseURI--
+:xref-TRC721-approve-address-uint256-: xref:token/TRC721.adoc#TRC721-approve-address-uint256-
+:xref-TRC721-getApproved-uint256-: xref:token/TRC721.adoc#TRC721-getApproved-uint256-
+:xref-TRC721-setApprovalForAll-address-bool-: xref:token/TRC721.adoc#TRC721-setApprovalForAll-address-bool-
+:xref-TRC721-isApprovedForAll-address-address-: xref:token/TRC721.adoc#TRC721-isApprovedForAll-address-address-
+:xref-TRC721-transferFrom-address-address-uint256-: xref:token/TRC721.adoc#TRC721-transferFrom-address-address-uint256-
+:xref-TRC721-safeTransferFrom-address-address-uint256-: xref:token/TRC721.adoc#TRC721-safeTransferFrom-address-address-uint256-
+:xref-TRC721-safeTransferFrom-address-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-safeTransferFrom-address-address-uint256-bytes-
+:xref-TRC721-_ownerOf-uint256-: xref:token/TRC721.adoc#TRC721-_ownerOf-uint256-
+:xref-TRC721-_getApproved-uint256-: xref:token/TRC721.adoc#TRC721-_getApproved-uint256-
+:xref-TRC721-_isAuthorized-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_isAuthorized-address-address-uint256-
+:xref-TRC721-_checkAuthorized-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_checkAuthorized-address-address-uint256-
+:xref-TRC721-_increaseBalance-address-uint128-: xref:token/TRC721.adoc#TRC721-_increaseBalance-address-uint128-
+:xref-TRC721-_update-address-uint256-address-: xref:token/TRC721.adoc#TRC721-_update-address-uint256-address-
+:xref-TRC721-_mint-address-uint256-: xref:token/TRC721.adoc#TRC721-_mint-address-uint256-
+:xref-TRC721-_safeMint-address-uint256-: xref:token/TRC721.adoc#TRC721-_safeMint-address-uint256-
+:xref-TRC721-_safeMint-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-_safeMint-address-uint256-bytes-
+:xref-TRC721-_burn-uint256-: xref:token/TRC721.adoc#TRC721-_burn-uint256-
+:xref-TRC721-_transfer-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_transfer-address-address-uint256-
+:xref-TRC721-_safeTransfer-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_safeTransfer-address-address-uint256-
+:xref-TRC721-_safeTransfer-address-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-_safeTransfer-address-address-uint256-bytes-
+:xref-TRC721-_approve-address-uint256-address-: xref:token/TRC721.adoc#TRC721-_approve-address-uint256-address-
+:xref-TRC721-_approve-address-uint256-address-bool-: xref:token/TRC721.adoc#TRC721-_approve-address-uint256-address-bool-
+:xref-TRC721-_setApprovalForAll-address-address-bool-: xref:token/TRC721.adoc#TRC721-_setApprovalForAll-address-address-bool-
+:xref-TRC721-_requireOwned-uint256-: xref:token/TRC721.adoc#TRC721-_requireOwned-uint256-
+:xref-ITRC721-Transfer-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Transfer-address-address-uint256-
+:xref-ITRC721-Approval-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Approval-address-address-uint256-
+:xref-ITRC721-ApprovalForAll-address-address-bool-: xref:token/TRC721.adoc#ITRC721-ApprovalForAll-address-address-bool-
+:xref-ITRC721Errors-TRC721InvalidOwner-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidOwner-address-
+:xref-ITRC721Errors-TRC721NonexistentToken-uint256-: xref:interfaces.adoc#ITRC721Errors-TRC721NonexistentToken-uint256-
+:xref-ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-: xref:interfaces.adoc#ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-
+:xref-ITRC721Errors-TRC721InvalidSender-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidSender-address-
+:xref-ITRC721Errors-TRC721InvalidReceiver-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidReceiver-address-
+:xref-ITRC721Errors-TRC721InsufficientApproval-address-uint256-: xref:interfaces.adoc#ITRC721Errors-TRC721InsufficientApproval-address-uint256-
+:xref-ITRC721Errors-TRC721InvalidApprover-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidApprover-address-
+:xref-ITRC721Errors-TRC721InvalidOperator-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidOperator-address-
+:TRC721-_burn: pass:normal[xref:token/TRC721.adoc#TRC721-_burn-uint256-[`TRC721._burn`]]
+:xref-TRC721Consecutive-_maxBatchSize--: xref:token/TRC721.adoc#TRC721Consecutive-_maxBatchSize--
+:xref-TRC721Consecutive-_ownerOf-uint256-: xref:token/TRC721.adoc#TRC721Consecutive-_ownerOf-uint256-
+:xref-TRC721Consecutive-_mintConsecutive-address-uint96-: xref:token/TRC721.adoc#TRC721Consecutive-_mintConsecutive-address-uint96-
+:xref-TRC721Consecutive-_update-address-uint256-address-: xref:token/TRC721.adoc#TRC721Consecutive-_update-address-uint256-address-
+:xref-TRC721Consecutive-_firstConsecutiveId--: xref:token/TRC721.adoc#TRC721Consecutive-_firstConsecutiveId--
+:xref-TRC721-supportsInterface-bytes4-: xref:token/TRC721.adoc#TRC721-supportsInterface-bytes4-
+:xref-TRC721-balanceOf-address-: xref:token/TRC721.adoc#TRC721-balanceOf-address-
+:xref-TRC721-ownerOf-uint256-: xref:token/TRC721.adoc#TRC721-ownerOf-uint256-
+:xref-TRC721-name--: xref:token/TRC721.adoc#TRC721-name--
+:xref-TRC721-symbol--: xref:token/TRC721.adoc#TRC721-symbol--
+:xref-TRC721-tokenURI-uint256-: xref:token/TRC721.adoc#TRC721-tokenURI-uint256-
+:xref-TRC721-_baseURI--: xref:token/TRC721.adoc#TRC721-_baseURI--
+:xref-TRC721-approve-address-uint256-: xref:token/TRC721.adoc#TRC721-approve-address-uint256-
+:xref-TRC721-getApproved-uint256-: xref:token/TRC721.adoc#TRC721-getApproved-uint256-
+:xref-TRC721-setApprovalForAll-address-bool-: xref:token/TRC721.adoc#TRC721-setApprovalForAll-address-bool-
+:xref-TRC721-isApprovedForAll-address-address-: xref:token/TRC721.adoc#TRC721-isApprovedForAll-address-address-
+:xref-TRC721-transferFrom-address-address-uint256-: xref:token/TRC721.adoc#TRC721-transferFrom-address-address-uint256-
+:xref-TRC721-safeTransferFrom-address-address-uint256-: xref:token/TRC721.adoc#TRC721-safeTransferFrom-address-address-uint256-
+:xref-TRC721-safeTransferFrom-address-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-safeTransferFrom-address-address-uint256-bytes-
+:xref-TRC721-_getApproved-uint256-: xref:token/TRC721.adoc#TRC721-_getApproved-uint256-
+:xref-TRC721-_isAuthorized-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_isAuthorized-address-address-uint256-
+:xref-TRC721-_checkAuthorized-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_checkAuthorized-address-address-uint256-
+:xref-TRC721-_increaseBalance-address-uint128-: xref:token/TRC721.adoc#TRC721-_increaseBalance-address-uint128-
+:xref-TRC721-_mint-address-uint256-: xref:token/TRC721.adoc#TRC721-_mint-address-uint256-
+:xref-TRC721-_safeMint-address-uint256-: xref:token/TRC721.adoc#TRC721-_safeMint-address-uint256-
+:xref-TRC721-_safeMint-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-_safeMint-address-uint256-bytes-
+:xref-TRC721-_burn-uint256-: xref:token/TRC721.adoc#TRC721-_burn-uint256-
+:xref-TRC721-_transfer-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_transfer-address-address-uint256-
+:xref-TRC721-_safeTransfer-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_safeTransfer-address-address-uint256-
+:xref-TRC721-_safeTransfer-address-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-_safeTransfer-address-address-uint256-bytes-
+:xref-TRC721-_approve-address-uint256-address-: xref:token/TRC721.adoc#TRC721-_approve-address-uint256-address-
+:xref-TRC721-_approve-address-uint256-address-bool-: xref:token/TRC721.adoc#TRC721-_approve-address-uint256-address-bool-
+:xref-TRC721-_setApprovalForAll-address-address-bool-: xref:token/TRC721.adoc#TRC721-_setApprovalForAll-address-address-bool-
+:xref-TRC721-_requireOwned-uint256-: xref:token/TRC721.adoc#TRC721-_requireOwned-uint256-
+:xref-ITRC721-Transfer-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Transfer-address-address-uint256-
+:xref-ITRC721-Approval-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Approval-address-address-uint256-
+:xref-ITRC721-ApprovalForAll-address-address-bool-: xref:token/TRC721.adoc#ITRC721-ApprovalForAll-address-address-bool-
+:xref-ITRC2309-ConsecutiveTransfer-uint256-uint256-address-address-: xref:interfaces.adoc#ITRC2309-ConsecutiveTransfer-uint256-uint256-address-address-
+:xref-TRC721Consecutive-TRC721ForbiddenBatchMint--: xref:token/TRC721.adoc#TRC721Consecutive-TRC721ForbiddenBatchMint--
+:xref-TRC721Consecutive-TRC721ExceededMaxBatchMint-uint256-uint256-: xref:token/TRC721.adoc#TRC721Consecutive-TRC721ExceededMaxBatchMint-uint256-uint256-
+:xref-TRC721Consecutive-TRC721ForbiddenMint--: xref:token/TRC721.adoc#TRC721Consecutive-TRC721ForbiddenMint--
+:xref-TRC721Consecutive-TRC721ForbiddenBatchBurn--: xref:token/TRC721.adoc#TRC721Consecutive-TRC721ForbiddenBatchBurn--
+:xref-ITRC721Errors-TRC721InvalidOwner-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidOwner-address-
+:xref-ITRC721Errors-TRC721NonexistentToken-uint256-: xref:interfaces.adoc#ITRC721Errors-TRC721NonexistentToken-uint256-
+:xref-ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-: xref:interfaces.adoc#ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-
+:xref-ITRC721Errors-TRC721InvalidSender-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidSender-address-
+:xref-ITRC721Errors-TRC721InvalidReceiver-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidReceiver-address-
+:xref-ITRC721Errors-TRC721InsufficientApproval-address-uint256-: xref:interfaces.adoc#ITRC721Errors-TRC721InsufficientApproval-address-uint256-
+:xref-ITRC721Errors-TRC721InvalidApprover-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidApprover-address-
+:xref-ITRC721Errors-TRC721InvalidOperator-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidOperator-address-
+:TRC721-_ownerOf: pass:normal[xref:token/TRC721.adoc#TRC721-_ownerOf-uint256-[`TRC721._ownerOf`]]
+:ITRC2309-ConsecutiveTransfer: pass:normal[xref:interfaces.adoc#ITRC2309-ConsecutiveTransfer-uint256-uint256-address-address-[`ITRC2309.ConsecutiveTransfer`]]
+:TRC721-_update: pass:normal[xref:token/TRC721.adoc#TRC721-_update-address-uint256-address-[`TRC721._update`]]
+:TRC721Consecutive: pass:normal[xref:token/TRC721.adoc#TRC721Consecutive[`TRC721Consecutive`]]
+:ITRC721-Transfer: pass:normal[xref:token/TRC721.adoc#ITRC721-Transfer-address-address-uint256-[`ITRC721.Transfer`]]
+:xref-TRC721URIStorage-supportsInterface-bytes4-: xref:token/TRC721.adoc#TRC721URIStorage-supportsInterface-bytes4-
+:xref-TRC721URIStorage-tokenURI-uint256-: xref:token/TRC721.adoc#TRC721URIStorage-tokenURI-uint256-
+:xref-TRC721URIStorage-_setTokenURI-uint256-string-: xref:token/TRC721.adoc#TRC721URIStorage-_setTokenURI-uint256-string-
+:xref-TRC721URIStorage-_suffixURI-uint256-: xref:token/TRC721.adoc#TRC721URIStorage-_suffixURI-uint256-
+:xref-TRC721-balanceOf-address-: xref:token/TRC721.adoc#TRC721-balanceOf-address-
+:xref-TRC721-ownerOf-uint256-: xref:token/TRC721.adoc#TRC721-ownerOf-uint256-
+:xref-TRC721-name--: xref:token/TRC721.adoc#TRC721-name--
+:xref-TRC721-symbol--: xref:token/TRC721.adoc#TRC721-symbol--
+:xref-TRC721-_baseURI--: xref:token/TRC721.adoc#TRC721-_baseURI--
+:xref-TRC721-approve-address-uint256-: xref:token/TRC721.adoc#TRC721-approve-address-uint256-
+:xref-TRC721-getApproved-uint256-: xref:token/TRC721.adoc#TRC721-getApproved-uint256-
+:xref-TRC721-setApprovalForAll-address-bool-: xref:token/TRC721.adoc#TRC721-setApprovalForAll-address-bool-
+:xref-TRC721-isApprovedForAll-address-address-: xref:token/TRC721.adoc#TRC721-isApprovedForAll-address-address-
+:xref-TRC721-transferFrom-address-address-uint256-: xref:token/TRC721.adoc#TRC721-transferFrom-address-address-uint256-
+:xref-TRC721-safeTransferFrom-address-address-uint256-: xref:token/TRC721.adoc#TRC721-safeTransferFrom-address-address-uint256-
+:xref-TRC721-safeTransferFrom-address-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-safeTransferFrom-address-address-uint256-bytes-
+:xref-TRC721-_ownerOf-uint256-: xref:token/TRC721.adoc#TRC721-_ownerOf-uint256-
+:xref-TRC721-_getApproved-uint256-: xref:token/TRC721.adoc#TRC721-_getApproved-uint256-
+:xref-TRC721-_isAuthorized-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_isAuthorized-address-address-uint256-
+:xref-TRC721-_checkAuthorized-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_checkAuthorized-address-address-uint256-
+:xref-TRC721-_increaseBalance-address-uint128-: xref:token/TRC721.adoc#TRC721-_increaseBalance-address-uint128-
+:xref-TRC721-_update-address-uint256-address-: xref:token/TRC721.adoc#TRC721-_update-address-uint256-address-
+:xref-TRC721-_mint-address-uint256-: xref:token/TRC721.adoc#TRC721-_mint-address-uint256-
+:xref-TRC721-_safeMint-address-uint256-: xref:token/TRC721.adoc#TRC721-_safeMint-address-uint256-
+:xref-TRC721-_safeMint-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-_safeMint-address-uint256-bytes-
+:xref-TRC721-_burn-uint256-: xref:token/TRC721.adoc#TRC721-_burn-uint256-
+:xref-TRC721-_transfer-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_transfer-address-address-uint256-
+:xref-TRC721-_safeTransfer-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_safeTransfer-address-address-uint256-
+:xref-TRC721-_safeTransfer-address-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-_safeTransfer-address-address-uint256-bytes-
+:xref-TRC721-_approve-address-uint256-address-: xref:token/TRC721.adoc#TRC721-_approve-address-uint256-address-
+:xref-TRC721-_approve-address-uint256-address-bool-: xref:token/TRC721.adoc#TRC721-_approve-address-uint256-address-bool-
+:xref-TRC721-_setApprovalForAll-address-address-bool-: xref:token/TRC721.adoc#TRC721-_setApprovalForAll-address-address-bool-
+:xref-TRC721-_requireOwned-uint256-: xref:token/TRC721.adoc#TRC721-_requireOwned-uint256-
+:xref-ITRC4906-MetadataUpdate-uint256-: xref:interfaces.adoc#ITRC4906-MetadataUpdate-uint256-
+:xref-ITRC4906-BatchMetadataUpdate-uint256-uint256-: xref:interfaces.adoc#ITRC4906-BatchMetadataUpdate-uint256-uint256-
+:xref-ITRC721-Transfer-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Transfer-address-address-uint256-
+:xref-ITRC721-Approval-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Approval-address-address-uint256-
+:xref-ITRC721-ApprovalForAll-address-address-bool-: xref:token/TRC721.adoc#ITRC721-ApprovalForAll-address-address-bool-
+:xref-ITRC721Errors-TRC721InvalidOwner-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidOwner-address-
+:xref-ITRC721Errors-TRC721NonexistentToken-uint256-: xref:interfaces.adoc#ITRC721Errors-TRC721NonexistentToken-uint256-
+:xref-ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-: xref:interfaces.adoc#ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-
+:xref-ITRC721Errors-TRC721InvalidSender-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidSender-address-
+:xref-ITRC721Errors-TRC721InvalidReceiver-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidReceiver-address-
+:xref-ITRC721Errors-TRC721InsufficientApproval-address-uint256-: xref:interfaces.adoc#ITRC721Errors-TRC721InsufficientApproval-address-uint256-
+:xref-ITRC721Errors-TRC721InvalidApprover-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidApprover-address-
+:xref-ITRC721Errors-TRC721InvalidOperator-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidOperator-address-
+:ITRC4906-MetadataUpdate: pass:normal[xref:interfaces.adoc#ITRC4906-MetadataUpdate-uint256-[`ITRC4906.MetadataUpdate`]]
+:Votes: pass:normal[xref:governance.adoc#Votes[`Votes`]]
+:xref-TRC721Votes-_update-address-uint256-address-: xref:token/TRC721.adoc#TRC721Votes-_update-address-uint256-address-
+:xref-TRC721Votes-_getVotingUnits-address-: xref:token/TRC721.adoc#TRC721Votes-_getVotingUnits-address-
+:xref-TRC721Votes-_increaseBalance-address-uint128-: xref:token/TRC721.adoc#TRC721Votes-_increaseBalance-address-uint128-
+:xref-Votes-clock--: xref:governance.adoc#Votes-clock--
+:xref-Votes-CLOCK_MODE--: xref:governance.adoc#Votes-CLOCK_MODE--
+:xref-Votes-_validateTimepoint-uint256-: xref:governance.adoc#Votes-_validateTimepoint-uint256-
+:xref-Votes-getVotes-address-: xref:governance.adoc#Votes-getVotes-address-
+:xref-Votes-getPastVotes-address-uint256-: xref:governance.adoc#Votes-getPastVotes-address-uint256-
+:xref-Votes-getPastTotalSupply-uint256-: xref:governance.adoc#Votes-getPastTotalSupply-uint256-
+:xref-Votes-_getTotalSupply--: xref:governance.adoc#Votes-_getTotalSupply--
+:xref-Votes-delegates-address-: xref:governance.adoc#Votes-delegates-address-
+:xref-Votes-delegate-address-: xref:governance.adoc#Votes-delegate-address-
+:xref-Votes-delegateBySig-address-uint256-uint256-uint8-bytes32-bytes32-: xref:governance.adoc#Votes-delegateBySig-address-uint256-uint256-uint8-bytes32-bytes32-
+:xref-Votes-_delegate-address-address-: xref:governance.adoc#Votes-_delegate-address-address-
+:xref-Votes-_transferVotingUnits-address-address-uint256-: xref:governance.adoc#Votes-_transferVotingUnits-address-address-uint256-
+:xref-Votes-_moveDelegateVotes-address-address-uint256-: xref:governance.adoc#Votes-_moveDelegateVotes-address-address-uint256-
+:xref-Votes-_numCheckpoints-address-: xref:governance.adoc#Votes-_numCheckpoints-address-
+:xref-Votes-_checkpoints-address-uint32-: xref:governance.adoc#Votes-_checkpoints-address-uint32-
+:xref-Nonces-nonces-address-: xref:utils.adoc#Nonces-nonces-address-
+:xref-Nonces-_useNonce-address-: xref:utils.adoc#Nonces-_useNonce-address-
+:xref-Nonces-_useCheckedNonce-address-uint256-: xref:utils.adoc#Nonces-_useCheckedNonce-address-uint256-
+:xref-TIP712-_domainSeparatorV4--: xref:utils/cryptography.adoc#TIP712-_domainSeparatorV4--
+:xref-TIP712-_hashTypedDataV4-bytes32-: xref:utils/cryptography.adoc#TIP712-_hashTypedDataV4-bytes32-
+:xref-TIP712-eip712Domain--: xref:utils/cryptography.adoc#TIP712-eip712Domain--
+:xref-TIP712-_TIP712Name--: xref:utils/cryptography.adoc#TIP712-_TIP712Name--
+:xref-TIP712-_TIP712Version--: xref:utils/cryptography.adoc#TIP712-_TIP712Version--
+:xref-TRC721-supportsInterface-bytes4-: xref:token/TRC721.adoc#TRC721-supportsInterface-bytes4-
+:xref-TRC721-balanceOf-address-: xref:token/TRC721.adoc#TRC721-balanceOf-address-
+:xref-TRC721-ownerOf-uint256-: xref:token/TRC721.adoc#TRC721-ownerOf-uint256-
+:xref-TRC721-name--: xref:token/TRC721.adoc#TRC721-name--
+:xref-TRC721-symbol--: xref:token/TRC721.adoc#TRC721-symbol--
+:xref-TRC721-tokenURI-uint256-: xref:token/TRC721.adoc#TRC721-tokenURI-uint256-
+:xref-TRC721-_baseURI--: xref:token/TRC721.adoc#TRC721-_baseURI--
+:xref-TRC721-approve-address-uint256-: xref:token/TRC721.adoc#TRC721-approve-address-uint256-
+:xref-TRC721-getApproved-uint256-: xref:token/TRC721.adoc#TRC721-getApproved-uint256-
+:xref-TRC721-setApprovalForAll-address-bool-: xref:token/TRC721.adoc#TRC721-setApprovalForAll-address-bool-
+:xref-TRC721-isApprovedForAll-address-address-: xref:token/TRC721.adoc#TRC721-isApprovedForAll-address-address-
+:xref-TRC721-transferFrom-address-address-uint256-: xref:token/TRC721.adoc#TRC721-transferFrom-address-address-uint256-
+:xref-TRC721-safeTransferFrom-address-address-uint256-: xref:token/TRC721.adoc#TRC721-safeTransferFrom-address-address-uint256-
+:xref-TRC721-safeTransferFrom-address-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-safeTransferFrom-address-address-uint256-bytes-
+:xref-TRC721-_ownerOf-uint256-: xref:token/TRC721.adoc#TRC721-_ownerOf-uint256-
+:xref-TRC721-_getApproved-uint256-: xref:token/TRC721.adoc#TRC721-_getApproved-uint256-
+:xref-TRC721-_isAuthorized-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_isAuthorized-address-address-uint256-
+:xref-TRC721-_checkAuthorized-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_checkAuthorized-address-address-uint256-
+:xref-TRC721-_mint-address-uint256-: xref:token/TRC721.adoc#TRC721-_mint-address-uint256-
+:xref-TRC721-_safeMint-address-uint256-: xref:token/TRC721.adoc#TRC721-_safeMint-address-uint256-
+:xref-TRC721-_safeMint-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-_safeMint-address-uint256-bytes-
+:xref-TRC721-_burn-uint256-: xref:token/TRC721.adoc#TRC721-_burn-uint256-
+:xref-TRC721-_transfer-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_transfer-address-address-uint256-
+:xref-TRC721-_safeTransfer-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_safeTransfer-address-address-uint256-
+:xref-TRC721-_safeTransfer-address-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-_safeTransfer-address-address-uint256-bytes-
+:xref-TRC721-_approve-address-uint256-address-: xref:token/TRC721.adoc#TRC721-_approve-address-uint256-address-
+:xref-TRC721-_approve-address-uint256-address-bool-: xref:token/TRC721.adoc#TRC721-_approve-address-uint256-address-bool-
+:xref-TRC721-_setApprovalForAll-address-address-bool-: xref:token/TRC721.adoc#TRC721-_setApprovalForAll-address-address-bool-
+:xref-TRC721-_requireOwned-uint256-: xref:token/TRC721.adoc#TRC721-_requireOwned-uint256-
+:xref-IVotes-DelegateChanged-address-address-address-: xref:governance.adoc#IVotes-DelegateChanged-address-address-address-
+:xref-IVotes-DelegateVotesChanged-address-uint256-uint256-: xref:governance.adoc#IVotes-DelegateVotesChanged-address-uint256-uint256-
+:xref-ITRC5267-EIP712DomainChanged--: xref:interfaces.adoc#ITRC5267-EIP712DomainChanged--
+:xref-ITRC721-Transfer-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Transfer-address-address-uint256-
+:xref-ITRC721-Approval-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Approval-address-address-uint256-
+:xref-ITRC721-ApprovalForAll-address-address-bool-: xref:token/TRC721.adoc#ITRC721-ApprovalForAll-address-address-bool-
+:xref-Votes-TRC5805FutureLookup-uint256-uint48-: xref:governance.adoc#Votes-TRC5805FutureLookup-uint256-uint48-
+:xref-IVotes-VotesExpiredSignature-uint256-: xref:governance.adoc#IVotes-VotesExpiredSignature-uint256-
+:xref-Nonces-InvalidAccountNonce-address-uint256-: xref:utils.adoc#Nonces-InvalidAccountNonce-address-uint256-
+:xref-ITRC721Errors-TRC721InvalidOwner-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidOwner-address-
+:xref-ITRC721Errors-TRC721NonexistentToken-uint256-: xref:interfaces.adoc#ITRC721Errors-TRC721NonexistentToken-uint256-
+:xref-ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-: xref:interfaces.adoc#ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-
+:xref-ITRC721Errors-TRC721InvalidSender-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidSender-address-
+:xref-ITRC721Errors-TRC721InvalidReceiver-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidReceiver-address-
+:xref-ITRC721Errors-TRC721InsufficientApproval-address-uint256-: xref:interfaces.adoc#ITRC721Errors-TRC721InsufficientApproval-address-uint256-
+:xref-ITRC721Errors-TRC721InvalidApprover-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidApprover-address-
+:xref-ITRC721Errors-TRC721InvalidOperator-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidOperator-address-
+:TRC721-_update: pass:normal[xref:token/TRC721.adoc#TRC721-_update-address-uint256-address-[`TRC721._update`]]
+:IVotes-DelegateVotesChanged: pass:normal[xref:governance.adoc#IVotes-DelegateVotesChanged-address-uint256-uint256-[`IVotes.DelegateVotesChanged`]]
+:TRC721-_increaseBalance: pass:normal[xref:token/TRC721.adoc#TRC721-_increaseBalance-address-uint128-[`TRC721._increaseBalance`]]
+:TRC2981-_setDefaultRoyalty: pass:normal[xref:token/common.adoc#TRC2981-_setDefaultRoyalty-address-uint96-[`TRC2981._setDefaultRoyalty`]]
+:TRC2981-_setTokenRoyalty: pass:normal[xref:token/common.adoc#TRC2981-_setTokenRoyalty-uint256-address-uint96-[`TRC2981._setTokenRoyalty`]]
+:xref-TRC721Royalty-supportsInterface-bytes4-: xref:token/TRC721.adoc#TRC721Royalty-supportsInterface-bytes4-
+:xref-TRC721-balanceOf-address-: xref:token/TRC721.adoc#TRC721-balanceOf-address-
+:xref-TRC721-ownerOf-uint256-: xref:token/TRC721.adoc#TRC721-ownerOf-uint256-
+:xref-TRC721-name--: xref:token/TRC721.adoc#TRC721-name--
+:xref-TRC721-symbol--: xref:token/TRC721.adoc#TRC721-symbol--
+:xref-TRC721-tokenURI-uint256-: xref:token/TRC721.adoc#TRC721-tokenURI-uint256-
+:xref-TRC721-_baseURI--: xref:token/TRC721.adoc#TRC721-_baseURI--
+:xref-TRC721-approve-address-uint256-: xref:token/TRC721.adoc#TRC721-approve-address-uint256-
+:xref-TRC721-getApproved-uint256-: xref:token/TRC721.adoc#TRC721-getApproved-uint256-
+:xref-TRC721-setApprovalForAll-address-bool-: xref:token/TRC721.adoc#TRC721-setApprovalForAll-address-bool-
+:xref-TRC721-isApprovedForAll-address-address-: xref:token/TRC721.adoc#TRC721-isApprovedForAll-address-address-
+:xref-TRC721-transferFrom-address-address-uint256-: xref:token/TRC721.adoc#TRC721-transferFrom-address-address-uint256-
+:xref-TRC721-safeTransferFrom-address-address-uint256-: xref:token/TRC721.adoc#TRC721-safeTransferFrom-address-address-uint256-
+:xref-TRC721-safeTransferFrom-address-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-safeTransferFrom-address-address-uint256-bytes-
+:xref-TRC721-_ownerOf-uint256-: xref:token/TRC721.adoc#TRC721-_ownerOf-uint256-
+:xref-TRC721-_getApproved-uint256-: xref:token/TRC721.adoc#TRC721-_getApproved-uint256-
+:xref-TRC721-_isAuthorized-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_isAuthorized-address-address-uint256-
+:xref-TRC721-_checkAuthorized-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_checkAuthorized-address-address-uint256-
+:xref-TRC721-_increaseBalance-address-uint128-: xref:token/TRC721.adoc#TRC721-_increaseBalance-address-uint128-
+:xref-TRC721-_update-address-uint256-address-: xref:token/TRC721.adoc#TRC721-_update-address-uint256-address-
+:xref-TRC721-_mint-address-uint256-: xref:token/TRC721.adoc#TRC721-_mint-address-uint256-
+:xref-TRC721-_safeMint-address-uint256-: xref:token/TRC721.adoc#TRC721-_safeMint-address-uint256-
+:xref-TRC721-_safeMint-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-_safeMint-address-uint256-bytes-
+:xref-TRC721-_burn-uint256-: xref:token/TRC721.adoc#TRC721-_burn-uint256-
+:xref-TRC721-_transfer-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_transfer-address-address-uint256-
+:xref-TRC721-_safeTransfer-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_safeTransfer-address-address-uint256-
+:xref-TRC721-_safeTransfer-address-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-_safeTransfer-address-address-uint256-bytes-
+:xref-TRC721-_approve-address-uint256-address-: xref:token/TRC721.adoc#TRC721-_approve-address-uint256-address-
+:xref-TRC721-_approve-address-uint256-address-bool-: xref:token/TRC721.adoc#TRC721-_approve-address-uint256-address-bool-
+:xref-TRC721-_setApprovalForAll-address-address-bool-: xref:token/TRC721.adoc#TRC721-_setApprovalForAll-address-address-bool-
+:xref-TRC721-_requireOwned-uint256-: xref:token/TRC721.adoc#TRC721-_requireOwned-uint256-
+:xref-TRC2981-royaltyInfo-uint256-uint256-: xref:token/common.adoc#TRC2981-royaltyInfo-uint256-uint256-
+:xref-TRC2981-_feeDenominator--: xref:token/common.adoc#TRC2981-_feeDenominator--
+:xref-TRC2981-_setDefaultRoyalty-address-uint96-: xref:token/common.adoc#TRC2981-_setDefaultRoyalty-address-uint96-
+:xref-TRC2981-_deleteDefaultRoyalty--: xref:token/common.adoc#TRC2981-_deleteDefaultRoyalty--
+:xref-TRC2981-_setTokenRoyalty-uint256-address-uint96-: xref:token/common.adoc#TRC2981-_setTokenRoyalty-uint256-address-uint96-
+:xref-TRC2981-_resetTokenRoyalty-uint256-: xref:token/common.adoc#TRC2981-_resetTokenRoyalty-uint256-
+:xref-ITRC721-Transfer-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Transfer-address-address-uint256-
+:xref-ITRC721-Approval-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Approval-address-address-uint256-
+:xref-ITRC721-ApprovalForAll-address-address-bool-: xref:token/TRC721.adoc#ITRC721-ApprovalForAll-address-address-bool-
+:xref-ITRC721Errors-TRC721InvalidOwner-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidOwner-address-
+:xref-ITRC721Errors-TRC721NonexistentToken-uint256-: xref:interfaces.adoc#ITRC721Errors-TRC721NonexistentToken-uint256-
+:xref-ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-: xref:interfaces.adoc#ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-
+:xref-ITRC721Errors-TRC721InvalidSender-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidSender-address-
+:xref-ITRC721Errors-TRC721InvalidReceiver-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidReceiver-address-
+:xref-ITRC721Errors-TRC721InsufficientApproval-address-uint256-: xref:interfaces.adoc#ITRC721Errors-TRC721InsufficientApproval-address-uint256-
+:xref-ITRC721Errors-TRC721InvalidApprover-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidApprover-address-
+:xref-ITRC721Errors-TRC721InvalidOperator-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidOperator-address-
+:xref-TRC2981-TRC2981InvalidDefaultRoyalty-uint256-uint256-: xref:token/common.adoc#TRC2981-TRC2981InvalidDefaultRoyalty-uint256-uint256-
+:xref-TRC2981-TRC2981InvalidDefaultRoyaltyReceiver-address-: xref:token/common.adoc#TRC2981-TRC2981InvalidDefaultRoyaltyReceiver-address-
+:xref-TRC2981-TRC2981InvalidTokenRoyalty-uint256-uint256-uint256-: xref:token/common.adoc#TRC2981-TRC2981InvalidTokenRoyalty-uint256-uint256-uint256-
+:xref-TRC2981-TRC2981InvalidTokenRoyaltyReceiver-uint256-address-: xref:token/common.adoc#TRC2981-TRC2981InvalidTokenRoyaltyReceiver-uint256-address-
+:TRC721Votes: pass:normal[xref:token/TRC721.adoc#TRC721Votes[`TRC721Votes`]]
+:xref-TRC721Wrapper-constructor-contract-ITRC721-: xref:token/TRC721.adoc#TRC721Wrapper-constructor-contract-ITRC721-
+:xref-TRC721Wrapper-depositFor-address-uint256---: xref:token/TRC721.adoc#TRC721Wrapper-depositFor-address-uint256---
+:xref-TRC721Wrapper-withdrawTo-address-uint256---: xref:token/TRC721.adoc#TRC721Wrapper-withdrawTo-address-uint256---
+:xref-TRC721Wrapper-onTRC721Received-address-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721Wrapper-onTRC721Received-address-address-uint256-bytes-
+:xref-TRC721Wrapper-_recover-address-uint256-: xref:token/TRC721.adoc#TRC721Wrapper-_recover-address-uint256-
+:xref-TRC721Wrapper-underlying--: xref:token/TRC721.adoc#TRC721Wrapper-underlying--
+:xref-TRC721-supportsInterface-bytes4-: xref:token/TRC721.adoc#TRC721-supportsInterface-bytes4-
+:xref-TRC721-balanceOf-address-: xref:token/TRC721.adoc#TRC721-balanceOf-address-
+:xref-TRC721-ownerOf-uint256-: xref:token/TRC721.adoc#TRC721-ownerOf-uint256-
+:xref-TRC721-name--: xref:token/TRC721.adoc#TRC721-name--
+:xref-TRC721-symbol--: xref:token/TRC721.adoc#TRC721-symbol--
+:xref-TRC721-tokenURI-uint256-: xref:token/TRC721.adoc#TRC721-tokenURI-uint256-
+:xref-TRC721-_baseURI--: xref:token/TRC721.adoc#TRC721-_baseURI--
+:xref-TRC721-approve-address-uint256-: xref:token/TRC721.adoc#TRC721-approve-address-uint256-
+:xref-TRC721-getApproved-uint256-: xref:token/TRC721.adoc#TRC721-getApproved-uint256-
+:xref-TRC721-setApprovalForAll-address-bool-: xref:token/TRC721.adoc#TRC721-setApprovalForAll-address-bool-
+:xref-TRC721-isApprovedForAll-address-address-: xref:token/TRC721.adoc#TRC721-isApprovedForAll-address-address-
+:xref-TRC721-transferFrom-address-address-uint256-: xref:token/TRC721.adoc#TRC721-transferFrom-address-address-uint256-
+:xref-TRC721-safeTransferFrom-address-address-uint256-: xref:token/TRC721.adoc#TRC721-safeTransferFrom-address-address-uint256-
+:xref-TRC721-safeTransferFrom-address-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-safeTransferFrom-address-address-uint256-bytes-
+:xref-TRC721-_ownerOf-uint256-: xref:token/TRC721.adoc#TRC721-_ownerOf-uint256-
+:xref-TRC721-_getApproved-uint256-: xref:token/TRC721.adoc#TRC721-_getApproved-uint256-
+:xref-TRC721-_isAuthorized-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_isAuthorized-address-address-uint256-
+:xref-TRC721-_checkAuthorized-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_checkAuthorized-address-address-uint256-
+:xref-TRC721-_increaseBalance-address-uint128-: xref:token/TRC721.adoc#TRC721-_increaseBalance-address-uint128-
+:xref-TRC721-_update-address-uint256-address-: xref:token/TRC721.adoc#TRC721-_update-address-uint256-address-
+:xref-TRC721-_mint-address-uint256-: xref:token/TRC721.adoc#TRC721-_mint-address-uint256-
+:xref-TRC721-_safeMint-address-uint256-: xref:token/TRC721.adoc#TRC721-_safeMint-address-uint256-
+:xref-TRC721-_safeMint-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-_safeMint-address-uint256-bytes-
+:xref-TRC721-_burn-uint256-: xref:token/TRC721.adoc#TRC721-_burn-uint256-
+:xref-TRC721-_transfer-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_transfer-address-address-uint256-
+:xref-TRC721-_safeTransfer-address-address-uint256-: xref:token/TRC721.adoc#TRC721-_safeTransfer-address-address-uint256-
+:xref-TRC721-_safeTransfer-address-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721-_safeTransfer-address-address-uint256-bytes-
+:xref-TRC721-_approve-address-uint256-address-: xref:token/TRC721.adoc#TRC721-_approve-address-uint256-address-
+:xref-TRC721-_approve-address-uint256-address-bool-: xref:token/TRC721.adoc#TRC721-_approve-address-uint256-address-bool-
+:xref-TRC721-_setApprovalForAll-address-address-bool-: xref:token/TRC721.adoc#TRC721-_setApprovalForAll-address-address-bool-
+:xref-TRC721-_requireOwned-uint256-: xref:token/TRC721.adoc#TRC721-_requireOwned-uint256-
+:xref-ITRC721-Transfer-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Transfer-address-address-uint256-
+:xref-ITRC721-Approval-address-address-uint256-: xref:token/TRC721.adoc#ITRC721-Approval-address-address-uint256-
+:xref-ITRC721-ApprovalForAll-address-address-bool-: xref:token/TRC721.adoc#ITRC721-ApprovalForAll-address-address-bool-
+:xref-TRC721Wrapper-TRC721UnsupportedToken-address-: xref:token/TRC721.adoc#TRC721Wrapper-TRC721UnsupportedToken-address-
+:xref-ITRC721Errors-TRC721InvalidOwner-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidOwner-address-
+:xref-ITRC721Errors-TRC721NonexistentToken-uint256-: xref:interfaces.adoc#ITRC721Errors-TRC721NonexistentToken-uint256-
+:xref-ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-: xref:interfaces.adoc#ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-
+:xref-ITRC721Errors-TRC721InvalidSender-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidSender-address-
+:xref-ITRC721Errors-TRC721InvalidReceiver-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidReceiver-address-
+:xref-ITRC721Errors-TRC721InsufficientApproval-address-uint256-: xref:interfaces.adoc#ITRC721Errors-TRC721InsufficientApproval-address-uint256-
+:xref-ITRC721Errors-TRC721InvalidApprover-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidApprover-address-
+:xref-ITRC721Errors-TRC721InvalidOperator-address-: xref:interfaces.adoc#ITRC721Errors-TRC721InvalidOperator-address-
+:ITRC721Receiver-onTRC721Received: pass:normal[xref:token/TRC721.adoc#ITRC721Receiver-onTRC721Received-address-address-uint256-bytes-[`ITRC721Receiver.onTRC721Received`]]
+:ITRC721-transferFrom: pass:normal[xref:token/TRC721.adoc#ITRC721-transferFrom-address-address-uint256-[`ITRC721.transferFrom`]]
+:TRC721Wrapper-_recover: pass:normal[xref:token/TRC721.adoc#TRC721Wrapper-_recover-address-uint256-[`TRC721Wrapper._recover`]]
+:ITRC721Receiver: pass:normal[xref:token/TRC721.adoc#ITRC721Receiver[`ITRC721Receiver`]]
+:ITRC721-safeTransferFrom: pass:normal[xref:token/TRC721.adoc#ITRC721-safeTransferFrom-address-address-uint256-[`ITRC721.safeTransferFrom`]]
+:ITRC721-approve: pass:normal[xref:token/TRC721.adoc#ITRC721-approve-address-uint256-[`ITRC721.approve`]]
+:ITRC721-setApprovalForAll: pass:normal[xref:token/TRC721.adoc#ITRC721-setApprovalForAll-address-bool-[`ITRC721.setApprovalForAll`]]
+:xref-TRC721Holder-onTRC721Received-address-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721Holder-onTRC721Received-address-address-uint256-bytes-
+:ITRC721Receiver-onTRC721Received: pass:normal[xref:token/TRC721.adoc#ITRC721Receiver-onTRC721Received-address-address-uint256-bytes-[`ITRC721Receiver.onTRC721Received`]]
+:xref-TRC721Utils-checkOnTRC721Received-address-address-address-uint256-bytes-: xref:token/TRC721.adoc#TRC721Utils-checkOnTRC721Received-address-address-address-uint256-bytes-
+:ITRC721Receiver-onTRC721Received: pass:normal[xref:token/TRC721.adoc#ITRC721Receiver-onTRC721Received-address-address-uint256-bytes-[`ITRC721Receiver.onTRC721Received`]]
+:ITRC721Receiver-onTRC721Received: pass:normal[xref:token/TRC721.adoc#ITRC721Receiver-onTRC721Received-address-address-uint256-bytes-[`ITRC721Receiver.onTRC721Received`]]
+= TRC-721
+
+[.readme-notice]
+NOTE: This document is better viewed at https://docs.openzeppelin.com/contracts/api/token/erc721
+
+This set of interfaces, contracts, and utilities is all related to the https://github.com/tronprotocol/tips/blob/master/tip-721.md[TRC-721 Non-Fungible Token Standard] (TIP-721, the TRON-side analogue of EIP-721).
+
+TIP: For a walk through on how to create a TRC-721 token read our xref:ROOT:trc721.adoc[TRC-721 guide].
+
+The standard specifies four interfaces:
+
+* {ITRC721}: Core functionality required in all compliant implementation.
+* {ITRC721Metadata}: Optional extension that adds name, symbol, and token URI, almost always included.
+* {ITRC721Enumerable}: Optional extension that allows enumerating the tokens on chain, often not included since it requires large gas overhead.
+* {ITRC721Receiver}: An interface that must be implemented by contracts if they want to accept tokens through `safeTransferFrom`.
+
+OpenZeppelin Contracts provides implementations of all four interfaces:
+
+* {TRC721}: The core and metadata extensions, with a base URI mechanism.
+* {TRC721Enumerable}: The enumerable extension.
+* {TRC721Holder}: A bare bones implementation of the receiver interface.
+
+Additionally there are a few of other extensions:
+
+* {TRC721Consecutive}: An implementation of TRC-2309 (see https://eips.ethereum.org/EIPS/eip-2309[ERC-2309]) for minting batches of tokens during construction, in accordance with TRC-721.
+* {TRC721URIStorage}: A more flexible but more expensive way of storing metadata.
+* {TRC721Votes}: Support for voting and vote delegation.
+* {TRC721Royalty}: A way to signal royalty information following TRC-2981.
+* {TRC721Pausable}: A primitive to pause contract operation.
+* {TRC721Burnable}: A way for token holders to burn their own tokens.
+* {TRC721Crosschain}: Embedded {BridgeNonFungible} bridge, making the token crosschain through the use of TRC-7786 gateways.
+* {TRC721Wrapper}: Wrapper to create a TRC-721 backed by another TRC-721, with deposit and withdraw methods. Useful in conjunction with {TRC721Votes}.
+
+NOTE: This core set of contracts is designed to be unopinionated, allowing developers to access the internal functions in TRC-721 (such as <<TRC721-_mint-address-uint256-,`_mint`>>) and expose them as external functions in the way they prefer.
+
+== Core
+
+:Transfer: pass:normal[xref:#ITRC721-Transfer-address-address-uint256-[`++Transfer++`]]
+:Approval: pass:normal[xref:#ITRC721-Approval-address-address-uint256-[`++Approval++`]]
+:ApprovalForAll: pass:normal[xref:#ITRC721-ApprovalForAll-address-address-bool-[`++ApprovalForAll++`]]
+:balanceOf: pass:normal[xref:#ITRC721-balanceOf-address-[`++balanceOf++`]]
+:ownerOf: pass:normal[xref:#ITRC721-ownerOf-uint256-[`++ownerOf++`]]
+:safeTransferFrom: pass:normal[xref:#ITRC721-safeTransferFrom-address-address-uint256-bytes-[`++safeTransferFrom++`]]
+:safeTransferFrom: pass:normal[xref:#ITRC721-safeTransferFrom-address-address-uint256-[`++safeTransferFrom++`]]
+:transferFrom: pass:normal[xref:#ITRC721-transferFrom-address-address-uint256-[`++transferFrom++`]]
+:approve: pass:normal[xref:#ITRC721-approve-address-uint256-[`++approve++`]]
+:setApprovalForAll: pass:normal[xref:#ITRC721-setApprovalForAll-address-bool-[`++setApprovalForAll++`]]
+:getApproved: pass:normal[xref:#ITRC721-getApproved-uint256-[`++getApproved++`]]
+:isApprovedForAll: pass:normal[xref:#ITRC721-isApprovedForAll-address-address-[`++isApprovedForAll++`]]
+
+:balanceOf-address: pass:normal[xref:#ITRC721-balanceOf-address-[`++balanceOf++`]]
+:ownerOf-uint256: pass:normal[xref:#ITRC721-ownerOf-uint256-[`++ownerOf++`]]
+:safeTransferFrom-address-address-uint256-bytes: pass:normal[xref:#ITRC721-safeTransferFrom-address-address-uint256-bytes-[`++safeTransferFrom++`]]
+:safeTransferFrom-address-address-uint256: pass:normal[xref:#ITRC721-safeTransferFrom-address-address-uint256-[`++safeTransferFrom++`]]
+:transferFrom-address-address-uint256: pass:normal[xref:#ITRC721-transferFrom-address-address-uint256-[`++transferFrom++`]]
+:approve-address-uint256: pass:normal[xref:#ITRC721-approve-address-uint256-[`++approve++`]]
+:setApprovalForAll-address-bool: pass:normal[xref:#ITRC721-setApprovalForAll-address-bool-[`++setApprovalForAll++`]]
+:getApproved-uint256: pass:normal[xref:#ITRC721-getApproved-uint256-[`++getApproved++`]]
+:isApprovedForAll-address-address: pass:normal[xref:#ITRC721-isApprovedForAll-address-address-[`++isApprovedForAll++`]]
+
+[.contract]
+[[ITRC721]]
+=== `++ITRC721++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC721/ITRC721.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC721/ITRC721.sol";
+```
+
+Required interface of a TRC-721 compliant contract.
+
+[.contract-index]
+.Functions
+--
+* {xref-ITRC721-balanceOf-address-}[`++balanceOf(owner)++`]
+* {xref-ITRC721-ownerOf-uint256-}[`++ownerOf(tokenId)++`]
+* {xref-ITRC721-safeTransferFrom-address-address-uint256-bytes-}[`++safeTransferFrom(from, to, tokenId, data)++`]
+* {xref-ITRC721-safeTransferFrom-address-address-uint256-}[`++safeTransferFrom(from, to, tokenId)++`]
+* {xref-ITRC721-transferFrom-address-address-uint256-}[`++transferFrom(from, to, tokenId)++`]
+* {xref-ITRC721-approve-address-uint256-}[`++approve(to, tokenId)++`]
+* {xref-ITRC721-setApprovalForAll-address-bool-}[`++setApprovalForAll(operator, approved)++`]
+* {xref-ITRC721-getApproved-uint256-}[`++getApproved(tokenId)++`]
+* {xref-ITRC721-isApprovedForAll-address-address-}[`++isApprovedForAll(owner, operator)++`]
+
+[.contract-subindex-inherited]
+.ITRC165
+* {xref-ITRC165-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+
+--
+
+[.contract-index]
+.Events
+--
+* {xref-ITRC721-Transfer-address-address-uint256-}[`++Transfer(from, to, tokenId)++`]
+* {xref-ITRC721-Approval-address-address-uint256-}[`++Approval(owner, approved, tokenId)++`]
+* {xref-ITRC721-ApprovalForAll-address-address-bool-}[`++ApprovalForAll(owner, operator, approved)++`]
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-item]
+[[ITRC721-balanceOf-address-]]
+==== `[.contract-item-name]#++balanceOf++#++(address owner) → uint256 balance++` [.item-kind]#external#
+
+Returns the number of tokens in ``owner``'s account.
+
+[.contract-item]
+[[ITRC721-ownerOf-uint256-]]
+==== `[.contract-item-name]#++ownerOf++#++(uint256 tokenId) → address owner++` [.item-kind]#external#
+
+Returns the owner of the `tokenId` token.
+
+Requirements:
+
+- `tokenId` must exist.
+
+[.contract-item]
+[[ITRC721-safeTransferFrom-address-address-uint256-bytes-]]
+==== `[.contract-item-name]#++safeTransferFrom++#++(address from, address to, uint256 tokenId, bytes data)++` [.item-kind]#external#
+
+Safely transfers `tokenId` token from `from` to `to`.
+
+Requirements:
+
+- `from` cannot be the zero address.
+- `to` cannot be the zero address.
+- `tokenId` token must exist and be owned by `from`.
+- If the caller is not `from`, it must be approved to move this token by either {approve} or {setApprovalForAll}.
+- If `to` refers to a smart contract, it must implement {ITRC721Receiver-onTRC721Received}, which is called upon
+  a safe transfer.
+
+Emits a {Transfer} event.
+
+[.contract-item]
+[[ITRC721-safeTransferFrom-address-address-uint256-]]
+==== `[.contract-item-name]#++safeTransferFrom++#++(address from, address to, uint256 tokenId)++` [.item-kind]#external#
+
+Safely transfers `tokenId` token from `from` to `to`, checking first that contract recipients
+are aware of the TRC-721 protocol to prevent tokens from being forever locked.
+
+Requirements:
+
+- `from` cannot be the zero address.
+- `to` cannot be the zero address.
+- `tokenId` token must exist and be owned by `from`.
+- If the caller is not `from`, it must have been allowed to move this token by either {approve} or
+  {setApprovalForAll}.
+- If `to` refers to a smart contract, it must implement {ITRC721Receiver-onTRC721Received}, which is called upon
+  a safe transfer.
+
+Emits a {Transfer} event.
+
+[.contract-item]
+[[ITRC721-transferFrom-address-address-uint256-]]
+==== `[.contract-item-name]#++transferFrom++#++(address from, address to, uint256 tokenId)++` [.item-kind]#external#
+
+Transfers `tokenId` token from `from` to `to`.
+
+WARNING: Note that the caller is responsible to confirm that the recipient is capable of receiving TRC-721
+or else they may be permanently lost. Usage of {safeTransferFrom} prevents loss, though the caller must
+understand this adds an external call which potentially creates a reentrancy vulnerability.
+
+Requirements:
+
+- `from` cannot be the zero address.
+- `to` cannot be the zero address.
+- `tokenId` token must be owned by `from`.
+- If the caller is not `from`, it must be approved to move this token by either {approve} or {setApprovalForAll}.
+
+Emits a {Transfer} event.
+
+[.contract-item]
+[[ITRC721-approve-address-uint256-]]
+==== `[.contract-item-name]#++approve++#++(address to, uint256 tokenId)++` [.item-kind]#external#
+
+Gives permission to `to` to transfer `tokenId` token to another account.
+The approval is cleared when the token is transferred.
+
+Only a single account can be approved at a time, so approving the zero address clears previous approvals.
+
+Requirements:
+
+- The caller must own the token or be an approved operator.
+- `tokenId` must exist.
+
+Emits an {Approval} event.
+
+[.contract-item]
+[[ITRC721-setApprovalForAll-address-bool-]]
+==== `[.contract-item-name]#++setApprovalForAll++#++(address operator, bool approved)++` [.item-kind]#external#
+
+Approve or remove `operator` as an operator for the caller.
+Operators can call {transferFrom} or {safeTransferFrom} for any token owned by the caller.
+
+Requirements:
+
+- The `operator` cannot be the address zero.
+
+Emits an {ApprovalForAll} event.
+
+[.contract-item]
+[[ITRC721-getApproved-uint256-]]
+==== `[.contract-item-name]#++getApproved++#++(uint256 tokenId) → address operator++` [.item-kind]#external#
+
+Returns the account approved for `tokenId` token.
+
+Requirements:
+
+- `tokenId` must exist.
+
+[.contract-item]
+[[ITRC721-isApprovedForAll-address-address-]]
+==== `[.contract-item-name]#++isApprovedForAll++#++(address owner, address operator) → bool++` [.item-kind]#external#
+
+Returns if the `operator` is allowed to manage all of the assets of `owner`.
+
+See {setApprovalForAll}
+
+[.contract-item]
+[[ITRC721-Transfer-address-address-uint256-]]
+==== `[.contract-item-name]#++Transfer++#++(address indexed from, address indexed to, uint256 indexed tokenId)++` [.item-kind]#event#
+
+Emitted when `tokenId` token is transferred from `from` to `to`.
+
+[.contract-item]
+[[ITRC721-Approval-address-address-uint256-]]
+==== `[.contract-item-name]#++Approval++#++(address indexed owner, address indexed approved, uint256 indexed tokenId)++` [.item-kind]#event#
+
+Emitted when `owner` enables `approved` to manage the `tokenId` token.
+
+[.contract-item]
+[[ITRC721-ApprovalForAll-address-address-bool-]]
+==== `[.contract-item-name]#++ApprovalForAll++#++(address indexed owner, address indexed operator, bool approved)++` [.item-kind]#event#
+
+Emitted when `owner` enables or disables (`approved`) `operator` to manage all of its assets.
+
+:name: pass:normal[xref:#ITRC721Metadata-name--[`++name++`]]
+:symbol: pass:normal[xref:#ITRC721Metadata-symbol--[`++symbol++`]]
+:tokenURI: pass:normal[xref:#ITRC721Metadata-tokenURI-uint256-[`++tokenURI++`]]
+
+:name-: pass:normal[xref:#ITRC721Metadata-name--[`++name++`]]
+:symbol-: pass:normal[xref:#ITRC721Metadata-symbol--[`++symbol++`]]
+:tokenURI-uint256: pass:normal[xref:#ITRC721Metadata-tokenURI-uint256-[`++tokenURI++`]]
+
+[.contract]
+[[ITRC721Metadata]]
+=== `++ITRC721Metadata++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC721/extensions/ITRC721Metadata.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC721/extensions/ITRC721Metadata.sol";
+```
+
+See https://eips.ethereum.org/EIPS/eip-721
+
+[.contract-index]
+.Functions
+--
+* {xref-ITRC721Metadata-name--}[`++name()++`]
+* {xref-ITRC721Metadata-symbol--}[`++symbol()++`]
+* {xref-ITRC721Metadata-tokenURI-uint256-}[`++tokenURI(tokenId)++`]
+
+[.contract-subindex-inherited]
+.ITRC721
+* {xref-ITRC721-balanceOf-address-}[`++balanceOf(owner)++`]
+* {xref-ITRC721-ownerOf-uint256-}[`++ownerOf(tokenId)++`]
+* {xref-ITRC721-safeTransferFrom-address-address-uint256-bytes-}[`++safeTransferFrom(from, to, tokenId, data)++`]
+* {xref-ITRC721-safeTransferFrom-address-address-uint256-}[`++safeTransferFrom(from, to, tokenId)++`]
+* {xref-ITRC721-transferFrom-address-address-uint256-}[`++transferFrom(from, to, tokenId)++`]
+* {xref-ITRC721-approve-address-uint256-}[`++approve(to, tokenId)++`]
+* {xref-ITRC721-setApprovalForAll-address-bool-}[`++setApprovalForAll(operator, approved)++`]
+* {xref-ITRC721-getApproved-uint256-}[`++getApproved(tokenId)++`]
+* {xref-ITRC721-isApprovedForAll-address-address-}[`++isApprovedForAll(owner, operator)++`]
+
+[.contract-subindex-inherited]
+.ITRC165
+* {xref-ITRC165-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+
+--
+
+[.contract-index]
+.Events
+--
+
+[.contract-subindex-inherited]
+.ITRC721
+* {xref-ITRC721-Transfer-address-address-uint256-}[`++Transfer(from, to, tokenId)++`]
+* {xref-ITRC721-Approval-address-address-uint256-}[`++Approval(owner, approved, tokenId)++`]
+* {xref-ITRC721-ApprovalForAll-address-address-bool-}[`++ApprovalForAll(owner, operator, approved)++`]
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-item]
+[[ITRC721Metadata-name--]]
+==== `[.contract-item-name]#++name++#++() → string++` [.item-kind]#external#
+
+Returns the token collection name.
+
+[.contract-item]
+[[ITRC721Metadata-symbol--]]
+==== `[.contract-item-name]#++symbol++#++() → string++` [.item-kind]#external#
+
+Returns the token collection symbol.
+
+[.contract-item]
+[[ITRC721Metadata-tokenURI-uint256-]]
+==== `[.contract-item-name]#++tokenURI++#++(uint256 tokenId) → string++` [.item-kind]#external#
+
+Returns the Uniform Resource Identifier (URI) for `tokenId` token.
+
+:totalSupply: pass:normal[xref:#ITRC721Enumerable-totalSupply--[`++totalSupply++`]]
+:tokenOfOwnerByIndex: pass:normal[xref:#ITRC721Enumerable-tokenOfOwnerByIndex-address-uint256-[`++tokenOfOwnerByIndex++`]]
+:tokenByIndex: pass:normal[xref:#ITRC721Enumerable-tokenByIndex-uint256-[`++tokenByIndex++`]]
+
+:totalSupply-: pass:normal[xref:#ITRC721Enumerable-totalSupply--[`++totalSupply++`]]
+:tokenOfOwnerByIndex-address-uint256: pass:normal[xref:#ITRC721Enumerable-tokenOfOwnerByIndex-address-uint256-[`++tokenOfOwnerByIndex++`]]
+:tokenByIndex-uint256: pass:normal[xref:#ITRC721Enumerable-tokenByIndex-uint256-[`++tokenByIndex++`]]
+
+[.contract]
+[[ITRC721Enumerable]]
+=== `++ITRC721Enumerable++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC721/extensions/ITRC721Enumerable.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC721/extensions/ITRC721Enumerable.sol";
+```
+
+See https://eips.ethereum.org/EIPS/eip-721
+
+[.contract-index]
+.Functions
+--
+* {xref-ITRC721Enumerable-totalSupply--}[`++totalSupply()++`]
+* {xref-ITRC721Enumerable-tokenOfOwnerByIndex-address-uint256-}[`++tokenOfOwnerByIndex(owner, index)++`]
+* {xref-ITRC721Enumerable-tokenByIndex-uint256-}[`++tokenByIndex(index)++`]
+
+[.contract-subindex-inherited]
+.ITRC721
+* {xref-ITRC721-balanceOf-address-}[`++balanceOf(owner)++`]
+* {xref-ITRC721-ownerOf-uint256-}[`++ownerOf(tokenId)++`]
+* {xref-ITRC721-safeTransferFrom-address-address-uint256-bytes-}[`++safeTransferFrom(from, to, tokenId, data)++`]
+* {xref-ITRC721-safeTransferFrom-address-address-uint256-}[`++safeTransferFrom(from, to, tokenId)++`]
+* {xref-ITRC721-transferFrom-address-address-uint256-}[`++transferFrom(from, to, tokenId)++`]
+* {xref-ITRC721-approve-address-uint256-}[`++approve(to, tokenId)++`]
+* {xref-ITRC721-setApprovalForAll-address-bool-}[`++setApprovalForAll(operator, approved)++`]
+* {xref-ITRC721-getApproved-uint256-}[`++getApproved(tokenId)++`]
+* {xref-ITRC721-isApprovedForAll-address-address-}[`++isApprovedForAll(owner, operator)++`]
+
+[.contract-subindex-inherited]
+.ITRC165
+* {xref-ITRC165-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+
+--
+
+[.contract-index]
+.Events
+--
+
+[.contract-subindex-inherited]
+.ITRC721
+* {xref-ITRC721-Transfer-address-address-uint256-}[`++Transfer(from, to, tokenId)++`]
+* {xref-ITRC721-Approval-address-address-uint256-}[`++Approval(owner, approved, tokenId)++`]
+* {xref-ITRC721-ApprovalForAll-address-address-bool-}[`++ApprovalForAll(owner, operator, approved)++`]
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-item]
+[[ITRC721Enumerable-totalSupply--]]
+==== `[.contract-item-name]#++totalSupply++#++() → uint256++` [.item-kind]#external#
+
+Returns the total amount of tokens stored by the contract.
+
+[.contract-item]
+[[ITRC721Enumerable-tokenOfOwnerByIndex-address-uint256-]]
+==== `[.contract-item-name]#++tokenOfOwnerByIndex++#++(address owner, uint256 index) → uint256++` [.item-kind]#external#
+
+Returns a token ID owned by `owner` at a given `index` of its token list.
+Use along with {balanceOf} to enumerate all of ``owner``'s tokens.
+
+[.contract-item]
+[[ITRC721Enumerable-tokenByIndex-uint256-]]
+==== `[.contract-item-name]#++tokenByIndex++#++(uint256 index) → uint256++` [.item-kind]#external#
+
+Returns a token ID at a given `index` of all the tokens stored by the contract.
+Use along with {totalSupply} to enumerate all tokens.
+
+:constructor: pass:normal[xref:#TRC721-constructor-string-string-[`++constructor++`]]
+:supportsInterface: pass:normal[xref:#TRC721-supportsInterface-bytes4-[`++supportsInterface++`]]
+:balanceOf: pass:normal[xref:#TRC721-balanceOf-address-[`++balanceOf++`]]
+:ownerOf: pass:normal[xref:#TRC721-ownerOf-uint256-[`++ownerOf++`]]
+:name: pass:normal[xref:#TRC721-name--[`++name++`]]
+:symbol: pass:normal[xref:#TRC721-symbol--[`++symbol++`]]
+:tokenURI: pass:normal[xref:#TRC721-tokenURI-uint256-[`++tokenURI++`]]
+:_baseURI: pass:normal[xref:#TRC721-_baseURI--[`++_baseURI++`]]
+:approve: pass:normal[xref:#TRC721-approve-address-uint256-[`++approve++`]]
+:getApproved: pass:normal[xref:#TRC721-getApproved-uint256-[`++getApproved++`]]
+:setApprovalForAll: pass:normal[xref:#TRC721-setApprovalForAll-address-bool-[`++setApprovalForAll++`]]
+:isApprovedForAll: pass:normal[xref:#TRC721-isApprovedForAll-address-address-[`++isApprovedForAll++`]]
+:transferFrom: pass:normal[xref:#TRC721-transferFrom-address-address-uint256-[`++transferFrom++`]]
+:safeTransferFrom: pass:normal[xref:#TRC721-safeTransferFrom-address-address-uint256-[`++safeTransferFrom++`]]
+:safeTransferFrom: pass:normal[xref:#TRC721-safeTransferFrom-address-address-uint256-bytes-[`++safeTransferFrom++`]]
+:_ownerOf: pass:normal[xref:#TRC721-_ownerOf-uint256-[`++_ownerOf++`]]
+:_getApproved: pass:normal[xref:#TRC721-_getApproved-uint256-[`++_getApproved++`]]
+:_isAuthorized: pass:normal[xref:#TRC721-_isAuthorized-address-address-uint256-[`++_isAuthorized++`]]
+:_checkAuthorized: pass:normal[xref:#TRC721-_checkAuthorized-address-address-uint256-[`++_checkAuthorized++`]]
+:_increaseBalance: pass:normal[xref:#TRC721-_increaseBalance-address-uint128-[`++_increaseBalance++`]]
+:_update: pass:normal[xref:#TRC721-_update-address-uint256-address-[`++_update++`]]
+:_mint: pass:normal[xref:#TRC721-_mint-address-uint256-[`++_mint++`]]
+:_safeMint: pass:normal[xref:#TRC721-_safeMint-address-uint256-[`++_safeMint++`]]
+:_safeMint: pass:normal[xref:#TRC721-_safeMint-address-uint256-bytes-[`++_safeMint++`]]
+:_burn: pass:normal[xref:#TRC721-_burn-uint256-[`++_burn++`]]
+:_transfer: pass:normal[xref:#TRC721-_transfer-address-address-uint256-[`++_transfer++`]]
+:_safeTransfer: pass:normal[xref:#TRC721-_safeTransfer-address-address-uint256-[`++_safeTransfer++`]]
+:_safeTransfer: pass:normal[xref:#TRC721-_safeTransfer-address-address-uint256-bytes-[`++_safeTransfer++`]]
+:_approve: pass:normal[xref:#TRC721-_approve-address-uint256-address-[`++_approve++`]]
+:_approve: pass:normal[xref:#TRC721-_approve-address-uint256-address-bool-[`++_approve++`]]
+:_setApprovalForAll: pass:normal[xref:#TRC721-_setApprovalForAll-address-address-bool-[`++_setApprovalForAll++`]]
+:_requireOwned: pass:normal[xref:#TRC721-_requireOwned-uint256-[`++_requireOwned++`]]
+
+:constructor-string-string: pass:normal[xref:#TRC721-constructor-string-string-[`++constructor++`]]
+:supportsInterface-bytes4: pass:normal[xref:#TRC721-supportsInterface-bytes4-[`++supportsInterface++`]]
+:balanceOf-address: pass:normal[xref:#TRC721-balanceOf-address-[`++balanceOf++`]]
+:ownerOf-uint256: pass:normal[xref:#TRC721-ownerOf-uint256-[`++ownerOf++`]]
+:name-: pass:normal[xref:#TRC721-name--[`++name++`]]
+:symbol-: pass:normal[xref:#TRC721-symbol--[`++symbol++`]]
+:tokenURI-uint256: pass:normal[xref:#TRC721-tokenURI-uint256-[`++tokenURI++`]]
+:_baseURI-: pass:normal[xref:#TRC721-_baseURI--[`++_baseURI++`]]
+:approve-address-uint256: pass:normal[xref:#TRC721-approve-address-uint256-[`++approve++`]]
+:getApproved-uint256: pass:normal[xref:#TRC721-getApproved-uint256-[`++getApproved++`]]
+:setApprovalForAll-address-bool: pass:normal[xref:#TRC721-setApprovalForAll-address-bool-[`++setApprovalForAll++`]]
+:isApprovedForAll-address-address: pass:normal[xref:#TRC721-isApprovedForAll-address-address-[`++isApprovedForAll++`]]
+:transferFrom-address-address-uint256: pass:normal[xref:#TRC721-transferFrom-address-address-uint256-[`++transferFrom++`]]
+:safeTransferFrom-address-address-uint256: pass:normal[xref:#TRC721-safeTransferFrom-address-address-uint256-[`++safeTransferFrom++`]]
+:safeTransferFrom-address-address-uint256-bytes: pass:normal[xref:#TRC721-safeTransferFrom-address-address-uint256-bytes-[`++safeTransferFrom++`]]
+:_ownerOf-uint256: pass:normal[xref:#TRC721-_ownerOf-uint256-[`++_ownerOf++`]]
+:_getApproved-uint256: pass:normal[xref:#TRC721-_getApproved-uint256-[`++_getApproved++`]]
+:_isAuthorized-address-address-uint256: pass:normal[xref:#TRC721-_isAuthorized-address-address-uint256-[`++_isAuthorized++`]]
+:_checkAuthorized-address-address-uint256: pass:normal[xref:#TRC721-_checkAuthorized-address-address-uint256-[`++_checkAuthorized++`]]
+:_increaseBalance-address-uint128: pass:normal[xref:#TRC721-_increaseBalance-address-uint128-[`++_increaseBalance++`]]
+:_update-address-uint256-address: pass:normal[xref:#TRC721-_update-address-uint256-address-[`++_update++`]]
+:_mint-address-uint256: pass:normal[xref:#TRC721-_mint-address-uint256-[`++_mint++`]]
+:_safeMint-address-uint256: pass:normal[xref:#TRC721-_safeMint-address-uint256-[`++_safeMint++`]]
+:_safeMint-address-uint256-bytes: pass:normal[xref:#TRC721-_safeMint-address-uint256-bytes-[`++_safeMint++`]]
+:_burn-uint256: pass:normal[xref:#TRC721-_burn-uint256-[`++_burn++`]]
+:_transfer-address-address-uint256: pass:normal[xref:#TRC721-_transfer-address-address-uint256-[`++_transfer++`]]
+:_safeTransfer-address-address-uint256: pass:normal[xref:#TRC721-_safeTransfer-address-address-uint256-[`++_safeTransfer++`]]
+:_safeTransfer-address-address-uint256-bytes: pass:normal[xref:#TRC721-_safeTransfer-address-address-uint256-bytes-[`++_safeTransfer++`]]
+:_approve-address-uint256-address: pass:normal[xref:#TRC721-_approve-address-uint256-address-[`++_approve++`]]
+:_approve-address-uint256-address-bool: pass:normal[xref:#TRC721-_approve-address-uint256-address-bool-[`++_approve++`]]
+:_setApprovalForAll-address-address-bool: pass:normal[xref:#TRC721-_setApprovalForAll-address-address-bool-[`++_setApprovalForAll++`]]
+:_requireOwned-uint256: pass:normal[xref:#TRC721-_requireOwned-uint256-[`++_requireOwned++`]]
+
+[.contract]
+[[TRC721]]
+=== `++TRC721++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC721/TRC721.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC721/TRC721.sol";
+```
+
+Implementation of the TRC-721 Non-Fungible Token Standard defined in
+https://github.com/tronprotocol/tips/blob/master/tip-721.md[TIP-721] (the TRON-side analogue
+of https://eips.ethereum.org/EIPS/eip-721[EIP-721]), including
+the Metadata extension, but not including the Enumerable extension, which is available separately as
+{TRC721Enumerable}.
+
+[.contract-index]
+.Functions
+--
+* {xref-TRC721-constructor-string-string-}[`++constructor(name_, symbol_)++`]
+* {xref-TRC721-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+* {xref-TRC721-balanceOf-address-}[`++balanceOf(owner)++`]
+* {xref-TRC721-ownerOf-uint256-}[`++ownerOf(tokenId)++`]
+* {xref-TRC721-name--}[`++name()++`]
+* {xref-TRC721-symbol--}[`++symbol()++`]
+* {xref-TRC721-tokenURI-uint256-}[`++tokenURI(tokenId)++`]
+* {xref-TRC721-_baseURI--}[`++_baseURI()++`]
+* {xref-TRC721-approve-address-uint256-}[`++approve(to, tokenId)++`]
+* {xref-TRC721-getApproved-uint256-}[`++getApproved(tokenId)++`]
+* {xref-TRC721-setApprovalForAll-address-bool-}[`++setApprovalForAll(operator, approved)++`]
+* {xref-TRC721-isApprovedForAll-address-address-}[`++isApprovedForAll(owner, operator)++`]
+* {xref-TRC721-transferFrom-address-address-uint256-}[`++transferFrom(from, to, tokenId)++`]
+* {xref-TRC721-safeTransferFrom-address-address-uint256-}[`++safeTransferFrom(from, to, tokenId)++`]
+* {xref-TRC721-safeTransferFrom-address-address-uint256-bytes-}[`++safeTransferFrom(from, to, tokenId, data)++`]
+* {xref-TRC721-_ownerOf-uint256-}[`++_ownerOf(tokenId)++`]
+* {xref-TRC721-_getApproved-uint256-}[`++_getApproved(tokenId)++`]
+* {xref-TRC721-_isAuthorized-address-address-uint256-}[`++_isAuthorized(owner, spender, tokenId)++`]
+* {xref-TRC721-_checkAuthorized-address-address-uint256-}[`++_checkAuthorized(owner, spender, tokenId)++`]
+* {xref-TRC721-_increaseBalance-address-uint128-}[`++_increaseBalance(account, value)++`]
+* {xref-TRC721-_update-address-uint256-address-}[`++_update(to, tokenId, auth)++`]
+* {xref-TRC721-_mint-address-uint256-}[`++_mint(to, tokenId)++`]
+* {xref-TRC721-_safeMint-address-uint256-}[`++_safeMint(to, tokenId)++`]
+* {xref-TRC721-_safeMint-address-uint256-bytes-}[`++_safeMint(to, tokenId, data)++`]
+* {xref-TRC721-_burn-uint256-}[`++_burn(tokenId)++`]
+* {xref-TRC721-_transfer-address-address-uint256-}[`++_transfer(from, to, tokenId)++`]
+* {xref-TRC721-_safeTransfer-address-address-uint256-}[`++_safeTransfer(from, to, tokenId)++`]
+* {xref-TRC721-_safeTransfer-address-address-uint256-bytes-}[`++_safeTransfer(from, to, tokenId, data)++`]
+* {xref-TRC721-_approve-address-uint256-address-}[`++_approve(to, tokenId, auth)++`]
+* {xref-TRC721-_approve-address-uint256-address-bool-}[`++_approve(to, tokenId, auth, emitEvent)++`]
+* {xref-TRC721-_setApprovalForAll-address-address-bool-}[`++_setApprovalForAll(owner, operator, approved)++`]
+* {xref-TRC721-_requireOwned-uint256-}[`++_requireOwned(tokenId)++`]
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Events
+--
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+* {xref-ITRC721-Transfer-address-address-uint256-}[`++Transfer(from, to, tokenId)++`]
+* {xref-ITRC721-Approval-address-address-uint256-}[`++Approval(owner, approved, tokenId)++`]
+* {xref-ITRC721-ApprovalForAll-address-address-bool-}[`++ApprovalForAll(owner, operator, approved)++`]
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Errors
+--
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+* {xref-ITRC721Errors-TRC721InvalidOwner-address-}[`++TRC721InvalidOwner(owner)++`]
+* {xref-ITRC721Errors-TRC721NonexistentToken-uint256-}[`++TRC721NonexistentToken(tokenId)++`]
+* {xref-ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-}[`++TRC721IncorrectOwner(sender, tokenId, owner)++`]
+* {xref-ITRC721Errors-TRC721InvalidSender-address-}[`++TRC721InvalidSender(sender)++`]
+* {xref-ITRC721Errors-TRC721InvalidReceiver-address-}[`++TRC721InvalidReceiver(receiver)++`]
+* {xref-ITRC721Errors-TRC721InsufficientApproval-address-uint256-}[`++TRC721InsufficientApproval(operator, tokenId)++`]
+* {xref-ITRC721Errors-TRC721InvalidApprover-address-}[`++TRC721InvalidApprover(approver)++`]
+* {xref-ITRC721Errors-TRC721InvalidOperator-address-}[`++TRC721InvalidOperator(operator)++`]
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-item]
+[[TRC721-constructor-string-string-]]
+==== `[.contract-item-name]#++constructor++#++(string name_, string symbol_)++` [.item-kind]#internal#
+
+Initializes the contract by setting a `name` and a `symbol` to the token collection.
+
+[.contract-item]
+[[TRC721-supportsInterface-bytes4-]]
+==== `[.contract-item-name]#++supportsInterface++#++(bytes4 interfaceId) → bool++` [.item-kind]#public#
+
+Returns true if this contract implements the interface defined by
+`interfaceId`. See the corresponding
+https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified[ERC section]
+to learn more about how these ids are created.
+
+This function call must use less than 30 000 gas.
+
+[.contract-item]
+[[TRC721-balanceOf-address-]]
+==== `[.contract-item-name]#++balanceOf++#++(address owner) → uint256++` [.item-kind]#public#
+
+Returns the number of tokens in ``owner``'s account.
+
+[.contract-item]
+[[TRC721-ownerOf-uint256-]]
+==== `[.contract-item-name]#++ownerOf++#++(uint256 tokenId) → address++` [.item-kind]#public#
+
+Returns the owner of the `tokenId` token.
+
+Requirements:
+
+- `tokenId` must exist.
+
+[.contract-item]
+[[TRC721-name--]]
+==== `[.contract-item-name]#++name++#++() → string++` [.item-kind]#public#
+
+Returns the token collection name.
+
+[.contract-item]
+[[TRC721-symbol--]]
+==== `[.contract-item-name]#++symbol++#++() → string++` [.item-kind]#public#
+
+Returns the token collection symbol.
+
+[.contract-item]
+[[TRC721-tokenURI-uint256-]]
+==== `[.contract-item-name]#++tokenURI++#++(uint256 tokenId) → string++` [.item-kind]#public#
+
+Returns the Uniform Resource Identifier (URI) for `tokenId` token.
+
+[.contract-item]
+[[TRC721-_baseURI--]]
+==== `[.contract-item-name]#++_baseURI++#++() → string++` [.item-kind]#internal#
+
+Base URI for computing {tokenURI}. If set, the resulting URI for each
+token will be the concatenation of the `baseURI` and the `tokenId`. Empty
+by default, can be overridden in child contracts.
+
+[.contract-item]
+[[TRC721-approve-address-uint256-]]
+==== `[.contract-item-name]#++approve++#++(address to, uint256 tokenId)++` [.item-kind]#public#
+
+Gives permission to `to` to transfer `tokenId` token to another account.
+The approval is cleared when the token is transferred.
+
+Only a single account can be approved at a time, so approving the zero address clears previous approvals.
+
+Requirements:
+
+- The caller must own the token or be an approved operator.
+- `tokenId` must exist.
+
+Emits an {Approval} event.
+
+[.contract-item]
+[[TRC721-getApproved-uint256-]]
+==== `[.contract-item-name]#++getApproved++#++(uint256 tokenId) → address++` [.item-kind]#public#
+
+Returns the account approved for `tokenId` token.
+
+Requirements:
+
+- `tokenId` must exist.
+
+[.contract-item]
+[[TRC721-setApprovalForAll-address-bool-]]
+==== `[.contract-item-name]#++setApprovalForAll++#++(address operator, bool approved)++` [.item-kind]#public#
+
+Approve or remove `operator` as an operator for the caller.
+Operators can call {transferFrom} or {safeTransferFrom} for any token owned by the caller.
+
+Requirements:
+
+- The `operator` cannot be the address zero.
+
+Emits an {ApprovalForAll} event.
+
+[.contract-item]
+[[TRC721-isApprovedForAll-address-address-]]
+==== `[.contract-item-name]#++isApprovedForAll++#++(address owner, address operator) → bool++` [.item-kind]#public#
+
+Returns if the `operator` is allowed to manage all of the assets of `owner`.
+
+See {setApprovalForAll}
+
+[.contract-item]
+[[TRC721-transferFrom-address-address-uint256-]]
+==== `[.contract-item-name]#++transferFrom++#++(address from, address to, uint256 tokenId)++` [.item-kind]#public#
+
+Transfers `tokenId` token from `from` to `to`.
+
+WARNING: Note that the caller is responsible to confirm that the recipient is capable of receiving TRC-721
+or else they may be permanently lost. Usage of {safeTransferFrom} prevents loss, though the caller must
+understand this adds an external call which potentially creates a reentrancy vulnerability.
+
+Requirements:
+
+- `from` cannot be the zero address.
+- `to` cannot be the zero address.
+- `tokenId` token must be owned by `from`.
+- If the caller is not `from`, it must be approved to move this token by either {approve} or {setApprovalForAll}.
+
+Emits a {Transfer} event.
+
+[.contract-item]
+[[TRC721-safeTransferFrom-address-address-uint256-]]
+==== `[.contract-item-name]#++safeTransferFrom++#++(address from, address to, uint256 tokenId)++` [.item-kind]#public#
+
+Safely transfers `tokenId` token from `from` to `to`, checking first that contract recipients
+are aware of the TRC-721 protocol to prevent tokens from being forever locked.
+
+Requirements:
+
+- `from` cannot be the zero address.
+- `to` cannot be the zero address.
+- `tokenId` token must exist and be owned by `from`.
+- If the caller is not `from`, it must have been allowed to move this token by either {approve} or
+  {setApprovalForAll}.
+- If `to` refers to a smart contract, it must implement {ITRC721Receiver-onTRC721Received}, which is called upon
+  a safe transfer.
+
+Emits a {Transfer} event.
+
+[.contract-item]
+[[TRC721-safeTransferFrom-address-address-uint256-bytes-]]
+==== `[.contract-item-name]#++safeTransferFrom++#++(address from, address to, uint256 tokenId, bytes data)++` [.item-kind]#public#
+
+Safely transfers `tokenId` token from `from` to `to`.
+
+Requirements:
+
+- `from` cannot be the zero address.
+- `to` cannot be the zero address.
+- `tokenId` token must exist and be owned by `from`.
+- If the caller is not `from`, it must be approved to move this token by either {approve} or {setApprovalForAll}.
+- If `to` refers to a smart contract, it must implement {ITRC721Receiver-onTRC721Received}, which is called upon
+  a safe transfer.
+
+Emits a {Transfer} event.
+
+[.contract-item]
+[[TRC721-_ownerOf-uint256-]]
+==== `[.contract-item-name]#++_ownerOf++#++(uint256 tokenId) → address++` [.item-kind]#internal#
+
+Returns the owner of the `tokenId`. Does NOT revert if token doesn't exist
+
+IMPORTANT: Any overrides to this function that add ownership of tokens not tracked by the
+core TRC-721 logic MUST be matched with the use of {_increaseBalance} to keep balances
+consistent with ownership. The invariant to preserve is that for any address `a` the value returned by
+`balanceOf(a)` must be equal to the number of tokens such that `_ownerOf(tokenId)` is `a`.
+
+[.contract-item]
+[[TRC721-_getApproved-uint256-]]
+==== `[.contract-item-name]#++_getApproved++#++(uint256 tokenId) → address++` [.item-kind]#internal#
+
+Returns the approved address for `tokenId`. Returns 0 if `tokenId` is not minted.
+
+[.contract-item]
+[[TRC721-_isAuthorized-address-address-uint256-]]
+==== `[.contract-item-name]#++_isAuthorized++#++(address owner, address spender, uint256 tokenId) → bool++` [.item-kind]#internal#
+
+Returns whether `spender` is allowed to manage `owner`'s tokens, or `tokenId` in
+particular (ignoring whether it is owned by `owner`).
+
+WARNING: This function assumes that `owner` is the actual owner of `tokenId` and does not verify this
+assumption.
+
+[.contract-item]
+[[TRC721-_checkAuthorized-address-address-uint256-]]
+==== `[.contract-item-name]#++_checkAuthorized++#++(address owner, address spender, uint256 tokenId)++` [.item-kind]#internal#
+
+Checks if `spender` can operate on `tokenId`, assuming the provided `owner` is the actual owner.
+Reverts if:
+- `spender` does not have approval from `owner` for `tokenId`.
+- `spender` does not have approval to manage all of `owner`'s assets.
+
+WARNING: This function assumes that `owner` is the actual owner of `tokenId` and does not verify this
+assumption.
+
+[.contract-item]
+[[TRC721-_increaseBalance-address-uint128-]]
+==== `[.contract-item-name]#++_increaseBalance++#++(address account, uint128 value)++` [.item-kind]#internal#
+
+Unsafe write access to the balances, used by extensions that "mint" tokens using an {ownerOf} override.
+
+NOTE: the value is limited to type(uint128).max. This protect against _balance overflow. It is unrealistic that
+a uint256 would ever overflow from increments when these increments are bounded to uint128 values.
+
+WARNING: Increasing an account's balance using this function tends to be paired with an override of the
+{_ownerOf} function to resolve the ownership of the corresponding tokens so that balances and ownership
+remain consistent with one another.
+
+[.contract-item]
+[[TRC721-_update-address-uint256-address-]]
+==== `[.contract-item-name]#++_update++#++(address to, uint256 tokenId, address auth) → address++` [.item-kind]#internal#
+
+Transfers `tokenId` from its current owner to `to`, or alternatively mints (or burns) if the current owner
+(or `to`) is the zero address. Returns the owner of the `tokenId` before the update.
+
+The `auth` argument is optional. If the value passed is non 0, then this function will check that
+`auth` is either the owner of the token, or approved to operate on the token (by the owner).
+
+Emits a {Transfer} event.
+
+NOTE: If overriding this function in a way that tracks balances, see also {_increaseBalance}.
+
+[.contract-item]
+[[TRC721-_mint-address-uint256-]]
+==== `[.contract-item-name]#++_mint++#++(address to, uint256 tokenId)++` [.item-kind]#internal#
+
+Mints `tokenId` and transfers it to `to`.
+
+WARNING: Usage of this method is discouraged, use {_safeMint} whenever possible
+
+Requirements:
+
+- `tokenId` must not exist.
+- `to` cannot be the zero address.
+
+Emits a {Transfer} event.
+
+[.contract-item]
+[[TRC721-_safeMint-address-uint256-]]
+==== `[.contract-item-name]#++_safeMint++#++(address to, uint256 tokenId)++` [.item-kind]#internal#
+
+Mints `tokenId`, transfers it to `to` and checks for `to` acceptance.
+
+Requirements:
+
+- `tokenId` must not exist.
+- If `to` refers to a smart contract, it must implement {ITRC721Receiver-onTRC721Received}, which is called upon a safe transfer.
+
+Emits a {Transfer} event.
+
+[.contract-item]
+[[TRC721-_safeMint-address-uint256-bytes-]]
+==== `[.contract-item-name]#++_safeMint++#++(address to, uint256 tokenId, bytes data)++` [.item-kind]#internal#
+
+Same as {xref-TRC721-_safeMint-address-uint256-}[`_safeMint`], with an additional `data` parameter which is
+forwarded in {ITRC721Receiver-onTRC721Received} to contract recipients.
+
+[.contract-item]
+[[TRC721-_burn-uint256-]]
+==== `[.contract-item-name]#++_burn++#++(uint256 tokenId)++` [.item-kind]#internal#
+
+Destroys `tokenId`.
+The approval is cleared when the token is burned.
+This is an internal function that does not check if the sender is authorized to operate on the token.
+
+Requirements:
+
+- `tokenId` must exist.
+
+Emits a {Transfer} event.
+
+[.contract-item]
+[[TRC721-_transfer-address-address-uint256-]]
+==== `[.contract-item-name]#++_transfer++#++(address from, address to, uint256 tokenId)++` [.item-kind]#internal#
+
+Transfers `tokenId` from `from` to `to`.
+ As opposed to {transferFrom}, this imposes no restrictions on msg.sender.
+
+Requirements:
+
+- `to` cannot be the zero address.
+- `tokenId` token must be owned by `from`.
+
+Emits a {Transfer} event.
+
+[.contract-item]
+[[TRC721-_safeTransfer-address-address-uint256-]]
+==== `[.contract-item-name]#++_safeTransfer++#++(address from, address to, uint256 tokenId)++` [.item-kind]#internal#
+
+Safely transfers `tokenId` token from `from` to `to`, checking that contract recipients
+are aware of the TRC-721 standard to prevent tokens from being forever locked.
+
+`data` is additional data, it has no specified format and it is sent in call to `to`.
+
+This internal function is like {safeTransferFrom} in the sense that it invokes
+{ITRC721Receiver-onTRC721Received} on the receiver, and can be used to e.g.
+implement alternative mechanisms to perform token transfer, such as signature-based.
+
+Requirements:
+
+- `tokenId` token must exist and be owned by `from`.
+- `to` cannot be the zero address.
+- `from` cannot be the zero address.
+- If `to` refers to a smart contract, it must implement {ITRC721Receiver-onTRC721Received}, which is called upon a safe transfer.
+
+Emits a {Transfer} event.
+
+[.contract-item]
+[[TRC721-_safeTransfer-address-address-uint256-bytes-]]
+==== `[.contract-item-name]#++_safeTransfer++#++(address from, address to, uint256 tokenId, bytes data)++` [.item-kind]#internal#
+
+Same as {xref-TRC721-_safeTransfer-address-address-uint256-}[`_safeTransfer`], with an additional `data` parameter which is
+forwarded in {ITRC721Receiver-onTRC721Received} to contract recipients.
+
+[.contract-item]
+[[TRC721-_approve-address-uint256-address-]]
+==== `[.contract-item-name]#++_approve++#++(address to, uint256 tokenId, address auth)++` [.item-kind]#internal#
+
+Approve `to` to operate on `tokenId`
+
+The `auth` argument is optional. If the value passed is non 0, then this function will check that `auth` is
+either the owner of the token, or approved to operate on all tokens held by this owner.
+
+Emits an {Approval} event.
+
+Overrides to this logic should be done to the variant with an additional `bool emitEvent` argument.
+
+[.contract-item]
+[[TRC721-_approve-address-uint256-address-bool-]]
+==== `[.contract-item-name]#++_approve++#++(address to, uint256 tokenId, address auth, bool emitEvent)++` [.item-kind]#internal#
+
+Variant of `_approve` with an optional flag to enable or disable the {Approval} event. The event is not
+emitted in the context of transfers.
+
+[.contract-item]
+[[TRC721-_setApprovalForAll-address-address-bool-]]
+==== `[.contract-item-name]#++_setApprovalForAll++#++(address owner, address operator, bool approved)++` [.item-kind]#internal#
+
+Approve `operator` to operate on all of `owner` tokens
+
+Requirements:
+- operator can't be the address zero.
+
+Emits an {ApprovalForAll} event.
+
+[.contract-item]
+[[TRC721-_requireOwned-uint256-]]
+==== `[.contract-item-name]#++_requireOwned++#++(uint256 tokenId) → address++` [.item-kind]#internal#
+
+Reverts if the `tokenId` doesn't have a current owner (it hasn't been minted, or it has been burned).
+Returns the owner.
+
+Overrides to ownership logic should be done to {_ownerOf}.
+
+:TRC721OutOfBoundsIndex: pass:normal[xref:#TRC721Enumerable-TRC721OutOfBoundsIndex-address-uint256-[`++TRC721OutOfBoundsIndex++`]]
+:TRC721EnumerableForbiddenBatchMint: pass:normal[xref:#TRC721Enumerable-TRC721EnumerableForbiddenBatchMint--[`++TRC721EnumerableForbiddenBatchMint++`]]
+:supportsInterface: pass:normal[xref:#TRC721Enumerable-supportsInterface-bytes4-[`++supportsInterface++`]]
+:tokenOfOwnerByIndex: pass:normal[xref:#TRC721Enumerable-tokenOfOwnerByIndex-address-uint256-[`++tokenOfOwnerByIndex++`]]
+:totalSupply: pass:normal[xref:#TRC721Enumerable-totalSupply--[`++totalSupply++`]]
+:tokenByIndex: pass:normal[xref:#TRC721Enumerable-tokenByIndex-uint256-[`++tokenByIndex++`]]
+:_update: pass:normal[xref:#TRC721Enumerable-_update-address-uint256-address-[`++_update++`]]
+:_increaseBalance: pass:normal[xref:#TRC721Enumerable-_increaseBalance-address-uint128-[`++_increaseBalance++`]]
+
+:supportsInterface-bytes4: pass:normal[xref:#TRC721Enumerable-supportsInterface-bytes4-[`++supportsInterface++`]]
+:tokenOfOwnerByIndex-address-uint256: pass:normal[xref:#TRC721Enumerable-tokenOfOwnerByIndex-address-uint256-[`++tokenOfOwnerByIndex++`]]
+:totalSupply-: pass:normal[xref:#TRC721Enumerable-totalSupply--[`++totalSupply++`]]
+:tokenByIndex-uint256: pass:normal[xref:#TRC721Enumerable-tokenByIndex-uint256-[`++tokenByIndex++`]]
+:_update-address-uint256-address: pass:normal[xref:#TRC721Enumerable-_update-address-uint256-address-[`++_update++`]]
+:_increaseBalance-address-uint128: pass:normal[xref:#TRC721Enumerable-_increaseBalance-address-uint128-[`++_increaseBalance++`]]
+
+[.contract]
+[[TRC721Enumerable]]
+=== `++TRC721Enumerable++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC721/extensions/TRC721Enumerable.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC721/extensions/TRC721Enumerable.sol";
+```
+
+This implements an optional extension of {TRC721} defined in the ERC that adds enumerability
+of all the token ids in the contract as well as all token ids owned by each account.
+
+CAUTION: {TRC721} extensions that implement custom `balanceOf` logic, such as {TRC721Consecutive},
+interfere with enumerability and should not be used together with {TRC721Enumerable}.
+
+[.contract-index]
+.Functions
+--
+* {xref-TRC721Enumerable-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+* {xref-TRC721Enumerable-tokenOfOwnerByIndex-address-uint256-}[`++tokenOfOwnerByIndex(owner, index)++`]
+* {xref-TRC721Enumerable-totalSupply--}[`++totalSupply()++`]
+* {xref-TRC721Enumerable-tokenByIndex-uint256-}[`++tokenByIndex(index)++`]
+* {xref-TRC721Enumerable-_update-address-uint256-address-}[`++_update(to, tokenId, auth)++`]
+* {xref-TRC721Enumerable-_increaseBalance-address-uint128-}[`++_increaseBalance(account, amount)++`]
+
+[.contract-subindex-inherited]
+.ITRC721Enumerable
+
+[.contract-subindex-inherited]
+.TRC721
+* {xref-TRC721-balanceOf-address-}[`++balanceOf(owner)++`]
+* {xref-TRC721-ownerOf-uint256-}[`++ownerOf(tokenId)++`]
+* {xref-TRC721-name--}[`++name()++`]
+* {xref-TRC721-symbol--}[`++symbol()++`]
+* {xref-TRC721-tokenURI-uint256-}[`++tokenURI(tokenId)++`]
+* {xref-TRC721-_baseURI--}[`++_baseURI()++`]
+* {xref-TRC721-approve-address-uint256-}[`++approve(to, tokenId)++`]
+* {xref-TRC721-getApproved-uint256-}[`++getApproved(tokenId)++`]
+* {xref-TRC721-setApprovalForAll-address-bool-}[`++setApprovalForAll(operator, approved)++`]
+* {xref-TRC721-isApprovedForAll-address-address-}[`++isApprovedForAll(owner, operator)++`]
+* {xref-TRC721-transferFrom-address-address-uint256-}[`++transferFrom(from, to, tokenId)++`]
+* {xref-TRC721-safeTransferFrom-address-address-uint256-}[`++safeTransferFrom(from, to, tokenId)++`]
+* {xref-TRC721-safeTransferFrom-address-address-uint256-bytes-}[`++safeTransferFrom(from, to, tokenId, data)++`]
+* {xref-TRC721-_ownerOf-uint256-}[`++_ownerOf(tokenId)++`]
+* {xref-TRC721-_getApproved-uint256-}[`++_getApproved(tokenId)++`]
+* {xref-TRC721-_isAuthorized-address-address-uint256-}[`++_isAuthorized(owner, spender, tokenId)++`]
+* {xref-TRC721-_checkAuthorized-address-address-uint256-}[`++_checkAuthorized(owner, spender, tokenId)++`]
+* {xref-TRC721-_mint-address-uint256-}[`++_mint(to, tokenId)++`]
+* {xref-TRC721-_safeMint-address-uint256-}[`++_safeMint(to, tokenId)++`]
+* {xref-TRC721-_safeMint-address-uint256-bytes-}[`++_safeMint(to, tokenId, data)++`]
+* {xref-TRC721-_burn-uint256-}[`++_burn(tokenId)++`]
+* {xref-TRC721-_transfer-address-address-uint256-}[`++_transfer(from, to, tokenId)++`]
+* {xref-TRC721-_safeTransfer-address-address-uint256-}[`++_safeTransfer(from, to, tokenId)++`]
+* {xref-TRC721-_safeTransfer-address-address-uint256-bytes-}[`++_safeTransfer(from, to, tokenId, data)++`]
+* {xref-TRC721-_approve-address-uint256-address-}[`++_approve(to, tokenId, auth)++`]
+* {xref-TRC721-_approve-address-uint256-address-bool-}[`++_approve(to, tokenId, auth, emitEvent)++`]
+* {xref-TRC721-_setApprovalForAll-address-address-bool-}[`++_setApprovalForAll(owner, operator, approved)++`]
+* {xref-TRC721-_requireOwned-uint256-}[`++_requireOwned(tokenId)++`]
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Events
+--
+
+[.contract-subindex-inherited]
+.ITRC721Enumerable
+
+[.contract-subindex-inherited]
+.TRC721
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+* {xref-ITRC721-Transfer-address-address-uint256-}[`++Transfer(from, to, tokenId)++`]
+* {xref-ITRC721-Approval-address-address-uint256-}[`++Approval(owner, approved, tokenId)++`]
+* {xref-ITRC721-ApprovalForAll-address-address-bool-}[`++ApprovalForAll(owner, operator, approved)++`]
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Errors
+--
+* {xref-TRC721Enumerable-TRC721OutOfBoundsIndex-address-uint256-}[`++TRC721OutOfBoundsIndex(owner, index)++`]
+* {xref-TRC721Enumerable-TRC721EnumerableForbiddenBatchMint--}[`++TRC721EnumerableForbiddenBatchMint()++`]
+
+[.contract-subindex-inherited]
+.ITRC721Enumerable
+
+[.contract-subindex-inherited]
+.TRC721
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+* {xref-ITRC721Errors-TRC721InvalidOwner-address-}[`++TRC721InvalidOwner(owner)++`]
+* {xref-ITRC721Errors-TRC721NonexistentToken-uint256-}[`++TRC721NonexistentToken(tokenId)++`]
+* {xref-ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-}[`++TRC721IncorrectOwner(sender, tokenId, owner)++`]
+* {xref-ITRC721Errors-TRC721InvalidSender-address-}[`++TRC721InvalidSender(sender)++`]
+* {xref-ITRC721Errors-TRC721InvalidReceiver-address-}[`++TRC721InvalidReceiver(receiver)++`]
+* {xref-ITRC721Errors-TRC721InsufficientApproval-address-uint256-}[`++TRC721InsufficientApproval(operator, tokenId)++`]
+* {xref-ITRC721Errors-TRC721InvalidApprover-address-}[`++TRC721InvalidApprover(approver)++`]
+* {xref-ITRC721Errors-TRC721InvalidOperator-address-}[`++TRC721InvalidOperator(operator)++`]
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-item]
+[[TRC721Enumerable-supportsInterface-bytes4-]]
+==== `[.contract-item-name]#++supportsInterface++#++(bytes4 interfaceId) → bool++` [.item-kind]#public#
+
+Returns true if this contract implements the interface defined by
+`interfaceId`. See the corresponding
+https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified[ERC section]
+to learn more about how these ids are created.
+
+This function call must use less than 30 000 gas.
+
+[.contract-item]
+[[TRC721Enumerable-tokenOfOwnerByIndex-address-uint256-]]
+==== `[.contract-item-name]#++tokenOfOwnerByIndex++#++(address owner, uint256 index) → uint256++` [.item-kind]#public#
+
+Returns a token ID owned by `owner` at a given `index` of its token list.
+Use along with {balanceOf} to enumerate all of ``owner``'s tokens.
+
+[.contract-item]
+[[TRC721Enumerable-totalSupply--]]
+==== `[.contract-item-name]#++totalSupply++#++() → uint256++` [.item-kind]#public#
+
+Returns the total amount of tokens stored by the contract.
+
+[.contract-item]
+[[TRC721Enumerable-tokenByIndex-uint256-]]
+==== `[.contract-item-name]#++tokenByIndex++#++(uint256 index) → uint256++` [.item-kind]#public#
+
+Returns a token ID at a given `index` of all the tokens stored by the contract.
+Use along with {totalSupply} to enumerate all tokens.
+
+[.contract-item]
+[[TRC721Enumerable-_update-address-uint256-address-]]
+==== `[.contract-item-name]#++_update++#++(address to, uint256 tokenId, address auth) → address++` [.item-kind]#internal#
+
+Transfers `tokenId` from its current owner to `to`, or alternatively mints (or burns) if the current owner
+(or `to`) is the zero address. Returns the owner of the `tokenId` before the update.
+
+The `auth` argument is optional. If the value passed is non 0, then this function will check that
+`auth` is either the owner of the token, or approved to operate on the token (by the owner).
+
+Emits a {Transfer} event.
+
+NOTE: If overriding this function in a way that tracks balances, see also {_increaseBalance}.
+
+[.contract-item]
+[[TRC721Enumerable-_increaseBalance-address-uint128-]]
+==== `[.contract-item-name]#++_increaseBalance++#++(address account, uint128 amount)++` [.item-kind]#internal#
+
+[.contract-item]
+[[TRC721Enumerable-TRC721OutOfBoundsIndex-address-uint256-]]
+==== `[.contract-item-name]#++TRC721OutOfBoundsIndex++#++(address owner, uint256 index)++` [.item-kind]#error#
+
+An `owner`'s token query was out of bounds for `index`.
+
+NOTE: The owner being `address(0)` indicates a global out of bounds index.
+
+[.contract-item]
+[[TRC721Enumerable-TRC721EnumerableForbiddenBatchMint--]]
+==== `[.contract-item-name]#++TRC721EnumerableForbiddenBatchMint++#++()++` [.item-kind]#error#
+
+Batch mint is not allowed.
+
+:onTRC721Received: pass:normal[xref:#ITRC721Receiver-onTRC721Received-address-address-uint256-bytes-[`++onTRC721Received++`]]
+
+:onTRC721Received-address-address-uint256-bytes: pass:normal[xref:#ITRC721Receiver-onTRC721Received-address-address-uint256-bytes-[`++onTRC721Received++`]]
+
+[.contract]
+[[ITRC721Receiver]]
+=== `++ITRC721Receiver++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC721/ITRC721Receiver.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC721/ITRC721Receiver.sol";
+```
+
+Interface for any contract that wants to support safeTransfers
+from TRC-721 asset contracts.
+
+[.contract-index]
+.Functions
+--
+* {xref-ITRC721Receiver-onTRC721Received-address-address-uint256-bytes-}[`++onTRC721Received(operator, from, tokenId, data)++`]
+
+--
+
+[.contract-item]
+[[ITRC721Receiver-onTRC721Received-address-address-uint256-bytes-]]
+==== `[.contract-item-name]#++onTRC721Received++#++(address operator, address from, uint256 tokenId, bytes data) → bytes4++` [.item-kind]#external#
+
+Whenever an {ITRC721} `tokenId` token is transferred to this contract via {ITRC721-safeTransferFrom}
+by `operator` from `from`, this function is called.
+
+It must return its Solidity selector to confirm the token transfer.
+If any other value is returned or the interface is not implemented by the recipient, the transfer will be
+reverted.
+
+The selector can be obtained in Solidity with `ITRC721Receiver.onTRC721Received.selector`.
+
+== Extensions
+
+:crosschainTransferFrom: pass:normal[xref:#TRC721Crosschain-crosschainTransferFrom-address-bytes-uint256-[`++crosschainTransferFrom++`]]
+:_onSend: pass:normal[xref:#TRC721Crosschain-_onSend-address-uint256-[`++_onSend++`]]
+:_onReceive: pass:normal[xref:#TRC721Crosschain-_onReceive-address-uint256-[`++_onReceive++`]]
+
+:crosschainTransferFrom-address-bytes-uint256: pass:normal[xref:#TRC721Crosschain-crosschainTransferFrom-address-bytes-uint256-[`++crosschainTransferFrom++`]]
+:_onSend-address-uint256: pass:normal[xref:#TRC721Crosschain-_onSend-address-uint256-[`++_onSend++`]]
+:_onReceive-address-uint256: pass:normal[xref:#TRC721Crosschain-_onReceive-address-uint256-[`++_onReceive++`]]
+
+[.contract]
+[[TRC721Crosschain]]
+=== `++TRC721Crosschain++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC721/extensions/TRC721Crosschain.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC721/extensions/TRC721Crosschain.sol";
+```
+
+Extension of {TRC721} that makes it natively cross-chain using the TRC-7786 based {BridgeNonFungible}.
+
+This extension makes the token compatible with:
+* {TRC721Crosschain} instances on other chains,
+* {TRC721} instances on other chains that are bridged using {BridgeTRC721},
+
+[.contract-index]
+.Functions
+--
+* {xref-TRC721Crosschain-crosschainTransferFrom-address-bytes-uint256-}[`++crosschainTransferFrom(from, to, tokenId)++`]
+* {xref-TRC721Crosschain-_onSend-address-uint256-}[`++_onSend(from, tokenId)++`]
+* {xref-TRC721Crosschain-_onReceive-address-uint256-}[`++_onReceive(to, tokenId)++`]
+
+[.contract-subindex-inherited]
+.TRC721
+* {xref-TRC721-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+* {xref-TRC721-balanceOf-address-}[`++balanceOf(owner)++`]
+* {xref-TRC721-ownerOf-uint256-}[`++ownerOf(tokenId)++`]
+* {xref-TRC721-name--}[`++name()++`]
+* {xref-TRC721-symbol--}[`++symbol()++`]
+* {xref-TRC721-tokenURI-uint256-}[`++tokenURI(tokenId)++`]
+* {xref-TRC721-_baseURI--}[`++_baseURI()++`]
+* {xref-TRC721-approve-address-uint256-}[`++approve(to, tokenId)++`]
+* {xref-TRC721-getApproved-uint256-}[`++getApproved(tokenId)++`]
+* {xref-TRC721-setApprovalForAll-address-bool-}[`++setApprovalForAll(operator, approved)++`]
+* {xref-TRC721-isApprovedForAll-address-address-}[`++isApprovedForAll(owner, operator)++`]
+* {xref-TRC721-transferFrom-address-address-uint256-}[`++transferFrom(from, to, tokenId)++`]
+* {xref-TRC721-safeTransferFrom-address-address-uint256-}[`++safeTransferFrom(from, to, tokenId)++`]
+* {xref-TRC721-safeTransferFrom-address-address-uint256-bytes-}[`++safeTransferFrom(from, to, tokenId, data)++`]
+* {xref-TRC721-_ownerOf-uint256-}[`++_ownerOf(tokenId)++`]
+* {xref-TRC721-_getApproved-uint256-}[`++_getApproved(tokenId)++`]
+* {xref-TRC721-_isAuthorized-address-address-uint256-}[`++_isAuthorized(owner, spender, tokenId)++`]
+* {xref-TRC721-_checkAuthorized-address-address-uint256-}[`++_checkAuthorized(owner, spender, tokenId)++`]
+* {xref-TRC721-_increaseBalance-address-uint128-}[`++_increaseBalance(account, value)++`]
+* {xref-TRC721-_update-address-uint256-address-}[`++_update(to, tokenId, auth)++`]
+* {xref-TRC721-_mint-address-uint256-}[`++_mint(to, tokenId)++`]
+* {xref-TRC721-_safeMint-address-uint256-}[`++_safeMint(to, tokenId)++`]
+* {xref-TRC721-_safeMint-address-uint256-bytes-}[`++_safeMint(to, tokenId, data)++`]
+* {xref-TRC721-_burn-uint256-}[`++_burn(tokenId)++`]
+* {xref-TRC721-_transfer-address-address-uint256-}[`++_transfer(from, to, tokenId)++`]
+* {xref-TRC721-_safeTransfer-address-address-uint256-}[`++_safeTransfer(from, to, tokenId)++`]
+* {xref-TRC721-_safeTransfer-address-address-uint256-bytes-}[`++_safeTransfer(from, to, tokenId, data)++`]
+* {xref-TRC721-_approve-address-uint256-address-}[`++_approve(to, tokenId, auth)++`]
+* {xref-TRC721-_approve-address-uint256-address-bool-}[`++_approve(to, tokenId, auth, emitEvent)++`]
+* {xref-TRC721-_setApprovalForAll-address-address-bool-}[`++_setApprovalForAll(owner, operator, approved)++`]
+* {xref-TRC721-_requireOwned-uint256-}[`++_requireOwned(tokenId)++`]
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+[.contract-subindex-inherited]
+.BridgeNonFungible
+* {xref-BridgeNonFungible-_crosschainTransfer-address-bytes-uint256-}[`++_crosschainTransfer(from, to, tokenId)++`]
+* {xref-BridgeNonFungible-_processMessage-address-bytes32-bytes-bytes-}[`++_processMessage(, receiveId, , payload)++`]
+
+[.contract-subindex-inherited]
+.CrosschainLinked
+* {xref-CrosschainLinked-getLink-bytes-}[`++getLink(chainAddr)++`]
+* {xref-CrosschainLinked-_setLink-address-bytes-bool-}[`++_setLink(gateway, counterpart, allowOverride)++`]
+* {xref-CrosschainLinked-_sendMessageToCounterpart-bytes-bytes-bytes---}[`++_sendMessageToCounterpart(chainAddr, payload, attributes)++`]
+* {xref-CrosschainLinked-_isAuthorizedGateway-address-bytes-}[`++_isAuthorizedGateway(instance, sender)++`]
+
+[.contract-subindex-inherited]
+.TRC7786Recipient
+* {xref-TRC7786Recipient-receiveMessage-bytes32-bytes-bytes-}[`++receiveMessage(receiveId, sender, payload)++`]
+
+[.contract-subindex-inherited]
+.ITRC7786Recipient
+
+--
+
+[.contract-index]
+.Events
+--
+
+[.contract-subindex-inherited]
+.TRC721
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+* {xref-ITRC721-Transfer-address-address-uint256-}[`++Transfer(from, to, tokenId)++`]
+* {xref-ITRC721-Approval-address-address-uint256-}[`++Approval(owner, approved, tokenId)++`]
+* {xref-ITRC721-ApprovalForAll-address-address-bool-}[`++ApprovalForAll(owner, operator, approved)++`]
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+[.contract-subindex-inherited]
+.BridgeNonFungible
+* {xref-BridgeNonFungible-CrosschainNonFungibleTransferSent-bytes32-address-bytes-uint256-}[`++CrosschainNonFungibleTransferSent(sendId, from, to, tokenId)++`]
+* {xref-BridgeNonFungible-CrosschainNonFungibleTransferReceived-bytes32-bytes-address-uint256-}[`++CrosschainNonFungibleTransferReceived(receiveId, from, to, tokenId)++`]
+
+[.contract-subindex-inherited]
+.CrosschainLinked
+* {xref-CrosschainLinked-LinkRegistered-address-bytes-}[`++LinkRegistered(gateway, counterpart)++`]
+
+[.contract-subindex-inherited]
+.TRC7786Recipient
+
+[.contract-subindex-inherited]
+.ITRC7786Recipient
+
+--
+
+[.contract-index]
+.Errors
+--
+
+[.contract-subindex-inherited]
+.TRC721
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+* {xref-ITRC721Errors-TRC721InvalidOwner-address-}[`++TRC721InvalidOwner(owner)++`]
+* {xref-ITRC721Errors-TRC721NonexistentToken-uint256-}[`++TRC721NonexistentToken(tokenId)++`]
+* {xref-ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-}[`++TRC721IncorrectOwner(sender, tokenId, owner)++`]
+* {xref-ITRC721Errors-TRC721InvalidSender-address-}[`++TRC721InvalidSender(sender)++`]
+* {xref-ITRC721Errors-TRC721InvalidReceiver-address-}[`++TRC721InvalidReceiver(receiver)++`]
+* {xref-ITRC721Errors-TRC721InsufficientApproval-address-uint256-}[`++TRC721InsufficientApproval(operator, tokenId)++`]
+* {xref-ITRC721Errors-TRC721InvalidApprover-address-}[`++TRC721InvalidApprover(approver)++`]
+* {xref-ITRC721Errors-TRC721InvalidOperator-address-}[`++TRC721InvalidOperator(operator)++`]
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+[.contract-subindex-inherited]
+.BridgeNonFungible
+* {xref-BridgeNonFungible-CrosschainNonFungibleEmptyAddress--}[`++CrosschainNonFungibleEmptyAddress()++`]
+* {xref-BridgeNonFungible-CrosschainNonFungibleInvalidRecipient-bytes-}[`++CrosschainNonFungibleInvalidRecipient(recipient)++`]
+
+[.contract-subindex-inherited]
+.CrosschainLinked
+* {xref-CrosschainLinked-LinkAlreadyRegistered-bytes-}[`++LinkAlreadyRegistered(chainAddr)++`]
+
+[.contract-subindex-inherited]
+.TRC7786Recipient
+* {xref-TRC7786Recipient-TRC7786RecipientUnauthorizedGateway-address-bytes-}[`++TRC7786RecipientUnauthorizedGateway(gateway, sender)++`]
+
+[.contract-subindex-inherited]
+.ITRC7786Recipient
+
+--
+
+[.contract-item]
+[[TRC721Crosschain-crosschainTransferFrom-address-bytes-uint256-]]
+==== `[.contract-item-name]#++crosschainTransferFrom++#++(address from, bytes to, uint256 tokenId) → bytes32++` [.item-kind]#public#
+
+Crosschain variant of {transferFrom}, using the allowance system from the underlying TRC-721 token.
+
+[.contract-item]
+[[TRC721Crosschain-_onSend-address-uint256-]]
+==== `[.contract-item-name]#++_onSend++#++(address from, uint256 tokenId)++` [.item-kind]#internal#
+
+"Locking" tokens is achieved through burning
+
+[.contract-item]
+[[TRC721Crosschain-_onReceive-address-uint256-]]
+==== `[.contract-item-name]#++_onReceive++#++(address to, uint256 tokenId)++` [.item-kind]#internal#
+
+"Unlocking" tokens is achieved through minting
+
+:_update: pass:normal[xref:#TRC721Pausable-_update-address-uint256-address-[`++_update++`]]
+
+:_update-address-uint256-address: pass:normal[xref:#TRC721Pausable-_update-address-uint256-address-[`++_update++`]]
+
+[.contract]
+[[TRC721Pausable]]
+=== `++TRC721Pausable++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC721/extensions/TRC721Pausable.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC721/extensions/TRC721Pausable.sol";
+```
+
+TRC-721 token with pausable token transfers, minting and burning.
+
+Useful for scenarios such as preventing trades until the end of an evaluation
+period, or having an emergency switch for freezing all token transfers in the
+event of a large bug.
+
+IMPORTANT: This contract does not include public pause and unpause functions. In
+addition to inheriting this contract, you must define both functions, invoking the
+{Pausable-_pause} and {Pausable-_unpause} internal functions, with appropriate
+access control, e.g. using {AccessControl} or {Ownable}. Not doing so will
+make the contract pause mechanism of the contract unreachable, and thus unusable.
+
+[.contract-index]
+.Functions
+--
+* {xref-TRC721Pausable-_update-address-uint256-address-}[`++_update(to, tokenId, auth)++`]
+
+[.contract-subindex-inherited]
+.Pausable
+* {xref-Pausable-paused--}[`++paused()++`]
+* {xref-Pausable-_requireNotPaused--}[`++_requireNotPaused()++`]
+* {xref-Pausable-_requirePaused--}[`++_requirePaused()++`]
+* {xref-Pausable-_pause--}[`++_pause()++`]
+* {xref-Pausable-_unpause--}[`++_unpause()++`]
+
+[.contract-subindex-inherited]
+.TRC721
+* {xref-TRC721-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+* {xref-TRC721-balanceOf-address-}[`++balanceOf(owner)++`]
+* {xref-TRC721-ownerOf-uint256-}[`++ownerOf(tokenId)++`]
+* {xref-TRC721-name--}[`++name()++`]
+* {xref-TRC721-symbol--}[`++symbol()++`]
+* {xref-TRC721-tokenURI-uint256-}[`++tokenURI(tokenId)++`]
+* {xref-TRC721-_baseURI--}[`++_baseURI()++`]
+* {xref-TRC721-approve-address-uint256-}[`++approve(to, tokenId)++`]
+* {xref-TRC721-getApproved-uint256-}[`++getApproved(tokenId)++`]
+* {xref-TRC721-setApprovalForAll-address-bool-}[`++setApprovalForAll(operator, approved)++`]
+* {xref-TRC721-isApprovedForAll-address-address-}[`++isApprovedForAll(owner, operator)++`]
+* {xref-TRC721-transferFrom-address-address-uint256-}[`++transferFrom(from, to, tokenId)++`]
+* {xref-TRC721-safeTransferFrom-address-address-uint256-}[`++safeTransferFrom(from, to, tokenId)++`]
+* {xref-TRC721-safeTransferFrom-address-address-uint256-bytes-}[`++safeTransferFrom(from, to, tokenId, data)++`]
+* {xref-TRC721-_ownerOf-uint256-}[`++_ownerOf(tokenId)++`]
+* {xref-TRC721-_getApproved-uint256-}[`++_getApproved(tokenId)++`]
+* {xref-TRC721-_isAuthorized-address-address-uint256-}[`++_isAuthorized(owner, spender, tokenId)++`]
+* {xref-TRC721-_checkAuthorized-address-address-uint256-}[`++_checkAuthorized(owner, spender, tokenId)++`]
+* {xref-TRC721-_increaseBalance-address-uint128-}[`++_increaseBalance(account, value)++`]
+* {xref-TRC721-_mint-address-uint256-}[`++_mint(to, tokenId)++`]
+* {xref-TRC721-_safeMint-address-uint256-}[`++_safeMint(to, tokenId)++`]
+* {xref-TRC721-_safeMint-address-uint256-bytes-}[`++_safeMint(to, tokenId, data)++`]
+* {xref-TRC721-_burn-uint256-}[`++_burn(tokenId)++`]
+* {xref-TRC721-_transfer-address-address-uint256-}[`++_transfer(from, to, tokenId)++`]
+* {xref-TRC721-_safeTransfer-address-address-uint256-}[`++_safeTransfer(from, to, tokenId)++`]
+* {xref-TRC721-_safeTransfer-address-address-uint256-bytes-}[`++_safeTransfer(from, to, tokenId, data)++`]
+* {xref-TRC721-_approve-address-uint256-address-}[`++_approve(to, tokenId, auth)++`]
+* {xref-TRC721-_approve-address-uint256-address-bool-}[`++_approve(to, tokenId, auth, emitEvent)++`]
+* {xref-TRC721-_setApprovalForAll-address-address-bool-}[`++_setApprovalForAll(owner, operator, approved)++`]
+* {xref-TRC721-_requireOwned-uint256-}[`++_requireOwned(tokenId)++`]
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Events
+--
+
+[.contract-subindex-inherited]
+.Pausable
+* {xref-Pausable-Paused-address-}[`++Paused(account)++`]
+* {xref-Pausable-Unpaused-address-}[`++Unpaused(account)++`]
+
+[.contract-subindex-inherited]
+.TRC721
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+* {xref-ITRC721-Transfer-address-address-uint256-}[`++Transfer(from, to, tokenId)++`]
+* {xref-ITRC721-Approval-address-address-uint256-}[`++Approval(owner, approved, tokenId)++`]
+* {xref-ITRC721-ApprovalForAll-address-address-bool-}[`++ApprovalForAll(owner, operator, approved)++`]
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Errors
+--
+
+[.contract-subindex-inherited]
+.Pausable
+* {xref-Pausable-EnforcedPause--}[`++EnforcedPause()++`]
+* {xref-Pausable-ExpectedPause--}[`++ExpectedPause()++`]
+
+[.contract-subindex-inherited]
+.TRC721
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+* {xref-ITRC721Errors-TRC721InvalidOwner-address-}[`++TRC721InvalidOwner(owner)++`]
+* {xref-ITRC721Errors-TRC721NonexistentToken-uint256-}[`++TRC721NonexistentToken(tokenId)++`]
+* {xref-ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-}[`++TRC721IncorrectOwner(sender, tokenId, owner)++`]
+* {xref-ITRC721Errors-TRC721InvalidSender-address-}[`++TRC721InvalidSender(sender)++`]
+* {xref-ITRC721Errors-TRC721InvalidReceiver-address-}[`++TRC721InvalidReceiver(receiver)++`]
+* {xref-ITRC721Errors-TRC721InsufficientApproval-address-uint256-}[`++TRC721InsufficientApproval(operator, tokenId)++`]
+* {xref-ITRC721Errors-TRC721InvalidApprover-address-}[`++TRC721InvalidApprover(approver)++`]
+* {xref-ITRC721Errors-TRC721InvalidOperator-address-}[`++TRC721InvalidOperator(operator)++`]
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-item]
+[[TRC721Pausable-_update-address-uint256-address-]]
+==== `[.contract-item-name]#++_update++#++(address to, uint256 tokenId, address auth) → address++` [.item-kind]#internal#
+
+See {TRC721-_update}.
+
+Requirements:
+
+- the contract must not be paused.
+
+:burn: pass:normal[xref:#TRC721Burnable-burn-uint256-[`++burn++`]]
+
+:burn-uint256: pass:normal[xref:#TRC721Burnable-burn-uint256-[`++burn++`]]
+
+[.contract]
+[[TRC721Burnable]]
+=== `++TRC721Burnable++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC721/extensions/TRC721Burnable.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC721/extensions/TRC721Burnable.sol";
+```
+
+TRC-721 Token that can be burned (destroyed).
+
+[.contract-index]
+.Functions
+--
+* {xref-TRC721Burnable-burn-uint256-}[`++burn(tokenId)++`]
+
+[.contract-subindex-inherited]
+.TRC721
+* {xref-TRC721-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+* {xref-TRC721-balanceOf-address-}[`++balanceOf(owner)++`]
+* {xref-TRC721-ownerOf-uint256-}[`++ownerOf(tokenId)++`]
+* {xref-TRC721-name--}[`++name()++`]
+* {xref-TRC721-symbol--}[`++symbol()++`]
+* {xref-TRC721-tokenURI-uint256-}[`++tokenURI(tokenId)++`]
+* {xref-TRC721-_baseURI--}[`++_baseURI()++`]
+* {xref-TRC721-approve-address-uint256-}[`++approve(to, tokenId)++`]
+* {xref-TRC721-getApproved-uint256-}[`++getApproved(tokenId)++`]
+* {xref-TRC721-setApprovalForAll-address-bool-}[`++setApprovalForAll(operator, approved)++`]
+* {xref-TRC721-isApprovedForAll-address-address-}[`++isApprovedForAll(owner, operator)++`]
+* {xref-TRC721-transferFrom-address-address-uint256-}[`++transferFrom(from, to, tokenId)++`]
+* {xref-TRC721-safeTransferFrom-address-address-uint256-}[`++safeTransferFrom(from, to, tokenId)++`]
+* {xref-TRC721-safeTransferFrom-address-address-uint256-bytes-}[`++safeTransferFrom(from, to, tokenId, data)++`]
+* {xref-TRC721-_ownerOf-uint256-}[`++_ownerOf(tokenId)++`]
+* {xref-TRC721-_getApproved-uint256-}[`++_getApproved(tokenId)++`]
+* {xref-TRC721-_isAuthorized-address-address-uint256-}[`++_isAuthorized(owner, spender, tokenId)++`]
+* {xref-TRC721-_checkAuthorized-address-address-uint256-}[`++_checkAuthorized(owner, spender, tokenId)++`]
+* {xref-TRC721-_increaseBalance-address-uint128-}[`++_increaseBalance(account, value)++`]
+* {xref-TRC721-_update-address-uint256-address-}[`++_update(to, tokenId, auth)++`]
+* {xref-TRC721-_mint-address-uint256-}[`++_mint(to, tokenId)++`]
+* {xref-TRC721-_safeMint-address-uint256-}[`++_safeMint(to, tokenId)++`]
+* {xref-TRC721-_safeMint-address-uint256-bytes-}[`++_safeMint(to, tokenId, data)++`]
+* {xref-TRC721-_burn-uint256-}[`++_burn(tokenId)++`]
+* {xref-TRC721-_transfer-address-address-uint256-}[`++_transfer(from, to, tokenId)++`]
+* {xref-TRC721-_safeTransfer-address-address-uint256-}[`++_safeTransfer(from, to, tokenId)++`]
+* {xref-TRC721-_safeTransfer-address-address-uint256-bytes-}[`++_safeTransfer(from, to, tokenId, data)++`]
+* {xref-TRC721-_approve-address-uint256-address-}[`++_approve(to, tokenId, auth)++`]
+* {xref-TRC721-_approve-address-uint256-address-bool-}[`++_approve(to, tokenId, auth, emitEvent)++`]
+* {xref-TRC721-_setApprovalForAll-address-address-bool-}[`++_setApprovalForAll(owner, operator, approved)++`]
+* {xref-TRC721-_requireOwned-uint256-}[`++_requireOwned(tokenId)++`]
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Events
+--
+
+[.contract-subindex-inherited]
+.TRC721
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+* {xref-ITRC721-Transfer-address-address-uint256-}[`++Transfer(from, to, tokenId)++`]
+* {xref-ITRC721-Approval-address-address-uint256-}[`++Approval(owner, approved, tokenId)++`]
+* {xref-ITRC721-ApprovalForAll-address-address-bool-}[`++ApprovalForAll(owner, operator, approved)++`]
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Errors
+--
+
+[.contract-subindex-inherited]
+.TRC721
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+* {xref-ITRC721Errors-TRC721InvalidOwner-address-}[`++TRC721InvalidOwner(owner)++`]
+* {xref-ITRC721Errors-TRC721NonexistentToken-uint256-}[`++TRC721NonexistentToken(tokenId)++`]
+* {xref-ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-}[`++TRC721IncorrectOwner(sender, tokenId, owner)++`]
+* {xref-ITRC721Errors-TRC721InvalidSender-address-}[`++TRC721InvalidSender(sender)++`]
+* {xref-ITRC721Errors-TRC721InvalidReceiver-address-}[`++TRC721InvalidReceiver(receiver)++`]
+* {xref-ITRC721Errors-TRC721InsufficientApproval-address-uint256-}[`++TRC721InsufficientApproval(operator, tokenId)++`]
+* {xref-ITRC721Errors-TRC721InvalidApprover-address-}[`++TRC721InvalidApprover(approver)++`]
+* {xref-ITRC721Errors-TRC721InvalidOperator-address-}[`++TRC721InvalidOperator(operator)++`]
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-item]
+[[TRC721Burnable-burn-uint256-]]
+==== `[.contract-item-name]#++burn++#++(uint256 tokenId)++` [.item-kind]#public#
+
+Burns `tokenId`. See {TRC721-_burn}.
+
+Requirements:
+
+- The caller must own `tokenId` or be an approved operator.
+
+:TRC721ForbiddenBatchMint: pass:normal[xref:#TRC721Consecutive-TRC721ForbiddenBatchMint--[`++TRC721ForbiddenBatchMint++`]]
+:TRC721ExceededMaxBatchMint: pass:normal[xref:#TRC721Consecutive-TRC721ExceededMaxBatchMint-uint256-uint256-[`++TRC721ExceededMaxBatchMint++`]]
+:TRC721ForbiddenMint: pass:normal[xref:#TRC721Consecutive-TRC721ForbiddenMint--[`++TRC721ForbiddenMint++`]]
+:TRC721ForbiddenBatchBurn: pass:normal[xref:#TRC721Consecutive-TRC721ForbiddenBatchBurn--[`++TRC721ForbiddenBatchBurn++`]]
+:_maxBatchSize: pass:normal[xref:#TRC721Consecutive-_maxBatchSize--[`++_maxBatchSize++`]]
+:_ownerOf: pass:normal[xref:#TRC721Consecutive-_ownerOf-uint256-[`++_ownerOf++`]]
+:_mintConsecutive: pass:normal[xref:#TRC721Consecutive-_mintConsecutive-address-uint96-[`++_mintConsecutive++`]]
+:_update: pass:normal[xref:#TRC721Consecutive-_update-address-uint256-address-[`++_update++`]]
+:_firstConsecutiveId: pass:normal[xref:#TRC721Consecutive-_firstConsecutiveId--[`++_firstConsecutiveId++`]]
+
+:_maxBatchSize-: pass:normal[xref:#TRC721Consecutive-_maxBatchSize--[`++_maxBatchSize++`]]
+:_ownerOf-uint256: pass:normal[xref:#TRC721Consecutive-_ownerOf-uint256-[`++_ownerOf++`]]
+:_mintConsecutive-address-uint96: pass:normal[xref:#TRC721Consecutive-_mintConsecutive-address-uint96-[`++_mintConsecutive++`]]
+:_update-address-uint256-address: pass:normal[xref:#TRC721Consecutive-_update-address-uint256-address-[`++_update++`]]
+:_firstConsecutiveId-: pass:normal[xref:#TRC721Consecutive-_firstConsecutiveId--[`++_firstConsecutiveId++`]]
+
+[.contract]
+[[TRC721Consecutive]]
+=== `++TRC721Consecutive++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC721/extensions/TRC721Consecutive.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC721/extensions/TRC721Consecutive.sol";
+```
+
+Implementation of the TRC-2309 "Consecutive Transfer Extension" (see
+https://eips.ethereum.org/EIPS/eip-2309[ERC-2309]).
+
+This extension allows the minting of large batches of tokens, during contract construction only. For upgradeable
+contracts this implies that batch minting is only available during proxy deployment, and not in subsequent upgrades.
+These batches are limited to 5000 tokens at a time by default to accommodate off-chain indexers.
+
+Using this extension removes the ability to mint single tokens during contract construction. This ability is
+regained after construction. During construction, only batch minting is allowed.
+
+IMPORTANT: This extension does not call the {_update} function for tokens minted in batch. Any logic added to this
+function through overrides will not be triggered when tokens are minted in batch. You may want to also override
+{_increaseBalance} or {_mintConsecutive} to account for these mints.
+
+IMPORTANT: When overriding {_mintConsecutive}, be careful about call ordering. {ownerOf} may return invalid
+values during the {_mintConsecutive} execution if the super call is not called first. To be safe, execute the
+super call before your custom logic.
+
+[.contract-index]
+.Functions
+--
+* {xref-TRC721Consecutive-_maxBatchSize--}[`++_maxBatchSize()++`]
+* {xref-TRC721Consecutive-_ownerOf-uint256-}[`++_ownerOf(tokenId)++`]
+* {xref-TRC721Consecutive-_mintConsecutive-address-uint96-}[`++_mintConsecutive(to, batchSize)++`]
+* {xref-TRC721Consecutive-_update-address-uint256-address-}[`++_update(to, tokenId, auth)++`]
+* {xref-TRC721Consecutive-_firstConsecutiveId--}[`++_firstConsecutiveId()++`]
+
+[.contract-subindex-inherited]
+.TRC721
+* {xref-TRC721-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+* {xref-TRC721-balanceOf-address-}[`++balanceOf(owner)++`]
+* {xref-TRC721-ownerOf-uint256-}[`++ownerOf(tokenId)++`]
+* {xref-TRC721-name--}[`++name()++`]
+* {xref-TRC721-symbol--}[`++symbol()++`]
+* {xref-TRC721-tokenURI-uint256-}[`++tokenURI(tokenId)++`]
+* {xref-TRC721-_baseURI--}[`++_baseURI()++`]
+* {xref-TRC721-approve-address-uint256-}[`++approve(to, tokenId)++`]
+* {xref-TRC721-getApproved-uint256-}[`++getApproved(tokenId)++`]
+* {xref-TRC721-setApprovalForAll-address-bool-}[`++setApprovalForAll(operator, approved)++`]
+* {xref-TRC721-isApprovedForAll-address-address-}[`++isApprovedForAll(owner, operator)++`]
+* {xref-TRC721-transferFrom-address-address-uint256-}[`++transferFrom(from, to, tokenId)++`]
+* {xref-TRC721-safeTransferFrom-address-address-uint256-}[`++safeTransferFrom(from, to, tokenId)++`]
+* {xref-TRC721-safeTransferFrom-address-address-uint256-bytes-}[`++safeTransferFrom(from, to, tokenId, data)++`]
+* {xref-TRC721-_getApproved-uint256-}[`++_getApproved(tokenId)++`]
+* {xref-TRC721-_isAuthorized-address-address-uint256-}[`++_isAuthorized(owner, spender, tokenId)++`]
+* {xref-TRC721-_checkAuthorized-address-address-uint256-}[`++_checkAuthorized(owner, spender, tokenId)++`]
+* {xref-TRC721-_increaseBalance-address-uint128-}[`++_increaseBalance(account, value)++`]
+* {xref-TRC721-_mint-address-uint256-}[`++_mint(to, tokenId)++`]
+* {xref-TRC721-_safeMint-address-uint256-}[`++_safeMint(to, tokenId)++`]
+* {xref-TRC721-_safeMint-address-uint256-bytes-}[`++_safeMint(to, tokenId, data)++`]
+* {xref-TRC721-_burn-uint256-}[`++_burn(tokenId)++`]
+* {xref-TRC721-_transfer-address-address-uint256-}[`++_transfer(from, to, tokenId)++`]
+* {xref-TRC721-_safeTransfer-address-address-uint256-}[`++_safeTransfer(from, to, tokenId)++`]
+* {xref-TRC721-_safeTransfer-address-address-uint256-bytes-}[`++_safeTransfer(from, to, tokenId, data)++`]
+* {xref-TRC721-_approve-address-uint256-address-}[`++_approve(to, tokenId, auth)++`]
+* {xref-TRC721-_approve-address-uint256-address-bool-}[`++_approve(to, tokenId, auth, emitEvent)++`]
+* {xref-TRC721-_setApprovalForAll-address-address-bool-}[`++_setApprovalForAll(owner, operator, approved)++`]
+* {xref-TRC721-_requireOwned-uint256-}[`++_requireOwned(tokenId)++`]
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+[.contract-subindex-inherited]
+.ITRC2309
+
+--
+
+[.contract-index]
+.Events
+--
+
+[.contract-subindex-inherited]
+.TRC721
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+* {xref-ITRC721-Transfer-address-address-uint256-}[`++Transfer(from, to, tokenId)++`]
+* {xref-ITRC721-Approval-address-address-uint256-}[`++Approval(owner, approved, tokenId)++`]
+* {xref-ITRC721-ApprovalForAll-address-address-bool-}[`++ApprovalForAll(owner, operator, approved)++`]
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+[.contract-subindex-inherited]
+.ITRC2309
+* {xref-ITRC2309-ConsecutiveTransfer-uint256-uint256-address-address-}[`++ConsecutiveTransfer(fromTokenId, toTokenId, fromAddress, toAddress)++`]
+
+--
+
+[.contract-index]
+.Errors
+--
+* {xref-TRC721Consecutive-TRC721ForbiddenBatchMint--}[`++TRC721ForbiddenBatchMint()++`]
+* {xref-TRC721Consecutive-TRC721ExceededMaxBatchMint-uint256-uint256-}[`++TRC721ExceededMaxBatchMint(batchSize, maxBatch)++`]
+* {xref-TRC721Consecutive-TRC721ForbiddenMint--}[`++TRC721ForbiddenMint()++`]
+* {xref-TRC721Consecutive-TRC721ForbiddenBatchBurn--}[`++TRC721ForbiddenBatchBurn()++`]
+
+[.contract-subindex-inherited]
+.TRC721
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+* {xref-ITRC721Errors-TRC721InvalidOwner-address-}[`++TRC721InvalidOwner(owner)++`]
+* {xref-ITRC721Errors-TRC721NonexistentToken-uint256-}[`++TRC721NonexistentToken(tokenId)++`]
+* {xref-ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-}[`++TRC721IncorrectOwner(sender, tokenId, owner)++`]
+* {xref-ITRC721Errors-TRC721InvalidSender-address-}[`++TRC721InvalidSender(sender)++`]
+* {xref-ITRC721Errors-TRC721InvalidReceiver-address-}[`++TRC721InvalidReceiver(receiver)++`]
+* {xref-ITRC721Errors-TRC721InsufficientApproval-address-uint256-}[`++TRC721InsufficientApproval(operator, tokenId)++`]
+* {xref-ITRC721Errors-TRC721InvalidApprover-address-}[`++TRC721InvalidApprover(approver)++`]
+* {xref-ITRC721Errors-TRC721InvalidOperator-address-}[`++TRC721InvalidOperator(operator)++`]
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+[.contract-subindex-inherited]
+.ITRC2309
+
+--
+
+[.contract-item]
+[[TRC721Consecutive-_maxBatchSize--]]
+==== `[.contract-item-name]#++_maxBatchSize++#++() → uint96++` [.item-kind]#internal#
+
+Maximum size of a batch of consecutive tokens. This is designed to limit stress on off-chain indexing
+services that have to record one entry per token, and have protections against "unreasonably large" batches of
+tokens.
+
+NOTE: Overriding the default value of 5000 will not cause on-chain issues, but may result in the asset not being
+correctly supported by off-chain indexing services (including marketplaces).
+
+[.contract-item]
+[[TRC721Consecutive-_ownerOf-uint256-]]
+==== `[.contract-item-name]#++_ownerOf++#++(uint256 tokenId) → address++` [.item-kind]#internal#
+
+See {TRC721-_ownerOf}. Override that checks the sequential ownership structure for tokens that have
+been minted as part of a batch, and not yet transferred.
+
+[.contract-item]
+[[TRC721Consecutive-_mintConsecutive-address-uint96-]]
+==== `[.contract-item-name]#++_mintConsecutive++#++(address to, uint96 batchSize) → uint96++` [.item-kind]#internal#
+
+Mint a batch of tokens of length `batchSize` for `to`. Returns the token id of the first token minted in the
+batch; if `batchSize` is 0, returns the next token id to be minted consecutively.
+
+Requirements:
+
+- `batchSize` must not be greater than {_maxBatchSize}.
+- The function is called in the constructor of the contract (directly or indirectly).
+
+CAUTION: Does not emit a `Transfer` event. This is TRC-721 compliant as long as it is done inside of the
+constructor, which is enforced by this function.
+
+CAUTION: Does not invoke `onTRC721Received` on the receiver.
+
+Emits a {ITRC2309-ConsecutiveTransfer} event.
+
+[.contract-item]
+[[TRC721Consecutive-_update-address-uint256-address-]]
+==== `[.contract-item-name]#++_update++#++(address to, uint256 tokenId, address auth) → address++` [.item-kind]#internal#
+
+See {TRC721-_update}. Override version that restricts normal minting to after construction.
+
+WARNING: Using {TRC721Consecutive} prevents minting during construction in favor of {_mintConsecutive}.
+After construction, {_mintConsecutive} is no longer available and minting through {_update} becomes available.
+
+[.contract-item]
+[[TRC721Consecutive-_firstConsecutiveId--]]
+==== `[.contract-item-name]#++_firstConsecutiveId++#++() → uint96++` [.item-kind]#internal#
+
+Used to offset the first token id in `_nextConsecutiveId`
+
+[.contract-item]
+[[TRC721Consecutive-TRC721ForbiddenBatchMint--]]
+==== `[.contract-item-name]#++TRC721ForbiddenBatchMint++#++()++` [.item-kind]#error#
+
+Batch mint is restricted to the constructor.
+Any batch mint not emitting the {ITRC721-Transfer} event outside of the constructor
+is non TRC-721 compliant.
+
+[.contract-item]
+[[TRC721Consecutive-TRC721ExceededMaxBatchMint-uint256-uint256-]]
+==== `[.contract-item-name]#++TRC721ExceededMaxBatchMint++#++(uint256 batchSize, uint256 maxBatch)++` [.item-kind]#error#
+
+Exceeds the max amount of mints per batch.
+
+[.contract-item]
+[[TRC721Consecutive-TRC721ForbiddenMint--]]
+==== `[.contract-item-name]#++TRC721ForbiddenMint++#++()++` [.item-kind]#error#
+
+Individual minting is not allowed.
+
+[.contract-item]
+[[TRC721Consecutive-TRC721ForbiddenBatchBurn--]]
+==== `[.contract-item-name]#++TRC721ForbiddenBatchBurn++#++()++` [.item-kind]#error#
+
+Batch burn is not supported.
+
+:supportsInterface: pass:normal[xref:#TRC721URIStorage-supportsInterface-bytes4-[`++supportsInterface++`]]
+:tokenURI: pass:normal[xref:#TRC721URIStorage-tokenURI-uint256-[`++tokenURI++`]]
+:_setTokenURI: pass:normal[xref:#TRC721URIStorage-_setTokenURI-uint256-string-[`++_setTokenURI++`]]
+:_suffixURI: pass:normal[xref:#TRC721URIStorage-_suffixURI-uint256-[`++_suffixURI++`]]
+
+:supportsInterface-bytes4: pass:normal[xref:#TRC721URIStorage-supportsInterface-bytes4-[`++supportsInterface++`]]
+:tokenURI-uint256: pass:normal[xref:#TRC721URIStorage-tokenURI-uint256-[`++tokenURI++`]]
+:_setTokenURI-uint256-string: pass:normal[xref:#TRC721URIStorage-_setTokenURI-uint256-string-[`++_setTokenURI++`]]
+:_suffixURI-uint256: pass:normal[xref:#TRC721URIStorage-_suffixURI-uint256-[`++_suffixURI++`]]
+
+[.contract]
+[[TRC721URIStorage]]
+=== `++TRC721URIStorage++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC721/extensions/TRC721URIStorage.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC721/extensions/TRC721URIStorage.sol";
+```
+
+TRC-721 token with storage based token URI management.
+
+[.contract-index]
+.Functions
+--
+* {xref-TRC721URIStorage-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+* {xref-TRC721URIStorage-tokenURI-uint256-}[`++tokenURI(tokenId)++`]
+* {xref-TRC721URIStorage-_setTokenURI-uint256-string-}[`++_setTokenURI(tokenId, _tokenURI)++`]
+* {xref-TRC721URIStorage-_suffixURI-uint256-}[`++_suffixURI(tokenId)++`]
+
+[.contract-subindex-inherited]
+.TRC721
+* {xref-TRC721-balanceOf-address-}[`++balanceOf(owner)++`]
+* {xref-TRC721-ownerOf-uint256-}[`++ownerOf(tokenId)++`]
+* {xref-TRC721-name--}[`++name()++`]
+* {xref-TRC721-symbol--}[`++symbol()++`]
+* {xref-TRC721-_baseURI--}[`++_baseURI()++`]
+* {xref-TRC721-approve-address-uint256-}[`++approve(to, tokenId)++`]
+* {xref-TRC721-getApproved-uint256-}[`++getApproved(tokenId)++`]
+* {xref-TRC721-setApprovalForAll-address-bool-}[`++setApprovalForAll(operator, approved)++`]
+* {xref-TRC721-isApprovedForAll-address-address-}[`++isApprovedForAll(owner, operator)++`]
+* {xref-TRC721-transferFrom-address-address-uint256-}[`++transferFrom(from, to, tokenId)++`]
+* {xref-TRC721-safeTransferFrom-address-address-uint256-}[`++safeTransferFrom(from, to, tokenId)++`]
+* {xref-TRC721-safeTransferFrom-address-address-uint256-bytes-}[`++safeTransferFrom(from, to, tokenId, data)++`]
+* {xref-TRC721-_ownerOf-uint256-}[`++_ownerOf(tokenId)++`]
+* {xref-TRC721-_getApproved-uint256-}[`++_getApproved(tokenId)++`]
+* {xref-TRC721-_isAuthorized-address-address-uint256-}[`++_isAuthorized(owner, spender, tokenId)++`]
+* {xref-TRC721-_checkAuthorized-address-address-uint256-}[`++_checkAuthorized(owner, spender, tokenId)++`]
+* {xref-TRC721-_increaseBalance-address-uint128-}[`++_increaseBalance(account, value)++`]
+* {xref-TRC721-_update-address-uint256-address-}[`++_update(to, tokenId, auth)++`]
+* {xref-TRC721-_mint-address-uint256-}[`++_mint(to, tokenId)++`]
+* {xref-TRC721-_safeMint-address-uint256-}[`++_safeMint(to, tokenId)++`]
+* {xref-TRC721-_safeMint-address-uint256-bytes-}[`++_safeMint(to, tokenId, data)++`]
+* {xref-TRC721-_burn-uint256-}[`++_burn(tokenId)++`]
+* {xref-TRC721-_transfer-address-address-uint256-}[`++_transfer(from, to, tokenId)++`]
+* {xref-TRC721-_safeTransfer-address-address-uint256-}[`++_safeTransfer(from, to, tokenId)++`]
+* {xref-TRC721-_safeTransfer-address-address-uint256-bytes-}[`++_safeTransfer(from, to, tokenId, data)++`]
+* {xref-TRC721-_approve-address-uint256-address-}[`++_approve(to, tokenId, auth)++`]
+* {xref-TRC721-_approve-address-uint256-address-bool-}[`++_approve(to, tokenId, auth, emitEvent)++`]
+* {xref-TRC721-_setApprovalForAll-address-address-bool-}[`++_setApprovalForAll(owner, operator, approved)++`]
+* {xref-TRC721-_requireOwned-uint256-}[`++_requireOwned(tokenId)++`]
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC4906
+
+[.contract-subindex-inherited]
+.ITRC721
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Events
+--
+
+[.contract-subindex-inherited]
+.TRC721
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC4906
+* {xref-ITRC4906-MetadataUpdate-uint256-}[`++MetadataUpdate(_tokenId)++`]
+* {xref-ITRC4906-BatchMetadataUpdate-uint256-uint256-}[`++BatchMetadataUpdate(_fromTokenId, _toTokenId)++`]
+
+[.contract-subindex-inherited]
+.ITRC721
+* {xref-ITRC721-Transfer-address-address-uint256-}[`++Transfer(from, to, tokenId)++`]
+* {xref-ITRC721-Approval-address-address-uint256-}[`++Approval(owner, approved, tokenId)++`]
+* {xref-ITRC721-ApprovalForAll-address-address-bool-}[`++ApprovalForAll(owner, operator, approved)++`]
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Errors
+--
+
+[.contract-subindex-inherited]
+.TRC721
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+* {xref-ITRC721Errors-TRC721InvalidOwner-address-}[`++TRC721InvalidOwner(owner)++`]
+* {xref-ITRC721Errors-TRC721NonexistentToken-uint256-}[`++TRC721NonexistentToken(tokenId)++`]
+* {xref-ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-}[`++TRC721IncorrectOwner(sender, tokenId, owner)++`]
+* {xref-ITRC721Errors-TRC721InvalidSender-address-}[`++TRC721InvalidSender(sender)++`]
+* {xref-ITRC721Errors-TRC721InvalidReceiver-address-}[`++TRC721InvalidReceiver(receiver)++`]
+* {xref-ITRC721Errors-TRC721InsufficientApproval-address-uint256-}[`++TRC721InsufficientApproval(operator, tokenId)++`]
+* {xref-ITRC721Errors-TRC721InvalidApprover-address-}[`++TRC721InvalidApprover(approver)++`]
+* {xref-ITRC721Errors-TRC721InvalidOperator-address-}[`++TRC721InvalidOperator(operator)++`]
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC4906
+
+[.contract-subindex-inherited]
+.ITRC721
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-item]
+[[TRC721URIStorage-supportsInterface-bytes4-]]
+==== `[.contract-item-name]#++supportsInterface++#++(bytes4 interfaceId) → bool++` [.item-kind]#public#
+
+Returns true if this contract implements the interface defined by
+`interfaceId`. See the corresponding
+https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified[ERC section]
+to learn more about how these ids are created.
+
+This function call must use less than 30 000 gas.
+
+[.contract-item]
+[[TRC721URIStorage-tokenURI-uint256-]]
+==== `[.contract-item-name]#++tokenURI++#++(uint256 tokenId) → string++` [.item-kind]#public#
+
+[.contract-item]
+[[TRC721URIStorage-_setTokenURI-uint256-string-]]
+==== `[.contract-item-name]#++_setTokenURI++#++(uint256 tokenId, string _tokenURI)++` [.item-kind]#internal#
+
+Sets `_tokenURI` as the tokenURI of `tokenId`.
+
+Emits {ITRC4906-MetadataUpdate}.
+
+[.contract-item]
+[[TRC721URIStorage-_suffixURI-uint256-]]
+==== `[.contract-item-name]#++_suffixURI++#++(uint256 tokenId) → string++` [.item-kind]#internal#
+
+Returns the suffix part of the tokenURI for `tokenId`.
+
+:_update: pass:normal[xref:#TRC721Votes-_update-address-uint256-address-[`++_update++`]]
+:_getVotingUnits: pass:normal[xref:#TRC721Votes-_getVotingUnits-address-[`++_getVotingUnits++`]]
+:_increaseBalance: pass:normal[xref:#TRC721Votes-_increaseBalance-address-uint128-[`++_increaseBalance++`]]
+
+:_update-address-uint256-address: pass:normal[xref:#TRC721Votes-_update-address-uint256-address-[`++_update++`]]
+:_getVotingUnits-address: pass:normal[xref:#TRC721Votes-_getVotingUnits-address-[`++_getVotingUnits++`]]
+:_increaseBalance-address-uint128: pass:normal[xref:#TRC721Votes-_increaseBalance-address-uint128-[`++_increaseBalance++`]]
+
+[.contract]
+[[TRC721Votes]]
+=== `++TRC721Votes++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC721/extensions/TRC721Votes.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC721/extensions/TRC721Votes.sol";
+```
+
+Extension of TRC-721 to support voting and delegation as implemented by {Votes}, where each individual NFT counts
+as 1 vote unit.
+
+Tokens do not count as votes until they are delegated, because votes must be tracked which incurs an additional cost
+on every transfer. Token holders can either delegate to a trusted representative who will decide how to make use of
+the votes in governance decisions, or they can delegate to themselves to be their own representative.
+
+[.contract-index]
+.Functions
+--
+* {xref-TRC721Votes-_update-address-uint256-address-}[`++_update(to, tokenId, auth)++`]
+* {xref-TRC721Votes-_getVotingUnits-address-}[`++_getVotingUnits(account)++`]
+* {xref-TRC721Votes-_increaseBalance-address-uint128-}[`++_increaseBalance(account, amount)++`]
+
+[.contract-subindex-inherited]
+.Votes
+* {xref-Votes-clock--}[`++clock()++`]
+* {xref-Votes-CLOCK_MODE--}[`++CLOCK_MODE()++`]
+* {xref-Votes-_validateTimepoint-uint256-}[`++_validateTimepoint(timepoint)++`]
+* {xref-Votes-getVotes-address-}[`++getVotes(account)++`]
+* {xref-Votes-getPastVotes-address-uint256-}[`++getPastVotes(account, timepoint)++`]
+* {xref-Votes-getPastTotalSupply-uint256-}[`++getPastTotalSupply(timepoint)++`]
+* {xref-Votes-_getTotalSupply--}[`++_getTotalSupply()++`]
+* {xref-Votes-delegates-address-}[`++delegates(account)++`]
+* {xref-Votes-delegate-address-}[`++delegate(delegatee)++`]
+* {xref-Votes-delegateBySig-address-uint256-uint256-uint8-bytes32-bytes32-}[`++delegateBySig(delegatee, nonce, expiry, v, r, s)++`]
+* {xref-Votes-_delegate-address-address-}[`++_delegate(account, delegatee)++`]
+* {xref-Votes-_transferVotingUnits-address-address-uint256-}[`++_transferVotingUnits(from, to, amount)++`]
+* {xref-Votes-_moveDelegateVotes-address-address-uint256-}[`++_moveDelegateVotes(from, to, amount)++`]
+* {xref-Votes-_numCheckpoints-address-}[`++_numCheckpoints(account)++`]
+* {xref-Votes-_checkpoints-address-uint32-}[`++_checkpoints(account, index)++`]
+
+[.contract-subindex-inherited]
+.ITRC5805
+
+[.contract-subindex-inherited]
+.IVotes
+
+[.contract-subindex-inherited]
+.ITRC6372
+
+[.contract-subindex-inherited]
+.Nonces
+* {xref-Nonces-nonces-address-}[`++nonces(owner)++`]
+* {xref-Nonces-_useNonce-address-}[`++_useNonce(owner)++`]
+* {xref-Nonces-_useCheckedNonce-address-uint256-}[`++_useCheckedNonce(owner, nonce)++`]
+
+[.contract-subindex-inherited]
+.TIP712
+* {xref-TIP712-_domainSeparatorV4--}[`++_domainSeparatorV4()++`]
+* {xref-TIP712-_hashTypedDataV4-bytes32-}[`++_hashTypedDataV4(structHash)++`]
+* {xref-TIP712-eip712Domain--}[`++eip712Domain()++`]
+* {xref-TIP712-_TIP712Name--}[`++_TIP712Name()++`]
+* {xref-TIP712-_TIP712Version--}[`++_TIP712Version()++`]
+
+[.contract-subindex-inherited]
+.ITRC5267
+
+[.contract-subindex-inherited]
+.TRC721
+* {xref-TRC721-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+* {xref-TRC721-balanceOf-address-}[`++balanceOf(owner)++`]
+* {xref-TRC721-ownerOf-uint256-}[`++ownerOf(tokenId)++`]
+* {xref-TRC721-name--}[`++name()++`]
+* {xref-TRC721-symbol--}[`++symbol()++`]
+* {xref-TRC721-tokenURI-uint256-}[`++tokenURI(tokenId)++`]
+* {xref-TRC721-_baseURI--}[`++_baseURI()++`]
+* {xref-TRC721-approve-address-uint256-}[`++approve(to, tokenId)++`]
+* {xref-TRC721-getApproved-uint256-}[`++getApproved(tokenId)++`]
+* {xref-TRC721-setApprovalForAll-address-bool-}[`++setApprovalForAll(operator, approved)++`]
+* {xref-TRC721-isApprovedForAll-address-address-}[`++isApprovedForAll(owner, operator)++`]
+* {xref-TRC721-transferFrom-address-address-uint256-}[`++transferFrom(from, to, tokenId)++`]
+* {xref-TRC721-safeTransferFrom-address-address-uint256-}[`++safeTransferFrom(from, to, tokenId)++`]
+* {xref-TRC721-safeTransferFrom-address-address-uint256-bytes-}[`++safeTransferFrom(from, to, tokenId, data)++`]
+* {xref-TRC721-_ownerOf-uint256-}[`++_ownerOf(tokenId)++`]
+* {xref-TRC721-_getApproved-uint256-}[`++_getApproved(tokenId)++`]
+* {xref-TRC721-_isAuthorized-address-address-uint256-}[`++_isAuthorized(owner, spender, tokenId)++`]
+* {xref-TRC721-_checkAuthorized-address-address-uint256-}[`++_checkAuthorized(owner, spender, tokenId)++`]
+* {xref-TRC721-_mint-address-uint256-}[`++_mint(to, tokenId)++`]
+* {xref-TRC721-_safeMint-address-uint256-}[`++_safeMint(to, tokenId)++`]
+* {xref-TRC721-_safeMint-address-uint256-bytes-}[`++_safeMint(to, tokenId, data)++`]
+* {xref-TRC721-_burn-uint256-}[`++_burn(tokenId)++`]
+* {xref-TRC721-_transfer-address-address-uint256-}[`++_transfer(from, to, tokenId)++`]
+* {xref-TRC721-_safeTransfer-address-address-uint256-}[`++_safeTransfer(from, to, tokenId)++`]
+* {xref-TRC721-_safeTransfer-address-address-uint256-bytes-}[`++_safeTransfer(from, to, tokenId, data)++`]
+* {xref-TRC721-_approve-address-uint256-address-}[`++_approve(to, tokenId, auth)++`]
+* {xref-TRC721-_approve-address-uint256-address-bool-}[`++_approve(to, tokenId, auth, emitEvent)++`]
+* {xref-TRC721-_setApprovalForAll-address-address-bool-}[`++_setApprovalForAll(owner, operator, approved)++`]
+* {xref-TRC721-_requireOwned-uint256-}[`++_requireOwned(tokenId)++`]
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Events
+--
+
+[.contract-subindex-inherited]
+.Votes
+
+[.contract-subindex-inherited]
+.ITRC5805
+
+[.contract-subindex-inherited]
+.IVotes
+* {xref-IVotes-DelegateChanged-address-address-address-}[`++DelegateChanged(delegator, fromDelegate, toDelegate)++`]
+* {xref-IVotes-DelegateVotesChanged-address-uint256-uint256-}[`++DelegateVotesChanged(delegate, previousVotes, newVotes)++`]
+
+[.contract-subindex-inherited]
+.ITRC6372
+
+[.contract-subindex-inherited]
+.Nonces
+
+[.contract-subindex-inherited]
+.TIP712
+
+[.contract-subindex-inherited]
+.ITRC5267
+* {xref-ITRC5267-EIP712DomainChanged--}[`++EIP712DomainChanged()++`]
+
+[.contract-subindex-inherited]
+.TRC721
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+* {xref-ITRC721-Transfer-address-address-uint256-}[`++Transfer(from, to, tokenId)++`]
+* {xref-ITRC721-Approval-address-address-uint256-}[`++Approval(owner, approved, tokenId)++`]
+* {xref-ITRC721-ApprovalForAll-address-address-bool-}[`++ApprovalForAll(owner, operator, approved)++`]
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Errors
+--
+
+[.contract-subindex-inherited]
+.Votes
+* {xref-Votes-TRC5805FutureLookup-uint256-uint48-}[`++TRC5805FutureLookup(timepoint, clock)++`]
+
+[.contract-subindex-inherited]
+.ITRC5805
+
+[.contract-subindex-inherited]
+.IVotes
+* {xref-IVotes-VotesExpiredSignature-uint256-}[`++VotesExpiredSignature(expiry)++`]
+
+[.contract-subindex-inherited]
+.ITRC6372
+
+[.contract-subindex-inherited]
+.Nonces
+* {xref-Nonces-InvalidAccountNonce-address-uint256-}[`++InvalidAccountNonce(account, currentNonce)++`]
+
+[.contract-subindex-inherited]
+.TIP712
+
+[.contract-subindex-inherited]
+.ITRC5267
+
+[.contract-subindex-inherited]
+.TRC721
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+* {xref-ITRC721Errors-TRC721InvalidOwner-address-}[`++TRC721InvalidOwner(owner)++`]
+* {xref-ITRC721Errors-TRC721NonexistentToken-uint256-}[`++TRC721NonexistentToken(tokenId)++`]
+* {xref-ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-}[`++TRC721IncorrectOwner(sender, tokenId, owner)++`]
+* {xref-ITRC721Errors-TRC721InvalidSender-address-}[`++TRC721InvalidSender(sender)++`]
+* {xref-ITRC721Errors-TRC721InvalidReceiver-address-}[`++TRC721InvalidReceiver(receiver)++`]
+* {xref-ITRC721Errors-TRC721InsufficientApproval-address-uint256-}[`++TRC721InsufficientApproval(operator, tokenId)++`]
+* {xref-ITRC721Errors-TRC721InvalidApprover-address-}[`++TRC721InvalidApprover(approver)++`]
+* {xref-ITRC721Errors-TRC721InvalidOperator-address-}[`++TRC721InvalidOperator(operator)++`]
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-item]
+[[TRC721Votes-_update-address-uint256-address-]]
+==== `[.contract-item-name]#++_update++#++(address to, uint256 tokenId, address auth) → address++` [.item-kind]#internal#
+
+See {TRC721-_update}. Adjusts votes when tokens are transferred.
+
+Emits a {IVotes-DelegateVotesChanged} event.
+
+[.contract-item]
+[[TRC721Votes-_getVotingUnits-address-]]
+==== `[.contract-item-name]#++_getVotingUnits++#++(address account) → uint256++` [.item-kind]#internal#
+
+Returns the balance of `account`.
+
+WARNING: Overriding this function will likely result in incorrect vote tracking.
+
+[.contract-item]
+[[TRC721Votes-_increaseBalance-address-uint128-]]
+==== `[.contract-item-name]#++_increaseBalance++#++(address account, uint128 amount)++` [.item-kind]#internal#
+
+See {TRC721-_increaseBalance}. We need that to account tokens that were minted in batch.
+
+:supportsInterface: pass:normal[xref:#TRC721Royalty-supportsInterface-bytes4-[`++supportsInterface++`]]
+
+:supportsInterface-bytes4: pass:normal[xref:#TRC721Royalty-supportsInterface-bytes4-[`++supportsInterface++`]]
+
+[.contract]
+[[TRC721Royalty]]
+=== `++TRC721Royalty++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC721/extensions/TRC721Royalty.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC721/extensions/TRC721Royalty.sol";
+```
+
+Extension of TRC-721 with the TRC-2981 NFT Royalty Standard, a standardized way to retrieve royalty payment
+information.
+
+Royalty information can be specified globally for all token ids via {TRC2981-_setDefaultRoyalty}, and/or individually
+for specific token ids via {TRC2981-_setTokenRoyalty}. The latter takes precedence over the first.
+
+IMPORTANT: TRC-2981 only specifies a way to signal royalty information and does not enforce its payment. See
+https://eips.ethereum.org/EIPS/eip-2981#optional-royalty-payments[Rationale] in the ERC. Marketplaces are expected to
+voluntarily pay royalties together with sales, but note that this standard is not yet widely supported.
+
+[.contract-index]
+.Functions
+--
+* {xref-TRC721Royalty-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+
+[.contract-subindex-inherited]
+.TRC721
+* {xref-TRC721-balanceOf-address-}[`++balanceOf(owner)++`]
+* {xref-TRC721-ownerOf-uint256-}[`++ownerOf(tokenId)++`]
+* {xref-TRC721-name--}[`++name()++`]
+* {xref-TRC721-symbol--}[`++symbol()++`]
+* {xref-TRC721-tokenURI-uint256-}[`++tokenURI(tokenId)++`]
+* {xref-TRC721-_baseURI--}[`++_baseURI()++`]
+* {xref-TRC721-approve-address-uint256-}[`++approve(to, tokenId)++`]
+* {xref-TRC721-getApproved-uint256-}[`++getApproved(tokenId)++`]
+* {xref-TRC721-setApprovalForAll-address-bool-}[`++setApprovalForAll(operator, approved)++`]
+* {xref-TRC721-isApprovedForAll-address-address-}[`++isApprovedForAll(owner, operator)++`]
+* {xref-TRC721-transferFrom-address-address-uint256-}[`++transferFrom(from, to, tokenId)++`]
+* {xref-TRC721-safeTransferFrom-address-address-uint256-}[`++safeTransferFrom(from, to, tokenId)++`]
+* {xref-TRC721-safeTransferFrom-address-address-uint256-bytes-}[`++safeTransferFrom(from, to, tokenId, data)++`]
+* {xref-TRC721-_ownerOf-uint256-}[`++_ownerOf(tokenId)++`]
+* {xref-TRC721-_getApproved-uint256-}[`++_getApproved(tokenId)++`]
+* {xref-TRC721-_isAuthorized-address-address-uint256-}[`++_isAuthorized(owner, spender, tokenId)++`]
+* {xref-TRC721-_checkAuthorized-address-address-uint256-}[`++_checkAuthorized(owner, spender, tokenId)++`]
+* {xref-TRC721-_increaseBalance-address-uint128-}[`++_increaseBalance(account, value)++`]
+* {xref-TRC721-_update-address-uint256-address-}[`++_update(to, tokenId, auth)++`]
+* {xref-TRC721-_mint-address-uint256-}[`++_mint(to, tokenId)++`]
+* {xref-TRC721-_safeMint-address-uint256-}[`++_safeMint(to, tokenId)++`]
+* {xref-TRC721-_safeMint-address-uint256-bytes-}[`++_safeMint(to, tokenId, data)++`]
+* {xref-TRC721-_burn-uint256-}[`++_burn(tokenId)++`]
+* {xref-TRC721-_transfer-address-address-uint256-}[`++_transfer(from, to, tokenId)++`]
+* {xref-TRC721-_safeTransfer-address-address-uint256-}[`++_safeTransfer(from, to, tokenId)++`]
+* {xref-TRC721-_safeTransfer-address-address-uint256-bytes-}[`++_safeTransfer(from, to, tokenId, data)++`]
+* {xref-TRC721-_approve-address-uint256-address-}[`++_approve(to, tokenId, auth)++`]
+* {xref-TRC721-_approve-address-uint256-address-bool-}[`++_approve(to, tokenId, auth, emitEvent)++`]
+* {xref-TRC721-_setApprovalForAll-address-address-bool-}[`++_setApprovalForAll(owner, operator, approved)++`]
+* {xref-TRC721-_requireOwned-uint256-}[`++_requireOwned(tokenId)++`]
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+
+[.contract-subindex-inherited]
+.TRC2981
+* {xref-TRC2981-royaltyInfo-uint256-uint256-}[`++royaltyInfo(tokenId, salePrice)++`]
+* {xref-TRC2981-_feeDenominator--}[`++_feeDenominator()++`]
+* {xref-TRC2981-_setDefaultRoyalty-address-uint96-}[`++_setDefaultRoyalty(receiver, feeNumerator)++`]
+* {xref-TRC2981-_deleteDefaultRoyalty--}[`++_deleteDefaultRoyalty()++`]
+* {xref-TRC2981-_setTokenRoyalty-uint256-address-uint96-}[`++_setTokenRoyalty(tokenId, receiver, feeNumerator)++`]
+* {xref-TRC2981-_resetTokenRoyalty-uint256-}[`++_resetTokenRoyalty(tokenId)++`]
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC2981
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Events
+--
+
+[.contract-subindex-inherited]
+.TRC721
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+* {xref-ITRC721-Transfer-address-address-uint256-}[`++Transfer(from, to, tokenId)++`]
+* {xref-ITRC721-Approval-address-address-uint256-}[`++Approval(owner, approved, tokenId)++`]
+* {xref-ITRC721-ApprovalForAll-address-address-bool-}[`++ApprovalForAll(owner, operator, approved)++`]
+
+[.contract-subindex-inherited]
+.TRC2981
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC2981
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Errors
+--
+
+[.contract-subindex-inherited]
+.TRC721
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+* {xref-ITRC721Errors-TRC721InvalidOwner-address-}[`++TRC721InvalidOwner(owner)++`]
+* {xref-ITRC721Errors-TRC721NonexistentToken-uint256-}[`++TRC721NonexistentToken(tokenId)++`]
+* {xref-ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-}[`++TRC721IncorrectOwner(sender, tokenId, owner)++`]
+* {xref-ITRC721Errors-TRC721InvalidSender-address-}[`++TRC721InvalidSender(sender)++`]
+* {xref-ITRC721Errors-TRC721InvalidReceiver-address-}[`++TRC721InvalidReceiver(receiver)++`]
+* {xref-ITRC721Errors-TRC721InsufficientApproval-address-uint256-}[`++TRC721InsufficientApproval(operator, tokenId)++`]
+* {xref-ITRC721Errors-TRC721InvalidApprover-address-}[`++TRC721InvalidApprover(approver)++`]
+* {xref-ITRC721Errors-TRC721InvalidOperator-address-}[`++TRC721InvalidOperator(operator)++`]
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+
+[.contract-subindex-inherited]
+.TRC2981
+* {xref-TRC2981-TRC2981InvalidDefaultRoyalty-uint256-uint256-}[`++TRC2981InvalidDefaultRoyalty(numerator, denominator)++`]
+* {xref-TRC2981-TRC2981InvalidDefaultRoyaltyReceiver-address-}[`++TRC2981InvalidDefaultRoyaltyReceiver(receiver)++`]
+* {xref-TRC2981-TRC2981InvalidTokenRoyalty-uint256-uint256-uint256-}[`++TRC2981InvalidTokenRoyalty(tokenId, numerator, denominator)++`]
+* {xref-TRC2981-TRC2981InvalidTokenRoyaltyReceiver-uint256-address-}[`++TRC2981InvalidTokenRoyaltyReceiver(tokenId, receiver)++`]
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC2981
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-item]
+[[TRC721Royalty-supportsInterface-bytes4-]]
+==== `[.contract-item-name]#++supportsInterface++#++(bytes4 interfaceId) → bool++` [.item-kind]#public#
+
+:TRC721UnsupportedToken: pass:normal[xref:#TRC721Wrapper-TRC721UnsupportedToken-address-[`++TRC721UnsupportedToken++`]]
+:constructor: pass:normal[xref:#TRC721Wrapper-constructor-contract-ITRC721-[`++constructor++`]]
+:depositFor: pass:normal[xref:#TRC721Wrapper-depositFor-address-uint256---[`++depositFor++`]]
+:withdrawTo: pass:normal[xref:#TRC721Wrapper-withdrawTo-address-uint256---[`++withdrawTo++`]]
+:onTRC721Received: pass:normal[xref:#TRC721Wrapper-onTRC721Received-address-address-uint256-bytes-[`++onTRC721Received++`]]
+:_recover: pass:normal[xref:#TRC721Wrapper-_recover-address-uint256-[`++_recover++`]]
+:underlying: pass:normal[xref:#TRC721Wrapper-underlying--[`++underlying++`]]
+
+:constructor-contract-ITRC721: pass:normal[xref:#TRC721Wrapper-constructor-contract-ITRC721-[`++constructor++`]]
+:depositFor-address-uint256--: pass:normal[xref:#TRC721Wrapper-depositFor-address-uint256---[`++depositFor++`]]
+:withdrawTo-address-uint256--: pass:normal[xref:#TRC721Wrapper-withdrawTo-address-uint256---[`++withdrawTo++`]]
+:onTRC721Received-address-address-uint256-bytes: pass:normal[xref:#TRC721Wrapper-onTRC721Received-address-address-uint256-bytes-[`++onTRC721Received++`]]
+:_recover-address-uint256: pass:normal[xref:#TRC721Wrapper-_recover-address-uint256-[`++_recover++`]]
+:underlying-: pass:normal[xref:#TRC721Wrapper-underlying--[`++underlying++`]]
+
+[.contract]
+[[TRC721Wrapper]]
+=== `++TRC721Wrapper++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC721/extensions/TRC721Wrapper.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC721/extensions/TRC721Wrapper.sol";
+```
+
+Extension of the TRC-721 token contract to support token wrapping.
+
+Users can deposit and withdraw an "underlying token" and receive a "wrapped token" with a matching tokenId. This is
+useful in conjunction with other modules. For example, combining this wrapping mechanism with {TRC721Votes} will allow
+the wrapping of an existing "basic" TRC-721 into a governance token.
+
+[.contract-index]
+.Functions
+--
+* {xref-TRC721Wrapper-constructor-contract-ITRC721-}[`++constructor(underlyingToken)++`]
+* {xref-TRC721Wrapper-depositFor-address-uint256---}[`++depositFor(account, tokenIds)++`]
+* {xref-TRC721Wrapper-withdrawTo-address-uint256---}[`++withdrawTo(account, tokenIds)++`]
+* {xref-TRC721Wrapper-onTRC721Received-address-address-uint256-bytes-}[`++onTRC721Received(, from, tokenId, )++`]
+* {xref-TRC721Wrapper-_recover-address-uint256-}[`++_recover(account, tokenId)++`]
+* {xref-TRC721Wrapper-underlying--}[`++underlying()++`]
+
+[.contract-subindex-inherited]
+.ITRC721Receiver
+
+[.contract-subindex-inherited]
+.TRC721
+* {xref-TRC721-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+* {xref-TRC721-balanceOf-address-}[`++balanceOf(owner)++`]
+* {xref-TRC721-ownerOf-uint256-}[`++ownerOf(tokenId)++`]
+* {xref-TRC721-name--}[`++name()++`]
+* {xref-TRC721-symbol--}[`++symbol()++`]
+* {xref-TRC721-tokenURI-uint256-}[`++tokenURI(tokenId)++`]
+* {xref-TRC721-_baseURI--}[`++_baseURI()++`]
+* {xref-TRC721-approve-address-uint256-}[`++approve(to, tokenId)++`]
+* {xref-TRC721-getApproved-uint256-}[`++getApproved(tokenId)++`]
+* {xref-TRC721-setApprovalForAll-address-bool-}[`++setApprovalForAll(operator, approved)++`]
+* {xref-TRC721-isApprovedForAll-address-address-}[`++isApprovedForAll(owner, operator)++`]
+* {xref-TRC721-transferFrom-address-address-uint256-}[`++transferFrom(from, to, tokenId)++`]
+* {xref-TRC721-safeTransferFrom-address-address-uint256-}[`++safeTransferFrom(from, to, tokenId)++`]
+* {xref-TRC721-safeTransferFrom-address-address-uint256-bytes-}[`++safeTransferFrom(from, to, tokenId, data)++`]
+* {xref-TRC721-_ownerOf-uint256-}[`++_ownerOf(tokenId)++`]
+* {xref-TRC721-_getApproved-uint256-}[`++_getApproved(tokenId)++`]
+* {xref-TRC721-_isAuthorized-address-address-uint256-}[`++_isAuthorized(owner, spender, tokenId)++`]
+* {xref-TRC721-_checkAuthorized-address-address-uint256-}[`++_checkAuthorized(owner, spender, tokenId)++`]
+* {xref-TRC721-_increaseBalance-address-uint128-}[`++_increaseBalance(account, value)++`]
+* {xref-TRC721-_update-address-uint256-address-}[`++_update(to, tokenId, auth)++`]
+* {xref-TRC721-_mint-address-uint256-}[`++_mint(to, tokenId)++`]
+* {xref-TRC721-_safeMint-address-uint256-}[`++_safeMint(to, tokenId)++`]
+* {xref-TRC721-_safeMint-address-uint256-bytes-}[`++_safeMint(to, tokenId, data)++`]
+* {xref-TRC721-_burn-uint256-}[`++_burn(tokenId)++`]
+* {xref-TRC721-_transfer-address-address-uint256-}[`++_transfer(from, to, tokenId)++`]
+* {xref-TRC721-_safeTransfer-address-address-uint256-}[`++_safeTransfer(from, to, tokenId)++`]
+* {xref-TRC721-_safeTransfer-address-address-uint256-bytes-}[`++_safeTransfer(from, to, tokenId, data)++`]
+* {xref-TRC721-_approve-address-uint256-address-}[`++_approve(to, tokenId, auth)++`]
+* {xref-TRC721-_approve-address-uint256-address-bool-}[`++_approve(to, tokenId, auth, emitEvent)++`]
+* {xref-TRC721-_setApprovalForAll-address-address-bool-}[`++_setApprovalForAll(owner, operator, approved)++`]
+* {xref-TRC721-_requireOwned-uint256-}[`++_requireOwned(tokenId)++`]
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Events
+--
+
+[.contract-subindex-inherited]
+.ITRC721Receiver
+
+[.contract-subindex-inherited]
+.TRC721
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+* {xref-ITRC721-Transfer-address-address-uint256-}[`++Transfer(from, to, tokenId)++`]
+* {xref-ITRC721-Approval-address-address-uint256-}[`++Approval(owner, approved, tokenId)++`]
+* {xref-ITRC721-ApprovalForAll-address-address-bool-}[`++ApprovalForAll(owner, operator, approved)++`]
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Errors
+--
+* {xref-TRC721Wrapper-TRC721UnsupportedToken-address-}[`++TRC721UnsupportedToken(token)++`]
+
+[.contract-subindex-inherited]
+.ITRC721Receiver
+
+[.contract-subindex-inherited]
+.TRC721
+
+[.contract-subindex-inherited]
+.ITRC721Errors
+* {xref-ITRC721Errors-TRC721InvalidOwner-address-}[`++TRC721InvalidOwner(owner)++`]
+* {xref-ITRC721Errors-TRC721NonexistentToken-uint256-}[`++TRC721NonexistentToken(tokenId)++`]
+* {xref-ITRC721Errors-TRC721IncorrectOwner-address-uint256-address-}[`++TRC721IncorrectOwner(sender, tokenId, owner)++`]
+* {xref-ITRC721Errors-TRC721InvalidSender-address-}[`++TRC721InvalidSender(sender)++`]
+* {xref-ITRC721Errors-TRC721InvalidReceiver-address-}[`++TRC721InvalidReceiver(receiver)++`]
+* {xref-ITRC721Errors-TRC721InsufficientApproval-address-uint256-}[`++TRC721InsufficientApproval(operator, tokenId)++`]
+* {xref-ITRC721Errors-TRC721InvalidApprover-address-}[`++TRC721InvalidApprover(approver)++`]
+* {xref-ITRC721Errors-TRC721InvalidOperator-address-}[`++TRC721InvalidOperator(operator)++`]
+
+[.contract-subindex-inherited]
+.ITRC721Metadata
+
+[.contract-subindex-inherited]
+.ITRC721
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-item]
+[[TRC721Wrapper-constructor-contract-ITRC721-]]
+==== `[.contract-item-name]#++constructor++#++(contract ITRC721 underlyingToken)++` [.item-kind]#internal#
+
+[.contract-item]
+[[TRC721Wrapper-depositFor-address-uint256---]]
+==== `[.contract-item-name]#++depositFor++#++(address account, uint256[] tokenIds) → bool++` [.item-kind]#public#
+
+Allow a user to deposit underlying tokens and mint the corresponding tokenIds.
+
+[.contract-item]
+[[TRC721Wrapper-withdrawTo-address-uint256---]]
+==== `[.contract-item-name]#++withdrawTo++#++(address account, uint256[] tokenIds) → bool++` [.item-kind]#public#
+
+Allow a user to burn wrapped tokens and withdraw the corresponding tokenIds of the underlying tokens.
+
+[.contract-item]
+[[TRC721Wrapper-onTRC721Received-address-address-uint256-bytes-]]
+==== `[.contract-item-name]#++onTRC721Received++#++(address, address from, uint256 tokenId, bytes) → bytes4++` [.item-kind]#public#
+
+Overrides {ITRC721Receiver-onTRC721Received} to allow minting on direct TRC-721 transfers to
+this contract.
+
+In case there's data attached, it validates that the operator is this contract, so only trusted data
+is accepted from {depositFor}.
+
+WARNING: Doesn't work with unsafe transfers (eg. {ITRC721-transferFrom}). Use {TRC721Wrapper-_recover}
+for recovering in that scenario.
+
+[.contract-item]
+[[TRC721Wrapper-_recover-address-uint256-]]
+==== `[.contract-item-name]#++_recover++#++(address account, uint256 tokenId) → uint256++` [.item-kind]#internal#
+
+Mint a wrapped token to cover any underlyingToken that would have been transferred by mistake. Internal
+function that can be exposed with access control if desired.
+
+[.contract-item]
+[[TRC721Wrapper-underlying--]]
+==== `[.contract-item-name]#++underlying++#++() → contract ITRC721++` [.item-kind]#public#
+
+Returns the underlying token.
+
+[.contract-item]
+[[TRC721Wrapper-TRC721UnsupportedToken-address-]]
+==== `[.contract-item-name]#++TRC721UnsupportedToken++#++(address token)++` [.item-kind]#error#
+
+The received TRC-721 token couldn't be wrapped.
+
+== Utilities
+
+:onTRC721Received: pass:normal[xref:#TRC721Holder-onTRC721Received-address-address-uint256-bytes-[`++onTRC721Received++`]]
+
+:onTRC721Received-address-address-uint256-bytes: pass:normal[xref:#TRC721Holder-onTRC721Received-address-address-uint256-bytes-[`++onTRC721Received++`]]
+
+[.contract]
+[[TRC721Holder]]
+=== `++TRC721Holder++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC721/utils/TRC721Holder.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC721/utils/TRC721Holder.sol";
+```
+
+Implementation of the {ITRC721Receiver} interface.
+
+Accepts all token transfers.
+Make sure the contract is able to use its token with {ITRC721-safeTransferFrom}, {ITRC721-approve} or
+{ITRC721-setApprovalForAll}.
+
+@custom:stateless
+
+[.contract-index]
+.Functions
+--
+* {xref-TRC721Holder-onTRC721Received-address-address-uint256-bytes-}[`++onTRC721Received(, , , )++`]
+
+[.contract-subindex-inherited]
+.ITRC721Receiver
+
+--
+
+[.contract-item]
+[[TRC721Holder-onTRC721Received-address-address-uint256-bytes-]]
+==== `[.contract-item-name]#++onTRC721Received++#++(address, address, uint256, bytes) → bytes4++` [.item-kind]#public#
+
+See {ITRC721Receiver-onTRC721Received}.
+
+Always returns `ITRC721Receiver.onTRC721Received.selector`.
+
+:checkOnTRC721Received: pass:normal[xref:#TRC721Utils-checkOnTRC721Received-address-address-address-uint256-bytes-[`++checkOnTRC721Received++`]]
+
+:checkOnTRC721Received-address-address-address-uint256-bytes: pass:normal[xref:#TRC721Utils-checkOnTRC721Received-address-address-address-uint256-bytes-[`++checkOnTRC721Received++`]]
+
+[.contract]
+[[TRC721Utils]]
+=== `++TRC721Utils++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC721/utils/TRC721Utils.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC721/utils/TRC721Utils.sol";
+```
+
+Library that provides common TRC-721 utility functions.
+
+See https://github.com/tronprotocol/tips/blob/master/tip-721.md[TIP-721]
+
+_Available since v5.1._
+
+[.contract-index]
+.Functions
+--
+* {xref-TRC721Utils-checkOnTRC721Received-address-address-address-uint256-bytes-}[`++checkOnTRC721Received(operator, from, to, tokenId, data)++`]
+
+--
+
+[.contract-item]
+[[TRC721Utils-checkOnTRC721Received-address-address-address-uint256-bytes-]]
+==== `[.contract-item-name]#++checkOnTRC721Received++#++(address operator, address from, address to, uint256 tokenId, bytes data)++` [.item-kind]#internal#
+
+Performs an acceptance check for the provided `operator` by calling {ITRC721Receiver-onTRC721Received}
+on the `to` address. The `operator` is generally the address that initiated the token transfer (i.e. `msg.sender`).
+
+The acceptance call is not executed and treated as a no-op if the target address doesn't contain code (i.e. an EOA).
+Otherwise, the recipient must implement {ITRC721Receiver-onTRC721Received} and return the acceptance magic value to accept
+the transfer.
+

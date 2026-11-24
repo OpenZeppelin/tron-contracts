@@ -1,0 +1,2001 @@
+:github-icon: pass:[<svg class="icon"><use href="#github-icon"/></svg>]
+:ITRC1155: pass:normal[xref:token/TRC1155.adoc#ITRC1155[`ITRC1155`]]
+:ITRC1155MetadataURI: pass:normal[xref:token/TRC1155.adoc#ITRC1155MetadataURI[`ITRC1155MetadataURI`]]
+:ITRC1155Receiver: pass:normal[xref:token/TRC1155.adoc#ITRC1155Receiver[`ITRC1155Receiver`]]
+:TRC1155: pass:normal[xref:token/TRC1155.adoc#TRC1155[`TRC1155`]]
+:ITRC1155: pass:normal[xref:token/TRC1155.adoc#ITRC1155[`ITRC1155`]]
+:ITRC1155MetadataURI: pass:normal[xref:token/TRC1155.adoc#ITRC1155MetadataURI[`ITRC1155MetadataURI`]]
+:TRC1155Pausable: pass:normal[xref:token/TRC1155.adoc#TRC1155Pausable[`TRC1155Pausable`]]
+:TRC1155Burnable: pass:normal[xref:token/TRC1155.adoc#TRC1155Burnable[`TRC1155Burnable`]]
+:TRC1155Crosschain: pass:normal[xref:token/TRC1155.adoc#TRC1155Crosschain[`TRC1155Crosschain`]]
+:xref-ITRC1155-balanceOf-address-uint256-: xref:token/TRC1155.adoc#ITRC1155-balanceOf-address-uint256-
+:xref-ITRC1155-balanceOfBatch-address---uint256---: xref:token/TRC1155.adoc#ITRC1155-balanceOfBatch-address---uint256---
+:xref-ITRC1155-setApprovalForAll-address-bool-: xref:token/TRC1155.adoc#ITRC1155-setApprovalForAll-address-bool-
+:xref-ITRC1155-isApprovedForAll-address-address-: xref:token/TRC1155.adoc#ITRC1155-isApprovedForAll-address-address-
+:xref-ITRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-: xref:token/TRC1155.adoc#ITRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-
+:xref-ITRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#ITRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-
+:xref-ITRC165-supportsInterface-bytes4-: xref:utils.adoc#ITRC165-supportsInterface-bytes4-
+:xref-ITRC1155-TransferSingle-address-address-address-uint256-uint256-: xref:token/TRC1155.adoc#ITRC1155-TransferSingle-address-address-address-uint256-uint256-
+:xref-ITRC1155-TransferBatch-address-address-address-uint256---uint256---: xref:token/TRC1155.adoc#ITRC1155-TransferBatch-address-address-address-uint256---uint256---
+:xref-ITRC1155-ApprovalForAll-address-address-bool-: xref:token/TRC1155.adoc#ITRC1155-ApprovalForAll-address-address-bool-
+:xref-ITRC1155-URI-string-uint256-: xref:token/TRC1155.adoc#ITRC1155-URI-string-uint256-
+:ITRC1155Receiver-onERC1155Received: pass:normal[xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155Received-address-address-uint256-uint256-bytes-[`ITRC1155Receiver.onERC1155Received`]]
+:ITRC1155Receiver-onERC1155Received: pass:normal[xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155Received-address-address-uint256-uint256-bytes-[`ITRC1155Receiver.onERC1155Received`]]
+:ITRC1155Receiver-onERC1155BatchReceived: pass:normal[xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155BatchReceived-address-address-uint256---uint256---bytes-[`ITRC1155Receiver.onERC1155BatchReceived`]]
+:ITRC1155Receiver-onERC1155BatchReceived: pass:normal[xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155BatchReceived-address-address-uint256---uint256---bytes-[`ITRC1155Receiver.onERC1155BatchReceived`]]
+:ITRC1155MetadataURI-uri: pass:normal[xref:token/TRC1155.adoc#ITRC1155MetadataURI-uri-uint256-[`ITRC1155MetadataURI.uri`]]
+:xref-ITRC1155MetadataURI-uri-uint256-: xref:token/TRC1155.adoc#ITRC1155MetadataURI-uri-uint256-
+:xref-ITRC1155-balanceOf-address-uint256-: xref:token/TRC1155.adoc#ITRC1155-balanceOf-address-uint256-
+:xref-ITRC1155-balanceOfBatch-address---uint256---: xref:token/TRC1155.adoc#ITRC1155-balanceOfBatch-address---uint256---
+:xref-ITRC1155-setApprovalForAll-address-bool-: xref:token/TRC1155.adoc#ITRC1155-setApprovalForAll-address-bool-
+:xref-ITRC1155-isApprovedForAll-address-address-: xref:token/TRC1155.adoc#ITRC1155-isApprovedForAll-address-address-
+:xref-ITRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-: xref:token/TRC1155.adoc#ITRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-
+:xref-ITRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#ITRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-
+:xref-ITRC165-supportsInterface-bytes4-: xref:utils.adoc#ITRC165-supportsInterface-bytes4-
+:xref-ITRC1155-TransferSingle-address-address-address-uint256-uint256-: xref:token/TRC1155.adoc#ITRC1155-TransferSingle-address-address-address-uint256-uint256-
+:xref-ITRC1155-TransferBatch-address-address-address-uint256---uint256---: xref:token/TRC1155.adoc#ITRC1155-TransferBatch-address-address-address-uint256---uint256---
+:xref-ITRC1155-ApprovalForAll-address-address-bool-: xref:token/TRC1155.adoc#ITRC1155-ApprovalForAll-address-address-bool-
+:xref-ITRC1155-URI-string-uint256-: xref:token/TRC1155.adoc#ITRC1155-URI-string-uint256-
+:xref-TRC1155-constructor-string-: xref:token/TRC1155.adoc#TRC1155-constructor-string-
+:xref-TRC1155-supportsInterface-bytes4-: xref:token/TRC1155.adoc#TRC1155-supportsInterface-bytes4-
+:xref-TRC1155-uri-uint256-: xref:token/TRC1155.adoc#TRC1155-uri-uint256-
+:xref-TRC1155-balanceOf-address-uint256-: xref:token/TRC1155.adoc#TRC1155-balanceOf-address-uint256-
+:xref-TRC1155-balanceOfBatch-address---uint256---: xref:token/TRC1155.adoc#TRC1155-balanceOfBatch-address---uint256---
+:xref-TRC1155-setApprovalForAll-address-bool-: xref:token/TRC1155.adoc#TRC1155-setApprovalForAll-address-bool-
+:xref-TRC1155-isApprovedForAll-address-address-: xref:token/TRC1155.adoc#TRC1155-isApprovedForAll-address-address-
+:xref-TRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-: xref:token/TRC1155.adoc#TRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-
+:xref-TRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-
+:xref-TRC1155-_checkAuthorized-address-address-: xref:token/TRC1155.adoc#TRC1155-_checkAuthorized-address-address-
+:xref-TRC1155-_update-address-address-uint256---uint256---: xref:token/TRC1155.adoc#TRC1155-_update-address-address-uint256---uint256---
+:xref-TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-
+:xref-TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-bool-: xref:token/TRC1155.adoc#TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-bool-
+:xref-TRC1155-_safeTransferFrom-address-address-uint256-uint256-bytes-: xref:token/TRC1155.adoc#TRC1155-_safeTransferFrom-address-address-uint256-uint256-bytes-
+:xref-TRC1155-_safeBatchTransferFrom-address-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155-_safeBatchTransferFrom-address-address-uint256---uint256---bytes-
+:xref-TRC1155-_setURI-string-: xref:token/TRC1155.adoc#TRC1155-_setURI-string-
+:xref-TRC1155-_mint-address-uint256-uint256-bytes-: xref:token/TRC1155.adoc#TRC1155-_mint-address-uint256-uint256-bytes-
+:xref-TRC1155-_mintBatch-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155-_mintBatch-address-uint256---uint256---bytes-
+:xref-TRC1155-_burn-address-uint256-uint256-: xref:token/TRC1155.adoc#TRC1155-_burn-address-uint256-uint256-
+:xref-TRC1155-_burnBatch-address-uint256---uint256---: xref:token/TRC1155.adoc#TRC1155-_burnBatch-address-uint256---uint256---
+:xref-TRC1155-_setApprovalForAll-address-address-bool-: xref:token/TRC1155.adoc#TRC1155-_setApprovalForAll-address-address-bool-
+:xref-ITRC1155-TransferSingle-address-address-address-uint256-uint256-: xref:token/TRC1155.adoc#ITRC1155-TransferSingle-address-address-address-uint256-uint256-
+:xref-ITRC1155-TransferBatch-address-address-address-uint256---uint256---: xref:token/TRC1155.adoc#ITRC1155-TransferBatch-address-address-address-uint256---uint256---
+:xref-ITRC1155-ApprovalForAll-address-address-bool-: xref:token/TRC1155.adoc#ITRC1155-ApprovalForAll-address-address-bool-
+:xref-ITRC1155-URI-string-uint256-: xref:token/TRC1155.adoc#ITRC1155-URI-string-uint256-
+:xref-ITRC1155Errors-TRC1155InsufficientBalance-address-uint256-uint256-uint256-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InsufficientBalance-address-uint256-uint256-uint256-
+:xref-ITRC1155Errors-TRC1155InvalidSender-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidSender-address-
+:xref-ITRC1155Errors-TRC1155InvalidReceiver-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidReceiver-address-
+:xref-ITRC1155Errors-TRC1155MissingApprovalForAll-address-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155MissingApprovalForAll-address-address-
+:xref-ITRC1155Errors-TRC1155InvalidApprover-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidApprover-address-
+:xref-ITRC1155Errors-TRC1155InvalidOperator-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidOperator-address-
+:xref-ITRC1155Errors-TRC1155InvalidArrayLength-uint256-uint256-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidArrayLength-uint256-uint256-
+:ITRC1155MetadataURI-uri: pass:normal[xref:token/TRC1155.adoc#ITRC1155MetadataURI-uri-uint256-[`ITRC1155MetadataURI.uri`]]
+:ITRC1155-balanceOfBatch: pass:normal[xref:token/TRC1155.adoc#ITRC1155-balanceOfBatch-address---uint256---[`ITRC1155.balanceOfBatch`]]
+:ITRC1155Receiver-onERC1155Received: pass:normal[xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155Received-address-address-uint256-uint256-bytes-[`ITRC1155Receiver.onERC1155Received`]]
+:ITRC1155Receiver-onERC1155Received: pass:normal[xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155Received-address-address-uint256-uint256-bytes-[`ITRC1155Receiver.onERC1155Received`]]
+:ITRC1155Receiver-onERC1155BatchReceived: pass:normal[xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155BatchReceived-address-address-uint256---uint256---bytes-[`ITRC1155Receiver.onERC1155BatchReceived`]]
+:ITRC1155Receiver-onERC1155BatchReceived: pass:normal[xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155BatchReceived-address-address-uint256---uint256---bytes-[`ITRC1155Receiver.onERC1155BatchReceived`]]
+:ITRC1155Receiver-onERC1155Received: pass:normal[xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155Received-address-address-uint256-uint256-bytes-[`ITRC1155Receiver.onERC1155Received`]]
+:ITRC1155Receiver-onERC1155BatchReceived: pass:normal[xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155BatchReceived-address-address-uint256---uint256---bytes-[`ITRC1155Receiver.onERC1155BatchReceived`]]
+:ITRC1155Receiver-onERC1155Received: pass:normal[xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155Received-address-address-uint256-uint256-bytes-[`ITRC1155Receiver.onERC1155Received`]]
+:ITRC1155Receiver-onERC1155BatchReceived: pass:normal[xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155BatchReceived-address-address-uint256---uint256---bytes-[`ITRC1155Receiver.onERC1155BatchReceived`]]
+:ITRC1155Receiver-onERC1155Received: pass:normal[xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155Received-address-address-uint256-uint256-bytes-[`ITRC1155Receiver.onERC1155Received`]]
+:ITRC1155Receiver-onERC1155BatchReceived: pass:normal[xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155BatchReceived-address-address-uint256---uint256---bytes-[`ITRC1155Receiver.onERC1155BatchReceived`]]
+:ITRC1155Receiver-onERC1155Received: pass:normal[xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155Received-address-address-uint256-uint256-bytes-[`ITRC1155Receiver.onERC1155Received`]]
+:ITRC1155Receiver-onERC1155BatchReceived: pass:normal[xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155BatchReceived-address-address-uint256---uint256---bytes-[`ITRC1155Receiver.onERC1155BatchReceived`]]
+:ITRC1155Receiver-onERC1155Received: pass:normal[xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155Received-address-address-uint256-uint256-bytes-[`ITRC1155Receiver.onERC1155Received`]]
+:ITRC1155Receiver-onERC1155BatchReceived: pass:normal[xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155BatchReceived-address-address-uint256---uint256---bytes-[`ITRC1155Receiver.onERC1155BatchReceived`]]
+:xref-ITRC1155Receiver-onERC1155Received-address-address-uint256-uint256-bytes-: xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155Received-address-address-uint256-uint256-bytes-
+:xref-ITRC1155Receiver-onERC1155BatchReceived-address-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155BatchReceived-address-address-uint256---uint256---bytes-
+:xref-ITRC165-supportsInterface-bytes4-: xref:utils.adoc#ITRC165-supportsInterface-bytes4-
+:Pausable-_pause: pass:normal[xref:utils.adoc#Pausable-_pause--[`Pausable._pause`]]
+:Pausable-_unpause: pass:normal[xref:utils.adoc#Pausable-_unpause--[`Pausable._unpause`]]
+:AccessControl: pass:normal[xref:access.adoc#AccessControl[`AccessControl`]]
+:Ownable: pass:normal[xref:access.adoc#Ownable[`Ownable`]]
+:xref-TRC1155Pausable-_update-address-address-uint256---uint256---: xref:token/TRC1155.adoc#TRC1155Pausable-_update-address-address-uint256---uint256---
+:xref-Pausable-paused--: xref:utils.adoc#Pausable-paused--
+:xref-Pausable-_requireNotPaused--: xref:utils.adoc#Pausable-_requireNotPaused--
+:xref-Pausable-_requirePaused--: xref:utils.adoc#Pausable-_requirePaused--
+:xref-Pausable-_pause--: xref:utils.adoc#Pausable-_pause--
+:xref-Pausable-_unpause--: xref:utils.adoc#Pausable-_unpause--
+:xref-TRC1155-supportsInterface-bytes4-: xref:token/TRC1155.adoc#TRC1155-supportsInterface-bytes4-
+:xref-TRC1155-uri-uint256-: xref:token/TRC1155.adoc#TRC1155-uri-uint256-
+:xref-TRC1155-balanceOf-address-uint256-: xref:token/TRC1155.adoc#TRC1155-balanceOf-address-uint256-
+:xref-TRC1155-balanceOfBatch-address---uint256---: xref:token/TRC1155.adoc#TRC1155-balanceOfBatch-address---uint256---
+:xref-TRC1155-setApprovalForAll-address-bool-: xref:token/TRC1155.adoc#TRC1155-setApprovalForAll-address-bool-
+:xref-TRC1155-isApprovedForAll-address-address-: xref:token/TRC1155.adoc#TRC1155-isApprovedForAll-address-address-
+:xref-TRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-: xref:token/TRC1155.adoc#TRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-
+:xref-TRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-
+:xref-TRC1155-_checkAuthorized-address-address-: xref:token/TRC1155.adoc#TRC1155-_checkAuthorized-address-address-
+:xref-TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-
+:xref-TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-bool-: xref:token/TRC1155.adoc#TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-bool-
+:xref-TRC1155-_safeTransferFrom-address-address-uint256-uint256-bytes-: xref:token/TRC1155.adoc#TRC1155-_safeTransferFrom-address-address-uint256-uint256-bytes-
+:xref-TRC1155-_safeBatchTransferFrom-address-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155-_safeBatchTransferFrom-address-address-uint256---uint256---bytes-
+:xref-TRC1155-_setURI-string-: xref:token/TRC1155.adoc#TRC1155-_setURI-string-
+:xref-TRC1155-_mint-address-uint256-uint256-bytes-: xref:token/TRC1155.adoc#TRC1155-_mint-address-uint256-uint256-bytes-
+:xref-TRC1155-_mintBatch-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155-_mintBatch-address-uint256---uint256---bytes-
+:xref-TRC1155-_burn-address-uint256-uint256-: xref:token/TRC1155.adoc#TRC1155-_burn-address-uint256-uint256-
+:xref-TRC1155-_burnBatch-address-uint256---uint256---: xref:token/TRC1155.adoc#TRC1155-_burnBatch-address-uint256---uint256---
+:xref-TRC1155-_setApprovalForAll-address-address-bool-: xref:token/TRC1155.adoc#TRC1155-_setApprovalForAll-address-address-bool-
+:xref-Pausable-Paused-address-: xref:utils.adoc#Pausable-Paused-address-
+:xref-Pausable-Unpaused-address-: xref:utils.adoc#Pausable-Unpaused-address-
+:xref-ITRC1155-TransferSingle-address-address-address-uint256-uint256-: xref:token/TRC1155.adoc#ITRC1155-TransferSingle-address-address-address-uint256-uint256-
+:xref-ITRC1155-TransferBatch-address-address-address-uint256---uint256---: xref:token/TRC1155.adoc#ITRC1155-TransferBatch-address-address-address-uint256---uint256---
+:xref-ITRC1155-ApprovalForAll-address-address-bool-: xref:token/TRC1155.adoc#ITRC1155-ApprovalForAll-address-address-bool-
+:xref-ITRC1155-URI-string-uint256-: xref:token/TRC1155.adoc#ITRC1155-URI-string-uint256-
+:xref-Pausable-EnforcedPause--: xref:utils.adoc#Pausable-EnforcedPause--
+:xref-Pausable-ExpectedPause--: xref:utils.adoc#Pausable-ExpectedPause--
+:xref-ITRC1155Errors-TRC1155InsufficientBalance-address-uint256-uint256-uint256-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InsufficientBalance-address-uint256-uint256-uint256-
+:xref-ITRC1155Errors-TRC1155InvalidSender-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidSender-address-
+:xref-ITRC1155Errors-TRC1155InvalidReceiver-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidReceiver-address-
+:xref-ITRC1155Errors-TRC1155MissingApprovalForAll-address-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155MissingApprovalForAll-address-address-
+:xref-ITRC1155Errors-TRC1155InvalidApprover-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidApprover-address-
+:xref-ITRC1155Errors-TRC1155InvalidOperator-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidOperator-address-
+:xref-ITRC1155Errors-TRC1155InvalidArrayLength-uint256-uint256-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidArrayLength-uint256-uint256-
+:TRC1155-_update: pass:normal[xref:token/TRC1155.adoc#TRC1155-_update-address-address-uint256---uint256---[`TRC1155._update`]]
+:TRC1155: pass:normal[xref:token/TRC1155.adoc#TRC1155[`TRC1155`]]
+:xref-TRC1155Burnable-burn-address-uint256-uint256-: xref:token/TRC1155.adoc#TRC1155Burnable-burn-address-uint256-uint256-
+:xref-TRC1155Burnable-burnBatch-address-uint256---uint256---: xref:token/TRC1155.adoc#TRC1155Burnable-burnBatch-address-uint256---uint256---
+:xref-TRC1155-supportsInterface-bytes4-: xref:token/TRC1155.adoc#TRC1155-supportsInterface-bytes4-
+:xref-TRC1155-uri-uint256-: xref:token/TRC1155.adoc#TRC1155-uri-uint256-
+:xref-TRC1155-balanceOf-address-uint256-: xref:token/TRC1155.adoc#TRC1155-balanceOf-address-uint256-
+:xref-TRC1155-balanceOfBatch-address---uint256---: xref:token/TRC1155.adoc#TRC1155-balanceOfBatch-address---uint256---
+:xref-TRC1155-setApprovalForAll-address-bool-: xref:token/TRC1155.adoc#TRC1155-setApprovalForAll-address-bool-
+:xref-TRC1155-isApprovedForAll-address-address-: xref:token/TRC1155.adoc#TRC1155-isApprovedForAll-address-address-
+:xref-TRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-: xref:token/TRC1155.adoc#TRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-
+:xref-TRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-
+:xref-TRC1155-_checkAuthorized-address-address-: xref:token/TRC1155.adoc#TRC1155-_checkAuthorized-address-address-
+:xref-TRC1155-_update-address-address-uint256---uint256---: xref:token/TRC1155.adoc#TRC1155-_update-address-address-uint256---uint256---
+:xref-TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-
+:xref-TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-bool-: xref:token/TRC1155.adoc#TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-bool-
+:xref-TRC1155-_safeTransferFrom-address-address-uint256-uint256-bytes-: xref:token/TRC1155.adoc#TRC1155-_safeTransferFrom-address-address-uint256-uint256-bytes-
+:xref-TRC1155-_safeBatchTransferFrom-address-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155-_safeBatchTransferFrom-address-address-uint256---uint256---bytes-
+:xref-TRC1155-_setURI-string-: xref:token/TRC1155.adoc#TRC1155-_setURI-string-
+:xref-TRC1155-_mint-address-uint256-uint256-bytes-: xref:token/TRC1155.adoc#TRC1155-_mint-address-uint256-uint256-bytes-
+:xref-TRC1155-_mintBatch-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155-_mintBatch-address-uint256---uint256---bytes-
+:xref-TRC1155-_burn-address-uint256-uint256-: xref:token/TRC1155.adoc#TRC1155-_burn-address-uint256-uint256-
+:xref-TRC1155-_burnBatch-address-uint256---uint256---: xref:token/TRC1155.adoc#TRC1155-_burnBatch-address-uint256---uint256---
+:xref-TRC1155-_setApprovalForAll-address-address-bool-: xref:token/TRC1155.adoc#TRC1155-_setApprovalForAll-address-address-bool-
+:xref-ITRC1155-TransferSingle-address-address-address-uint256-uint256-: xref:token/TRC1155.adoc#ITRC1155-TransferSingle-address-address-address-uint256-uint256-
+:xref-ITRC1155-TransferBatch-address-address-address-uint256---uint256---: xref:token/TRC1155.adoc#ITRC1155-TransferBatch-address-address-address-uint256---uint256---
+:xref-ITRC1155-ApprovalForAll-address-address-bool-: xref:token/TRC1155.adoc#ITRC1155-ApprovalForAll-address-address-bool-
+:xref-ITRC1155-URI-string-uint256-: xref:token/TRC1155.adoc#ITRC1155-URI-string-uint256-
+:xref-ITRC1155Errors-TRC1155InsufficientBalance-address-uint256-uint256-uint256-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InsufficientBalance-address-uint256-uint256-uint256-
+:xref-ITRC1155Errors-TRC1155InvalidSender-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidSender-address-
+:xref-ITRC1155Errors-TRC1155InvalidReceiver-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidReceiver-address-
+:xref-ITRC1155Errors-TRC1155MissingApprovalForAll-address-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155MissingApprovalForAll-address-address-
+:xref-ITRC1155Errors-TRC1155InvalidApprover-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidApprover-address-
+:xref-ITRC1155Errors-TRC1155InvalidOperator-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidOperator-address-
+:xref-ITRC1155Errors-TRC1155InvalidArrayLength-uint256-uint256-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidArrayLength-uint256-uint256-
+:TRC1155: pass:normal[xref:token/TRC1155.adoc#TRC1155[`TRC1155`]]
+:BridgeMultiToken: pass:normal[xref:crosschain.adoc#BridgeMultiToken[`BridgeMultiToken`]]
+:TRC1155Crosschain: pass:normal[xref:token/TRC1155.adoc#TRC1155Crosschain[`TRC1155Crosschain`]]
+:TRC1155: pass:normal[xref:token/TRC1155.adoc#TRC1155[`TRC1155`]]
+:BridgeTRC1155: pass:normal[xref:crosschain.adoc#BridgeTRC1155[`BridgeTRC1155`]]
+:xref-TRC1155Crosschain-crosschainTransferFrom-address-bytes-uint256-uint256-: xref:token/TRC1155.adoc#TRC1155Crosschain-crosschainTransferFrom-address-bytes-uint256-uint256-
+:xref-TRC1155Crosschain-crosschainTransferFrom-address-bytes-uint256-uint256-bytes-: xref:token/TRC1155.adoc#TRC1155Crosschain-crosschainTransferFrom-address-bytes-uint256-uint256-bytes-
+:xref-TRC1155Crosschain-crosschainTransferFrom-address-bytes-uint256---uint256---: xref:token/TRC1155.adoc#TRC1155Crosschain-crosschainTransferFrom-address-bytes-uint256---uint256---
+:xref-TRC1155Crosschain-crosschainTransferFrom-address-bytes-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155Crosschain-crosschainTransferFrom-address-bytes-uint256---uint256---bytes-
+:xref-TRC1155Crosschain-_onSend-address-uint256---uint256---: xref:token/TRC1155.adoc#TRC1155Crosschain-_onSend-address-uint256---uint256---
+:xref-TRC1155Crosschain-_onReceive-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155Crosschain-_onReceive-address-uint256---uint256---bytes-
+:xref-TRC1155-supportsInterface-bytes4-: xref:token/TRC1155.adoc#TRC1155-supportsInterface-bytes4-
+:xref-TRC1155-uri-uint256-: xref:token/TRC1155.adoc#TRC1155-uri-uint256-
+:xref-TRC1155-balanceOf-address-uint256-: xref:token/TRC1155.adoc#TRC1155-balanceOf-address-uint256-
+:xref-TRC1155-balanceOfBatch-address---uint256---: xref:token/TRC1155.adoc#TRC1155-balanceOfBatch-address---uint256---
+:xref-TRC1155-setApprovalForAll-address-bool-: xref:token/TRC1155.adoc#TRC1155-setApprovalForAll-address-bool-
+:xref-TRC1155-isApprovedForAll-address-address-: xref:token/TRC1155.adoc#TRC1155-isApprovedForAll-address-address-
+:xref-TRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-: xref:token/TRC1155.adoc#TRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-
+:xref-TRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-
+:xref-TRC1155-_checkAuthorized-address-address-: xref:token/TRC1155.adoc#TRC1155-_checkAuthorized-address-address-
+:xref-TRC1155-_update-address-address-uint256---uint256---: xref:token/TRC1155.adoc#TRC1155-_update-address-address-uint256---uint256---
+:xref-TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-
+:xref-TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-bool-: xref:token/TRC1155.adoc#TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-bool-
+:xref-TRC1155-_safeTransferFrom-address-address-uint256-uint256-bytes-: xref:token/TRC1155.adoc#TRC1155-_safeTransferFrom-address-address-uint256-uint256-bytes-
+:xref-TRC1155-_safeBatchTransferFrom-address-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155-_safeBatchTransferFrom-address-address-uint256---uint256---bytes-
+:xref-TRC1155-_setURI-string-: xref:token/TRC1155.adoc#TRC1155-_setURI-string-
+:xref-TRC1155-_mint-address-uint256-uint256-bytes-: xref:token/TRC1155.adoc#TRC1155-_mint-address-uint256-uint256-bytes-
+:xref-TRC1155-_mintBatch-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155-_mintBatch-address-uint256---uint256---bytes-
+:xref-TRC1155-_burn-address-uint256-uint256-: xref:token/TRC1155.adoc#TRC1155-_burn-address-uint256-uint256-
+:xref-TRC1155-_burnBatch-address-uint256---uint256---: xref:token/TRC1155.adoc#TRC1155-_burnBatch-address-uint256---uint256---
+:xref-TRC1155-_setApprovalForAll-address-address-bool-: xref:token/TRC1155.adoc#TRC1155-_setApprovalForAll-address-address-bool-
+:xref-BridgeMultiToken-_crosschainTransfer-address-bytes-uint256---uint256---bytes-: xref:crosschain.adoc#BridgeMultiToken-_crosschainTransfer-address-bytes-uint256---uint256---bytes-
+:xref-BridgeMultiToken-_processMessage-address-bytes32-bytes-bytes-: xref:crosschain.adoc#BridgeMultiToken-_processMessage-address-bytes32-bytes-bytes-
+:xref-CrosschainLinked-getLink-bytes-: xref:crosschain.adoc#CrosschainLinked-getLink-bytes-
+:xref-CrosschainLinked-_setLink-address-bytes-bool-: xref:crosschain.adoc#CrosschainLinked-_setLink-address-bytes-bool-
+:xref-CrosschainLinked-_sendMessageToCounterpart-bytes-bytes-bytes---: xref:crosschain.adoc#CrosschainLinked-_sendMessageToCounterpart-bytes-bytes-bytes---
+:xref-CrosschainLinked-_isAuthorizedGateway-address-bytes-: xref:crosschain.adoc#CrosschainLinked-_isAuthorizedGateway-address-bytes-
+:xref-TRC7786Recipient-receiveMessage-bytes32-bytes-bytes-: xref:crosschain.adoc#TRC7786Recipient-receiveMessage-bytes32-bytes-bytes-
+:xref-ITRC1155-TransferSingle-address-address-address-uint256-uint256-: xref:token/TRC1155.adoc#ITRC1155-TransferSingle-address-address-address-uint256-uint256-
+:xref-ITRC1155-TransferBatch-address-address-address-uint256---uint256---: xref:token/TRC1155.adoc#ITRC1155-TransferBatch-address-address-address-uint256---uint256---
+:xref-ITRC1155-ApprovalForAll-address-address-bool-: xref:token/TRC1155.adoc#ITRC1155-ApprovalForAll-address-address-bool-
+:xref-ITRC1155-URI-string-uint256-: xref:token/TRC1155.adoc#ITRC1155-URI-string-uint256-
+:xref-BridgeMultiToken-CrosschainMultiTokenTransferSent-bytes32-address-bytes-uint256---uint256---bytes-: xref:crosschain.adoc#BridgeMultiToken-CrosschainMultiTokenTransferSent-bytes32-address-bytes-uint256---uint256---bytes-
+:xref-BridgeMultiToken-CrosschainMultiTokenTransferReceived-bytes32-bytes-address-uint256---uint256---bytes-: xref:crosschain.adoc#BridgeMultiToken-CrosschainMultiTokenTransferReceived-bytes32-bytes-address-uint256---uint256---bytes-
+:xref-CrosschainLinked-LinkRegistered-address-bytes-: xref:crosschain.adoc#CrosschainLinked-LinkRegistered-address-bytes-
+:xref-ITRC1155Errors-TRC1155InsufficientBalance-address-uint256-uint256-uint256-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InsufficientBalance-address-uint256-uint256-uint256-
+:xref-ITRC1155Errors-TRC1155InvalidSender-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidSender-address-
+:xref-ITRC1155Errors-TRC1155InvalidReceiver-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidReceiver-address-
+:xref-ITRC1155Errors-TRC1155MissingApprovalForAll-address-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155MissingApprovalForAll-address-address-
+:xref-ITRC1155Errors-TRC1155InvalidApprover-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidApprover-address-
+:xref-ITRC1155Errors-TRC1155InvalidOperator-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidOperator-address-
+:xref-ITRC1155Errors-TRC1155InvalidArrayLength-uint256-uint256-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidArrayLength-uint256-uint256-
+:xref-BridgeMultiToken-CrosschainMultiTokenEmptyAddress--: xref:crosschain.adoc#BridgeMultiToken-CrosschainMultiTokenEmptyAddress--
+:xref-BridgeMultiToken-CrosschainMultiTokenInvalidRecipient-bytes-: xref:crosschain.adoc#BridgeMultiToken-CrosschainMultiTokenInvalidRecipient-bytes-
+:xref-CrosschainLinked-LinkAlreadyRegistered-bytes-: xref:crosschain.adoc#CrosschainLinked-LinkAlreadyRegistered-bytes-
+:xref-TRC7786Recipient-TRC7786RecipientUnauthorizedGateway-address-bytes-: xref:crosschain.adoc#TRC7786Recipient-TRC7786RecipientUnauthorizedGateway-address-bytes-
+:xref-TRC1155Supply-totalSupply-uint256-: xref:token/TRC1155.adoc#TRC1155Supply-totalSupply-uint256-
+:xref-TRC1155Supply-totalSupply--: xref:token/TRC1155.adoc#TRC1155Supply-totalSupply--
+:xref-TRC1155Supply-exists-uint256-: xref:token/TRC1155.adoc#TRC1155Supply-exists-uint256-
+:xref-TRC1155Supply-_update-address-address-uint256---uint256---: xref:token/TRC1155.adoc#TRC1155Supply-_update-address-address-uint256---uint256---
+:xref-TRC1155-supportsInterface-bytes4-: xref:token/TRC1155.adoc#TRC1155-supportsInterface-bytes4-
+:xref-TRC1155-uri-uint256-: xref:token/TRC1155.adoc#TRC1155-uri-uint256-
+:xref-TRC1155-balanceOf-address-uint256-: xref:token/TRC1155.adoc#TRC1155-balanceOf-address-uint256-
+:xref-TRC1155-balanceOfBatch-address---uint256---: xref:token/TRC1155.adoc#TRC1155-balanceOfBatch-address---uint256---
+:xref-TRC1155-setApprovalForAll-address-bool-: xref:token/TRC1155.adoc#TRC1155-setApprovalForAll-address-bool-
+:xref-TRC1155-isApprovedForAll-address-address-: xref:token/TRC1155.adoc#TRC1155-isApprovedForAll-address-address-
+:xref-TRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-: xref:token/TRC1155.adoc#TRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-
+:xref-TRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-
+:xref-TRC1155-_checkAuthorized-address-address-: xref:token/TRC1155.adoc#TRC1155-_checkAuthorized-address-address-
+:xref-TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-
+:xref-TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-bool-: xref:token/TRC1155.adoc#TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-bool-
+:xref-TRC1155-_safeTransferFrom-address-address-uint256-uint256-bytes-: xref:token/TRC1155.adoc#TRC1155-_safeTransferFrom-address-address-uint256-uint256-bytes-
+:xref-TRC1155-_safeBatchTransferFrom-address-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155-_safeBatchTransferFrom-address-address-uint256---uint256---bytes-
+:xref-TRC1155-_setURI-string-: xref:token/TRC1155.adoc#TRC1155-_setURI-string-
+:xref-TRC1155-_mint-address-uint256-uint256-bytes-: xref:token/TRC1155.adoc#TRC1155-_mint-address-uint256-uint256-bytes-
+:xref-TRC1155-_mintBatch-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155-_mintBatch-address-uint256---uint256---bytes-
+:xref-TRC1155-_burn-address-uint256-uint256-: xref:token/TRC1155.adoc#TRC1155-_burn-address-uint256-uint256-
+:xref-TRC1155-_burnBatch-address-uint256---uint256---: xref:token/TRC1155.adoc#TRC1155-_burnBatch-address-uint256---uint256---
+:xref-TRC1155-_setApprovalForAll-address-address-bool-: xref:token/TRC1155.adoc#TRC1155-_setApprovalForAll-address-address-bool-
+:xref-ITRC1155-TransferSingle-address-address-address-uint256-uint256-: xref:token/TRC1155.adoc#ITRC1155-TransferSingle-address-address-address-uint256-uint256-
+:xref-ITRC1155-TransferBatch-address-address-address-uint256---uint256---: xref:token/TRC1155.adoc#ITRC1155-TransferBatch-address-address-address-uint256---uint256---
+:xref-ITRC1155-ApprovalForAll-address-address-bool-: xref:token/TRC1155.adoc#ITRC1155-ApprovalForAll-address-address-bool-
+:xref-ITRC1155-URI-string-uint256-: xref:token/TRC1155.adoc#ITRC1155-URI-string-uint256-
+:xref-ITRC1155Errors-TRC1155InsufficientBalance-address-uint256-uint256-uint256-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InsufficientBalance-address-uint256-uint256-uint256-
+:xref-ITRC1155Errors-TRC1155InvalidSender-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidSender-address-
+:xref-ITRC1155Errors-TRC1155InvalidReceiver-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidReceiver-address-
+:xref-ITRC1155Errors-TRC1155MissingApprovalForAll-address-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155MissingApprovalForAll-address-address-
+:xref-ITRC1155Errors-TRC1155InvalidApprover-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidApprover-address-
+:xref-ITRC1155Errors-TRC1155InvalidOperator-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidOperator-address-
+:xref-ITRC1155Errors-TRC1155InvalidArrayLength-uint256-uint256-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidArrayLength-uint256-uint256-
+:ITRC1155Receiver-onERC1155Received: pass:normal[xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155Received-address-address-uint256-uint256-bytes-[`ITRC1155Receiver.onERC1155Received`]]
+:ITRC1155Receiver-onERC1155BatchReceived: pass:normal[xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155BatchReceived-address-address-uint256---uint256---bytes-[`ITRC1155Receiver.onERC1155BatchReceived`]]
+:TRC721URIStorage: pass:normal[xref:token/TRC721.adoc#TRC721URIStorage[`TRC721URIStorage`]]
+:xref-TRC1155URIStorage-uri-uint256-: xref:token/TRC1155.adoc#TRC1155URIStorage-uri-uint256-
+:xref-TRC1155URIStorage-_setURI-uint256-string-: xref:token/TRC1155.adoc#TRC1155URIStorage-_setURI-uint256-string-
+:xref-TRC1155URIStorage-_setBaseURI-string-: xref:token/TRC1155.adoc#TRC1155URIStorage-_setBaseURI-string-
+:xref-TRC1155-supportsInterface-bytes4-: xref:token/TRC1155.adoc#TRC1155-supportsInterface-bytes4-
+:xref-TRC1155-balanceOf-address-uint256-: xref:token/TRC1155.adoc#TRC1155-balanceOf-address-uint256-
+:xref-TRC1155-balanceOfBatch-address---uint256---: xref:token/TRC1155.adoc#TRC1155-balanceOfBatch-address---uint256---
+:xref-TRC1155-setApprovalForAll-address-bool-: xref:token/TRC1155.adoc#TRC1155-setApprovalForAll-address-bool-
+:xref-TRC1155-isApprovedForAll-address-address-: xref:token/TRC1155.adoc#TRC1155-isApprovedForAll-address-address-
+:xref-TRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-: xref:token/TRC1155.adoc#TRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-
+:xref-TRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-
+:xref-TRC1155-_checkAuthorized-address-address-: xref:token/TRC1155.adoc#TRC1155-_checkAuthorized-address-address-
+:xref-TRC1155-_update-address-address-uint256---uint256---: xref:token/TRC1155.adoc#TRC1155-_update-address-address-uint256---uint256---
+:xref-TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-
+:xref-TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-bool-: xref:token/TRC1155.adoc#TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-bool-
+:xref-TRC1155-_safeTransferFrom-address-address-uint256-uint256-bytes-: xref:token/TRC1155.adoc#TRC1155-_safeTransferFrom-address-address-uint256-uint256-bytes-
+:xref-TRC1155-_safeBatchTransferFrom-address-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155-_safeBatchTransferFrom-address-address-uint256---uint256---bytes-
+:xref-TRC1155-_setURI-string-: xref:token/TRC1155.adoc#TRC1155-_setURI-string-
+:xref-TRC1155-_mint-address-uint256-uint256-bytes-: xref:token/TRC1155.adoc#TRC1155-_mint-address-uint256-uint256-bytes-
+:xref-TRC1155-_mintBatch-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155-_mintBatch-address-uint256---uint256---bytes-
+:xref-TRC1155-_burn-address-uint256-uint256-: xref:token/TRC1155.adoc#TRC1155-_burn-address-uint256-uint256-
+:xref-TRC1155-_burnBatch-address-uint256---uint256---: xref:token/TRC1155.adoc#TRC1155-_burnBatch-address-uint256---uint256---
+:xref-TRC1155-_setApprovalForAll-address-address-bool-: xref:token/TRC1155.adoc#TRC1155-_setApprovalForAll-address-address-bool-
+:xref-ITRC1155-TransferSingle-address-address-address-uint256-uint256-: xref:token/TRC1155.adoc#ITRC1155-TransferSingle-address-address-address-uint256-uint256-
+:xref-ITRC1155-TransferBatch-address-address-address-uint256---uint256---: xref:token/TRC1155.adoc#ITRC1155-TransferBatch-address-address-address-uint256---uint256---
+:xref-ITRC1155-ApprovalForAll-address-address-bool-: xref:token/TRC1155.adoc#ITRC1155-ApprovalForAll-address-address-bool-
+:xref-ITRC1155-URI-string-uint256-: xref:token/TRC1155.adoc#ITRC1155-URI-string-uint256-
+:xref-ITRC1155Errors-TRC1155InsufficientBalance-address-uint256-uint256-uint256-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InsufficientBalance-address-uint256-uint256-uint256-
+:xref-ITRC1155Errors-TRC1155InvalidSender-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidSender-address-
+:xref-ITRC1155Errors-TRC1155InvalidReceiver-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidReceiver-address-
+:xref-ITRC1155Errors-TRC1155MissingApprovalForAll-address-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155MissingApprovalForAll-address-address-
+:xref-ITRC1155Errors-TRC1155InvalidApprover-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidApprover-address-
+:xref-ITRC1155Errors-TRC1155InvalidOperator-address-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidOperator-address-
+:xref-ITRC1155Errors-TRC1155InvalidArrayLength-uint256-uint256-: xref:interfaces.adoc#ITRC1155Errors-TRC1155InvalidArrayLength-uint256-uint256-
+:ITRC1155MetadataURI-uri: pass:normal[xref:token/TRC1155.adoc#ITRC1155MetadataURI-uri-uint256-[`ITRC1155MetadataURI.uri`]]
+:xref-TRC1155Holder-supportsInterface-bytes4-: xref:token/TRC1155.adoc#TRC1155Holder-supportsInterface-bytes4-
+:xref-TRC1155Holder-onERC1155Received-address-address-uint256-uint256-bytes-: xref:token/TRC1155.adoc#TRC1155Holder-onERC1155Received-address-address-uint256-uint256-bytes-
+:xref-TRC1155Holder-onERC1155BatchReceived-address-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155Holder-onERC1155BatchReceived-address-address-uint256---uint256---bytes-
+:xref-TRC1155Utils-checkOnTRC1155Received-address-address-address-uint256-uint256-bytes-: xref:token/TRC1155.adoc#TRC1155Utils-checkOnTRC1155Received-address-address-address-uint256-uint256-bytes-
+:xref-TRC1155Utils-checkOnTRC1155BatchReceived-address-address-address-uint256---uint256---bytes-: xref:token/TRC1155.adoc#TRC1155Utils-checkOnTRC1155BatchReceived-address-address-address-uint256---uint256---bytes-
+:ITRC1155Receiver-onERC1155Received: pass:normal[xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155Received-address-address-uint256-uint256-bytes-[`ITRC1155Receiver.onERC1155Received`]]
+:ITRC1155Receiver-onERC1155Received: pass:normal[xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155Received-address-address-uint256-uint256-bytes-[`ITRC1155Receiver.onERC1155Received`]]
+:ITRC1155Receiver-onERC1155BatchReceived: pass:normal[xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155BatchReceived-address-address-uint256---uint256---bytes-[`ITRC1155Receiver.onERC1155BatchReceived`]]
+:ITRC1155Receiver-onERC1155BatchReceived: pass:normal[xref:token/TRC1155.adoc#ITRC1155Receiver-onERC1155BatchReceived-address-address-uint256---uint256---bytes-[`ITRC1155Receiver.onERC1155BatchReceived`]]
+= TRC-1155
+
+[.readme-notice]
+NOTE: This document is better viewed at https://docs.openzeppelin.com/contracts/api/token/erc1155
+
+This set of interfaces and contracts are all related to the https://github.com/tronprotocol/tips/blob/master/tip-1155.md[TRC-1155 Multi Token Standard] (TIP-1155, the TRON-side analogue of EIP-1155).
+
+The standard consists of three interfaces which fulfill different roles, found here as {ITRC1155}, {ITRC1155MetadataURI} and {ITRC1155Receiver}.
+
+{TRC1155} implements the mandatory {ITRC1155} interface, as well as the optional extension {ITRC1155MetadataURI}, by relying on the substitution mechanism to use the same URI for all token types, dramatically reducing gas costs.
+
+Additionally there are multiple custom extensions, including:
+
+* designation of addresses that can pause token transfers for all users ({TRC1155Pausable}).
+* destruction of own tokens ({TRC1155Burnable}).
+* crosschain bridging of tokens through TRC-7786 gateways ({TRC1155Crosschain}).
+
+NOTE: This core set of contracts is designed to be unopinionated, allowing developers to access the internal functions in TRC-1155 (such as <<TRC1155-_mint-address-uint256-uint256-bytes-,`_mint`>>) and expose them as external functions in the way they prefer.
+
+== Core
+
+:TransferSingle: pass:normal[xref:#ITRC1155-TransferSingle-address-address-address-uint256-uint256-[`++TransferSingle++`]]
+:TransferBatch: pass:normal[xref:#ITRC1155-TransferBatch-address-address-address-uint256---uint256---[`++TransferBatch++`]]
+:ApprovalForAll: pass:normal[xref:#ITRC1155-ApprovalForAll-address-address-bool-[`++ApprovalForAll++`]]
+:URI: pass:normal[xref:#ITRC1155-URI-string-uint256-[`++URI++`]]
+:balanceOf: pass:normal[xref:#ITRC1155-balanceOf-address-uint256-[`++balanceOf++`]]
+:balanceOfBatch: pass:normal[xref:#ITRC1155-balanceOfBatch-address---uint256---[`++balanceOfBatch++`]]
+:setApprovalForAll: pass:normal[xref:#ITRC1155-setApprovalForAll-address-bool-[`++setApprovalForAll++`]]
+:isApprovedForAll: pass:normal[xref:#ITRC1155-isApprovedForAll-address-address-[`++isApprovedForAll++`]]
+:safeTransferFrom: pass:normal[xref:#ITRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-[`++safeTransferFrom++`]]
+:safeBatchTransferFrom: pass:normal[xref:#ITRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-[`++safeBatchTransferFrom++`]]
+
+:balanceOf-address-uint256: pass:normal[xref:#ITRC1155-balanceOf-address-uint256-[`++balanceOf++`]]
+:balanceOfBatch-address---uint256--: pass:normal[xref:#ITRC1155-balanceOfBatch-address---uint256---[`++balanceOfBatch++`]]
+:setApprovalForAll-address-bool: pass:normal[xref:#ITRC1155-setApprovalForAll-address-bool-[`++setApprovalForAll++`]]
+:isApprovedForAll-address-address: pass:normal[xref:#ITRC1155-isApprovedForAll-address-address-[`++isApprovedForAll++`]]
+:safeTransferFrom-address-address-uint256-uint256-bytes: pass:normal[xref:#ITRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-[`++safeTransferFrom++`]]
+:safeBatchTransferFrom-address-address-uint256---uint256---bytes: pass:normal[xref:#ITRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-[`++safeBatchTransferFrom++`]]
+
+[.contract]
+[[ITRC1155]]
+=== `++ITRC1155++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC1155/ITRC1155.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC1155/ITRC1155.sol";
+```
+
+Required interface of a TRC-1155 compliant contract, as defined in
+https://github.com/tronprotocol/tips/blob/master/tip-1155.md[TIP-1155]
+(the TRON-side analogue of https://eips.ethereum.org/EIPS/eip-1155[EIP-1155]).
+
+[.contract-index]
+.Functions
+--
+* {xref-ITRC1155-balanceOf-address-uint256-}[`++balanceOf(account, id)++`]
+* {xref-ITRC1155-balanceOfBatch-address---uint256---}[`++balanceOfBatch(accounts, ids)++`]
+* {xref-ITRC1155-setApprovalForAll-address-bool-}[`++setApprovalForAll(operator, approved)++`]
+* {xref-ITRC1155-isApprovedForAll-address-address-}[`++isApprovedForAll(account, operator)++`]
+* {xref-ITRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-}[`++safeTransferFrom(from, to, id, value, data)++`]
+* {xref-ITRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-}[`++safeBatchTransferFrom(from, to, ids, values, data)++`]
+
+[.contract-subindex-inherited]
+.ITRC165
+* {xref-ITRC165-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+
+--
+
+[.contract-index]
+.Events
+--
+* {xref-ITRC1155-TransferSingle-address-address-address-uint256-uint256-}[`++TransferSingle(operator, from, to, id, value)++`]
+* {xref-ITRC1155-TransferBatch-address-address-address-uint256---uint256---}[`++TransferBatch(operator, from, to, ids, values)++`]
+* {xref-ITRC1155-ApprovalForAll-address-address-bool-}[`++ApprovalForAll(account, operator, approved)++`]
+* {xref-ITRC1155-URI-string-uint256-}[`++URI(value, id)++`]
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-item]
+[[ITRC1155-balanceOf-address-uint256-]]
+==== `[.contract-item-name]#++balanceOf++#++(address account, uint256 id) → uint256++` [.item-kind]#external#
+
+Returns the value of tokens of token type `id` owned by `account`.
+
+[.contract-item]
+[[ITRC1155-balanceOfBatch-address---uint256---]]
+==== `[.contract-item-name]#++balanceOfBatch++#++(address[] accounts, uint256[] ids) → uint256[]++` [.item-kind]#external#
+
+xref:ROOT:trc1155.adoc#batch-operations[Batched] version of {balanceOf}.
+
+Requirements:
+
+- `accounts` and `ids` must have the same length.
+
+[.contract-item]
+[[ITRC1155-setApprovalForAll-address-bool-]]
+==== `[.contract-item-name]#++setApprovalForAll++#++(address operator, bool approved)++` [.item-kind]#external#
+
+Grants or revokes permission to `operator` to transfer the caller's tokens, according to `approved`,
+
+Emits an {ApprovalForAll} event.
+
+Requirements:
+
+- `operator` cannot be the zero address.
+
+[.contract-item]
+[[ITRC1155-isApprovedForAll-address-address-]]
+==== `[.contract-item-name]#++isApprovedForAll++#++(address account, address operator) → bool++` [.item-kind]#external#
+
+Returns true if `operator` is approved to transfer ``account``'s tokens.
+
+See {setApprovalForAll}.
+
+[.contract-item]
+[[ITRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-]]
+==== `[.contract-item-name]#++safeTransferFrom++#++(address from, address to, uint256 id, uint256 value, bytes data)++` [.item-kind]#external#
+
+Transfers a `value` amount of tokens of type `id` from `from` to `to`.
+
+WARNING: This function can potentially allow a reentrancy attack when transferring tokens
+to an untrusted contract, when invoking {ITRC1155Receiver-onERC1155Received} on the receiver.
+Ensure to follow the checks-effects-interactions pattern and consider employing
+reentrancy guards when interacting with untrusted contracts.
+
+Emits a {TransferSingle} event.
+
+Requirements:
+
+- `to` cannot be the zero address.
+- If the caller is not `from`, it must have been approved to spend ``from``'s tokens via {setApprovalForAll}.
+- `from` must have a balance of tokens of type `id` of at least `value` amount.
+- If `to` refers to a smart contract, it must implement {ITRC1155Receiver-onERC1155Received} and return the
+acceptance magic value.
+
+[.contract-item]
+[[ITRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-]]
+==== `[.contract-item-name]#++safeBatchTransferFrom++#++(address from, address to, uint256[] ids, uint256[] values, bytes data)++` [.item-kind]#external#
+
+xref:ROOT:trc1155.adoc#batch-operations[Batched] version of {safeTransferFrom}.
+
+WARNING: This function can potentially allow a reentrancy attack when transferring tokens
+to an untrusted contract, when invoking {ITRC1155Receiver-onERC1155BatchReceived} on the receiver.
+Ensure to follow the checks-effects-interactions pattern and consider employing
+reentrancy guards when interacting with untrusted contracts.
+
+Emits either a {TransferSingle} or a {TransferBatch} event, depending on the length of the array arguments.
+
+Requirements:
+
+- `ids` and `values` must have the same length.
+- If `to` refers to a smart contract, it must implement {ITRC1155Receiver-onERC1155BatchReceived} and return the
+acceptance magic value.
+
+[.contract-item]
+[[ITRC1155-TransferSingle-address-address-address-uint256-uint256-]]
+==== `[.contract-item-name]#++TransferSingle++#++(address indexed operator, address indexed from, address indexed to, uint256 id, uint256 value)++` [.item-kind]#event#
+
+Emitted when `value` amount of tokens of type `id` are transferred from `from` to `to` by `operator`.
+
+[.contract-item]
+[[ITRC1155-TransferBatch-address-address-address-uint256---uint256---]]
+==== `[.contract-item-name]#++TransferBatch++#++(address indexed operator, address indexed from, address indexed to, uint256[] ids, uint256[] values)++` [.item-kind]#event#
+
+Equivalent to multiple {TransferSingle} events, where `operator`, `from` and `to` are the same for all
+transfers.
+
+[.contract-item]
+[[ITRC1155-ApprovalForAll-address-address-bool-]]
+==== `[.contract-item-name]#++ApprovalForAll++#++(address indexed account, address indexed operator, bool approved)++` [.item-kind]#event#
+
+Emitted when `account` grants or revokes permission to `operator` to transfer their tokens, according to
+`approved`.
+
+[.contract-item]
+[[ITRC1155-URI-string-uint256-]]
+==== `[.contract-item-name]#++URI++#++(string value, uint256 indexed id)++` [.item-kind]#event#
+
+Emitted when the URI for token type `id` changes to `value`, if it is a non-programmatic URI.
+
+If an {URI} event was emitted for `id`, the standard
+https://eips.ethereum.org/EIPS/eip-1155#metadata-extensions[guarantees] that `value` will equal the value
+returned by {ITRC1155MetadataURI-uri}.
+
+:uri: pass:normal[xref:#ITRC1155MetadataURI-uri-uint256-[`++uri++`]]
+
+:uri-uint256: pass:normal[xref:#ITRC1155MetadataURI-uri-uint256-[`++uri++`]]
+
+[.contract]
+[[ITRC1155MetadataURI]]
+=== `++ITRC1155MetadataURI++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC1155/extensions/ITRC1155MetadataURI.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC1155/extensions/ITRC1155MetadataURI.sol";
+```
+
+Interface of the optional TRC1155MetadataExtension interface, as defined
+in the https://eips.ethereum.org/EIPS/eip-1155#metadata-extensions[EIP-1155 metadata extensions]
+section (mirrored by TIP-1155).
+
+[.contract-index]
+.Functions
+--
+* {xref-ITRC1155MetadataURI-uri-uint256-}[`++uri(id)++`]
+
+[.contract-subindex-inherited]
+.ITRC1155
+* {xref-ITRC1155-balanceOf-address-uint256-}[`++balanceOf(account, id)++`]
+* {xref-ITRC1155-balanceOfBatch-address---uint256---}[`++balanceOfBatch(accounts, ids)++`]
+* {xref-ITRC1155-setApprovalForAll-address-bool-}[`++setApprovalForAll(operator, approved)++`]
+* {xref-ITRC1155-isApprovedForAll-address-address-}[`++isApprovedForAll(account, operator)++`]
+* {xref-ITRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-}[`++safeTransferFrom(from, to, id, value, data)++`]
+* {xref-ITRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-}[`++safeBatchTransferFrom(from, to, ids, values, data)++`]
+
+[.contract-subindex-inherited]
+.ITRC165
+* {xref-ITRC165-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+
+--
+
+[.contract-index]
+.Events
+--
+
+[.contract-subindex-inherited]
+.ITRC1155
+* {xref-ITRC1155-TransferSingle-address-address-address-uint256-uint256-}[`++TransferSingle(operator, from, to, id, value)++`]
+* {xref-ITRC1155-TransferBatch-address-address-address-uint256---uint256---}[`++TransferBatch(operator, from, to, ids, values)++`]
+* {xref-ITRC1155-ApprovalForAll-address-address-bool-}[`++ApprovalForAll(account, operator, approved)++`]
+* {xref-ITRC1155-URI-string-uint256-}[`++URI(value, id)++`]
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-item]
+[[ITRC1155MetadataURI-uri-uint256-]]
+==== `[.contract-item-name]#++uri++#++(uint256 id) → string++` [.item-kind]#external#
+
+Returns the URI for token type `id`.
+
+If the `\{id\}` substring is present in the URI, it must be replaced by
+clients with the actual token type ID.
+
+:constructor: pass:normal[xref:#TRC1155-constructor-string-[`++constructor++`]]
+:supportsInterface: pass:normal[xref:#TRC1155-supportsInterface-bytes4-[`++supportsInterface++`]]
+:uri: pass:normal[xref:#TRC1155-uri-uint256-[`++uri++`]]
+:balanceOf: pass:normal[xref:#TRC1155-balanceOf-address-uint256-[`++balanceOf++`]]
+:balanceOfBatch: pass:normal[xref:#TRC1155-balanceOfBatch-address---uint256---[`++balanceOfBatch++`]]
+:setApprovalForAll: pass:normal[xref:#TRC1155-setApprovalForAll-address-bool-[`++setApprovalForAll++`]]
+:isApprovedForAll: pass:normal[xref:#TRC1155-isApprovedForAll-address-address-[`++isApprovedForAll++`]]
+:safeTransferFrom: pass:normal[xref:#TRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-[`++safeTransferFrom++`]]
+:safeBatchTransferFrom: pass:normal[xref:#TRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-[`++safeBatchTransferFrom++`]]
+:_checkAuthorized: pass:normal[xref:#TRC1155-_checkAuthorized-address-address-[`++_checkAuthorized++`]]
+:_update: pass:normal[xref:#TRC1155-_update-address-address-uint256---uint256---[`++_update++`]]
+:_updateWithAcceptanceCheck: pass:normal[xref:#TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-[`++_updateWithAcceptanceCheck++`]]
+:_updateWithAcceptanceCheck: pass:normal[xref:#TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-bool-[`++_updateWithAcceptanceCheck++`]]
+:_safeTransferFrom: pass:normal[xref:#TRC1155-_safeTransferFrom-address-address-uint256-uint256-bytes-[`++_safeTransferFrom++`]]
+:_safeBatchTransferFrom: pass:normal[xref:#TRC1155-_safeBatchTransferFrom-address-address-uint256---uint256---bytes-[`++_safeBatchTransferFrom++`]]
+:_setURI: pass:normal[xref:#TRC1155-_setURI-string-[`++_setURI++`]]
+:_mint: pass:normal[xref:#TRC1155-_mint-address-uint256-uint256-bytes-[`++_mint++`]]
+:_mintBatch: pass:normal[xref:#TRC1155-_mintBatch-address-uint256---uint256---bytes-[`++_mintBatch++`]]
+:_burn: pass:normal[xref:#TRC1155-_burn-address-uint256-uint256-[`++_burn++`]]
+:_burnBatch: pass:normal[xref:#TRC1155-_burnBatch-address-uint256---uint256---[`++_burnBatch++`]]
+:_setApprovalForAll: pass:normal[xref:#TRC1155-_setApprovalForAll-address-address-bool-[`++_setApprovalForAll++`]]
+
+:constructor-string: pass:normal[xref:#TRC1155-constructor-string-[`++constructor++`]]
+:supportsInterface-bytes4: pass:normal[xref:#TRC1155-supportsInterface-bytes4-[`++supportsInterface++`]]
+:uri-uint256: pass:normal[xref:#TRC1155-uri-uint256-[`++uri++`]]
+:balanceOf-address-uint256: pass:normal[xref:#TRC1155-balanceOf-address-uint256-[`++balanceOf++`]]
+:balanceOfBatch-address---uint256--: pass:normal[xref:#TRC1155-balanceOfBatch-address---uint256---[`++balanceOfBatch++`]]
+:setApprovalForAll-address-bool: pass:normal[xref:#TRC1155-setApprovalForAll-address-bool-[`++setApprovalForAll++`]]
+:isApprovedForAll-address-address: pass:normal[xref:#TRC1155-isApprovedForAll-address-address-[`++isApprovedForAll++`]]
+:safeTransferFrom-address-address-uint256-uint256-bytes: pass:normal[xref:#TRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-[`++safeTransferFrom++`]]
+:safeBatchTransferFrom-address-address-uint256---uint256---bytes: pass:normal[xref:#TRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-[`++safeBatchTransferFrom++`]]
+:_checkAuthorized-address-address: pass:normal[xref:#TRC1155-_checkAuthorized-address-address-[`++_checkAuthorized++`]]
+:_update-address-address-uint256---uint256--: pass:normal[xref:#TRC1155-_update-address-address-uint256---uint256---[`++_update++`]]
+:_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes: pass:normal[xref:#TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-[`++_updateWithAcceptanceCheck++`]]
+:_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-bool: pass:normal[xref:#TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-bool-[`++_updateWithAcceptanceCheck++`]]
+:_safeTransferFrom-address-address-uint256-uint256-bytes: pass:normal[xref:#TRC1155-_safeTransferFrom-address-address-uint256-uint256-bytes-[`++_safeTransferFrom++`]]
+:_safeBatchTransferFrom-address-address-uint256---uint256---bytes: pass:normal[xref:#TRC1155-_safeBatchTransferFrom-address-address-uint256---uint256---bytes-[`++_safeBatchTransferFrom++`]]
+:_setURI-string: pass:normal[xref:#TRC1155-_setURI-string-[`++_setURI++`]]
+:_mint-address-uint256-uint256-bytes: pass:normal[xref:#TRC1155-_mint-address-uint256-uint256-bytes-[`++_mint++`]]
+:_mintBatch-address-uint256---uint256---bytes: pass:normal[xref:#TRC1155-_mintBatch-address-uint256---uint256---bytes-[`++_mintBatch++`]]
+:_burn-address-uint256-uint256: pass:normal[xref:#TRC1155-_burn-address-uint256-uint256-[`++_burn++`]]
+:_burnBatch-address-uint256---uint256--: pass:normal[xref:#TRC1155-_burnBatch-address-uint256---uint256---[`++_burnBatch++`]]
+:_setApprovalForAll-address-address-bool: pass:normal[xref:#TRC1155-_setApprovalForAll-address-address-bool-[`++_setApprovalForAll++`]]
+
+[.contract]
+[[TRC1155]]
+=== `++TRC1155++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC1155/TRC1155.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC1155/TRC1155.sol";
+```
+
+Implementation of the basic standard multi-token defined in
+https://github.com/tronprotocol/tips/blob/master/tip-1155.md[TIP-1155]
+(the TRON-side analogue of https://eips.ethereum.org/EIPS/eip-1155[EIP-1155]).
+
+Originally based on code by Enjin: https://github.com/enjin/erc-1155
+
+[.contract-index]
+.Functions
+--
+* {xref-TRC1155-constructor-string-}[`++constructor(uri_)++`]
+* {xref-TRC1155-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+* {xref-TRC1155-uri-uint256-}[`++uri()++`]
+* {xref-TRC1155-balanceOf-address-uint256-}[`++balanceOf(account, id)++`]
+* {xref-TRC1155-balanceOfBatch-address---uint256---}[`++balanceOfBatch(accounts, ids)++`]
+* {xref-TRC1155-setApprovalForAll-address-bool-}[`++setApprovalForAll(operator, approved)++`]
+* {xref-TRC1155-isApprovedForAll-address-address-}[`++isApprovedForAll(account, operator)++`]
+* {xref-TRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-}[`++safeTransferFrom(from, to, id, value, data)++`]
+* {xref-TRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-}[`++safeBatchTransferFrom(from, to, ids, values, data)++`]
+* {xref-TRC1155-_checkAuthorized-address-address-}[`++_checkAuthorized(operator, owner)++`]
+* {xref-TRC1155-_update-address-address-uint256---uint256---}[`++_update(from, to, ids, values)++`]
+* {xref-TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-}[`++_updateWithAcceptanceCheck(from, to, ids, values, data)++`]
+* {xref-TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-bool-}[`++_updateWithAcceptanceCheck(from, to, ids, values, data, batch)++`]
+* {xref-TRC1155-_safeTransferFrom-address-address-uint256-uint256-bytes-}[`++_safeTransferFrom(from, to, id, value, data)++`]
+* {xref-TRC1155-_safeBatchTransferFrom-address-address-uint256---uint256---bytes-}[`++_safeBatchTransferFrom(from, to, ids, values, data)++`]
+* {xref-TRC1155-_setURI-string-}[`++_setURI(newuri)++`]
+* {xref-TRC1155-_mint-address-uint256-uint256-bytes-}[`++_mint(to, id, value, data)++`]
+* {xref-TRC1155-_mintBatch-address-uint256---uint256---bytes-}[`++_mintBatch(to, ids, values, data)++`]
+* {xref-TRC1155-_burn-address-uint256-uint256-}[`++_burn(from, id, value)++`]
+* {xref-TRC1155-_burnBatch-address-uint256---uint256---}[`++_burnBatch(from, ids, values)++`]
+* {xref-TRC1155-_setApprovalForAll-address-address-bool-}[`++_setApprovalForAll(owner, operator, approved)++`]
+
+[.contract-subindex-inherited]
+.ITRC1155Errors
+
+[.contract-subindex-inherited]
+.ITRC1155MetadataURI
+
+[.contract-subindex-inherited]
+.ITRC1155
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Events
+--
+
+[.contract-subindex-inherited]
+.ITRC1155Errors
+
+[.contract-subindex-inherited]
+.ITRC1155MetadataURI
+
+[.contract-subindex-inherited]
+.ITRC1155
+* {xref-ITRC1155-TransferSingle-address-address-address-uint256-uint256-}[`++TransferSingle(operator, from, to, id, value)++`]
+* {xref-ITRC1155-TransferBatch-address-address-address-uint256---uint256---}[`++TransferBatch(operator, from, to, ids, values)++`]
+* {xref-ITRC1155-ApprovalForAll-address-address-bool-}[`++ApprovalForAll(account, operator, approved)++`]
+* {xref-ITRC1155-URI-string-uint256-}[`++URI(value, id)++`]
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Errors
+--
+
+[.contract-subindex-inherited]
+.ITRC1155Errors
+* {xref-ITRC1155Errors-TRC1155InsufficientBalance-address-uint256-uint256-uint256-}[`++TRC1155InsufficientBalance(sender, balance, needed, tokenId)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidSender-address-}[`++TRC1155InvalidSender(sender)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidReceiver-address-}[`++TRC1155InvalidReceiver(receiver)++`]
+* {xref-ITRC1155Errors-TRC1155MissingApprovalForAll-address-address-}[`++TRC1155MissingApprovalForAll(operator, owner)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidApprover-address-}[`++TRC1155InvalidApprover(approver)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidOperator-address-}[`++TRC1155InvalidOperator(operator)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidArrayLength-uint256-uint256-}[`++TRC1155InvalidArrayLength(idsLength, valuesLength)++`]
+
+[.contract-subindex-inherited]
+.ITRC1155MetadataURI
+
+[.contract-subindex-inherited]
+.ITRC1155
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-item]
+[[TRC1155-constructor-string-]]
+==== `[.contract-item-name]#++constructor++#++(string uri_)++` [.item-kind]#internal#
+
+See {_setURI}.
+
+[.contract-item]
+[[TRC1155-supportsInterface-bytes4-]]
+==== `[.contract-item-name]#++supportsInterface++#++(bytes4 interfaceId) → bool++` [.item-kind]#public#
+
+Returns true if this contract implements the interface defined by
+`interfaceId`. See the corresponding
+https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified[ERC section]
+to learn more about how these ids are created.
+
+This function call must use less than 30 000 gas.
+
+[.contract-item]
+[[TRC1155-uri-uint256-]]
+==== `[.contract-item-name]#++uri++#++(uint256) → string++` [.item-kind]#public#
+
+See {ITRC1155MetadataURI-uri}.
+
+This implementation returns the same URI for *all* token types. It relies
+on the token type ID substitution mechanism
+https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the standard].
+
+Clients calling this function must replace the `\{id\}` substring with the
+actual token type ID.
+
+[.contract-item]
+[[TRC1155-balanceOf-address-uint256-]]
+==== `[.contract-item-name]#++balanceOf++#++(address account, uint256 id) → uint256++` [.item-kind]#public#
+
+Returns the value of tokens of token type `id` owned by `account`.
+
+[.contract-item]
+[[TRC1155-balanceOfBatch-address---uint256---]]
+==== `[.contract-item-name]#++balanceOfBatch++#++(address[] accounts, uint256[] ids) → uint256[]++` [.item-kind]#public#
+
+See {ITRC1155-balanceOfBatch}.
+
+Requirements:
+
+- `accounts` and `ids` must have the same length.
+
+[.contract-item]
+[[TRC1155-setApprovalForAll-address-bool-]]
+==== `[.contract-item-name]#++setApprovalForAll++#++(address operator, bool approved)++` [.item-kind]#public#
+
+Grants or revokes permission to `operator` to transfer the caller's tokens, according to `approved`,
+
+Emits an {ApprovalForAll} event.
+
+Requirements:
+
+- `operator` cannot be the zero address.
+
+[.contract-item]
+[[TRC1155-isApprovedForAll-address-address-]]
+==== `[.contract-item-name]#++isApprovedForAll++#++(address account, address operator) → bool++` [.item-kind]#public#
+
+Returns true if `operator` is approved to transfer ``account``'s tokens.
+
+See {setApprovalForAll}.
+
+[.contract-item]
+[[TRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-]]
+==== `[.contract-item-name]#++safeTransferFrom++#++(address from, address to, uint256 id, uint256 value, bytes data)++` [.item-kind]#public#
+
+Transfers a `value` amount of tokens of type `id` from `from` to `to`.
+
+WARNING: This function can potentially allow a reentrancy attack when transferring tokens
+to an untrusted contract, when invoking {ITRC1155Receiver-onERC1155Received} on the receiver.
+Ensure to follow the checks-effects-interactions pattern and consider employing
+reentrancy guards when interacting with untrusted contracts.
+
+Emits a {TransferSingle} event.
+
+Requirements:
+
+- `to` cannot be the zero address.
+- If the caller is not `from`, it must have been approved to spend ``from``'s tokens via {setApprovalForAll}.
+- `from` must have a balance of tokens of type `id` of at least `value` amount.
+- If `to` refers to a smart contract, it must implement {ITRC1155Receiver-onERC1155Received} and return the
+acceptance magic value.
+
+[.contract-item]
+[[TRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-]]
+==== `[.contract-item-name]#++safeBatchTransferFrom++#++(address from, address to, uint256[] ids, uint256[] values, bytes data)++` [.item-kind]#public#
+
+xref:ROOT:trc1155.adoc#batch-operations[Batched] version of {safeTransferFrom}.
+
+WARNING: This function can potentially allow a reentrancy attack when transferring tokens
+to an untrusted contract, when invoking {ITRC1155Receiver-onERC1155BatchReceived} on the receiver.
+Ensure to follow the checks-effects-interactions pattern and consider employing
+reentrancy guards when interacting with untrusted contracts.
+
+Emits either a {TransferSingle} or a {TransferBatch} event, depending on the length of the array arguments.
+
+Requirements:
+
+- `ids` and `values` must have the same length.
+- If `to` refers to a smart contract, it must implement {ITRC1155Receiver-onERC1155BatchReceived} and return the
+acceptance magic value.
+
+[.contract-item]
+[[TRC1155-_checkAuthorized-address-address-]]
+==== `[.contract-item-name]#++_checkAuthorized++#++(address operator, address owner)++` [.item-kind]#internal#
+
+Checks if `operator` is authorized to transfer tokens owned by `owner`. Reverts with {TRC1155MissingApprovalForAll} if not.
+
+[.contract-item]
+[[TRC1155-_update-address-address-uint256---uint256---]]
+==== `[.contract-item-name]#++_update++#++(address from, address to, uint256[] ids, uint256[] values)++` [.item-kind]#internal#
+
+Transfers a `value` amount of tokens of type `id` from `from` to `to`. Will mint (or burn) if `from`
+(or `to`) is the zero address.
+
+Emits a {TransferSingle} event if the arrays contain one element, and {TransferBatch} otherwise.
+
+Requirements:
+
+- If `to` refers to a smart contract, it must implement either {ITRC1155Receiver-onERC1155Received}
+  or {ITRC1155Receiver-onERC1155BatchReceived} and return the acceptance magic value.
+- `ids` and `values` must have the same length.
+
+NOTE: The TRC-1155 acceptance check is not performed in this function. See {_updateWithAcceptanceCheck} instead.
+
+[.contract-item]
+[[TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-]]
+==== `[.contract-item-name]#++_updateWithAcceptanceCheck++#++(address from, address to, uint256[] ids, uint256[] values, bytes data)++` [.item-kind]#internal#
+
+Version of {_update} that performs the token acceptance check by calling
+{ITRC1155Receiver-onERC1155Received} or {ITRC1155Receiver-onERC1155BatchReceived} on the receiver address if it
+contains code (eg. is a smart contract at the moment of execution).
+
+IMPORTANT: Overriding this function is discouraged because it poses a reentrancy risk from the receiver. So any
+update to the contract state after this function would break the check-effect-interaction pattern. Consider
+overriding {_update} instead.
+
+NOTE: This version is kept for backward compatibility. We recommend calling the alternative version with a boolean
+flag in order to achieve better control over which hook to call.
+
+[.contract-item]
+[[TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-bool-]]
+==== `[.contract-item-name]#++_updateWithAcceptanceCheck++#++(address from, address to, uint256[] ids, uint256[] values, bytes data, bool batch)++` [.item-kind]#internal#
+
+Version of {_update} that performs the token acceptance check by calling
+{ITRC1155Receiver-onERC1155Received} or {ITRC1155Receiver-onERC1155BatchReceived} on the receiver address if it
+contains code (eg. is a smart contract at the moment of execution).
+
+IMPORTANT: Overriding this function is discouraged because it poses a reentrancy risk from the receiver. So any
+update to the contract state after this function would break the check-effect-interaction pattern. Consider
+overriding {_update} instead.
+
+[.contract-item]
+[[TRC1155-_safeTransferFrom-address-address-uint256-uint256-bytes-]]
+==== `[.contract-item-name]#++_safeTransferFrom++#++(address from, address to, uint256 id, uint256 value, bytes data)++` [.item-kind]#internal#
+
+Transfers a `value` tokens of token type `id` from `from` to `to`.
+
+Emits a {TransferSingle} event.
+
+Requirements:
+
+- `to` cannot be the zero address.
+- `from` must have a balance of tokens of type `id` of at least `value` amount.
+- If `to` refers to a smart contract, it must implement {ITRC1155Receiver-onERC1155Received} and return the
+acceptance magic value.
+
+[.contract-item]
+[[TRC1155-_safeBatchTransferFrom-address-address-uint256---uint256---bytes-]]
+==== `[.contract-item-name]#++_safeBatchTransferFrom++#++(address from, address to, uint256[] ids, uint256[] values, bytes data)++` [.item-kind]#internal#
+
+xref:ROOT:trc1155.adoc#batch-operations[Batched] version of {_safeTransferFrom}.
+
+Emits a {TransferBatch} event.
+
+Requirements:
+
+- If `to` refers to a smart contract, it must implement {ITRC1155Receiver-onERC1155BatchReceived} and return the
+acceptance magic value.
+- `ids` and `values` must have the same length.
+
+[.contract-item]
+[[TRC1155-_setURI-string-]]
+==== `[.contract-item-name]#++_setURI++#++(string newuri)++` [.item-kind]#internal#
+
+Sets a new URI for all token types, by relying on the token type ID
+substitution mechanism
+https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the standard].
+
+By this mechanism, any occurrence of the `\{id\}` substring in either the
+URI or any of the values in the JSON file at said URI will be replaced by
+clients with the token type ID.
+
+For example, the `https://token-cdn-domain/\{id\}.json` URI would be
+interpreted by clients as
+`https://token-cdn-domain/000000000000000000000000000000000000000000000000000000000004cce0.json`
+for token type ID 0x4cce0.
+
+See {uri}.
+
+Because these URIs cannot be meaningfully represented by the {URI} event,
+this function emits no events.
+
+[.contract-item]
+[[TRC1155-_mint-address-uint256-uint256-bytes-]]
+==== `[.contract-item-name]#++_mint++#++(address to, uint256 id, uint256 value, bytes data)++` [.item-kind]#internal#
+
+Creates a `value` amount of tokens of type `id`, and assigns them to `to`.
+
+Emits a {TransferSingle} event.
+
+Requirements:
+
+- `to` cannot be the zero address.
+- If `to` refers to a smart contract, it must implement {ITRC1155Receiver-onERC1155Received} and return the
+acceptance magic value.
+
+[.contract-item]
+[[TRC1155-_mintBatch-address-uint256---uint256---bytes-]]
+==== `[.contract-item-name]#++_mintBatch++#++(address to, uint256[] ids, uint256[] values, bytes data)++` [.item-kind]#internal#
+
+xref:ROOT:trc1155.adoc#batch-operations[Batched] version of {_mint}.
+
+Emits a {TransferBatch} event.
+
+Requirements:
+
+- `ids` and `values` must have the same length.
+- `to` cannot be the zero address.
+- If `to` refers to a smart contract, it must implement {ITRC1155Receiver-onERC1155BatchReceived} and return the
+acceptance magic value.
+
+[.contract-item]
+[[TRC1155-_burn-address-uint256-uint256-]]
+==== `[.contract-item-name]#++_burn++#++(address from, uint256 id, uint256 value)++` [.item-kind]#internal#
+
+Destroys a `value` amount of tokens of type `id` from `from`
+
+Emits a {TransferSingle} event.
+
+Requirements:
+
+- `from` cannot be the zero address.
+- `from` must have at least `value` amount of tokens of type `id`.
+
+[.contract-item]
+[[TRC1155-_burnBatch-address-uint256---uint256---]]
+==== `[.contract-item-name]#++_burnBatch++#++(address from, uint256[] ids, uint256[] values)++` [.item-kind]#internal#
+
+xref:ROOT:trc1155.adoc#batch-operations[Batched] version of {_burn}.
+
+Emits a {TransferBatch} event.
+
+Requirements:
+
+- `from` cannot be the zero address.
+- `from` must have at least `value` amount of tokens of type `id`.
+- `ids` and `values` must have the same length.
+
+[.contract-item]
+[[TRC1155-_setApprovalForAll-address-address-bool-]]
+==== `[.contract-item-name]#++_setApprovalForAll++#++(address owner, address operator, bool approved)++` [.item-kind]#internal#
+
+Approve `operator` to operate on all of `owner` tokens
+
+Emits an {ApprovalForAll} event.
+
+Requirements:
+
+- `owner` cannot be the zero address.
+- `operator` cannot be the zero address.
+
+:onERC1155Received: pass:normal[xref:#ITRC1155Receiver-onERC1155Received-address-address-uint256-uint256-bytes-[`++onERC1155Received++`]]
+:onERC1155BatchReceived: pass:normal[xref:#ITRC1155Receiver-onERC1155BatchReceived-address-address-uint256---uint256---bytes-[`++onERC1155BatchReceived++`]]
+
+:onERC1155Received-address-address-uint256-uint256-bytes: pass:normal[xref:#ITRC1155Receiver-onERC1155Received-address-address-uint256-uint256-bytes-[`++onERC1155Received++`]]
+:onERC1155BatchReceived-address-address-uint256---uint256---bytes: pass:normal[xref:#ITRC1155Receiver-onERC1155BatchReceived-address-address-uint256---uint256---bytes-[`++onERC1155BatchReceived++`]]
+
+[.contract]
+[[ITRC1155Receiver]]
+=== `++ITRC1155Receiver++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC1155/ITRC1155Receiver.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC1155/ITRC1155Receiver.sol";
+```
+
+Interface that must be implemented by smart contracts in order to receive
+TRC-1155 token transfers.
+
+NOTE: The callbacks deliberately keep the `onERC1155Received` / `onERC1155BatchReceived` names (and the
+magic values `0xf23a6e61` / `0xbc197c81`). TIP-1155 adopts the EIP-1155 receiver interface without
+modification, so — unlike TIP-721, which renames its hook to `onTRC721Received` — these names and
+selectors must not be changed, to remain compatible with existing EIP-1155 receivers.
+
+[.contract-index]
+.Functions
+--
+* {xref-ITRC1155Receiver-onERC1155Received-address-address-uint256-uint256-bytes-}[`++onERC1155Received(operator, from, id, value, data)++`]
+* {xref-ITRC1155Receiver-onERC1155BatchReceived-address-address-uint256---uint256---bytes-}[`++onERC1155BatchReceived(operator, from, ids, values, data)++`]
+
+[.contract-subindex-inherited]
+.ITRC165
+* {xref-ITRC165-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+
+--
+
+[.contract-item]
+[[ITRC1155Receiver-onERC1155Received-address-address-uint256-uint256-bytes-]]
+==== `[.contract-item-name]#++onERC1155Received++#++(address operator, address from, uint256 id, uint256 value, bytes data) → bytes4++` [.item-kind]#external#
+
+Handles the receipt of a single TRC-1155 token type. This function is
+called at the end of a `safeTransferFrom` after the balance has been updated.
+
+NOTE: To accept the transfer, this must return
+`bytes4(keccak256("onERC1155Received(address,address,uint256,uint256,bytes)"))`
+(i.e. 0xf23a6e61, or its own function selector).
+
+[.contract-item]
+[[ITRC1155Receiver-onERC1155BatchReceived-address-address-uint256---uint256---bytes-]]
+==== `[.contract-item-name]#++onERC1155BatchReceived++#++(address operator, address from, uint256[] ids, uint256[] values, bytes data) → bytes4++` [.item-kind]#external#
+
+Handles the receipt of a multiple TRC-1155 token types. This function
+is called at the end of a `safeBatchTransferFrom` after the balances have
+been updated.
+
+NOTE: To accept the transfer(s), this must return
+`bytes4(keccak256("onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)"))`
+(i.e. 0xbc197c81, or its own function selector).
+
+== Extensions
+
+:_update: pass:normal[xref:#TRC1155Pausable-_update-address-address-uint256---uint256---[`++_update++`]]
+
+:_update-address-address-uint256---uint256--: pass:normal[xref:#TRC1155Pausable-_update-address-address-uint256---uint256---[`++_update++`]]
+
+[.contract]
+[[TRC1155Pausable]]
+=== `++TRC1155Pausable++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC1155/extensions/TRC1155Pausable.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC1155/extensions/TRC1155Pausable.sol";
+```
+
+TRC-1155 token with pausable token transfers, minting and burning.
+
+Useful for scenarios such as preventing trades until the end of an evaluation
+period, or having an emergency switch for freezing all token transfers in the
+event of a large bug.
+
+IMPORTANT: This contract does not include public pause and unpause functions. In
+addition to inheriting this contract, you must define both functions, invoking the
+{Pausable-_pause} and {Pausable-_unpause} internal functions, with appropriate
+access control, e.g. using {AccessControl} or {Ownable}. Not doing so will
+make the contract pause mechanism of the contract unreachable, and thus unusable.
+
+[.contract-index]
+.Functions
+--
+* {xref-TRC1155Pausable-_update-address-address-uint256---uint256---}[`++_update(from, to, ids, values)++`]
+
+[.contract-subindex-inherited]
+.Pausable
+* {xref-Pausable-paused--}[`++paused()++`]
+* {xref-Pausable-_requireNotPaused--}[`++_requireNotPaused()++`]
+* {xref-Pausable-_requirePaused--}[`++_requirePaused()++`]
+* {xref-Pausable-_pause--}[`++_pause()++`]
+* {xref-Pausable-_unpause--}[`++_unpause()++`]
+
+[.contract-subindex-inherited]
+.TRC1155
+* {xref-TRC1155-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+* {xref-TRC1155-uri-uint256-}[`++uri()++`]
+* {xref-TRC1155-balanceOf-address-uint256-}[`++balanceOf(account, id)++`]
+* {xref-TRC1155-balanceOfBatch-address---uint256---}[`++balanceOfBatch(accounts, ids)++`]
+* {xref-TRC1155-setApprovalForAll-address-bool-}[`++setApprovalForAll(operator, approved)++`]
+* {xref-TRC1155-isApprovedForAll-address-address-}[`++isApprovedForAll(account, operator)++`]
+* {xref-TRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-}[`++safeTransferFrom(from, to, id, value, data)++`]
+* {xref-TRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-}[`++safeBatchTransferFrom(from, to, ids, values, data)++`]
+* {xref-TRC1155-_checkAuthorized-address-address-}[`++_checkAuthorized(operator, owner)++`]
+* {xref-TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-}[`++_updateWithAcceptanceCheck(from, to, ids, values, data)++`]
+* {xref-TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-bool-}[`++_updateWithAcceptanceCheck(from, to, ids, values, data, batch)++`]
+* {xref-TRC1155-_safeTransferFrom-address-address-uint256-uint256-bytes-}[`++_safeTransferFrom(from, to, id, value, data)++`]
+* {xref-TRC1155-_safeBatchTransferFrom-address-address-uint256---uint256---bytes-}[`++_safeBatchTransferFrom(from, to, ids, values, data)++`]
+* {xref-TRC1155-_setURI-string-}[`++_setURI(newuri)++`]
+* {xref-TRC1155-_mint-address-uint256-uint256-bytes-}[`++_mint(to, id, value, data)++`]
+* {xref-TRC1155-_mintBatch-address-uint256---uint256---bytes-}[`++_mintBatch(to, ids, values, data)++`]
+* {xref-TRC1155-_burn-address-uint256-uint256-}[`++_burn(from, id, value)++`]
+* {xref-TRC1155-_burnBatch-address-uint256---uint256---}[`++_burnBatch(from, ids, values)++`]
+* {xref-TRC1155-_setApprovalForAll-address-address-bool-}[`++_setApprovalForAll(owner, operator, approved)++`]
+
+[.contract-subindex-inherited]
+.ITRC1155Errors
+
+[.contract-subindex-inherited]
+.ITRC1155MetadataURI
+
+[.contract-subindex-inherited]
+.ITRC1155
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Events
+--
+
+[.contract-subindex-inherited]
+.Pausable
+* {xref-Pausable-Paused-address-}[`++Paused(account)++`]
+* {xref-Pausable-Unpaused-address-}[`++Unpaused(account)++`]
+
+[.contract-subindex-inherited]
+.TRC1155
+
+[.contract-subindex-inherited]
+.ITRC1155Errors
+
+[.contract-subindex-inherited]
+.ITRC1155MetadataURI
+
+[.contract-subindex-inherited]
+.ITRC1155
+* {xref-ITRC1155-TransferSingle-address-address-address-uint256-uint256-}[`++TransferSingle(operator, from, to, id, value)++`]
+* {xref-ITRC1155-TransferBatch-address-address-address-uint256---uint256---}[`++TransferBatch(operator, from, to, ids, values)++`]
+* {xref-ITRC1155-ApprovalForAll-address-address-bool-}[`++ApprovalForAll(account, operator, approved)++`]
+* {xref-ITRC1155-URI-string-uint256-}[`++URI(value, id)++`]
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Errors
+--
+
+[.contract-subindex-inherited]
+.Pausable
+* {xref-Pausable-EnforcedPause--}[`++EnforcedPause()++`]
+* {xref-Pausable-ExpectedPause--}[`++ExpectedPause()++`]
+
+[.contract-subindex-inherited]
+.TRC1155
+
+[.contract-subindex-inherited]
+.ITRC1155Errors
+* {xref-ITRC1155Errors-TRC1155InsufficientBalance-address-uint256-uint256-uint256-}[`++TRC1155InsufficientBalance(sender, balance, needed, tokenId)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidSender-address-}[`++TRC1155InvalidSender(sender)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidReceiver-address-}[`++TRC1155InvalidReceiver(receiver)++`]
+* {xref-ITRC1155Errors-TRC1155MissingApprovalForAll-address-address-}[`++TRC1155MissingApprovalForAll(operator, owner)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidApprover-address-}[`++TRC1155InvalidApprover(approver)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidOperator-address-}[`++TRC1155InvalidOperator(operator)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidArrayLength-uint256-uint256-}[`++TRC1155InvalidArrayLength(idsLength, valuesLength)++`]
+
+[.contract-subindex-inherited]
+.ITRC1155MetadataURI
+
+[.contract-subindex-inherited]
+.ITRC1155
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-item]
+[[TRC1155Pausable-_update-address-address-uint256---uint256---]]
+==== `[.contract-item-name]#++_update++#++(address from, address to, uint256[] ids, uint256[] values)++` [.item-kind]#internal#
+
+See {TRC1155-_update}.
+
+Requirements:
+
+- the contract must not be paused.
+
+:burn: pass:normal[xref:#TRC1155Burnable-burn-address-uint256-uint256-[`++burn++`]]
+:burnBatch: pass:normal[xref:#TRC1155Burnable-burnBatch-address-uint256---uint256---[`++burnBatch++`]]
+
+:burn-address-uint256-uint256: pass:normal[xref:#TRC1155Burnable-burn-address-uint256-uint256-[`++burn++`]]
+:burnBatch-address-uint256---uint256--: pass:normal[xref:#TRC1155Burnable-burnBatch-address-uint256---uint256---[`++burnBatch++`]]
+
+[.contract]
+[[TRC1155Burnable]]
+=== `++TRC1155Burnable++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC1155/extensions/TRC1155Burnable.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC1155/extensions/TRC1155Burnable.sol";
+```
+
+Extension of {TRC1155} that allows token holders to destroy both their
+own tokens and those that they have been approved to use.
+
+[.contract-index]
+.Functions
+--
+* {xref-TRC1155Burnable-burn-address-uint256-uint256-}[`++burn(account, id, value)++`]
+* {xref-TRC1155Burnable-burnBatch-address-uint256---uint256---}[`++burnBatch(account, ids, values)++`]
+
+[.contract-subindex-inherited]
+.TRC1155
+* {xref-TRC1155-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+* {xref-TRC1155-uri-uint256-}[`++uri()++`]
+* {xref-TRC1155-balanceOf-address-uint256-}[`++balanceOf(account, id)++`]
+* {xref-TRC1155-balanceOfBatch-address---uint256---}[`++balanceOfBatch(accounts, ids)++`]
+* {xref-TRC1155-setApprovalForAll-address-bool-}[`++setApprovalForAll(operator, approved)++`]
+* {xref-TRC1155-isApprovedForAll-address-address-}[`++isApprovedForAll(account, operator)++`]
+* {xref-TRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-}[`++safeTransferFrom(from, to, id, value, data)++`]
+* {xref-TRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-}[`++safeBatchTransferFrom(from, to, ids, values, data)++`]
+* {xref-TRC1155-_checkAuthorized-address-address-}[`++_checkAuthorized(operator, owner)++`]
+* {xref-TRC1155-_update-address-address-uint256---uint256---}[`++_update(from, to, ids, values)++`]
+* {xref-TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-}[`++_updateWithAcceptanceCheck(from, to, ids, values, data)++`]
+* {xref-TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-bool-}[`++_updateWithAcceptanceCheck(from, to, ids, values, data, batch)++`]
+* {xref-TRC1155-_safeTransferFrom-address-address-uint256-uint256-bytes-}[`++_safeTransferFrom(from, to, id, value, data)++`]
+* {xref-TRC1155-_safeBatchTransferFrom-address-address-uint256---uint256---bytes-}[`++_safeBatchTransferFrom(from, to, ids, values, data)++`]
+* {xref-TRC1155-_setURI-string-}[`++_setURI(newuri)++`]
+* {xref-TRC1155-_mint-address-uint256-uint256-bytes-}[`++_mint(to, id, value, data)++`]
+* {xref-TRC1155-_mintBatch-address-uint256---uint256---bytes-}[`++_mintBatch(to, ids, values, data)++`]
+* {xref-TRC1155-_burn-address-uint256-uint256-}[`++_burn(from, id, value)++`]
+* {xref-TRC1155-_burnBatch-address-uint256---uint256---}[`++_burnBatch(from, ids, values)++`]
+* {xref-TRC1155-_setApprovalForAll-address-address-bool-}[`++_setApprovalForAll(owner, operator, approved)++`]
+
+[.contract-subindex-inherited]
+.ITRC1155Errors
+
+[.contract-subindex-inherited]
+.ITRC1155MetadataURI
+
+[.contract-subindex-inherited]
+.ITRC1155
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Events
+--
+
+[.contract-subindex-inherited]
+.TRC1155
+
+[.contract-subindex-inherited]
+.ITRC1155Errors
+
+[.contract-subindex-inherited]
+.ITRC1155MetadataURI
+
+[.contract-subindex-inherited]
+.ITRC1155
+* {xref-ITRC1155-TransferSingle-address-address-address-uint256-uint256-}[`++TransferSingle(operator, from, to, id, value)++`]
+* {xref-ITRC1155-TransferBatch-address-address-address-uint256---uint256---}[`++TransferBatch(operator, from, to, ids, values)++`]
+* {xref-ITRC1155-ApprovalForAll-address-address-bool-}[`++ApprovalForAll(account, operator, approved)++`]
+* {xref-ITRC1155-URI-string-uint256-}[`++URI(value, id)++`]
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Errors
+--
+
+[.contract-subindex-inherited]
+.TRC1155
+
+[.contract-subindex-inherited]
+.ITRC1155Errors
+* {xref-ITRC1155Errors-TRC1155InsufficientBalance-address-uint256-uint256-uint256-}[`++TRC1155InsufficientBalance(sender, balance, needed, tokenId)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidSender-address-}[`++TRC1155InvalidSender(sender)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidReceiver-address-}[`++TRC1155InvalidReceiver(receiver)++`]
+* {xref-ITRC1155Errors-TRC1155MissingApprovalForAll-address-address-}[`++TRC1155MissingApprovalForAll(operator, owner)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidApprover-address-}[`++TRC1155InvalidApprover(approver)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidOperator-address-}[`++TRC1155InvalidOperator(operator)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidArrayLength-uint256-uint256-}[`++TRC1155InvalidArrayLength(idsLength, valuesLength)++`]
+
+[.contract-subindex-inherited]
+.ITRC1155MetadataURI
+
+[.contract-subindex-inherited]
+.ITRC1155
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-item]
+[[TRC1155Burnable-burn-address-uint256-uint256-]]
+==== `[.contract-item-name]#++burn++#++(address account, uint256 id, uint256 value)++` [.item-kind]#public#
+
+[.contract-item]
+[[TRC1155Burnable-burnBatch-address-uint256---uint256---]]
+==== `[.contract-item-name]#++burnBatch++#++(address account, uint256[] ids, uint256[] values)++` [.item-kind]#public#
+
+:crosschainTransferFrom: pass:normal[xref:#TRC1155Crosschain-crosschainTransferFrom-address-bytes-uint256-uint256-[`++crosschainTransferFrom++`]]
+:crosschainTransferFrom: pass:normal[xref:#TRC1155Crosschain-crosschainTransferFrom-address-bytes-uint256-uint256-bytes-[`++crosschainTransferFrom++`]]
+:crosschainTransferFrom: pass:normal[xref:#TRC1155Crosschain-crosschainTransferFrom-address-bytes-uint256---uint256---[`++crosschainTransferFrom++`]]
+:crosschainTransferFrom: pass:normal[xref:#TRC1155Crosschain-crosschainTransferFrom-address-bytes-uint256---uint256---bytes-[`++crosschainTransferFrom++`]]
+:_onSend: pass:normal[xref:#TRC1155Crosschain-_onSend-address-uint256---uint256---[`++_onSend++`]]
+:_onReceive: pass:normal[xref:#TRC1155Crosschain-_onReceive-address-uint256---uint256---bytes-[`++_onReceive++`]]
+
+:crosschainTransferFrom-address-bytes-uint256-uint256: pass:normal[xref:#TRC1155Crosschain-crosschainTransferFrom-address-bytes-uint256-uint256-[`++crosschainTransferFrom++`]]
+:crosschainTransferFrom-address-bytes-uint256-uint256-bytes: pass:normal[xref:#TRC1155Crosschain-crosschainTransferFrom-address-bytes-uint256-uint256-bytes-[`++crosschainTransferFrom++`]]
+:crosschainTransferFrom-address-bytes-uint256---uint256--: pass:normal[xref:#TRC1155Crosschain-crosschainTransferFrom-address-bytes-uint256---uint256---[`++crosschainTransferFrom++`]]
+:crosschainTransferFrom-address-bytes-uint256---uint256---bytes: pass:normal[xref:#TRC1155Crosschain-crosschainTransferFrom-address-bytes-uint256---uint256---bytes-[`++crosschainTransferFrom++`]]
+:_onSend-address-uint256---uint256--: pass:normal[xref:#TRC1155Crosschain-_onSend-address-uint256---uint256---[`++_onSend++`]]
+:_onReceive-address-uint256---uint256---bytes: pass:normal[xref:#TRC1155Crosschain-_onReceive-address-uint256---uint256---bytes-[`++_onReceive++`]]
+
+[.contract]
+[[TRC1155Crosschain]]
+=== `++TRC1155Crosschain++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC1155/extensions/TRC1155Crosschain.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC1155/extensions/TRC1155Crosschain.sol";
+```
+
+Extension of {TRC1155} that makes it natively cross-chain using the TRC-7786 based {BridgeMultiToken}.
+
+This extension makes the token compatible with:
+* {TRC1155Crosschain} instances on other chains,
+* {TRC1155} instances on other chains that are bridged using {BridgeTRC1155},
+
+[.contract-index]
+.Functions
+--
+* {xref-TRC1155Crosschain-crosschainTransferFrom-address-bytes-uint256-uint256-}[`++crosschainTransferFrom(from, to, id, value)++`]
+* {xref-TRC1155Crosschain-crosschainTransferFrom-address-bytes-uint256-uint256-bytes-}[`++crosschainTransferFrom(from, to, id, value, data)++`]
+* {xref-TRC1155Crosschain-crosschainTransferFrom-address-bytes-uint256---uint256---}[`++crosschainTransferFrom(from, to, ids, values)++`]
+* {xref-TRC1155Crosschain-crosschainTransferFrom-address-bytes-uint256---uint256---bytes-}[`++crosschainTransferFrom(from, to, ids, values, data)++`]
+* {xref-TRC1155Crosschain-_onSend-address-uint256---uint256---}[`++_onSend(from, ids, values)++`]
+* {xref-TRC1155Crosschain-_onReceive-address-uint256---uint256---bytes-}[`++_onReceive(to, ids, values, data)++`]
+
+[.contract-subindex-inherited]
+.TRC1155
+* {xref-TRC1155-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+* {xref-TRC1155-uri-uint256-}[`++uri()++`]
+* {xref-TRC1155-balanceOf-address-uint256-}[`++balanceOf(account, id)++`]
+* {xref-TRC1155-balanceOfBatch-address---uint256---}[`++balanceOfBatch(accounts, ids)++`]
+* {xref-TRC1155-setApprovalForAll-address-bool-}[`++setApprovalForAll(operator, approved)++`]
+* {xref-TRC1155-isApprovedForAll-address-address-}[`++isApprovedForAll(account, operator)++`]
+* {xref-TRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-}[`++safeTransferFrom(from, to, id, value, data)++`]
+* {xref-TRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-}[`++safeBatchTransferFrom(from, to, ids, values, data)++`]
+* {xref-TRC1155-_checkAuthorized-address-address-}[`++_checkAuthorized(operator, owner)++`]
+* {xref-TRC1155-_update-address-address-uint256---uint256---}[`++_update(from, to, ids, values)++`]
+* {xref-TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-}[`++_updateWithAcceptanceCheck(from, to, ids, values, data)++`]
+* {xref-TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-bool-}[`++_updateWithAcceptanceCheck(from, to, ids, values, data, batch)++`]
+* {xref-TRC1155-_safeTransferFrom-address-address-uint256-uint256-bytes-}[`++_safeTransferFrom(from, to, id, value, data)++`]
+* {xref-TRC1155-_safeBatchTransferFrom-address-address-uint256---uint256---bytes-}[`++_safeBatchTransferFrom(from, to, ids, values, data)++`]
+* {xref-TRC1155-_setURI-string-}[`++_setURI(newuri)++`]
+* {xref-TRC1155-_mint-address-uint256-uint256-bytes-}[`++_mint(to, id, value, data)++`]
+* {xref-TRC1155-_mintBatch-address-uint256---uint256---bytes-}[`++_mintBatch(to, ids, values, data)++`]
+* {xref-TRC1155-_burn-address-uint256-uint256-}[`++_burn(from, id, value)++`]
+* {xref-TRC1155-_burnBatch-address-uint256---uint256---}[`++_burnBatch(from, ids, values)++`]
+* {xref-TRC1155-_setApprovalForAll-address-address-bool-}[`++_setApprovalForAll(owner, operator, approved)++`]
+
+[.contract-subindex-inherited]
+.ITRC1155Errors
+
+[.contract-subindex-inherited]
+.ITRC1155MetadataURI
+
+[.contract-subindex-inherited]
+.ITRC1155
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+[.contract-subindex-inherited]
+.BridgeMultiToken
+* {xref-BridgeMultiToken-_crosschainTransfer-address-bytes-uint256---uint256---bytes-}[`++_crosschainTransfer(from, to, ids, values, data)++`]
+* {xref-BridgeMultiToken-_processMessage-address-bytes32-bytes-bytes-}[`++_processMessage(, receiveId, , payload)++`]
+
+[.contract-subindex-inherited]
+.CrosschainLinked
+* {xref-CrosschainLinked-getLink-bytes-}[`++getLink(chainAddr)++`]
+* {xref-CrosschainLinked-_setLink-address-bytes-bool-}[`++_setLink(gateway, counterpart, allowOverride)++`]
+* {xref-CrosschainLinked-_sendMessageToCounterpart-bytes-bytes-bytes---}[`++_sendMessageToCounterpart(chainAddr, payload, attributes)++`]
+* {xref-CrosschainLinked-_isAuthorizedGateway-address-bytes-}[`++_isAuthorizedGateway(instance, sender)++`]
+
+[.contract-subindex-inherited]
+.TRC7786Recipient
+* {xref-TRC7786Recipient-receiveMessage-bytes32-bytes-bytes-}[`++receiveMessage(receiveId, sender, payload)++`]
+
+[.contract-subindex-inherited]
+.ITRC7786Recipient
+
+--
+
+[.contract-index]
+.Events
+--
+
+[.contract-subindex-inherited]
+.TRC1155
+
+[.contract-subindex-inherited]
+.ITRC1155Errors
+
+[.contract-subindex-inherited]
+.ITRC1155MetadataURI
+
+[.contract-subindex-inherited]
+.ITRC1155
+* {xref-ITRC1155-TransferSingle-address-address-address-uint256-uint256-}[`++TransferSingle(operator, from, to, id, value)++`]
+* {xref-ITRC1155-TransferBatch-address-address-address-uint256---uint256---}[`++TransferBatch(operator, from, to, ids, values)++`]
+* {xref-ITRC1155-ApprovalForAll-address-address-bool-}[`++ApprovalForAll(account, operator, approved)++`]
+* {xref-ITRC1155-URI-string-uint256-}[`++URI(value, id)++`]
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+[.contract-subindex-inherited]
+.BridgeMultiToken
+* {xref-BridgeMultiToken-CrosschainMultiTokenTransferSent-bytes32-address-bytes-uint256---uint256---bytes-}[`++CrosschainMultiTokenTransferSent(sendId, from, to, ids, values, data)++`]
+* {xref-BridgeMultiToken-CrosschainMultiTokenTransferReceived-bytes32-bytes-address-uint256---uint256---bytes-}[`++CrosschainMultiTokenTransferReceived(receiveId, from, to, ids, values, data)++`]
+
+[.contract-subindex-inherited]
+.CrosschainLinked
+* {xref-CrosschainLinked-LinkRegistered-address-bytes-}[`++LinkRegistered(gateway, counterpart)++`]
+
+[.contract-subindex-inherited]
+.TRC7786Recipient
+
+[.contract-subindex-inherited]
+.ITRC7786Recipient
+
+--
+
+[.contract-index]
+.Errors
+--
+
+[.contract-subindex-inherited]
+.TRC1155
+
+[.contract-subindex-inherited]
+.ITRC1155Errors
+* {xref-ITRC1155Errors-TRC1155InsufficientBalance-address-uint256-uint256-uint256-}[`++TRC1155InsufficientBalance(sender, balance, needed, tokenId)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidSender-address-}[`++TRC1155InvalidSender(sender)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidReceiver-address-}[`++TRC1155InvalidReceiver(receiver)++`]
+* {xref-ITRC1155Errors-TRC1155MissingApprovalForAll-address-address-}[`++TRC1155MissingApprovalForAll(operator, owner)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidApprover-address-}[`++TRC1155InvalidApprover(approver)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidOperator-address-}[`++TRC1155InvalidOperator(operator)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidArrayLength-uint256-uint256-}[`++TRC1155InvalidArrayLength(idsLength, valuesLength)++`]
+
+[.contract-subindex-inherited]
+.ITRC1155MetadataURI
+
+[.contract-subindex-inherited]
+.ITRC1155
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+[.contract-subindex-inherited]
+.BridgeMultiToken
+* {xref-BridgeMultiToken-CrosschainMultiTokenEmptyAddress--}[`++CrosschainMultiTokenEmptyAddress()++`]
+* {xref-BridgeMultiToken-CrosschainMultiTokenInvalidRecipient-bytes-}[`++CrosschainMultiTokenInvalidRecipient(recipient)++`]
+
+[.contract-subindex-inherited]
+.CrosschainLinked
+* {xref-CrosschainLinked-LinkAlreadyRegistered-bytes-}[`++LinkAlreadyRegistered(chainAddr)++`]
+
+[.contract-subindex-inherited]
+.TRC7786Recipient
+* {xref-TRC7786Recipient-TRC7786RecipientUnauthorizedGateway-address-bytes-}[`++TRC7786RecipientUnauthorizedGateway(gateway, sender)++`]
+
+[.contract-subindex-inherited]
+.ITRC7786Recipient
+
+--
+
+[.contract-item]
+[[TRC1155Crosschain-crosschainTransferFrom-address-bytes-uint256-uint256-]]
+==== `[.contract-item-name]#++crosschainTransferFrom++#++(address from, bytes to, uint256 id, uint256 value) → bytes32++` [.item-kind]#public#
+
+Equivalent to `crosschainTransferFrom(from, to, id, value, "")`.
+
+[.contract-item]
+[[TRC1155Crosschain-crosschainTransferFrom-address-bytes-uint256-uint256-bytes-]]
+==== `[.contract-item-name]#++crosschainTransferFrom++#++(address from, bytes to, uint256 id, uint256 value, bytes data) → bytes32++` [.item-kind]#public#
+
+TransferFrom variant of {crosschainTransferFrom}, using TRC1155 allowance from the sender to the caller.
+`data` is forwarded to the destination-chain TRC-1155 receiver's acceptance hook.
+
+[.contract-item]
+[[TRC1155Crosschain-crosschainTransferFrom-address-bytes-uint256---uint256---]]
+==== `[.contract-item-name]#++crosschainTransferFrom++#++(address from, bytes to, uint256[] ids, uint256[] values) → bytes32++` [.item-kind]#public#
+
+Equivalent to `crosschainTransferFrom(from, to, ids, values, "")`.
+
+[.contract-item]
+[[TRC1155Crosschain-crosschainTransferFrom-address-bytes-uint256---uint256---bytes-]]
+==== `[.contract-item-name]#++crosschainTransferFrom++#++(address from, bytes to, uint256[] ids, uint256[] values, bytes data) → bytes32++` [.item-kind]#public#
+
+TransferFrom variant of {crosschainTransferFrom}, using TRC1155 allowance from the sender to the caller.
+`data` is forwarded to the destination-chain TRC-1155 receiver's acceptance hook.
+
+[.contract-item]
+[[TRC1155Crosschain-_onSend-address-uint256---uint256---]]
+==== `[.contract-item-name]#++_onSend++#++(address from, uint256[] ids, uint256[] values)++` [.item-kind]#internal#
+
+"Locking" tokens is achieved through burning.
+
+[.contract-item]
+[[TRC1155Crosschain-_onReceive-address-uint256---uint256---bytes-]]
+==== `[.contract-item-name]#++_onReceive++#++(address to, uint256[] ids, uint256[] values, bytes data)++` [.item-kind]#internal#
+
+"Unlocking" tokens is achieved through minting.
+
+:totalSupply: pass:normal[xref:#TRC1155Supply-totalSupply-uint256-[`++totalSupply++`]]
+:totalSupply: pass:normal[xref:#TRC1155Supply-totalSupply--[`++totalSupply++`]]
+:exists: pass:normal[xref:#TRC1155Supply-exists-uint256-[`++exists++`]]
+:_update: pass:normal[xref:#TRC1155Supply-_update-address-address-uint256---uint256---[`++_update++`]]
+
+:totalSupply-uint256: pass:normal[xref:#TRC1155Supply-totalSupply-uint256-[`++totalSupply++`]]
+:totalSupply-: pass:normal[xref:#TRC1155Supply-totalSupply--[`++totalSupply++`]]
+:exists-uint256: pass:normal[xref:#TRC1155Supply-exists-uint256-[`++exists++`]]
+:_update-address-address-uint256---uint256--: pass:normal[xref:#TRC1155Supply-_update-address-address-uint256---uint256---[`++_update++`]]
+
+[.contract]
+[[TRC1155Supply]]
+=== `++TRC1155Supply++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC1155/extensions/TRC1155Supply.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC1155/extensions/TRC1155Supply.sol";
+```
+
+Extension of TRC-1155 that adds tracking of total supply per id.
+
+Useful for scenarios where Fungible and Non-fungible tokens have to be
+clearly identified. Note: While a `totalSupply` of 1 may mean the
+corresponding token is an NFT, there are no inherent guarantees that
+no more tokens with the same id will be minted in future.
+
+NOTE: This contract implies a global limit of 2**256 - 1 to the number of tokens
+that can be minted.
+
+CAUTION: This extension should not be added in an upgrade to an already deployed contract.
+
+[.contract-index]
+.Functions
+--
+* {xref-TRC1155Supply-totalSupply-uint256-}[`++totalSupply(id)++`]
+* {xref-TRC1155Supply-totalSupply--}[`++totalSupply()++`]
+* {xref-TRC1155Supply-exists-uint256-}[`++exists(id)++`]
+* {xref-TRC1155Supply-_update-address-address-uint256---uint256---}[`++_update(from, to, ids, values)++`]
+
+[.contract-subindex-inherited]
+.TRC1155
+* {xref-TRC1155-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+* {xref-TRC1155-uri-uint256-}[`++uri()++`]
+* {xref-TRC1155-balanceOf-address-uint256-}[`++balanceOf(account, id)++`]
+* {xref-TRC1155-balanceOfBatch-address---uint256---}[`++balanceOfBatch(accounts, ids)++`]
+* {xref-TRC1155-setApprovalForAll-address-bool-}[`++setApprovalForAll(operator, approved)++`]
+* {xref-TRC1155-isApprovedForAll-address-address-}[`++isApprovedForAll(account, operator)++`]
+* {xref-TRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-}[`++safeTransferFrom(from, to, id, value, data)++`]
+* {xref-TRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-}[`++safeBatchTransferFrom(from, to, ids, values, data)++`]
+* {xref-TRC1155-_checkAuthorized-address-address-}[`++_checkAuthorized(operator, owner)++`]
+* {xref-TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-}[`++_updateWithAcceptanceCheck(from, to, ids, values, data)++`]
+* {xref-TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-bool-}[`++_updateWithAcceptanceCheck(from, to, ids, values, data, batch)++`]
+* {xref-TRC1155-_safeTransferFrom-address-address-uint256-uint256-bytes-}[`++_safeTransferFrom(from, to, id, value, data)++`]
+* {xref-TRC1155-_safeBatchTransferFrom-address-address-uint256---uint256---bytes-}[`++_safeBatchTransferFrom(from, to, ids, values, data)++`]
+* {xref-TRC1155-_setURI-string-}[`++_setURI(newuri)++`]
+* {xref-TRC1155-_mint-address-uint256-uint256-bytes-}[`++_mint(to, id, value, data)++`]
+* {xref-TRC1155-_mintBatch-address-uint256---uint256---bytes-}[`++_mintBatch(to, ids, values, data)++`]
+* {xref-TRC1155-_burn-address-uint256-uint256-}[`++_burn(from, id, value)++`]
+* {xref-TRC1155-_burnBatch-address-uint256---uint256---}[`++_burnBatch(from, ids, values)++`]
+* {xref-TRC1155-_setApprovalForAll-address-address-bool-}[`++_setApprovalForAll(owner, operator, approved)++`]
+
+[.contract-subindex-inherited]
+.ITRC1155Errors
+
+[.contract-subindex-inherited]
+.ITRC1155MetadataURI
+
+[.contract-subindex-inherited]
+.ITRC1155
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Events
+--
+
+[.contract-subindex-inherited]
+.TRC1155
+
+[.contract-subindex-inherited]
+.ITRC1155Errors
+
+[.contract-subindex-inherited]
+.ITRC1155MetadataURI
+
+[.contract-subindex-inherited]
+.ITRC1155
+* {xref-ITRC1155-TransferSingle-address-address-address-uint256-uint256-}[`++TransferSingle(operator, from, to, id, value)++`]
+* {xref-ITRC1155-TransferBatch-address-address-address-uint256---uint256---}[`++TransferBatch(operator, from, to, ids, values)++`]
+* {xref-ITRC1155-ApprovalForAll-address-address-bool-}[`++ApprovalForAll(account, operator, approved)++`]
+* {xref-ITRC1155-URI-string-uint256-}[`++URI(value, id)++`]
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Errors
+--
+
+[.contract-subindex-inherited]
+.TRC1155
+
+[.contract-subindex-inherited]
+.ITRC1155Errors
+* {xref-ITRC1155Errors-TRC1155InsufficientBalance-address-uint256-uint256-uint256-}[`++TRC1155InsufficientBalance(sender, balance, needed, tokenId)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidSender-address-}[`++TRC1155InvalidSender(sender)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidReceiver-address-}[`++TRC1155InvalidReceiver(receiver)++`]
+* {xref-ITRC1155Errors-TRC1155MissingApprovalForAll-address-address-}[`++TRC1155MissingApprovalForAll(operator, owner)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidApprover-address-}[`++TRC1155InvalidApprover(approver)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidOperator-address-}[`++TRC1155InvalidOperator(operator)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidArrayLength-uint256-uint256-}[`++TRC1155InvalidArrayLength(idsLength, valuesLength)++`]
+
+[.contract-subindex-inherited]
+.ITRC1155MetadataURI
+
+[.contract-subindex-inherited]
+.ITRC1155
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-item]
+[[TRC1155Supply-totalSupply-uint256-]]
+==== `[.contract-item-name]#++totalSupply++#++(uint256 id) → uint256++` [.item-kind]#public#
+
+Total value of tokens with a given id.
+
+[.contract-item]
+[[TRC1155Supply-totalSupply--]]
+==== `[.contract-item-name]#++totalSupply++#++() → uint256++` [.item-kind]#public#
+
+Total value of tokens.
+
+[.contract-item]
+[[TRC1155Supply-exists-uint256-]]
+==== `[.contract-item-name]#++exists++#++(uint256 id) → bool++` [.item-kind]#public#
+
+Indicates whether any tokens exist with a given id, or not.
+
+[.contract-item]
+[[TRC1155Supply-_update-address-address-uint256---uint256---]]
+==== `[.contract-item-name]#++_update++#++(address from, address to, uint256[] ids, uint256[] values)++` [.item-kind]#internal#
+
+Transfers a `value` amount of tokens of type `id` from `from` to `to`. Will mint (or burn) if `from`
+(or `to`) is the zero address.
+
+Emits a {TransferSingle} event if the arrays contain one element, and {TransferBatch} otherwise.
+
+Requirements:
+
+- If `to` refers to a smart contract, it must implement either {ITRC1155Receiver-onERC1155Received}
+  or {ITRC1155Receiver-onERC1155BatchReceived} and return the acceptance magic value.
+- `ids` and `values` must have the same length.
+
+NOTE: The TRC-1155 acceptance check is not performed in this function. See {_updateWithAcceptanceCheck} instead.
+
+:uri: pass:normal[xref:#TRC1155URIStorage-uri-uint256-[`++uri++`]]
+:_setURI: pass:normal[xref:#TRC1155URIStorage-_setURI-uint256-string-[`++_setURI++`]]
+:_setBaseURI: pass:normal[xref:#TRC1155URIStorage-_setBaseURI-string-[`++_setBaseURI++`]]
+
+:uri-uint256: pass:normal[xref:#TRC1155URIStorage-uri-uint256-[`++uri++`]]
+:_setURI-uint256-string: pass:normal[xref:#TRC1155URIStorage-_setURI-uint256-string-[`++_setURI++`]]
+:_setBaseURI-string: pass:normal[xref:#TRC1155URIStorage-_setBaseURI-string-[`++_setBaseURI++`]]
+
+[.contract]
+[[TRC1155URIStorage]]
+=== `++TRC1155URIStorage++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC1155/extensions/TRC1155URIStorage.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC1155/extensions/TRC1155URIStorage.sol";
+```
+
+TRC-1155 token with storage based token URI management.
+Inspired by the {TRC721URIStorage} extension
+
+[.contract-index]
+.Functions
+--
+* {xref-TRC1155URIStorage-uri-uint256-}[`++uri(tokenId)++`]
+* {xref-TRC1155URIStorage-_setURI-uint256-string-}[`++_setURI(tokenId, tokenURI)++`]
+* {xref-TRC1155URIStorage-_setBaseURI-string-}[`++_setBaseURI(baseURI)++`]
+
+[.contract-subindex-inherited]
+.TRC1155
+* {xref-TRC1155-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+* {xref-TRC1155-balanceOf-address-uint256-}[`++balanceOf(account, id)++`]
+* {xref-TRC1155-balanceOfBatch-address---uint256---}[`++balanceOfBatch(accounts, ids)++`]
+* {xref-TRC1155-setApprovalForAll-address-bool-}[`++setApprovalForAll(operator, approved)++`]
+* {xref-TRC1155-isApprovedForAll-address-address-}[`++isApprovedForAll(account, operator)++`]
+* {xref-TRC1155-safeTransferFrom-address-address-uint256-uint256-bytes-}[`++safeTransferFrom(from, to, id, value, data)++`]
+* {xref-TRC1155-safeBatchTransferFrom-address-address-uint256---uint256---bytes-}[`++safeBatchTransferFrom(from, to, ids, values, data)++`]
+* {xref-TRC1155-_checkAuthorized-address-address-}[`++_checkAuthorized(operator, owner)++`]
+* {xref-TRC1155-_update-address-address-uint256---uint256---}[`++_update(from, to, ids, values)++`]
+* {xref-TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-}[`++_updateWithAcceptanceCheck(from, to, ids, values, data)++`]
+* {xref-TRC1155-_updateWithAcceptanceCheck-address-address-uint256---uint256---bytes-bool-}[`++_updateWithAcceptanceCheck(from, to, ids, values, data, batch)++`]
+* {xref-TRC1155-_safeTransferFrom-address-address-uint256-uint256-bytes-}[`++_safeTransferFrom(from, to, id, value, data)++`]
+* {xref-TRC1155-_safeBatchTransferFrom-address-address-uint256---uint256---bytes-}[`++_safeBatchTransferFrom(from, to, ids, values, data)++`]
+* {xref-TRC1155-_setURI-string-}[`++_setURI(newuri)++`]
+* {xref-TRC1155-_mint-address-uint256-uint256-bytes-}[`++_mint(to, id, value, data)++`]
+* {xref-TRC1155-_mintBatch-address-uint256---uint256---bytes-}[`++_mintBatch(to, ids, values, data)++`]
+* {xref-TRC1155-_burn-address-uint256-uint256-}[`++_burn(from, id, value)++`]
+* {xref-TRC1155-_burnBatch-address-uint256---uint256---}[`++_burnBatch(from, ids, values)++`]
+* {xref-TRC1155-_setApprovalForAll-address-address-bool-}[`++_setApprovalForAll(owner, operator, approved)++`]
+
+[.contract-subindex-inherited]
+.ITRC1155Errors
+
+[.contract-subindex-inherited]
+.ITRC1155MetadataURI
+
+[.contract-subindex-inherited]
+.ITRC1155
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Events
+--
+
+[.contract-subindex-inherited]
+.TRC1155
+
+[.contract-subindex-inherited]
+.ITRC1155Errors
+
+[.contract-subindex-inherited]
+.ITRC1155MetadataURI
+
+[.contract-subindex-inherited]
+.ITRC1155
+* {xref-ITRC1155-TransferSingle-address-address-address-uint256-uint256-}[`++TransferSingle(operator, from, to, id, value)++`]
+* {xref-ITRC1155-TransferBatch-address-address-address-uint256---uint256---}[`++TransferBatch(operator, from, to, ids, values)++`]
+* {xref-ITRC1155-ApprovalForAll-address-address-bool-}[`++ApprovalForAll(account, operator, approved)++`]
+* {xref-ITRC1155-URI-string-uint256-}[`++URI(value, id)++`]
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-index]
+.Errors
+--
+
+[.contract-subindex-inherited]
+.TRC1155
+
+[.contract-subindex-inherited]
+.ITRC1155Errors
+* {xref-ITRC1155Errors-TRC1155InsufficientBalance-address-uint256-uint256-uint256-}[`++TRC1155InsufficientBalance(sender, balance, needed, tokenId)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidSender-address-}[`++TRC1155InvalidSender(sender)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidReceiver-address-}[`++TRC1155InvalidReceiver(receiver)++`]
+* {xref-ITRC1155Errors-TRC1155MissingApprovalForAll-address-address-}[`++TRC1155MissingApprovalForAll(operator, owner)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidApprover-address-}[`++TRC1155InvalidApprover(approver)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidOperator-address-}[`++TRC1155InvalidOperator(operator)++`]
+* {xref-ITRC1155Errors-TRC1155InvalidArrayLength-uint256-uint256-}[`++TRC1155InvalidArrayLength(idsLength, valuesLength)++`]
+
+[.contract-subindex-inherited]
+.ITRC1155MetadataURI
+
+[.contract-subindex-inherited]
+.ITRC1155
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-item]
+[[TRC1155URIStorage-uri-uint256-]]
+==== `[.contract-item-name]#++uri++#++(uint256 tokenId) → string++` [.item-kind]#public#
+
+See {ITRC1155MetadataURI-uri}.
+
+This implementation returns the concatenation of the `_baseURI`
+and the token-specific uri if the latter is set
+
+This enables the following behaviors:
+
+- if `_tokenURIs[tokenId]` is set, then the result is the concatenation
+  of `_baseURI` and `_tokenURIs[tokenId]` (keep in mind that `_baseURI`
+  is empty per default);
+
+- if `_tokenURIs[tokenId]` is NOT set then we fallback to `super.uri()`
+  which in most cases will contain `TRC1155._uri`;
+
+- if `_tokenURIs[tokenId]` is NOT set, and if the parents do not have a
+  uri value set, then the result is empty.
+
+[.contract-item]
+[[TRC1155URIStorage-_setURI-uint256-string-]]
+==== `[.contract-item-name]#++_setURI++#++(uint256 tokenId, string tokenURI)++` [.item-kind]#internal#
+
+Sets `tokenURI` as the tokenURI of `tokenId`.
+
+[.contract-item]
+[[TRC1155URIStorage-_setBaseURI-string-]]
+==== `[.contract-item-name]#++_setBaseURI++#++(string baseURI)++` [.item-kind]#internal#
+
+Sets `baseURI` as the `_baseURI` for all tokens
+
+== Utilities
+
+:supportsInterface: pass:normal[xref:#TRC1155Holder-supportsInterface-bytes4-[`++supportsInterface++`]]
+:onERC1155Received: pass:normal[xref:#TRC1155Holder-onERC1155Received-address-address-uint256-uint256-bytes-[`++onERC1155Received++`]]
+:onERC1155BatchReceived: pass:normal[xref:#TRC1155Holder-onERC1155BatchReceived-address-address-uint256---uint256---bytes-[`++onERC1155BatchReceived++`]]
+
+:supportsInterface-bytes4: pass:normal[xref:#TRC1155Holder-supportsInterface-bytes4-[`++supportsInterface++`]]
+:onERC1155Received-address-address-uint256-uint256-bytes: pass:normal[xref:#TRC1155Holder-onERC1155Received-address-address-uint256-uint256-bytes-[`++onERC1155Received++`]]
+:onERC1155BatchReceived-address-address-uint256---uint256---bytes: pass:normal[xref:#TRC1155Holder-onERC1155BatchReceived-address-address-uint256---uint256---bytes-[`++onERC1155BatchReceived++`]]
+
+[.contract]
+[[TRC1155Holder]]
+=== `++TRC1155Holder++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC1155/utils/TRC1155Holder.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC1155/utils/TRC1155Holder.sol";
+```
+
+Simple implementation of `ITRC1155Receiver` that will allow a contract to hold TRC-1155 tokens.
+
+IMPORTANT: When inheriting this contract, you must include a way to use the received tokens, otherwise they will be
+stuck.
+
+@custom:stateless
+
+[.contract-index]
+.Functions
+--
+* {xref-TRC1155Holder-supportsInterface-bytes4-}[`++supportsInterface(interfaceId)++`]
+* {xref-TRC1155Holder-onERC1155Received-address-address-uint256-uint256-bytes-}[`++onERC1155Received(, , , , )++`]
+* {xref-TRC1155Holder-onERC1155BatchReceived-address-address-uint256---uint256---bytes-}[`++onERC1155BatchReceived(, , , , )++`]
+
+[.contract-subindex-inherited]
+.ITRC1155Receiver
+
+[.contract-subindex-inherited]
+.TRC165
+
+[.contract-subindex-inherited]
+.ITRC165
+
+--
+
+[.contract-item]
+[[TRC1155Holder-supportsInterface-bytes4-]]
+==== `[.contract-item-name]#++supportsInterface++#++(bytes4 interfaceId) → bool++` [.item-kind]#public#
+
+Returns true if this contract implements the interface defined by
+`interfaceId`. See the corresponding
+https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified[ERC section]
+to learn more about how these ids are created.
+
+This function call must use less than 30 000 gas.
+
+[.contract-item]
+[[TRC1155Holder-onERC1155Received-address-address-uint256-uint256-bytes-]]
+==== `[.contract-item-name]#++onERC1155Received++#++(address, address, uint256, uint256, bytes) → bytes4++` [.item-kind]#public#
+
+[.contract-item]
+[[TRC1155Holder-onERC1155BatchReceived-address-address-uint256---uint256---bytes-]]
+==== `[.contract-item-name]#++onERC1155BatchReceived++#++(address, address, uint256[], uint256[], bytes) → bytes4++` [.item-kind]#public#
+
+:checkOnTRC1155Received: pass:normal[xref:#TRC1155Utils-checkOnTRC1155Received-address-address-address-uint256-uint256-bytes-[`++checkOnTRC1155Received++`]]
+:checkOnTRC1155BatchReceived: pass:normal[xref:#TRC1155Utils-checkOnTRC1155BatchReceived-address-address-address-uint256---uint256---bytes-[`++checkOnTRC1155BatchReceived++`]]
+
+:checkOnTRC1155Received-address-address-address-uint256-uint256-bytes: pass:normal[xref:#TRC1155Utils-checkOnTRC1155Received-address-address-address-uint256-uint256-bytes-[`++checkOnTRC1155Received++`]]
+:checkOnTRC1155BatchReceived-address-address-address-uint256---uint256---bytes: pass:normal[xref:#TRC1155Utils-checkOnTRC1155BatchReceived-address-address-address-uint256---uint256---bytes-[`++checkOnTRC1155BatchReceived++`]]
+
+[.contract]
+[[TRC1155Utils]]
+=== `++TRC1155Utils++` link:https://github.com/OpenZeppelin/tron-contracts/blob/v5.7.0/contracts/token/TRC1155/utils/TRC1155Utils.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@openzeppelin/tron-contracts/token/TRC1155/utils/TRC1155Utils.sol";
+```
+
+Library that provide common TRC-1155 utility functions.
+
+See https://github.com/tronprotocol/tips/blob/master/tip-1155.md[TIP-1155]
+(the TRON-side analogue of https://eips.ethereum.org/EIPS/eip-1155[EIP-1155]).
+
+_Available since v5.1._
+
+[.contract-index]
+.Functions
+--
+* {xref-TRC1155Utils-checkOnTRC1155Received-address-address-address-uint256-uint256-bytes-}[`++checkOnTRC1155Received(operator, from, to, id, value, data)++`]
+* {xref-TRC1155Utils-checkOnTRC1155BatchReceived-address-address-address-uint256---uint256---bytes-}[`++checkOnTRC1155BatchReceived(operator, from, to, ids, values, data)++`]
+
+--
+
+[.contract-item]
+[[TRC1155Utils-checkOnTRC1155Received-address-address-address-uint256-uint256-bytes-]]
+==== `[.contract-item-name]#++checkOnTRC1155Received++#++(address operator, address from, address to, uint256 id, uint256 value, bytes data)++` [.item-kind]#internal#
+
+Performs an acceptance check for the provided `operator` by calling {ITRC1155Receiver-onERC1155Received}
+on the `to` address. The `operator` is generally the address that initiated the token transfer (i.e. `msg.sender`).
+
+The acceptance call is not executed and treated as a no-op if the target address doesn't contain code (i.e. an EOA).
+Otherwise, the recipient must implement {ITRC1155Receiver-onERC1155Received} and return the acceptance magic value to accept
+the transfer.
+
+[.contract-item]
+[[TRC1155Utils-checkOnTRC1155BatchReceived-address-address-address-uint256---uint256---bytes-]]
+==== `[.contract-item-name]#++checkOnTRC1155BatchReceived++#++(address operator, address from, address to, uint256[] ids, uint256[] values, bytes data)++` [.item-kind]#internal#
+
+Performs a batch acceptance check for the provided `operator` by calling {ITRC1155Receiver-onERC1155BatchReceived}
+on the `to` address. The `operator` is generally the address that initiated the token transfer (i.e. `msg.sender`).
+
+The acceptance call is not executed and treated as a no-op if the target address doesn't contain code (i.e. an EOA).
+Otherwise, the recipient must implement {ITRC1155Receiver-onERC1155BatchReceived} and return the acceptance magic value to accept
+the transfer.
+

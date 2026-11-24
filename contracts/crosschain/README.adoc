@@ -1,0 +1,41 @@
+= Cross chain interoperability
+
+[.readme-notice]
+NOTE: This document is better viewed at https://docs.openzeppelin.com/contracts/api/crosschain
+
+This directory contains contracts for sending and receiving cross chain messages that follows the TRC-7786 standard.
+
+* {CrosschainLinked}: helper to facilitate communication between a contract on one chain and counterparts on remote chains through TRC-7786 gateways.
+* {TRC7786Recipient}: generic TRC-7786 crosschain contract that receives messages from a trusted gateway.
+
+Additionally there are multiple bridge constructions:
+
+* {BridgeFungible}: Core bridging logic for crosschain TRC-20 transfer. Used by {BridgeTRC20}, {BridgeTRC7802} and {TRC20Crosschain},
+* {BridgeNonFungible}: Core bridging logic for crosschain TRC-721 transfer. Used by {BridgeTRC721} and {TRC721Crosschain},
+* {BridgeMultiToken}: Core bridging logic for crosschain TRC-1155 transfer. Used by {BridgeTRC1155} and {TRC1155Crosschain},
+* {BridgeTRC20}: Standalone bridge contract to connect a TRC-20 token contract with counterparts on remote chains,
+* {BridgeTRC721}: Standalone bridge contract to connect a TRC-721 token contract with counterparts on remote chains,
+* {BridgeTRC1155}: Standalone bridge contract to connect a TRC-1155 token contract with counterparts on remote chains,
+* {BridgeTRC7802}: Standalone bridge contract to connect a TRC-7802 token contract with counterparts on remote chains.
+
+== Helpers
+
+{{CrosschainLinked}}
+
+{{TRC7786Recipient}}
+
+== Bridges
+
+{{BridgeFungible}}
+
+{{BridgeNonFungible}}
+
+{{BridgeMultiToken}}
+
+{{BridgeTRC20}}
+
+{{BridgeTRC721}}
+
+{{BridgeTRC1155}}
+
+{{BridgeTRC7802}}

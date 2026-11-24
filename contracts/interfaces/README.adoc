@@ -1,0 +1,120 @@
+= Interfaces
+
+[.readme-notice]
+NOTE: This document is better viewed at https://docs.openzeppelin.com/contracts/api/interfaces
+
+== List of standardized interfaces
+These interfaces are available as `.sol` files, and also as compiler `.json` ABI files (through the npm package). These
+are useful to interact with third party contracts that implement them.
+
+- {ITRC20}
+- {ITRC20Errors}
+- {ITRC20Metadata}
+- {ITRC165}
+- {ITRC721}
+- {ITRC721Receiver}
+- {ITRC721Enumerable}
+- {ITRC721Metadata}
+- {ITRC721Errors}
+- {ITRC777}
+- {ITRC777Recipient}
+- {ITRC777Sender}
+- {ITRC1155}
+- {ITRC1155Receiver}
+- {ITRC1155MetadataURI}
+- {ITRC1155Errors}
+- {ITRC1271}
+- {ITRC1363}
+- {ITRC1363Receiver}
+- {ITRC1363Spender}
+- {ITRC1820Implementer}
+- {ITRC1820Registry}
+- {ITRC1822Proxiable}
+- {ITRC1967}
+- {ITRC2309}
+- {ITRC2612}
+- {ITRC2981}
+- {ITRC3156FlashLender}
+- {ITRC3156FlashBorrower}
+- {ITRC4626}
+- {ITRC4906}
+- {ITRC5267}
+- {ITRC5313}
+- {ITRC5805}
+- {ITRC6372}
+- {ITRC6909}
+- {ITRC6909ContentURI}
+- {ITRC6909Metadata}
+- {ITRC6909TokenSupply}
+- {ITRC7674}
+- {ITRC7751}
+- {ITRC7786GatewaySource}
+- {ITRC7786Recipient}
+- {ITRC7802}
+- {ITRC7913SignatureVerifier}
+
+== Detailed ABI
+
+{{ITRC20Errors}}
+
+{{ITRC721Errors}}
+
+{{ITRC1155Errors}}
+
+{{ITRC1271}}
+
+{{ITRC1363}}
+
+{{ITRC1363Receiver}}
+
+{{ITRC1363Spender}}
+
+{{ITRC1820Implementer}}
+
+{{ITRC1820Registry}}
+
+{{ITRC1822Proxiable}}
+
+{{ITRC1967}}
+
+{{ITRC2309}}
+
+{{ITRC2612}}
+
+{{ITRC2981}}
+
+{{ITRC3156FlashLender}}
+
+{{ITRC3156FlashBorrower}}
+
+{{ITRC4626}}
+
+{{ITRC4906}}
+
+{{ITRC5267}}
+
+{{ITRC5313}}
+
+{{ITRC5805}}
+
+{{ITRC6372}}
+
+{{ITRC6909}}
+
+{{ITRC6909ContentURI}}
+
+{{ITRC6909Metadata}}
+
+{{ITRC6909TokenSupply}}
+
+{{ITRC7674}}
+
+{{ITRC7751}}
+
+{{ITRC7786GatewaySource}}
+
+{{ITRC7786Recipient}}
+
+{{ITRC7802}}
+
+{{ITRC7913SignatureVerifier}}

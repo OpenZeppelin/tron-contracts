@@ -1,0 +1,11 @@
+--- token/TRC721/TRC721.sol
++++ token/TRC721/TRC721.sol
+@@ -29,7 +29,7 @@
+ 
+     mapping(uint256 tokenId => address) private _owners;
+ 
+-    mapping(address owner => uint256) private _balances;
++    mapping(address owner => uint256) internal _balances; // private → internal for FV
+ 
+     mapping(uint256 tokenId => address) private _tokenApprovals;
+ 

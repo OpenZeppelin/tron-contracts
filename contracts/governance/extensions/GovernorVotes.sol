@@ -1,0 +1,64 @@
+// SPDX-License-Identifier: MIT
+// OpenZeppelin Tron Contracts (last updated v5.7.0) (governance/extensions/GovernorVotes.sol)
+
+pragma solidity ^0.8.24;
+
+import {Governor} from "../Governor.sol";
+import {IVotes} from "../utils/IVotes.sol";
+import {ITRC5805} from "../../interfaces/ITRC5805.sol";
+import {Time} from "../../utils/types/Time.sol";
+import {TRC6372Utils} from "../../utils/TRC6372Utils.sol";
+
+/**
+ * @dev Extension of {Governor} for voting weight extraction from an {TRC20Votes} token, or since v4.5 an {TRC721Votes}
+ * token.
+ */
+abstract contract GovernorVotes is Governor {
+    ITRC5805 private immutable _token;
+
+    constructor(IVotes tokenAddress) {
+        _token = ITRC5805(address(tokenAddress));
+    }
+
+    /**
+     * @dev The token that voting power is sourced from.
+     */
+    function token() public view virtual returns (ITRC5805) {
+        return _token;
+    }
+
+    /**
+     * @dev Clock (as specified in TRC-6372) is set to match the token's clock. Fallback to block numbers if the token
+     * does not implement TRC-6372.
+     */
+    function clock() public view virtual override returns (uint48) {
+        try token().clock() returns (uint48 timepoint) {
+            return timepoint;
+        } catch {
+            return Time.blockNumber();
+        }
+    }
+
+    /**
+     * @dev Machine-readable description of the clock as specified in TRC-6372.
+     */
+    // solhint-disable-next-line func-name-mixedcase
+    function CLOCK_MODE() public view virtual override returns (string memory) {
+        try token().CLOCK_MODE() returns (string memory clockmode) {
+            return clockmode;
+        } catch {
+            return TRC6372Utils.blockNumberClockMode(clock);
+        }
+    }
+
+    /**
+     * Read the voting weight from the token's built in snapshot mechanism (see {Governor-_getVotes}).
+     */
+    function _getVotes(
+        address account,
+        uint256 timepoint,
+        bytes memory /*params*/
+    ) internal view virtual override returns (uint256) {
+        return token().getPastVotes(account, timepoint);
+    }
+}
